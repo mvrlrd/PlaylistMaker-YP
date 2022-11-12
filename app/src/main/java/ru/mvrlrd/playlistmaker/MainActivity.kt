@@ -1,10 +1,12 @@
 package ru.mvrlrd.playlistmaker
 
+
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,26 +15,21 @@ class MainActivity : AppCompatActivity() {
 
         val searchButton = findViewById<Button>(R.id.search_button)
         val onSearchButtonListener = View.OnClickListener {
-            Toast.makeText(this@MainActivity, "ПОИСК", Toast.LENGTH_SHORT).show()
+            val displayIntent = Intent(this, SearchActivity::class.java)
+            startActivity(displayIntent)
         }
         searchButton.setOnClickListener(onSearchButtonListener)
 
         val mediaButton = findViewById<Button>(R.id.mediateka_button)
         mediaButton.setOnClickListener {
-            Toast.makeText(
-                this@MainActivity,
-                "МЕДИАТЕКА",
-                Toast.LENGTH_SHORT
-            ).show()
+            val displayIntent = Intent(this, MediatekaActivity::class.java)
+            startActivity(displayIntent)
         }
 
         val settingsButton = findViewById<Button>(R.id.settings_button)
         settingsButton.setOnClickListener {
-            Toast.makeText(
-                this@MainActivity,
-                "НАСТРОЙКИ",
-                Toast.LENGTH_SHORT
-            ).show()
+            val displayIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(displayIntent)
         }
     }
 }

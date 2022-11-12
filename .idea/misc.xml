@@ -7,7 +7,10 @@
         <entry key="app/src/main/res/drawable/ic_support_icon.xml" value="0.199" />
         <entry key="app/src/main/res/drawable/search.xml" value="0.199" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2454559326171875" />
+        <entry key="app/src/main/res/layout/activity_mediateka.xml" value="0.271286231884058" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.271286231884058" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.5510692430579145" />
+        <entry key="app/src/main/res/layout/activity_settings2.xml" value="0.271286231884058" />
         <entry key="app/src/main/res/layout/search_icon_layout.xml" value="0.19293478260869565" />
       </map>
     </option>

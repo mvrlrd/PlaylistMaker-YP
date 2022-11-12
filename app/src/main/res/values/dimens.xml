@@ -7,4 +7,5 @@
     <dimen name="corner_radius">10dp</dimen>
     <dimen name="usual_padding">16dp</dimen>
     <dimen name="setting_item_height">61dp</dimen>
+    <dimen name="big_text_size">40sp</dimen>
 </resources>
