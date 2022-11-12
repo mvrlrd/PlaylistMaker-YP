@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Playlist Maker</string>
+    <string name="title_name">hello hello</string>
+    <string name="more_than_9">is the rate more than 9?</string>
+    <string name="answer">ANSWER:</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
+</resources>
