@@ -3,5 +3,9 @@
     <string name="search_button">Поиск</string>
     <string name="mediateka_button">Медиатека</string>
     <string name="settings_button">Настройки</string>
+    <string name="night_mode">Темная тема</string>
+    <string name="share">Поделиться приложением</string>
+    <string name="support">Написать в поддержку</string>
+    <string name="agreement">Пользовательское соглашение</string>
 
 </resources>

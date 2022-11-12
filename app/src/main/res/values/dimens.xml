@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="main_padding">20dp</dimen>
-    <dimen name="text_size">22sp</dimen>
+    <dimen name="medium_text_size">22sp</dimen>
+    <dimen name="small_text_size">16sp</dimen>
     <dimen name="icon_to_text_distance">10dp</dimen>
     <dimen name="corner_radius">10dp</dimen>
+    <dimen name="usual_padding">16dp</dimen>
+    <dimen name="setting_item_height">61dp</dimen>
 </resources>
