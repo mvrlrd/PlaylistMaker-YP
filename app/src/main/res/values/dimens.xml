@@ -8,4 +8,6 @@
     <dimen name="usual_padding">16dp</dimen>
     <dimen name="setting_item_height">61dp</dimen>
     <dimen name="big_text_size">40sp</dimen>
+    <dimen name="toolbar_height">80dp</dimen>
+
 </resources>

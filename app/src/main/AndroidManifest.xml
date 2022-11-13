@@ -21,7 +21,9 @@
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/AppTheme"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">
