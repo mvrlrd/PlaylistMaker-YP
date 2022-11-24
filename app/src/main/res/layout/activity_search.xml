@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:text="ПОИСК"
         android:textSize="@dimen/big_text_size"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:fontFamily="@font/ys_display_regular"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
