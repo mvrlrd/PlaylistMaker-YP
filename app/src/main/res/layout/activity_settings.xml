@@ -92,6 +92,7 @@
             android:textSize="@dimen/small_text_size" />
 
         <ImageButton
+            android:id="@+id/support_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
@@ -113,6 +114,7 @@
             android:textSize="@dimen/small_text_size" />
 
         <ImageButton
+            android:id="@+id/agreement_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"

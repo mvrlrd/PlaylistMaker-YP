@@ -8,7 +8,8 @@
     <string name="support">Написать в поддержку</string>
     <string name="agreement">Пользовательское соглашение</string>
     <string name="developer_email" translatable="false">mvrlrd@ya.ru</string>
-    <string name="email_theme">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="email_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="email_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="praktikum_link">https://yandex.ru/legal/practicum_offer/</string>
 
 </resources>
