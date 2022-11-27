@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">?attr/colorPrimary</item>
-        <item name="colorPrimaryDark">?attr/colorPrimaryDark</item>
-        <item name="colorAccent">?attr/colorAccent</item>
-    </style>
 
     <style name="TextStyle">
         <item name="android:textColor">?attr/colorAccent</item>
@@ -37,26 +31,4 @@
     </style>
 
 
-
-    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="tint">?attr/colorAccent</item>
-        <item name="iconTint">?attr/colorAccent</item>
-        <item name="android:backgroundTint">?attr/colorPrimary</item>
-        <item name="android:textColor">?attr/colorAccent</item>
-        <item name="android:elevation">10dp</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingLeft">24dp</item>
-        <item name="android:paddingRight">24dp</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="iconGravity">textStart</item>
-        <item name="iconPadding">8dp</item>
-        <item name="cornerRadius">8dp</item>
-        <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="android:textFontWeight">700</item>
-    </style>
 </resources>
