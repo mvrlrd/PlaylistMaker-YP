@@ -16,26 +16,15 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginStart="@dimen/main_padding"
-                android:layout_marginTop="@dimen/main_padding"
-                style="@style/IconStyle"
-                android:src="@drawable/ic_arrow_icon"
-                />
+                style="@style/BackButton"
+                android:src="@drawable/ic_arrow_icon" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="14dp"
-                android:text="@string/search"
-                android:textSize="@dimen/medium_text_size"
-                android:textStyle="bold"
-                />
+                style="@style/BackAndTitleStyle"
+                android:text="@string/search" />
+
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
     <FrameLayout
@@ -58,9 +47,6 @@
     <ImageButton
         style="@style/IconStyle"
         android:id="@+id/clearTextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|center_vertical"
         android:src="@drawable/ic_free_icon_font_cross"
         android:visibility="gone"
         />

@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
     <style name="IconStyle">
         <item name="tint">?attr/colorAccent</item>
-        <item name="backgroundTint">@color/colorPrimaryDark</item>
+        <item name="backgroundTint">?attr/colorPrimaryDark</item>
+        <item name="android:layout_width">@dimen/icon_layout_height</item>
+        <item name="android:layout_height">@dimen/icon_layout_height</item>
+        <item name="android:layout_gravity">end|center_vertical</item>
+    </style>
+
+    <style name="BackButton" parent ="IconStyle">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginStart">@dimen/main_padding</item>
     </style>
 
     <style name="MainMenuButtonStyle" parent="Widget.MaterialComponents.Button">

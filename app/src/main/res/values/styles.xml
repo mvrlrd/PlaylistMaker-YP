@@ -10,6 +10,27 @@
     <style name="IconStyle">
         <item name="tint">?attr/colorAccent</item>
         <item name="backgroundTint">?attr/colorPrimaryDark</item>
+        <item name="android:layout_width">@dimen/icon_layout_height</item>
+        <item name="android:layout_height">@dimen/icon_layout_height</item>
+        <item name="android:layout_gravity">end|center_vertical</item>
+    </style>
+
+    <style name="BackButton" parent ="IconStyle">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginStart">@dimen/main_padding</item>
+    </style>
+
+
+    <style name="BackAndTitleStyle">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">25dp</item>
+        <item name="tint">?attr/colorAccent</item>
+        <item name="backgroundTint">?attr/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textStyle">bold</item>
+
     </style>
 
     <style name="MainMenuButtonStyle" parent="Widget.MaterialComponents.Button">
