@@ -15,6 +15,20 @@
         <item name="android:layout_marginStart">@dimen/main_padding</item>
     </style>
 
+    <style name="FrameLayoutForSettingsItemStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/setting_item_height</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
+        <item name="android:padding">@dimen/usual_padding</item>
+    </style>
+
+    <style name="SettingsItems">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
+        <item name="android:textSize">@dimen/small_text_size</item>
+    </style>
+
     <style name="MainMenuButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">?attr/colorAccent</item>
         <item name="android:textSize">20sp</item>

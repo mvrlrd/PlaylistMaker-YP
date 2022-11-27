@@ -16,7 +16,6 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-
             <ImageView
                 style="@style/BackButton"
                 android:src="@drawable/ic_arrow_icon" />
@@ -27,28 +26,28 @@
 
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/usual_padding">
-    <EditText
-        android:id="@+id/searchEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/search"
-        android:maxLength="25"
-        android:maxLines="1"
-        android:inputType="text"
-        android:layout_gravity="start|center_vertical"
-        style="@style/TextStyle"
-        android:textSize="@dimen/small_text_size"
-        />
 
-    <ImageButton
-        style="@style/IconStyle"
-        android:id="@+id/clearTextButton"
-        android:src="@drawable/ic_free_icon_font_cross"
-        android:visibility="gone"
-        />
+        <EditText
+            android:id="@+id/searchEditText"
+            style="@style/TextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:hint="@string/search"
+            android:inputType="text"
+            android:maxLength="25"
+            android:maxLines="1"
+            android:textSize="@dimen/small_text_size" />
+
+        <ImageButton
+            android:id="@+id/clearTextButton"
+            style="@style/IconStyle"
+            android:src="@drawable/ic_free_icon_font_cross"
+            android:visibility="gone" />
     </FrameLayout>
 </LinearLayout>
