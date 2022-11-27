@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 
 const val INPUT_TEXT = "INPUT_TEXT"
@@ -16,7 +17,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val searchEditText = findViewById<EditText>(R.id.searchEditText)
-        val clearIcon = findViewById<ImageView>(R.id.clearIcon)
+        val clearIcon = findViewById<ImageButton>(R.id.clearTextButton)
 
         if (savedInstanceState!=null){
             searchEditText.setText(savedInstanceState.getString(INPUT_TEXT))
