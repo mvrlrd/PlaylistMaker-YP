@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:hint="@string/search"
-        android:maxLength="@dimen/max_search_length"
+        android:maxLength="25"
         android:maxLines="1"
         android:inputType="text"
         android:textColor="@color/black"
