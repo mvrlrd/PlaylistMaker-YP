@@ -29,6 +29,18 @@ class SettingsActivity : AppCompatActivity() {
             agreementIntent.data = Uri.parse(resources.getString(R.string.praktikum_link))
             startActivity(agreementIntent)
         }
+        val shareButton = findViewById<ImageButton>(R.id.shareButton)
+        shareButton.setOnClickListener {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.praktikum_link))
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
+
+
     }
 
 

@@ -51,6 +51,7 @@
             android:text="@string/share" />
 
         <ImageButton
+            android:id="@+id/shareButton"
             style="@style/IconStyle"
             android:src="@drawable/ic_share_icon" />
     </FrameLayout>
