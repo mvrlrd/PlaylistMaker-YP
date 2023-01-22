@@ -16,7 +16,7 @@ import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 
 const val INPUT_TEXT = "INPUT_TEXT"
 class SearchActivity : AppCompatActivity() {
-    val tracks = TrackDb().tracks
+    private val tracks = TrackDb().tracks
 
     var text = ""
     override fun onCreate(savedInstanceState: Bundle?) {
