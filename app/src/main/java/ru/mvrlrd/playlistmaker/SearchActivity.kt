@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.mvrlrd.playlistmaker.model.Track
 import ru.mvrlrd.playlistmaker.model.TrackDb
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
+import ru.mvrlrd.playlistmaker.recycler.TrackListDelegate
+import kotlin.reflect.KProperty
 
 const val INPUT_TEXT = "INPUT_TEXT"
 class SearchActivity : AppCompatActivity() {
@@ -33,6 +35,12 @@ class SearchActivity : AppCompatActivity() {
         clearIcon.setOnClickListener {
             searchEditText.text.clear()
         }
+        val trackAdapter = TrackAdapter()
+        val recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
+            adapter = trackAdapter
+            layoutManager = LinearLayoutManager(this.context)
+        }
+
 
         val simpleTextWatcher = object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -45,15 +53,25 @@ class SearchActivity : AppCompatActivity() {
 
             override fun afterTextChanged(p0: Editable?) {
                 text = p0.toString()
+                p0?.let{
+                    if (it.isNotEmpty()) {
+                        trackAdapter.tracks = tracks.filter { track ->
+                            track.trackName.startsWith(
+                                p0.toString(),
+                                ignoreCase = true
+                            )
+                        } as MutableList<Track>
+                    } else {
+                        trackAdapter.tracks.clear()
+                    }
+                    trackAdapter.notifyDataSetChanged()
+                }
             }
         }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
-            adapter = TrackAdapter(tracks as MutableList<Track>)
-            layoutManager = LinearLayoutManager(this.context)
-        }
-
         searchEditText.addTextChangedListener(simpleTextWatcher)
+
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

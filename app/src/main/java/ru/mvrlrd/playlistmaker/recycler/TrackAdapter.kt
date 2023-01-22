@@ -1,6 +1,5 @@
 package ru.mvrlrd.playlistmaker.recycler
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.model.Track
+import kotlin.properties.Delegates
 
 class TrackAdapter (
-    private val tracks: MutableList<Track>
 ) : RecyclerView.Adapter<TrackViewHolder> () {
+    var tracks: MutableList<Track> by Delegates.observable(mutableListOf()){
+            _, old, new ->
+        println("$old -> $new")
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_layout, parent, false)
@@ -45,6 +48,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         Glide
             .with(itemView)
             .load(model.artworkUrl100)
+            .placeholder(R.drawable.ic_search_icon)
             .into(albumImage)
     }
 
