@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.mvrlrd.playlistmaker.model.Track
 import ru.mvrlrd.playlistmaker.model.TrackDb
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
@@ -20,6 +21,21 @@ class MediatekaActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.mediatekaTracksRecyclerView).apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
+        }
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+        bottomNav.setOnClickListener {
+            println(it.id)
+            when (it.id) {
+
+                R.id.favoritesTracks -> {
+                    println("favs")
+                    true
+                }
+                R.id.playlists -> {
+                    println("playlists")
+                    true
+                }
+            }
         }
     }
 

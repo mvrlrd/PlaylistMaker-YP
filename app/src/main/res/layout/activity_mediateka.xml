@@ -26,32 +26,18 @@
 
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            app:itemBackground="@android:color/white"
+            app:menu="@menu/layout_mediateka_navi" />
+    </FrameLayout>
 
-        <TextView
-            android:id="@+id/favoritesTracks"
-            style="@style/TextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:hint="Избранные треки"
-            android:inputType="text"
-            android:textSize="@dimen/small_text_size" />
 
-        <TextView
-            android:id="@+id/playlists"
-            style="@style/TextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:hint="Плейлисты"
-            android:inputType="text"
-            android:textSize="@dimen/small_text_size" />
-    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
