@@ -1,6 +1,6 @@
 package ru.mvrlrd.playlistmaker.model
 
-object TrackDb {
+class TrackDb {
     val tracks = listOf<Track>(
         Track(
             "Smells Like Teen Spirit",
@@ -30,7 +30,7 @@ object TrackDb {
             "Sweet Child O'Mine",
             "Guns N' Roses",
             "5:03",
-            "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg "
+            "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
         )
     )
 }

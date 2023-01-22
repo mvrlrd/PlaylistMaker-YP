@@ -8,9 +8,16 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import ru.mvrlrd.playlistmaker.model.Track
+import ru.mvrlrd.playlistmaker.model.TrackDb
+import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 
 const val INPUT_TEXT = "INPUT_TEXT"
 class SearchActivity : AppCompatActivity() {
+    val tracks = TrackDb().tracks
+
     var text = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +47,12 @@ class SearchActivity : AppCompatActivity() {
                 text = p0.toString()
             }
         }
+
+        val recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
+            adapter = TrackAdapter(tracks as MutableList<Track>)
+            layoutManager = LinearLayoutManager(this.context)
+        }
+
         searchEditText.addTextChangedListener(simpleTextWatcher)
     }
 
