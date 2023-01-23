@@ -7,6 +7,18 @@
 
     </style>
 
+    <style name="TrackNameStyle">
+        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ArtistNameStyle">
+        <item name="android:textColor">#AEAFB4</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+
 <!--    android:layout_width="match_parent"-->
 <!--    android:layout_height="wrap_content"-->
 <!--    android:layout_gravity="end|center_vertical"-->

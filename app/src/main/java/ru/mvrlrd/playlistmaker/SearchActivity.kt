@@ -7,23 +7,24 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.mvrlrd.playlistmaker.model.Track
 import ru.mvrlrd.playlistmaker.model.TrackDb
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
-import ru.mvrlrd.playlistmaker.recycler.TrackListDelegate
-import kotlin.reflect.KProperty
 
 const val INPUT_TEXT = "INPUT_TEXT"
 class SearchActivity : AppCompatActivity() {
-    private val tracks = TrackDb().tracks
+
 
     var text = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+
+        val myApplication: MyApplication = MyApplication()
+
 
         val searchEditText = findViewById<EditText>(R.id.searchEditText)
         val clearIcon = findViewById<ImageButton>(R.id.clearTextButton)
@@ -55,7 +56,7 @@ class SearchActivity : AppCompatActivity() {
                 text = p0.toString()
                 p0?.let{
                     if (it.isNotEmpty()) {
-                        trackAdapter.tracks = tracks.filter { track ->
+                        trackAdapter.tracks = myApplication.trackDb.allTracks.filter { track ->
                             track.trackName.startsWith(
                                 p0.toString(),
                                 ignoreCase = true

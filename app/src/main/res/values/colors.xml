@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimaryDay">#CFD8DC</color>
-    <color name="colorPrimaryDarkDay">#78909C</color>
+    <color name="colorPrimaryDarkDay">#E5E5E5</color>
     <color name="colorAccentDay">#000000</color>
 
     <!--   color for the app bar and other primary UI elements -->

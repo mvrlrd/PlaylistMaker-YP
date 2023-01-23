@@ -4,40 +4,52 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.tabs.TabLayout
 import ru.mvrlrd.playlistmaker.model.Track
 import ru.mvrlrd.playlistmaker.model.TrackDb
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 
 class MediatekaActivity : AppCompatActivity() {
-    private val _tracks = TrackDb().tracks
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mediateka)
 
+        val myApplication: MyApplication = MyApplication()
+        println("_________MediatekaActivity______$myApplication")
+
+
         val trackAdapter = TrackAdapter().apply {
-            tracks = _tracks as MutableList<Track>
+            tracks = mutableListOf()
         }
         val recyclerView = findViewById<RecyclerView>(R.id.mediatekaTracksRecyclerView).apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
-        bottomNav.setOnClickListener {
-            println(it.id)
-            when (it.id) {
 
-                R.id.favoritesTracks -> {
-                    println("favs")
-                    true
+
+
+
+    val myTab = findViewById<TabLayout>(R.id.mediatekaTab)
+        myTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab!!.position){
+                    0 -> {trackAdapter.tracks = myApplication.trackDb.favoriteTracks as MutableList<Track>}
+                    1 -> {trackAdapter.tracks = myApplication.trackDb.allTracks as MutableList<Track>}
                 }
-                R.id.playlists -> {
-                    println("playlists")
-                    true
-                }
+                trackAdapter.notifyDataSetChanged()
             }
-        }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                println("onTabReselected")
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                println("onTabUnselected")
+            }
+        })
     }
+
 
 
 }

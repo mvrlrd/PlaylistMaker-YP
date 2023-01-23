@@ -42,7 +42,8 @@
             android:inputType="text"
             android:maxLength="25"
             android:maxLines="1"
-            android:textSize="@dimen/small_text_size" />
+            android:textSize="@dimen/small_text_size"
+            />
 
         <ImageButton
             android:id="@+id/clearTextButton"
