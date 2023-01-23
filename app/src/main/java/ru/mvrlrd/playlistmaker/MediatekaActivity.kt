@@ -2,6 +2,7 @@ package ru.mvrlrd.playlistmaker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
@@ -16,16 +17,21 @@ class MediatekaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_mediateka)
 
         val myApplication: MyApplication = MyApplication()
-        println("_________MediatekaActivity______$myApplication")
-
 
         val trackAdapter = TrackAdapter().apply {
-            tracks = mutableListOf()
+            tracks = myApplication.trackDb.favoriteTracks as MutableList<Track>
         }
         val recyclerView = findViewById<RecyclerView>(R.id.mediatekaTracksRecyclerView).apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
+
+        val backButton = findViewById<ImageView>(R.id.backButton)
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
+
+
 
 
 

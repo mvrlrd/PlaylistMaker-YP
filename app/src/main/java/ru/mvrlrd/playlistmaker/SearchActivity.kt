@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.mvrlrd.playlistmaker.model.Track
@@ -24,6 +25,11 @@ class SearchActivity : AppCompatActivity() {
 
 
         val myApplication: MyApplication = MyApplication()
+
+        val backButton = findViewById<ImageView>(R.id.backButton)
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
 
 
         val searchEditText = findViewById<EditText>(R.id.searchEditText)

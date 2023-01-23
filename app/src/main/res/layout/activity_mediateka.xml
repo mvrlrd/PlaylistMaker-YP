@@ -16,9 +16,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <ImageView
-                style="@style/BackButton"
-                android:src="@drawable/ic_arrow_icon" />
+            <include layout="@layout/back_button"/>
 
             <TextView
                 style="@style/TitleStyle"

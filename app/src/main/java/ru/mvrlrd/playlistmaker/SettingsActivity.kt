@@ -4,14 +4,37 @@ package ru.mvrlrd.playlistmaker
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+
+        val backButton = findViewById<ImageView>(R.id.backButton)
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
+
+        val switchTheme = findViewById<SwitchCompat>(R.id.switchTheme)
+        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                setTheme(android.R.style.Theme_Black);
+            } else {
+                setTheme(android.R.style.Theme_Light);
+            }
+            setContentView(R.layout.activity_settings);
+//            this.recreate()
+        }
+
+
+
 
         val supportButton = findViewById<ImageButton>(R.id.support_button)
         supportButton.setOnClickListener {

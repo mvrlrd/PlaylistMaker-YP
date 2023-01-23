@@ -17,9 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <ImageView
-                style="@style/BackButton"
-                android:src="@drawable/ic_arrow_icon" />
+            <include layout="@layout/back_button"/>
 
             <TextView
                 style="@style/TitleStyle"
@@ -34,6 +32,7 @@
         android:padding="@dimen/usual_padding">
 
         <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchTheme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
