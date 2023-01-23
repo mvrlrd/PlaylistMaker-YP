@@ -4,7 +4,7 @@
     <color name="colorPrimaryDarkDay">#FFFFFF</color>
     <color name="colorAccentDay">#000000</color>
 
-    <color name="bledniy_font">#AEAFB4</color>
+    <color name="bledniyFont">#AEAFB4</color>
 
 <!--    <color name="colorPrimaryDay">#FFFFFF</color>-->
 <!--    <color name="colorPrimaryDarkDay">#E6E8EB</color>-->
@@ -12,11 +12,13 @@
 
 
     <!--   color for the app bar and other primary UI elements -->
-    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryNight">#FFFFFF</color>
     <!--   a darker variant of the primary color, used for
            the status bar (on Android 5.0+) and contextual app bars -->
-    <color name="colorPrimaryDark">#263238</color>
+    <color name="colorPrimaryDarkNight">#000000</color>
     <!--   a secondary color for controls like checkboxes and text fields -->
-    <color name="colorAccent">#ECEFF1</color>
+    <color name="colorAccentNight">#000000</color>
+
+    <color name="bledniyFontNight">#E6E8EB</color>
 
 </resources>

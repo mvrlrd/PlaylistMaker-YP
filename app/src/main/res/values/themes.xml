@@ -4,6 +4,8 @@
         <item name="colorPrimary">@color/colorPrimaryDay</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkDay</item>
         <item name="colorAccent">@color/colorAccentDay</item>
+        <item name="colorOnSecondary">@color/bledniyFont</item>
+        <item name="colorSwitchThumbNormal">@color/bledniyFont</item>
         <item name="android:windowBackground">@color/colorPrimaryDarkDay</item>
     </style>
 </resources>

@@ -44,11 +44,13 @@
                 android:inputType="text"
                 android:maxLength="25"
                 android:maxLines="1"
+                android:textColorHint="?attr/colorSwitchThumbNormal"
+                android:textColor="?attr/colorAccent"
                 android:textSize="@dimen/small_text_size"
                 android:drawableStart="@drawable/ic_search_icon"
                 android:drawablePadding="11dp"
                 android:paddingStart="15dp"
-                android:drawableTint="#AEAFB4"
+
 
                 />
 
