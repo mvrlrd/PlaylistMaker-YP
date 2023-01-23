@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:theme="@style/Theme.PlaylistMaker"
+    >
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -21,36 +23,46 @@
                 android:src="@drawable/ic_arrow_icon" />
 
             <TextView
-                style="@style/BackAndTitleStyle"
+                style="@style/TitleStyle"
                 android:text="@string/search" />
 
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/usual_padding">
-
-        <EditText
-            android:id="@+id/searchEditText"
-            style="@style/TextStyle"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
-            android:hint="@string/search"
-            android:inputType="text"
-            android:maxLength="25"
-            android:maxLines="1"
-            android:textSize="@dimen/small_text_size"
-            />
+            android:padding="@dimen/usual_padding"
+          >
 
-        <ImageButton
-            android:id="@+id/clearTextButton"
-            style="@style/IconStyle"
-            android:src="@drawable/ic_free_icon_font_cross"
-            android:visibility="gone" />
-    </FrameLayout>
+            <EditText
+                android:backgroundTint="@color/colorPrimaryDay"
+                android:background="@drawable/et_style"
+                android:id="@+id/searchEditText"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_gravity="start|center_vertical"
+                android:hint="@string/search"
+                android:inputType="text"
+                android:maxLength="25"
+                android:maxLines="1"
+                android:textSize="@dimen/small_text_size"
+                android:drawableStart="@drawable/ic_search_icon"
+                android:drawablePadding="11dp"
+                android:paddingStart="15dp"
+                android:drawableTint="#AEAFB4"
+
+                />
+
+            <ImageButton
+                android:id="@+id/clearTextButton"
+                style="@style/XStyle"
+                android:src="@drawable/ic_free_icon_font_cross"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

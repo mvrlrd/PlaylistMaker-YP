@@ -21,7 +21,7 @@
                 android:src="@drawable/ic_arrow_icon" />
 
             <TextView
-                style="@style/BackAndTitleStyle"
+                style="@style/TitleStyle"
                 android:text="@string/mediateka" />
 
         </LinearLayout>

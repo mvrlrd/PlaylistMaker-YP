@@ -46,7 +46,7 @@
                 tools:text="Moneto4ka" />
 
             <ImageView
-                android:backgroundTint=""
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_ellipse_1"

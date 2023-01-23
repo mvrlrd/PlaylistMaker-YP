@@ -14,7 +14,7 @@
     </style>
 
     <style name="ArtistNameStyle">
-        <item name="android:textColor">#AEAFB4</item>
+        <item name="android:textColor">@color/bledniy_font</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">11sp</item>
     </style>
@@ -28,15 +28,27 @@
 <!--    android:textSize="@dimen/small_text_size"-->
 <!--    app:showText="false"-->
 
+    <style name="XStyle">
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="tint">@color/bledniy_font</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:layout_width">12dp</item>
+        <item name="android:layout_height">12dp</item>
+        <item name="android:layout_gravity">end|center_vertical</item>
+    </style>
+
     <style name="IconStyle">
-        <item name="tint">?attr/colorAccent</item>
-        <item name="backgroundTint">?attr/colorPrimaryDark</item>
+        <item name="tint">@color/colorAccentDay</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>
         <item name="android:layout_width">@dimen/icon_layout_height</item>
         <item name="android:layout_height">@dimen/icon_layout_height</item>
         <item name="android:layout_gravity">end|center_vertical</item>
     </style>
 
+
+
     <style name="BackButton" parent ="IconStyle">
+        <item name="backgroundTint">?attr/colorAccent</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginStart">@dimen/main_padding</item>
     </style>
@@ -56,15 +68,15 @@
     </style>
 
 
-    <style name="BackAndTitleStyle">
+    <style name="TitleStyle">
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">25dp</item>
-        <item name="tint">?attr/colorAccent</item>
-        <item name="backgroundTint">?attr/colorPrimaryDark</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/medium_text_size</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorAccentDay</item>
 
     </style>
 
