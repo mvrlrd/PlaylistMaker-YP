@@ -3,7 +3,7 @@
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
         <item name="colorAccent">@color/colorAccentNight</item>
-        <item name="colorOnSecondary">@color/bledniyFontNight</item>
+        <item name="colorOnSecondary">@color/colorPrimaryNight</item>
         <item name="colorSwitchThumbNormal">@color/colorAccentDay</item>
         <item name="android:windowBackground">@color/colorPrimaryDarkNight</item>
     </style>

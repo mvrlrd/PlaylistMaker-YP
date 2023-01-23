@@ -4,10 +4,8 @@ package ru.mvrlrd.playlistmaker
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 
@@ -32,8 +30,6 @@ class SettingsActivity : AppCompatActivity() {
 //            setContentView(R.layout.activity_settings);
 ////            this.recreate()
 //        }
-
-
 
 
         val supportButton = findViewById<ImageButton>(R.id.support_button)
@@ -62,8 +58,6 @@ class SettingsActivity : AppCompatActivity() {
             val shareIntent = Intent.createChooser(sendIntent, null)
             startActivity(shareIntent)
         }
-
-
     }
 
 

@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/Theme.PlaylistMaker"
-    >
+    android:theme="@style/Theme.PlaylistMaker">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
@@ -18,7 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <include layout="@layout/back_button"/>
+            <include layout="@layout/back_button" />
 
             <TextView
                 style="@style/TitleStyle"
@@ -27,40 +26,39 @@
         </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-        <FrameLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/usual_padding">
+
+        <EditText
+            android:id="@+id/searchEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/usual_padding"
-          >
-
-            <EditText
-                android:backgroundTint="@color/colorPrimaryDay"
-                android:background="@drawable/et_style"
-                android:id="@+id/searchEditText"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_gravity="start|center_vertical"
-                android:hint="@string/search"
-                android:inputType="text"
-                android:maxLength="25"
-                android:maxLines="1"
-                android:textColorHint="?attr/colorSwitchThumbNormal"
-                android:textColor="?attr/colorAccent"
-                android:textSize="@dimen/small_text_size"
-                android:drawableStart="@drawable/ic_search_icon"
-                android:drawablePadding="11dp"
-                android:paddingStart="15dp"
+            android:layout_height="36dp"
+            android:layout_gravity="start|center_vertical"
+            android:background="@drawable/et_style"
+            android:backgroundTint="@color/colorPrimaryDay"
+            android:drawableStart="@drawable/ic_search_icon"
+            android:drawablePadding="11dp"
+            android:hint="@string/search"
+            android:inputType="text"
+            android:maxLength="25"
+            android:maxLines="1"
+            android:paddingStart="15dp"
+            android:textColor="?attr/colorAccent"
+            android:textColorHint="?attr/colorSwitchThumbNormal"
+            android:textSize="@dimen/small_text_size"
 
 
-                />
+            />
 
-            <ImageButton
-                android:id="@+id/clearTextButton"
-                style="@style/XStyle"
-                android:src="@drawable/ic_free_icon_font_cross"
-                android:visibility="gone" />
+        <ImageButton
+            android:id="@+id/clearTextButton"
+            style="@style/XStyle"
+            android:src="@drawable/ic_free_icon_font_cross"
+            android:visibility="gone" />
 
-        </FrameLayout>
+    </FrameLayout>
 
 
     <FrameLayout

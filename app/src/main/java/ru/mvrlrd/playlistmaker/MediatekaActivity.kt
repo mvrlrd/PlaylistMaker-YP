@@ -31,11 +31,6 @@ class MediatekaActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-
-
-
-
-
     val myTab = findViewById<TabLayout>(R.id.mediatekaTab)
         myTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

@@ -3,24 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="61dp"
-    android:orientation="horizontal"
-   >
+    android:orientation="horizontal">
 
     <ImageView
-        android:layout_gravity="center_vertical"
         android:id="@+id/albumImage"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:layout_gravity="center_vertical"
         android:layout_marginStart="13dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_arrow_icon" />
 
     <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="8dp"
         android:layout_weight="1"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
@@ -31,15 +30,14 @@
             tools:text="Gori Gori Gori" />
 
         <LinearLayout
-            android:paddingTop="1dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            >
+            android:paddingTop="1dp">
 
             <TextView
-                style="@style/ArtistNameStyle"
                 android:id="@+id/artistName"
+                style="@style/ArtistNameStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -49,13 +47,13 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_ellipse_1"
+                android:layout_gravity="center_vertical"
                 android:padding="5dp"
-                android:layout_gravity="center_vertical"/>
+                android:src="@drawable/ic_ellipse_1" />
 
             <TextView
-                style="@style/ArtistNameStyle"
                 android:id="@+id/trackTime"
+                style="@style/ArtistNameStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -71,7 +69,6 @@
         android:layout_width="0dp"
         android:layout_height="14dp"
         android:layout_gravity="center_vertical|end"
-
         android:layout_weight="1"
         android:src="@drawable/ic_agreement_icon" />
 </LinearLayout>

@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <include layout="@layout/back_button"/>
+            <include layout="@layout/back_button" />
 
             <TextView
                 style="@style/TitleStyle"

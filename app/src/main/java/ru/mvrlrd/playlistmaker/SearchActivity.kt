@@ -23,7 +23,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-
         val myApplication: MyApplication = MyApplication()
 
         val backButton = findViewById<ImageView>(R.id.backButton)
