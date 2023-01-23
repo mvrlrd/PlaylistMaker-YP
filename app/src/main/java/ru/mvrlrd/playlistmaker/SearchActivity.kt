@@ -63,7 +63,7 @@ class SearchActivity : AppCompatActivity() {
                 p0?.let{
                     if (it.isNotEmpty()) {
                         trackAdapter.tracks = myApplication.trackDb.allTracks.filter { track ->
-                            track.trackName.startsWith(
+                            track.artistName.startsWith(
                                 p0.toString(),
                                 ignoreCase = true
                             )

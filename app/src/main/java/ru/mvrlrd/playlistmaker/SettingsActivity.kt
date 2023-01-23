@@ -22,16 +22,16 @@ class SettingsActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        val switchTheme = findViewById<SwitchCompat>(R.id.switchTheme)
-        switchTheme.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                setTheme(android.R.style.Theme_Black);
-            } else {
-                setTheme(android.R.style.Theme_Light);
-            }
-            setContentView(R.layout.activity_settings);
-//            this.recreate()
-        }
+//        val switchTheme = findViewById<SwitchCompat>(R.id.switchTheme)
+//        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+//            if (isChecked) {
+//                setTheme(android.R.style.Theme_Black);
+//            } else {
+//                setTheme(android.R.style.Theme_Light);
+//            }
+//            setContentView(R.layout.activity_settings);
+////            this.recreate()
+//        }
 
 
 
