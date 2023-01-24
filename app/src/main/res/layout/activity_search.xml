@@ -48,8 +48,6 @@
             android:textColor="?attr/colorAccent"
             android:textColorHint="?attr/colorSwitchThumbNormal"
             android:textSize="@dimen/small_text_size"
-
-
             />
 
         <ImageButton
@@ -57,9 +55,7 @@
             style="@style/XStyle"
             android:src="@drawable/ic_free_icon_font_cross"
             android:visibility="gone" />
-
     </FrameLayout>
-
 
     <FrameLayout
         android:layout_width="match_parent"

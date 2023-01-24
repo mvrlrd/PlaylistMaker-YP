@@ -10,4 +10,6 @@
     <string name="agreement">Agreement</string>
     <string name="email_subject">A message for developers of Playlist Maker app</string>
     <string name="email_text">Thank developers for such a cool application!</string>
+    <string name="favorites">Favorite tracks</string>
+    <string name="playlists">Playlists</string>
 </resources>
