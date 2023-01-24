@@ -1,12 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimaryNight</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
-        <item name="colorAccent">@color/colorAccentNight</item>
-        <item name="colorOnSecondary">@color/colorPrimaryNight</item>
-        <item name="colorSwitchThumbNormal">@color/colorAccentDay</item>
-        <item name="android:windowBackground">@color/colorPrimaryDarkNight</item>
+        <item name="button_color">@color/button_color</item>
+        <item name="background_color">@color/background_color</item>
+        <item name="button_text_color">@color/button_text_color</item>
+        <item name="icon_color">@color/icon_color</item>
+        <item name="artist_name_color">@color/artist_name_color</item>
+        <item name="track_name_color">@color/track_name_color</item>
+        <item name="search_edittext_color">@color/search_edittext_color</item>
+        <item name="search_icons_color">@color/search_icons_color</item>
+        <item name="bledniy_text_color">@color/bledniyFont</item>
+        <item name="android:windowBackground">?attr/background_color</item>
     </style>
 </resources>
-
-<!--<item name="colorSwitchThumbNormal">@color/colorAccentDay</item>-->

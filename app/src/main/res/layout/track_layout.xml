@@ -12,7 +12,8 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="13dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_arrow_icon" />
+        android:backgroundTint="?attr/colorOnSecondary"
+        android:src="@drawable/ic_free_icon_font_cross" />
 
     <LinearLayout
         android:layout_width="250dp"
@@ -49,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:padding="5dp"
-                android:src="@drawable/ic_ellipse_1" />
+                android:src="@drawable/ic_ellipse_1"
+                style="@style/SeparatorStyle"/>
 
             <TextView
                 android:id="@+id/trackTime"
