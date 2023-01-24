@@ -34,7 +34,7 @@
         <EditText
             android:id="@+id/searchEditText"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="@dimen/search_height"
             android:layout_gravity="start|center_vertical"
             android:background="@drawable/et_style"
             android:backgroundTint="@color/colorPrimaryDay"
