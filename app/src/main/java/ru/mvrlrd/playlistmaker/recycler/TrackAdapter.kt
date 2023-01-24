@@ -1,5 +1,7 @@
 package ru.mvrlrd.playlistmaker.recycler
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,5 +56,4 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .transform(CenterCrop(), RoundedCorners(8))
             .into(albumImage)
     }
-
 }

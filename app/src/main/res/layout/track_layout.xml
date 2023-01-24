@@ -12,7 +12,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="13dp"
         android:scaleType="centerCrop"
-        android:backgroundTint="?attr/colorOnSecondary"
+        android:backgroundTint="?attr/artist_name_color"
         android:src="@drawable/ic_free_icon_font_cross" />
 
     <LinearLayout
