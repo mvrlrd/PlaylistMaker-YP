@@ -12,6 +12,10 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="SwitchStyle">
+        <item name="trackTint">@color/bledniyFont</item>
+        <item name="thumbTint">?attr/colorOnSecondary</item>
+    </style>
 
     <style name="ArtistNameStyle">
         <item name="android:textColor">?attr/colorOnSecondary</item>

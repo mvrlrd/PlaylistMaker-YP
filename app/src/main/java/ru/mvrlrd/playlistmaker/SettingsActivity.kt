@@ -2,15 +2,22 @@ package ru.mvrlrd.playlistmaker
 
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.widget.SwitchCompat
 
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var switchTheme : SwitchCompat
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -20,16 +27,25 @@ class SettingsActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-//        val switchTheme = findViewById<SwitchCompat>(R.id.switchTheme)
-//        switchTheme.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                setTheme(android.R.style.Theme_Black);
-//            } else {
-//                setTheme(android.R.style.Theme_Light);
-//            }
-//            setContentView(R.layout.activity_settings);
-////            this.recreate()
-//        }
+        switchTheme = findViewById(R.id.switchTheme)
+
+        when (isDarkModeOn()) {
+            true -> {switchTheme.isChecked = true}
+           false -> {switchTheme.isChecked = false}
+        }
+
+        switchTheme.setOnCheckedChangeListener { _, isChecked ->
+            val editor = getSharedPreferences(SWITCH_ENABLED, MODE_PRIVATE).edit()
+            if (isChecked) {
+                editor.putBoolean("value", true)
+                editor.apply()
+                AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
+            } else {
+                editor.putBoolean("value", false)
+                editor.apply()
+                AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+            }
+        }
 
 
         val supportButton = findViewById<ImageButton>(R.id.support_button)
@@ -60,5 +76,12 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
+private fun isDarkModeOn(): Boolean {
+    val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+    return currentNightMode == Configuration.UI_MODE_NIGHT_YES
+}
 
+    companion object {
+        const val SWITCH_ENABLED = "SWITCH_ENABLED"
+    }
 }

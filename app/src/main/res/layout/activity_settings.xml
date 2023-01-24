@@ -40,7 +40,8 @@
             android:fontFamily="@font/ys_display_regular"
             android:text="@string/night_mode"
             android:textSize="@dimen/small_text_size"
-            app:showText="false" />
+            app:showText="false"
+            style="@style/SwitchStyle"/>
     </FrameLayout>
 
     <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
