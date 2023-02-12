@@ -13,4 +13,6 @@
     <string name="praktikum_link" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
     <string name="favorites">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
+
 </resources>
