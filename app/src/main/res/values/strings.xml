@@ -19,5 +19,6 @@
     <string name="authentication_troubles">Проблемы аутентификации</string>
     <string name="nothing_found">Ничего не нашлось</string>
     <string name="error_connection">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="refresh">Обновить</string>
 
 </resources>

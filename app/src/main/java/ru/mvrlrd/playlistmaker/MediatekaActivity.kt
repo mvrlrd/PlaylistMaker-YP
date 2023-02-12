@@ -48,7 +48,4 @@ class MediatekaActivity : AppCompatActivity() {
             }
         })
     }
-
-
-
 }

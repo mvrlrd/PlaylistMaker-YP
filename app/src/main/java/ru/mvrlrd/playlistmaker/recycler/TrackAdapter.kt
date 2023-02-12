@@ -17,36 +17,29 @@ import java.util.*
 import kotlin.properties.Delegates
 
 private const val TIME_FORMAT = "mm:ss"
-class TrackAdapter (
-) : RecyclerView.Adapter<TrackViewHolder> () {
+class TrackAdapter: RecyclerView.Adapter<TrackViewHolder> () {
     var tracks: MutableList<Track> by Delegates.observable(mutableListOf()){
             _, old, new ->
         println("$old -> $new")
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_layout, parent, false)
         return TrackViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
         holder.itemView.setOnClickListener { println("$position was pushed") }
     }
-
     override fun getItemCount(): Int {
         return tracks.size
     }
-
 }
 
 class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
     private val trackName: TextView = itemView.findViewById(R.id.trackName)
     private val artistName: TextView = itemView.findViewById(R.id.artistName)
     private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
     private val albumImage: ImageView = itemView.findViewById(R.id.albumImage)
-
     fun bind(track: Track) {
         trackName.text = track.trackName
         artistName.text = track.artistName

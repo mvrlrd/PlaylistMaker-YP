@@ -16,23 +16,18 @@ import androidx.appcompat.widget.SwitchCompat
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var switchTheme : SwitchCompat
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
         val backButton = findViewById<ImageView>(R.id.backButton)
         backButton.setOnClickListener {
             onBackPressed()
         }
-
         switchTheme = findViewById(R.id.switchTheme)
-
         when (isDarkModeOn()) {
             true -> {switchTheme.isChecked = true}
            false -> {switchTheme.isChecked = false}
         }
-
         switchTheme.setOnCheckedChangeListener { _, isChecked ->
             val editor = getSharedPreferences(SWITCH_ENABLED, MODE_PRIVATE).edit()
             if (isChecked) {
@@ -45,8 +40,6 @@ class SettingsActivity : AppCompatActivity() {
                 AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
             }
         }
-
-
         val supportButton = findViewById<ImageButton>(R.id.support_button)
         supportButton.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
@@ -56,7 +49,6 @@ class SettingsActivity : AppCompatActivity() {
             emailIntent.putExtra(Intent.EXTRA_TEXT, R.string.email_text)
             startActivity(emailIntent)
         }
-
         val agreementButton = findViewById<ImageButton>(R.id.agreement_button)
         agreementButton.setOnClickListener {
             val agreementIntent = Intent(Intent.ACTION_VIEW)

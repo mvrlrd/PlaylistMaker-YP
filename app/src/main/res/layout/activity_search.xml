@@ -73,11 +73,10 @@
            android:id="@+id/placeHolder"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:orientation="vertical"
-           android:visibility="gone"
            android:layout_gravity="center_horizontal"
+           android:orientation="vertical"
            android:paddingTop="110dp"
-           >
+           android:visibility="gone">
 
            <ImageView
                android:layout_gravity="center_horizontal"
@@ -99,8 +98,17 @@
                android:textStyle="bold"
                android:text="@string/error_connection"/>
 
+           <com.google.android.material.button.MaterialButton
+               android:id="@+id/refreshButton"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/refresh"
+               android:layout_gravity="center"
+               style="@style/RefreshButtonStyle"
+               android:layout_marginTop="24dp"
+               app:cornerRadius="54dp"
+               android:visibility="gone"
+               />
        </LinearLayout>
-
-
     </FrameLayout>
 </LinearLayout>

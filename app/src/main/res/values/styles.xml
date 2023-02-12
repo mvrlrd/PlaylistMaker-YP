@@ -40,6 +40,17 @@
         <item name="thumbTint">?attr/colorAccent</item>
     </style>
 
+    <style name="RefreshButtonStyle">
+        <item name="android:backgroundTint">?attr/colorOnSecondary</item>
+        <item name="android:textColor">?attr/button_color</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_width">@dimen/refresh_button_width</item>
+        <item name="android:layout_height">@dimen/refresh_button_height</item>
+        <item name="android:buttonCornerRadius">54dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
     <style name="BackButton" parent ="IconStyle">
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginStart">@dimen/main_padding</item>
