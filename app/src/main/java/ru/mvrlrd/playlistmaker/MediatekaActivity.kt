@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import ru.mvrlrd.playlistmaker.model.Track
-import ru.mvrlrd.playlistmaker.model.TrackDb
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 
 class MediatekaActivity : AppCompatActivity() {

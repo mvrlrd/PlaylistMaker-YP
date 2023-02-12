@@ -11,7 +11,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.mvrlrd.playlistmaker.model.Track
-import ru.mvrlrd.playlistmaker.model.TrackDb
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 
 const val INPUT_TEXT = "INPUT_TEXT"

@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.widget.SwitchCompat
 
-
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var switchTheme : SwitchCompat
