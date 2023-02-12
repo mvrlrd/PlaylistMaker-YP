@@ -156,7 +156,7 @@ class SearchActivity : AppCompatActivity() {
         if (text.isNotEmpty()) {
             val image = when (text) {
                 getString(R.string.nothing_found) -> {
-                    R.drawable.light_mode_nothing
+                    R.drawable.light_mode_nothing_found
                 }
                 getString(R.string.error_connection) -> {
                     R.drawable.light_mode_error_connection
