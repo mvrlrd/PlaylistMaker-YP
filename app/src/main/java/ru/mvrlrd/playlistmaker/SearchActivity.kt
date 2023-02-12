@@ -1,12 +1,13 @@
 package ru.mvrlrd.playlistmaker
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
 import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
+
 
 const val INPUT_TEXT = "INPUT_TEXT"
 private const val BASE_URL = "https://itunes.apple.com"
@@ -53,7 +55,9 @@ class SearchActivity : AppCompatActivity() {
             it.setOnEditorActionListener{
                     _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    search()
+                    if (searchEditText.text.toString().isNotEmpty()) {
+                        search()
+                    }
                 }
                 false
             }
@@ -65,7 +69,12 @@ class SearchActivity : AppCompatActivity() {
         clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).also {
             it.setOnClickListener {
                 searchEditText.text.clear()
+                println("OIIIIIIIIIIIIIIIIII")
+                trackAdapter.tracks.clear()
+                trackAdapter.notifyDataSetChanged()
                 showMessage("","")
+                searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
+//
             }
 
         }
@@ -96,9 +105,9 @@ class SearchActivity : AppCompatActivity() {
 //                            )
 //                        } as MutableList<Track>
                     } else {
-                        trackAdapter.tracks.clear()
+//                        trackAdapter.tracks.clear()
                     }
-                    trackAdapter.notifyDataSetChanged()
+//                    trackAdapter.notifyDataSetChanged()
                 }
             }
         }
@@ -165,12 +174,14 @@ class SearchActivity : AppCompatActivity() {
                     R.drawable.connection_error
                 }
             }
+
             Glide
                 .with(placeHolderImage)
                 .load(image)
                 .placeholder(R.drawable.ic_free_icon_font_cross)
                 .apply(RequestOptions().override(240, 240))
                 .into(placeHolderImage)
+
             placeHolderMessage.text = text
             placeHolder.visibility = View.VISIBLE
             trackAdapter.tracks.clear()
@@ -184,4 +195,6 @@ class SearchActivity : AppCompatActivity() {
             placeHolder.visibility = View.GONE
         }
     }
+
+
 }

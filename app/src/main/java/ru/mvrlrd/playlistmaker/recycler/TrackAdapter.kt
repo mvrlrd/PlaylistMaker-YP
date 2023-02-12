@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
 
+private const val TIME_FORMAT = "mm:ss"
 class TrackAdapter (
 ) : RecyclerView.Adapter<TrackViewHolder> () {
     var tracks: MutableList<Track> by Delegates.observable(mutableListOf()){
@@ -49,7 +50,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(track: Track) {
         trackName.text = track.trackName
         artistName.text = track.artistName
-        trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
+        trackTime.text = SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(track.trackTime.toLong())
         Glide
             .with(itemView)
             .load(track.image)
