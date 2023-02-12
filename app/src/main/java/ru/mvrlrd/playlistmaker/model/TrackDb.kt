@@ -1,6 +1,6 @@
 package ru.mvrlrd.playlistmaker.model
 
-class TrackDb {
+object TrackDb {
     val allTracks = listOf(
         Track(
             "Smells Like Teen Spirit",

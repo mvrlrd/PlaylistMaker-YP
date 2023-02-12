@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import ru.mvrlrd.playlistmaker.model.Track
+import ru.mvrlrd.playlistmaker.model.TrackDb
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 
 class MediatekaActivity : AppCompatActivity() {
@@ -15,10 +16,8 @@ class MediatekaActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mediateka)
 
-        val myApplication: MyApplication = MyApplication()
-
         val trackAdapter = TrackAdapter().apply {
-            tracks = myApplication.trackDb.favoriteTracks as MutableList<Track>
+            tracks = TrackDb.favoriteTracks as MutableList<Track>
         }
         val recyclerView = findViewById<RecyclerView>(R.id.mediatekaTracksRecyclerView).apply {
             adapter = trackAdapter
@@ -34,8 +33,8 @@ class MediatekaActivity : AppCompatActivity() {
         myTab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position){
-                    0 -> {trackAdapter.tracks = myApplication.trackDb.favoriteTracks as MutableList<Track>}
-                    1 -> {trackAdapter.tracks = myApplication.trackDb.allTracks as MutableList<Track>}
+                    0 -> {trackAdapter.tracks = TrackDb.favoriteTracks as MutableList<Track>}
+                    1 -> {trackAdapter.tracks = TrackDb.allTracks as MutableList<Track>}
                 }
                 trackAdapter.notifyDataSetChanged()
             }

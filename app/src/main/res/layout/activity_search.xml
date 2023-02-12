@@ -68,5 +68,39 @@
             android:id="@+id/tracksRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+       <LinearLayout
+           android:id="@+id/placeHolder"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:visibility="gone"
+           android:layout_gravity="center_horizontal"
+           android:paddingTop="110dp"
+           >
+
+           <ImageView
+               android:layout_gravity="center_horizontal"
+               android:id="@+id/placeholderImage"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:src="@drawable/light_mode_error_connection"
+               android:paddingBottom="20dp"/>
+
+           <TextView android:id="@+id/placeholderMessage"
+               android:paddingStart="24dp"
+               android:paddingEnd="24dp"
+               android:layout_width="300dp"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               android:textAlignment="center"
+               android:textSize="19sp"
+               android:textColor="@color/button_text_color"
+               android:textStyle="bold"
+               android:text="@string/error_connection"/>
+
+       </LinearLayout>
+
+
     </FrameLayout>
 </LinearLayout>

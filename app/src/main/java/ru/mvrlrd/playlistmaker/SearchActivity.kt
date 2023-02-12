@@ -6,20 +6,20 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.mvrlrd.playlistmaker.model.Track
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
 import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
 
 const val INPUT_TEXT = "INPUT_TEXT"
 private const val BASE_URL = "https://itunes.apple.com"
+
 class SearchActivity : AppCompatActivity() {
 
     private val retrofit = Retrofit.Builder()
@@ -27,41 +27,50 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val itunesService = retrofit.create(ItunesApi::class.java)
-    lateinit var searchEditText: EditText
     private val trackAdapter = TrackAdapter()
-
-    var text = ""
+    private lateinit var searchEditText: EditText
+    private lateinit var clearIcon: ImageButton
+    private lateinit var placeHolderMessage: TextView
+    private lateinit var placeHolderImage: ImageView
+    private lateinit var placeHolder : LinearLayout
+    private lateinit var recyclerView:RecyclerView
+    private var text = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        placeHolderMessage = findViewById(R.id.placeholderMessage)
+        placeHolderImage = findViewById(R.id.placeholderImage)
+        placeHolder = findViewById(R.id.placeHolder)
 
-        val backButton = findViewById<ImageView>(R.id.backButton)
-        backButton.setOnClickListener {
-            onBackPressed()
-        }
-
-
-        searchEditText = findViewById(R.id.searchEditText)
-        val clearIcon = findViewById<ImageButton>(R.id.clearTextButton)
-
-        searchEditText.setOnEditorActionListener {
-                _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-               search()
+        findViewById<ImageView>(R.id.backButton).also {
+            it.setOnClickListener{
+                onBackPressed()
             }
-            false
         }
 
-        if (savedInstanceState!=null){
-            searchEditText.setText(savedInstanceState.getString(INPUT_TEXT))
+        searchEditText = findViewById<EditText?>(R.id.searchEditText).also {
+            it.setOnEditorActionListener{
+                    _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    search()
+                }
+                false
+            }
+            if (savedInstanceState!=null){
+                it.setText(savedInstanceState.getString(INPUT_TEXT))
+            }
         }
 
-        clearIcon.setOnClickListener {
-            searchEditText.text.clear()
+        clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).also {
+            it.setOnClickListener {
+                searchEditText.text.clear()
+                showMessage("","")
+            }
+
         }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
+        recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
@@ -123,25 +132,56 @@ class SearchActivity : AppCompatActivity() {
                                 trackAdapter.tracks.clear()
                                 trackAdapter.tracks.addAll(response.body()?.tracks!!)
                                 trackAdapter.notifyDataSetChanged()
-                                trackAdapter.tracks.forEach {
-                                    println(it.trackName)
-                                }
-//                                showMessage("", "")
+                                showMessage("", "")
                             } else {
-//                                showMessage(getString(R.string.nothing_found), "")
+                                showMessage(getString(R.string.nothing_found), "")
                             }
                         }
-                        401 -> Unit
-//                            showMessage(getString(R.string.authentication_troubles), response.code().toString())
-                        else -> Unit
-//                            showMessage(getString(R.string.something_went_wrong), response.code().toString())
+                        401 ->
+                            showMessage(getString(R.string.authentication_troubles), response.code().toString())
+                        else ->
+                            showMessage(getString(R.string.error_connection), response.code().toString())
                     }
 
                 }
                 override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-//                    showMessage(getString(R.string.something_went_wrong), t.message.toString())
+                    showMessage(getString(R.string.something_went_wrong), t.message.toString())
                 }
 
             })
+    }
+
+    private fun showMessage(text: String, additionalMessage: String) {
+
+        if (text.isNotEmpty()) {
+            val image = when (text) {
+                getString(R.string.nothing_found) -> {
+                    R.drawable.light_mode_nothing
+                }
+                getString(R.string.error_connection) -> {
+                    R.drawable.light_mode_error_connection
+                }
+                else -> {
+                    R.drawable.light_mode_error_connection
+                }
+            }
+            Glide
+                .with(placeHolderImage)
+                .load(image)
+                .placeholder(R.drawable.ic_free_icon_font_cross)
+                .apply(RequestOptions().override(240, 240))
+                .into(placeHolderImage)
+            placeHolderMessage.text = text
+            placeHolder.visibility = View.VISIBLE
+            trackAdapter.tracks.clear()
+            trackAdapter.notifyDataSetChanged()
+
+            if (additionalMessage.isNotEmpty()) {
+                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
+                    .show()
+            }
+        } else {
+            placeHolder.visibility = View.GONE
+        }
     }
 }
