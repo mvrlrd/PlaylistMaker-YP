@@ -69,12 +69,10 @@ class SearchActivity : AppCompatActivity() {
         clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).also {
             it.setOnClickListener {
                 searchEditText.text.clear()
-                println("OIIIIIIIIIIIIIIIIII")
                 trackAdapter.tracks.clear()
                 trackAdapter.notifyDataSetChanged()
-                showMessage("","")
+                placeHolder.visibility = View.GONE
                 searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
-//
             }
 
         }
