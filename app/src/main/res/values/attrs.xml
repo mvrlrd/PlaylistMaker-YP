@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="tm">
+        <attr name="background_color" format="color" />
+        <attr name="button_color" format="color" />
+        <attr name="button_text_color" format="color" />
+        <attr name="icon_color" format="color" />
+        <attr name="bledniy_text_color" format="color" />
+        <attr name="toolbar_color" format="color" />
+        <attr name="search_edittext_color" format="color" />
+        <attr name="search_icons_color" format="color" />
+        <attr name="artist_name_color" format="color" />
+        <attr name="track_name_color" format="color" />
+    </declare-styleable>
+</resources>

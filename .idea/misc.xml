@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/et_style.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_agreement_icon.xml" value="0.1425" />
+        <entry key="app/src/main/res/drawable/ic_arrow_icon.xml" value="0.2675" />
+        <entry key="app/src/main/res/drawable/ic_ellipse_1.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_free_icon_font_cross.xml" value="0.1655" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.181" />
+        <entry key="app/src/main/res/drawable/ic_mediateca_icon.xml" value="0.1425" />
+        <entry key="app/src/main/res/drawable/ic_search_icon.xml" value="0.11" />
+        <entry key="app/src/main/res/drawable/ic_settings_icon.xml" value="0.1425" />
+        <entry key="app/src/main/res/drawable/ic_share_icon.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_support_icon.xml" value="0.199" />
+        <entry key="app/src/main/res/drawable/search.xml" value="0.199" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2454559326171875" />
+        <entry key="app/src/main/res/layout/activity_mediateka.xml" value="0.271286231884058" />
+        <entry key="app/src/main/res/layout/activity_search.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.28160919540229884" />
+        <entry key="app/src/main/res/layout/activity_settings2.xml" value="0.271286231884058" />
+        <entry key="app/src/main/res/layout/back_button.xml" value="0.1514690982776089" />
+        <entry key="app/src/main/res/layout/layout_mediateka_navi.xml" value="0.3177083333333333" />
+        <entry key="app/src/main/res/layout/search_icon_layout.xml" value="0.19293478260869565" />
+        <entry key="app/src/main/res/layout/toolbar_layout.xml" value="0.18802083333333333" />
+        <entry key="app/src/main/res/layout/track_layout.xml" value="0.20918367346938777" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
