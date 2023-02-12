@@ -12,6 +12,8 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.model.Track
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.properties.Delegates
 
 class TrackAdapter (
@@ -44,13 +46,13 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
     private val albumImage: ImageView = itemView.findViewById(R.id.albumImage)
 
-    fun bind(model: Track) {
-        trackName.text = model.trackName
-        artistName.text = model.artistName
-        trackTime.text = model.trackTime
+    fun bind(track: Track) {
+        trackName.text = track.trackName
+        artistName.text = track.artistName
+        trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toLong())
         Glide
             .with(itemView)
-            .load(model.image)
+            .load(track.image)
             .placeholder(R.drawable.ic_free_icon_font_cross)
             .transform(CenterCrop(), RoundedCorners(8))
             .into(albumImage)

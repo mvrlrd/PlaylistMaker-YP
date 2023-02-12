@@ -84,7 +84,7 @@
                android:id="@+id/placeholderImage"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:src="@drawable/light_mode_error_connection"
+               android:src="@drawable/connection_error"
                android:paddingBottom="20dp"/>
 
            <TextView android:id="@+id/placeholderMessage"
