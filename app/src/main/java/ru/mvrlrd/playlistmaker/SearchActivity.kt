@@ -13,7 +13,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.mvrlrd.playlistmaker.model.Track
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
 import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
@@ -37,7 +36,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var placeHolder : LinearLayout
     private lateinit var recyclerView:RecyclerView
     private lateinit var refreshButton: Button
-    private var text = ""
+    private var query = ""
     private var lastQuery = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,8 +60,12 @@ class SearchActivity : AppCompatActivity() {
                 }
                 false
             }
-            if (savedInstanceState!=null){
-                setText(savedInstanceState.getString(INPUT_TEXT))
+            if (savedInstanceState != null) {
+                query = savedInstanceState.getString(INPUT_TEXT)!!
+                if (query.isNotEmpty()) {
+                    setText(query)
+                    search(query)
+                }
             }
         }
         clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
@@ -90,17 +93,18 @@ class SearchActivity : AppCompatActivity() {
                 clearIcon.visibility = clearButtonVisibility(p0)
             }
             override fun afterTextChanged(p0: Editable?) {
+                query = p0.toString()
             }
         }
         searchEditText.addTextChangedListener(simpleTextWatcher)
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(INPUT_TEXT, text)
+        outState.putString(INPUT_TEXT, query)
     }
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        text = savedInstanceState.getString(INPUT_TEXT, "")
+        query = savedInstanceState.getString(INPUT_TEXT, "")
     }
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
