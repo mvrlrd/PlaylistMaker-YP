@@ -73,7 +73,7 @@ private fun isDarkModeOn(): Boolean {
 }
 
     companion object {
-        const val SWITCH_ENABLED = "SWITCH_ENABLED"
-        const val SWITCH_CONDITION = "switch_condition"
+       private const val SWITCH_ENABLED = "SWITCH_ENABLED"
+       private const val SWITCH_CONDITION = "switch_condition"
     }
 }
