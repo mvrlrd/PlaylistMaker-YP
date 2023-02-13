@@ -31,11 +31,11 @@ class SettingsActivity : AppCompatActivity() {
         switchTheme.setOnCheckedChangeListener { _, isChecked ->
             val editor = getSharedPreferences(SWITCH_ENABLED, MODE_PRIVATE).edit()
             if (isChecked) {
-                editor.putBoolean("value", true)
+                editor.putBoolean(SWITCH_CONDITION, true)
                 editor.apply()
                 AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
             } else {
-                editor.putBoolean("value", false)
+                editor.putBoolean(SWITCH_CONDITION, false)
                 editor.apply()
                 AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
             }
@@ -74,5 +74,6 @@ private fun isDarkModeOn(): Boolean {
 
     companion object {
         const val SWITCH_ENABLED = "SWITCH_ENABLED"
+        const val SWITCH_CONDITION = "switch_condition"
     }
 }
