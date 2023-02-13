@@ -146,12 +146,7 @@ class SearchActivity : AppCompatActivity() {
                     R.drawable.connection_error
                 }
             }
-            Glide
-                .with(placeHolderImage)
-                .load(image)
-                .placeholder(R.drawable.ic_free_icon_font_cross)
-                .apply(RequestOptions().override(240, 240))
-                .into(placeHolderImage)
+            placeHolderImage.setImageResource(image)
             placeHolderMessage.text = text
             placeHolder.visibility = View.VISIBLE
             trackAdapter.tracks = trackAdapter.tracks.apply {
