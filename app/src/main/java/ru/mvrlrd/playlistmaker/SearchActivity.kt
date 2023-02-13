@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -86,17 +87,10 @@ class SearchActivity : AppCompatActivity() {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
-        val simpleTextWatcher = object: TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                clearIcon.visibility = clearButtonVisibility(p0)
-            }
-            override fun afterTextChanged(p0: Editable?) {
-                query = p0.toString()
-            }
+        searchEditText.doOnTextChanged { text, start, before, count ->
+            query = text.toString()
+            clearIcon.visibility = clearButtonVisibility(text)
         }
-        searchEditText.addTextChangedListener(simpleTextWatcher)
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
