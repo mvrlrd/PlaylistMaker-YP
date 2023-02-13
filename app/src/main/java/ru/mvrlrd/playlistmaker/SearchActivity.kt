@@ -18,7 +18,7 @@ import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
 import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
 
 
-const val INPUT_TEXT = "INPUT_TEXT"
+private const val INPUT_TEXT = "INPUT_TEXT"
 private const val BASE_URL = "https://itunes.apple.com"
 
 class SearchActivity : AppCompatActivity() {
