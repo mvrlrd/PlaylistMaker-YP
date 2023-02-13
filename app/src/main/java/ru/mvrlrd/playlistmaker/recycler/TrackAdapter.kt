@@ -20,6 +20,7 @@ private const val TIME_FORMAT = "mm:ss"
 class TrackAdapter: RecyclerView.Adapter<TrackViewHolder> () {
     var tracks: MutableList<Track> by Delegates.observable(mutableListOf()){
             _, old, new ->
+        notifyDataSetChanged()
         println("$old -> $new")
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
@@ -52,3 +53,4 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .into(albumImage)
     }
 }
+

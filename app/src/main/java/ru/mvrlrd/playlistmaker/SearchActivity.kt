@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.mvrlrd.playlistmaker.model.Track
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
 import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
@@ -67,8 +68,7 @@ class SearchActivity : AppCompatActivity() {
         clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
             setOnClickListener {
                 searchEditText.text.clear()
-                trackAdapter.tracks.clear()
-                trackAdapter.notifyDataSetChanged()
+                trackAdapter.tracks = mutableListOf()
                 placeHolder.visibility = View.GONE
                 searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
             }
@@ -114,8 +114,7 @@ class SearchActivity : AppCompatActivity() {
                         200 -> {
                             if (response.body()?.tracks?.isNotEmpty() == true) {
                                 trackAdapter.tracks.clear()
-                                trackAdapter.tracks.addAll(response.body()?.tracks!!)
-                                trackAdapter.notifyDataSetChanged()
+                                trackAdapter.tracks = response.body()?.tracks!!
                                 showMessage("", "")
                             } else {
                                 showMessage(getString(R.string.nothing_found), "")
@@ -155,8 +154,7 @@ class SearchActivity : AppCompatActivity() {
                 .into(placeHolderImage)
             placeHolderMessage.text = text
             placeHolder.visibility = View.VISIBLE
-            trackAdapter.tracks.clear()
-            trackAdapter.notifyDataSetChanged()
+            trackAdapter.tracks = mutableListOf()
             if (additionalMessage.isNotEmpty()) {
                 Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
                     .show()
