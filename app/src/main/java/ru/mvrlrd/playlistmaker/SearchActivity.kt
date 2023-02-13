@@ -68,7 +68,7 @@ class SearchActivity : AppCompatActivity() {
         clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
             setOnClickListener {
                 searchEditText.text.clear()
-                trackAdapter.tracks = mutableListOf()
+                trackAdapter.tracks = trackAdapter.tracks.apply { clear() }
                 placeHolder.visibility = View.GONE
                 searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
             }
@@ -113,8 +113,10 @@ class SearchActivity : AppCompatActivity() {
                     when (response.code()) {
                         200 -> {
                             if (response.body()?.tracks?.isNotEmpty() == true) {
-                                trackAdapter.tracks.clear()
-                                trackAdapter.tracks = response.body()?.tracks!!
+                                trackAdapter.tracks = trackAdapter.tracks.apply {
+                                    clear()
+                                    addAll(response.body()?.tracks!!)
+                                }
                                 showMessage("", "")
                             } else {
                                 showMessage(getString(R.string.nothing_found), "")
@@ -154,7 +156,9 @@ class SearchActivity : AppCompatActivity() {
                 .into(placeHolderImage)
             placeHolderMessage.text = text
             placeHolder.visibility = View.VISIBLE
-            trackAdapter.tracks = mutableListOf()
+            trackAdapter.tracks = trackAdapter.tracks.apply {
+                clear()
+            }
             if (additionalMessage.isNotEmpty()) {
                 Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
                     .show()
