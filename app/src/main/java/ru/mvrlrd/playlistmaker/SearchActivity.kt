@@ -44,13 +44,13 @@ class SearchActivity : AppCompatActivity() {
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderImage = findViewById(R.id.placeholderImage)
         placeHolder = findViewById(R.id.placeHolder)
-        findViewById<ImageView>(R.id.backButton).also {
-            it.setOnClickListener{
+        findViewById<ImageView>(R.id.backButton).apply {
+            setOnClickListener{
                 onBackPressed()
             }
         }
-        searchEditText = findViewById<EditText?>(R.id.searchEditText).also {
-            it.setOnEditorActionListener{
+        searchEditText = findViewById<EditText?>(R.id.searchEditText).apply {
+            setOnEditorActionListener{
                     _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if (searchEditText.text.toString().isNotEmpty()) {
@@ -61,11 +61,11 @@ class SearchActivity : AppCompatActivity() {
                 false
             }
             if (savedInstanceState!=null){
-                it.setText(savedInstanceState.getString(INPUT_TEXT))
+                setText(savedInstanceState.getString(INPUT_TEXT))
             }
         }
-        clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).also {
-            it.setOnClickListener {
+        clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
+            setOnClickListener {
                 searchEditText.text.clear()
                 trackAdapter.tracks.clear()
                 trackAdapter.notifyDataSetChanged()
@@ -73,8 +73,8 @@ class SearchActivity : AppCompatActivity() {
                 searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
             }
         }
-        refreshButton = findViewById<Button?>(R.id.refreshButton).also {
-            it.setOnClickListener {
+        refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
+            setOnClickListener {
                 searchEditText.setText(lastQuery)
                 search(lastQuery)
             }
