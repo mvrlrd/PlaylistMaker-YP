@@ -48,6 +48,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(track: Track) {
         trackName.text = track.trackName
         artistName.text = track.artistName
+//        artistName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ellipse_1, 0, 0, 0);
         trackTime.text = SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(track.trackTime.toLong())
         Glide
             .with(itemView)
