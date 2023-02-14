@@ -9,14 +9,9 @@
         android:id="@+id/mediatekaToolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
         app:navigationIcon="@drawable/ic_arrow_icon"
-        app:buttonGravity="center_vertical">
-
-        <TextView
-            style="@style/TitleStyle"
-            android:text="@string/mediateka" />
+        app:buttonGravity="center_vertical"
+        app:title="@string/mediateka">
 
     </com.google.android.material.appbar.MaterialToolbar>
 
