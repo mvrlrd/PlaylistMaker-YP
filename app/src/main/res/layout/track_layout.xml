@@ -26,14 +26,18 @@
             tools:text="Gori Gori Gori" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="1dp">
+            android:paddingTop="1dp"
+            >
 
             <TextView
                 android:id="@+id/artistName"
                 style="@style/ArtistNameStyle"
+                android:layout_weight="0.7"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -50,8 +54,8 @@
             <TextView
                 android:id="@+id/trackTime"
                 style="@style/ArtistNameStyle"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 tools:text="1:05" />
