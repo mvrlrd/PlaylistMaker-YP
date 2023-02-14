@@ -30,7 +30,7 @@
     <style name="IconStyle">
         <item name="tint">?attr/bledniy_text_color</item>
         <item name="backgroundTint">?attr/background_color</item>
-        <item name="android:layout_width">@dimen/icon_layout_height</item>
+        <item name="android:layout_width">@dimen/icon_layout_width</item>
         <item name="android:layout_height">@dimen/icon_layout_height</item>
         <item name="android:layout_gravity">end|center_vertical</item>
     </style>

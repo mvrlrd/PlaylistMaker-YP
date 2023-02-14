@@ -18,15 +18,14 @@
     </com.google.android.material.appbar.MaterialToolbar>
 
     <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
-
         <TextView
             style="@style/SettingsItems"
             android:text="@string/night_mode" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="end|center_vertical"
             android:checked="false"
             android:width="32dp"
@@ -36,38 +35,32 @@
             style="@style/SwitchStyle"/>
     </FrameLayout>
 
-    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
-
+    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle"
+        android:id="@+id/shareContainer">
         <TextView
             style="@style/SettingsItems"
             android:text="@string/share" />
-
-        <ImageButton
-            android:id="@+id/shareButton"
+        <ImageView
             style="@style/IconStyle"
             android:src="@drawable/ic_share_icon" />
     </FrameLayout>
 
-    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
-
+    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle"
+        android:id="@+id/supportContainer">
         <TextView
             style="@style/SettingsItems"
             android:text="@string/support" />
-
-        <ImageButton
-            android:id="@+id/support_button"
+        <ImageView
             style="@style/IconStyle"
             android:src="@drawable/baseline_support_agent_24" />
     </FrameLayout>
 
-    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
-
+    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle"
+        android:id="@+id/agreementContainer">
         <TextView
             style="@style/SettingsItems"
             android:text="@string/agreement" />
-
-        <ImageButton
-            android:id="@+id/agreement_button"
+        <ImageView
             style="@style/IconStyle"
             android:src="@drawable/ic_agreement_icon" />
     </FrameLayout>

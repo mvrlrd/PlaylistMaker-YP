@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/albumImage"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="@dimen/album_size"
+        android:layout_height="@dimen/album_size"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="13dp"
         android:scaleType="centerCrop"
