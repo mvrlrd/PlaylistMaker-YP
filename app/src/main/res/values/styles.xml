@@ -28,16 +28,16 @@
     </style>
 
     <style name="IconStyle">
-        <item name="tint">?attr/track_name_color</item>
-        <item name="backgroundTint">?attr/button_color</item>
+        <item name="tint">?attr/bledniy_text_color</item>
+        <item name="backgroundTint">?attr/background_color</item>
         <item name="android:layout_width">@dimen/icon_layout_height</item>
         <item name="android:layout_height">@dimen/icon_layout_height</item>
         <item name="android:layout_gravity">end|center_vertical</item>
     </style>
 
     <style name="SwitchStyle">
-        <item name="trackTint">?attr/colorOnSecondary</item>
-        <item name="thumbTint">?attr/colorAccent</item>
+        <item name="trackTint">?attr/button_color</item>
+        <item name="thumbTint">?attr/bledniy_text_color</item>
     </style>
 
     <style name="RefreshButtonStyle">
@@ -57,6 +57,7 @@
     </style>
 
     <style name="SettingsItems">
+        <item name="android:textColor">?attr/track_name_color</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">start|center_vertical</item>
