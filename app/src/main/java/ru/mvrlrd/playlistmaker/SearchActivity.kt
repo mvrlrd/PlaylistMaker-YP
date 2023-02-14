@@ -115,7 +115,7 @@ class SearchActivity : AppCompatActivity() {
                                     clear()
                                     addAll(response.body()?.tracks!!)
                                 }
-                                showMessage("", "")
+                                placeHolder.visibility = View.GONE
                             } else {
                                 showMessage(getString(R.string.nothing_found), "")
                             }
