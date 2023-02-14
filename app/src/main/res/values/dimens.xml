@@ -16,4 +16,6 @@
     <dimen name="refresh_button_width">91dp</dimen>
     <dimen name="refresh_button_height">36dp</dimen>
     <dimen name="radius">8dp</dimen>
+    <dimen name="standart_padding">24dp</dimen>
+
 </resources>
