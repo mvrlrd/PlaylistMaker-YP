@@ -11,7 +11,9 @@
         android:layout_height="@dimen/toolbar_height"
         app:navigationIcon="@drawable/ic_arrow_icon"
         app:buttonGravity="center_vertical"
-        app:title="@string/mediateka">
+        app:title="@string/mediateka"
+        app:titleTextAppearance="@style/TitleStyle"
+        >
 
     </com.google.android.material.appbar.MaterialToolbar>
 
