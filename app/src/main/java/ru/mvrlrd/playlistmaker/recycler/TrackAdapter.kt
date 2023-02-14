@@ -53,8 +53,9 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .with(itemView)
             .load(track.image)
             .placeholder(R.drawable.album_placeholder_image)
-            .transform(CenterCrop(), RoundedCorners(8))
+            .transform(CenterCrop(), RoundedCorners(albumImage.resources.getDimensionPixelSize(R.dimen.radius)))
             .into(albumImage)
+
     }
 }
 

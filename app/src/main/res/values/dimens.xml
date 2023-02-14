@@ -15,4 +15,5 @@
     <dimen name="search_max_length">25</dimen>
     <dimen name="refresh_button_width">91dp</dimen>
     <dimen name="refresh_button_height">36dp</dimen>
+    <dimen name="radius">8dp</dimen>
 </resources>
