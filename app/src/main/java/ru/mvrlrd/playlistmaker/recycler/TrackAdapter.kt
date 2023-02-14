@@ -52,7 +52,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         Glide
             .with(itemView)
             .load(track.image)
-            .placeholder(R.drawable.ic_free_icon_font_cross)
+            .placeholder(R.drawable.album_placeholder_image)
             .transform(CenterCrop(), RoundedCorners(8))
             .into(albumImage)
     }
