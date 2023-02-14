@@ -6,23 +6,26 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.widget.SwitchCompat
+import androidx.appcompat.widget.Toolbar
 
 class SettingsActivity : AppCompatActivity() {
 
+    private lateinit var toolbar: Toolbar
     private lateinit var switchTheme : SwitchCompat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val backButton = findViewById<ImageView>(R.id.backButton)
-        backButton.setOnClickListener {
-            onBackPressed()
+
+        toolbar = findViewById<Toolbar>(R.id.settingsToolbar).apply {
+            setNavigationOnClickListener { onBackPressed() }
         }
+
+
         switchTheme = findViewById(R.id.switchTheme)
         when (isDarkModeOn()) {
             true -> {switchTheme.isChecked = true}

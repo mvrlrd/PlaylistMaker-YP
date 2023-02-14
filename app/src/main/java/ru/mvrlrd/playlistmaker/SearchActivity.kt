@@ -1,17 +1,14 @@
 package ru.mvrlrd.playlistmaker
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
@@ -37,18 +34,18 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var placeHolder : LinearLayout
     private lateinit var recyclerView:RecyclerView
     private lateinit var refreshButton: Button
+    private lateinit var toolbar: Toolbar
     private var query = ""
     private var lastQuery = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderImage = findViewById(R.id.placeholderImage)
         placeHolder = findViewById(R.id.placeHolder)
-        findViewById<ImageView>(R.id.backButton).apply {
-            setOnClickListener{
-                onBackPressed()
-            }
+        toolbar = findViewById<Toolbar>(R.id.searchToolbar).apply {
+            setNavigationOnClickListener { onBackPressed() }
         }
         searchEditText = findViewById<EditText?>(R.id.searchEditText).apply {
             setOnEditorActionListener{
