@@ -57,7 +57,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/tracksRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:paddingStart="13dp"/>
 
        <LinearLayout
            android:id="@+id/placeHolder"

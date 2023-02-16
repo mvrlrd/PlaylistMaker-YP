@@ -15,7 +15,7 @@
     <dimen name="search_max_length">25</dimen>
     <dimen name="refresh_button_width">91dp</dimen>
     <dimen name="refresh_button_height">36dp</dimen>
-    <dimen name="radius">8dp</dimen>
+    <dimen name="radius">2dp</dimen>
     <dimen name="standart_padding">24dp</dimen>
     <dimen name="album_size">45dp</dimen>
 
