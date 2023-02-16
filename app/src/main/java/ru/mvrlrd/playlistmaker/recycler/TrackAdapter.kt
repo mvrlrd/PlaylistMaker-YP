@@ -14,15 +14,11 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.model.Track
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.properties.Delegates
+import kotlin.collections.ArrayList
 
 private const val TIME_FORMAT = "mm:ss"
 class TrackAdapter: RecyclerView.Adapter<TrackViewHolder> () {
-    var tracks: MutableList<Track> by Delegates.observable(mutableListOf()){
-            _, old, new ->
-        notifyDataSetChanged()
-        println("$old -> $new")
-    }
+    val tracks: MutableList<Track> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_layout, parent, false)
         return TrackViewHolder(view)
@@ -32,6 +28,16 @@ class TrackAdapter: RecyclerView.Adapter<TrackViewHolder> () {
     }
     override fun getItemCount(): Int {
         return tracks.size
+    }
+
+    fun setTracks(newTrackList: ArrayList<Track>?) {
+        if (tracks.isNotEmpty()) {
+            tracks.clear()
+        }
+        newTrackList?.let {
+            tracks.addAll(it)
+        }
+        notifyDataSetChanged()
     }
 }
 
