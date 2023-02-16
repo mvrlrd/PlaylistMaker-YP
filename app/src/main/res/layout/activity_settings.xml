@@ -7,75 +7,60 @@
 
 
     <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/settingsToolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp">
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_arrow_icon"
+        app:buttonGravity="center_vertical"
+        app:title="@string/settings"
+        app:titleTextAppearance="@style/TitleStyle">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <include layout="@layout/back_button" />
-
-            <TextView
-                style="@style/TitleStyle"
-                android:text="@string/settings" />
-        </LinearLayout>
     </com.google.android.material.appbar.MaterialToolbar>
 
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/setting_item_height"
-        android:padding="@dimen/usual_padding">
+    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
+        <TextView
+            style="@style/SettingsItems"
+            android:text="@string/night_mode" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchTheme"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="end|center_vertical"
             android:checked="false"
+            android:width="32dp"
+            android:height="18dp"
             android:fontFamily="@font/ys_display_regular"
-            android:text="@string/night_mode"
-            android:textSize="@dimen/small_text_size"
             app:showText="false"
             style="@style/SwitchStyle"/>
     </FrameLayout>
 
-    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
-
+    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle"
+        android:id="@+id/shareContainer">
         <TextView
             style="@style/SettingsItems"
             android:text="@string/share" />
-
-        <ImageButton
-            android:id="@+id/shareButton"
+        <ImageView
             style="@style/IconStyle"
             android:src="@drawable/ic_share_icon" />
     </FrameLayout>
 
-    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
-
+    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle"
+        android:id="@+id/supportContainer">
         <TextView
             style="@style/SettingsItems"
             android:text="@string/support" />
-
-        <ImageButton
-            android:id="@+id/support_button"
+        <ImageView
             style="@style/IconStyle"
-            android:src="@drawable/ic_support_icon" />
+            android:src="@drawable/baseline_support_agent_24" />
     </FrameLayout>
 
-    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
-
+    <FrameLayout style="@style/FrameLayoutForSettingsItemStyle"
+        android:id="@+id/agreementContainer">
         <TextView
             style="@style/SettingsItems"
             android:text="@string/agreement" />
-
-        <ImageButton
-            android:id="@+id/agreement_button"
+        <ImageView
             style="@style/IconStyle"
             android:src="@drawable/ic_agreement_icon" />
     </FrameLayout>

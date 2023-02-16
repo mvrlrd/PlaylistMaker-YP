@@ -12,47 +12,57 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.model.Track
-import kotlin.properties.Delegates
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
-class TrackAdapter (
-) : RecyclerView.Adapter<TrackViewHolder> () {
-    var tracks: MutableList<Track> by Delegates.observable(mutableListOf()){
-            _, old, new ->
-        println("$old -> $new")
-    }
-
+private const val TIME_FORMAT = "mm:ss"
+class TrackAdapter: RecyclerView.Adapter<TrackViewHolder> () {
+    val tracks: MutableList<Track> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_layout, parent, false)
         return TrackViewHolder(view)
     }
-
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
-        holder.itemView.setOnClickListener { println("$position was pushed") }
     }
-
     override fun getItemCount(): Int {
         return tracks.size
     }
 
+    fun setTracks(newTrackList: ArrayList<Track>?) {
+        if (tracks.isNotEmpty()) {
+            tracks.clear()
+        }
+        newTrackList?.let {
+            tracks.addAll(it)
+        }
+        notifyDataSetChanged()
+    }
 }
 
 class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
     private val trackName: TextView = itemView.findViewById(R.id.trackName)
     private val artistName: TextView = itemView.findViewById(R.id.artistName)
     private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
     private val albumImage: ImageView = itemView.findViewById(R.id.albumImage)
 
-    fun bind(model: Track) {
-        trackName.text = model.trackName
-        artistName.text = model.artistName
-        trackTime.text = model.trackTime
+    init {
+        itemView.setOnClickListener { println("$adapterPosition was pushed") }
+    }
+
+    fun bind(track: Track) {
+        trackName.text = track.trackName
+        artistName.text = track.artistName
+//        artistName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ellipse_1, 0, 0, 0);
+        trackTime.text = SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(track.trackTime.toLong())
         Glide
             .with(itemView)
-            .load(model.artworkUrl100)
-            .placeholder(R.drawable.ic_free_icon_font_cross)
-            .transform(CenterCrop(), RoundedCorners(8))
+            .load(track.image)
+            .placeholder(R.drawable.album_placeholder_image)
+            .transform(CenterCrop(), RoundedCorners(albumImage.resources.getDimensionPixelSize(R.dimen.radius)))
             .into(albumImage)
+
     }
 }
+

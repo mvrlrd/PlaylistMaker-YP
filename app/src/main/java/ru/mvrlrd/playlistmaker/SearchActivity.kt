@@ -1,93 +1,155 @@
 package ru.mvrlrd.playlistmaker
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
+import android.view.inputmethod.EditorInfo
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ru.mvrlrd.playlistmaker.model.Track
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
+import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
+import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
 
-const val INPUT_TEXT = "INPUT_TEXT"
+
+private const val INPUT_TEXT = "INPUT_TEXT"
+private const val BASE_URL = "https://itunes.apple.com"
+
 class SearchActivity : AppCompatActivity() {
 
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    private val itunesService = retrofit.create(ItunesApi::class.java)
+    private val trackAdapter = TrackAdapter()
+    private lateinit var searchEditText: EditText
+    private lateinit var clearIcon: ImageButton
+    private lateinit var placeHolderMessage: TextView
+    private lateinit var placeHolderImage: ImageView
+    private lateinit var placeHolder : LinearLayout
+    private lateinit var recyclerView:RecyclerView
+    private lateinit var refreshButton: Button
+    private lateinit var toolbar: Toolbar
+    private var query = ""
+    private var lastQuery = ""
 
-    var text = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
-        val myApplication: MyApplication = MyApplication()
-
-        val backButton = findViewById<ImageView>(R.id.backButton)
-        backButton.setOnClickListener {
-            onBackPressed()
+        placeHolderMessage = findViewById(R.id.placeholderMessage)
+        placeHolderImage = findViewById(R.id.placeholderImage)
+        placeHolder = findViewById(R.id.placeHolder)
+        toolbar = findViewById<Toolbar>(R.id.searchToolbar).apply {
+            setNavigationOnClickListener { onBackPressed() }
         }
-
-
-        val searchEditText = findViewById<EditText>(R.id.searchEditText)
-        val clearIcon = findViewById<ImageButton>(R.id.clearTextButton)
-
-        if (savedInstanceState!=null){
-            searchEditText.setText(savedInstanceState.getString(INPUT_TEXT))
-        }
-
-        clearIcon.setOnClickListener {
-            searchEditText.text.clear()
-        }
-        val trackAdapter = TrackAdapter()
-        val recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
-            adapter = trackAdapter
-            layoutManager = LinearLayoutManager(this.context)
-        }
-
-
-        val simpleTextWatcher = object: TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                clearIcon.visibility = clearButtonVisibility(p0)
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                text = p0.toString()
-                p0?.let{
-                    if (it.isNotEmpty()) {
-                        trackAdapter.tracks = myApplication.trackDb.allTracks.filter { track ->
-                            track.artistName.startsWith(
-                                p0.toString(),
-                                ignoreCase = true
-                            )
-                        } as MutableList<Track>
-                    } else {
-                        trackAdapter.tracks.clear()
+        searchEditText = findViewById<EditText?>(R.id.searchEditText).apply {
+            setOnEditorActionListener{
+                    _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    if (searchEditText.text.toString().isNotEmpty()) {
+                        lastQuery = searchEditText.text.toString()
+                        search(lastQuery)
                     }
-                    trackAdapter.notifyDataSetChanged()
+                }
+                false
+            }
+            if (savedInstanceState != null) {
+                query = savedInstanceState.getString(INPUT_TEXT)!!
+                if (query.isNotEmpty()) {
+                    setText(query)
+                    search(query)
                 }
             }
         }
-
-        searchEditText.addTextChangedListener(simpleTextWatcher)
-
-
+        clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
+            setOnClickListener {
+                searchEditText.text.clear()
+                trackAdapter.setTracks(null)
+                placeHolder.visibility = View.GONE
+                searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
+            }
+        }
+        refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
+            setOnClickListener {
+                searchEditText.setText(lastQuery)
+                search(lastQuery)
+            }
+        }
+        recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
+            adapter = trackAdapter
+            layoutManager = LinearLayoutManager(this.context)
+        }
+        searchEditText.doOnTextChanged { text, start, before, count ->
+            query = text.toString()
+            clearIcon.visibility = clearButtonVisibility(text)
+        }
     }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(INPUT_TEXT, text)
+        outState.putString(INPUT_TEXT, query)
     }
-
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        text = savedInstanceState.getString(INPUT_TEXT, "")
+        query = savedInstanceState.getString(INPUT_TEXT, "")
     }
-
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+    private fun search(query: String) {
+        itunesService.search(query)
+            .enqueue(object : Callback<TracksResponse> {
+                override fun onResponse(call: Call<TracksResponse>,
+                                        response: Response<TracksResponse>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            if (response.body()?.tracks?.isNotEmpty() == true) {
+                                trackAdapter.setTracks(response.body()?.tracks!!)
+                                placeHolder.visibility = View.GONE
+                            } else {
+                                showMessage(getString(R.string.nothing_found), "")
+                            }
+                        }
+                        401 ->
+                            showMessage(getString(R.string.authentication_troubles), response.code().toString())
+                        else ->
+                            showMessage(getString(R.string.error_connection), response.code().toString())
+                    }
+                }
+                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                    showMessage(getString(R.string.error_connection), t.message.toString())
+                }
+            })
+    }
+    private fun showMessage(text: String, additionalMessage: String) {
+        if (text.isNotEmpty()) {
+            val image = when (text) {
+                getString(R.string.nothing_found) -> {
+                    refreshButton.visibility = View.GONE
+                    R.drawable.nothing_found
+                }
+                getString(R.string.error_connection) -> {
+                    refreshButton.visibility = View.VISIBLE
+                    R.drawable.connection_error
+                }
+                else -> {
+                    R.drawable.connection_error
+                }
+            }
+            placeHolderImage.setImageResource(image)
+            placeHolderMessage.text = text
+            placeHolder.visibility = View.VISIBLE
+            trackAdapter.setTracks(null)
+            if (additionalMessage.isNotEmpty()) {
+                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
+                    .show()
+            }
+        } else {
+            placeHolder.visibility = View.GONE
+        }
+    }
 }

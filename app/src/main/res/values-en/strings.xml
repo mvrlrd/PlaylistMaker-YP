@@ -12,4 +12,9 @@
     <string name="email_text">Thank developers for such a cool application!</string>
     <string name="favorites">Favorite tracks</string>
     <string name="playlists">Playlists</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="authentication_troubles">Authentication troubles</string>
+    <string name="nothing_found">Nothing found</string>
+    <string name="error_connection">Connection error Loading failed. Check internet connection</string>
+    <string name="refresh">Refresh</string>
 </resources>
