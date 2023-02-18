@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.mvrlrd.playlistmaker.model.Track
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
 import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
@@ -19,14 +20,14 @@ import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
 private const val INPUT_TEXT = "INPUT_TEXT"
 private const val BASE_URL = "https://itunes.apple.com"
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), TrackOnClickListener {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val itunesService = retrofit.create(ItunesApi::class.java)
-    private val trackAdapter = TrackAdapter()
+    private val trackAdapter = TrackAdapter(this as TrackOnClickListener)
     private lateinit var searchEditText: EditText
     private lateinit var clearIcon: ImageButton
     private lateinit var placeHolderMessage: TextView
@@ -151,5 +152,9 @@ class SearchActivity : AppCompatActivity() {
         } else {
             placeHolder.visibility = View.GONE
         }
+    }
+
+    override fun trackOnClick(track: Track) {
+        println("listener works!!!!    ${track.trackName}")
     }
 }

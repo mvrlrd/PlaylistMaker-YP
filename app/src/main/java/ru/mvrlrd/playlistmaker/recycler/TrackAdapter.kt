@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import ru.mvrlrd.playlistmaker.TrackOnClickListener
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.model.Track
 import java.text.SimpleDateFormat
@@ -17,7 +18,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 private const val TIME_FORMAT = "mm:ss"
-class TrackAdapter: RecyclerView.Adapter<TrackViewHolder> () {
+class TrackAdapter(private val onClickListener: TrackOnClickListener): RecyclerView.Adapter<TrackViewHolder> () {
     val tracks: MutableList<Track> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_layout, parent, false)
@@ -25,6 +26,7 @@ class TrackAdapter: RecyclerView.Adapter<TrackViewHolder> () {
     }
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
+        holder.setOnclickListener { onClickListener.trackOnClick(tracks[position]) }
     }
     override fun getItemCount(): Int {
         return tracks.size
@@ -47,8 +49,10 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
     private val albumImage: ImageView = itemView.findViewById(R.id.albumImage)
 
-    init {
-        itemView.setOnClickListener { println("$adapterPosition was pushed") }
+    fun setOnclickListener(listener: () ->Unit){
+        itemView.setOnClickListener {
+            listener()
+        }
     }
 
     fun bind(track: Track) {
