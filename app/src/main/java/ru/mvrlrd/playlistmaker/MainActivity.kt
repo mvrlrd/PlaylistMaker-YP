@@ -14,6 +14,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        (applicationContext as App).applySavedThemeMode()
+
         searchButton = findViewById<Button>(R.id.search_button).apply {
             setOnClickListener {
                 navigateTo(SearchActivity::class.java)
