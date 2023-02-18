@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -9,16 +10,22 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.mvrlrd.playlistmaker.model.Track
 import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
 import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 private const val INPUT_TEXT = "INPUT_TEXT"
 private const val BASE_URL = "https://itunes.apple.com"
+private const val HISTORY_PREFERENCES = "history_preferences"
+private const val TRACK_KEY = "track_key"
+private const val TRACK_LIST_KEY = "track_list_key"
 
 class SearchActivity : AppCompatActivity(), TrackOnClickListener {
 
@@ -38,10 +45,14 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener {
     private lateinit var toolbar: Toolbar
     private var query = ""
     private var lastQuery = ""
+    private lateinit var historySharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE)
+
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderImage = findViewById(R.id.placeholderImage)
         placeHolder = findViewById(R.id.placeHolder)
@@ -73,6 +84,14 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener {
                 trackAdapter.setTracks(null)
                 placeHolder.visibility = View.GONE
                 searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
+
+                val historyList = readTracksFromSearchedHistory()
+                historyList.forEach {
+                    println(it.trackName)
+                }
+//                val li = arrayListOf<Track>()
+//                li.addAll(historyList)
+                trackAdapter.setTracks(historyList)
             }
         }
         refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
@@ -155,6 +174,29 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener {
     }
 
     override fun trackOnClick(track: Track) {
-        println("listener works!!!!    ${track.trackName}")
+        writeTracksToSearchedHistory(track)
     }
+
+    private fun writeTracksToSearchedHistory(track: Track){
+        val searchedTracks = arrayListOf<Track>()
+        searchedTracks.addAll(readTracksFromSearchedHistory())
+        if (searchedTracks.contains(track)){
+            searchedTracks.remove(track)
+        }
+        searchedTracks.add(0,track)
+        if (searchedTracks.size>10){
+            searchedTracks.removeLast()
+        }
+        val json = Gson().toJson(searchedTracks)
+        historySharedPreferences
+            .edit()
+            .putString(TRACK_LIST_KEY, json)
+            .apply()
+    }
+
+    private fun readTracksFromSearchedHistory(): ArrayList<Track>{
+        val json = historySharedPreferences.getString(TRACK_LIST_KEY, null) ?: return arrayListOf()
+        return Gson().fromJson(json, Array<Track>::class.java).toCollection(ArrayList())
+    }
+
 }
