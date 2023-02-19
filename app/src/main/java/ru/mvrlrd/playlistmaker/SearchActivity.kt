@@ -49,26 +49,20 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     private var lastQuery = ""
     private lateinit var historySharedPreferences: SharedPreferences
 
-
-
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
-
-            println("_____CHANGED_______${clearHistoryButton.visibility}")
             if (clearHistoryButton.visibility == View.VISIBLE) {
                 val historyList = readTracksFromSearchedHistory()
                 trackAdapter.setTracks(historyList)
             }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE)
-        historySharedPreferences.registerOnSharedPreferenceChangeListener(this)
-
-
+        historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE).apply {
+            registerOnSharedPreferenceChangeListener(this@SearchActivity as OnSharedPreferenceChangeListener)
+        }
         clearHistoryButton = findViewById<Button?>(R.id.clearHistoryButton).apply {
             setOnClickListener{
                 historySharedPreferences
@@ -79,9 +73,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 this.visibility = View.GONE
             }
         }
-
-
-
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderImage = findViewById(R.id.placeholderImage)
         placeHolder = findViewById(R.id.placeHolder)
@@ -120,8 +111,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                     clearHistoryButton.visibility = View.VISIBLE
                     trackAdapter.setTracks(historyList)
                 }
-
-
             }
         }
         refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
@@ -148,19 +137,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         query = savedInstanceState.getString(INPUT_TEXT, "")
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-
-    }
-
-
-
-    override fun onStart() {
-        super.onStart()
-
     }
 
     override fun onStop() {
