@@ -14,11 +14,11 @@
     <string name="favorites">Избранные треки</string>
     <string name="playlists">Плейлисты</string>
     <string name="something_went_wrong">Что-то пошло не так</string>
-
-    authentication_troubles
     <string name="authentication_troubles">Проблемы аутентификации</string>
     <string name="nothing_found">Ничего не нашлось</string>
     <string name="error_connection">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="refresh">Обновить</string>
+    <string name="clear_history">Очистить историю</string>
+
 
 </resources>

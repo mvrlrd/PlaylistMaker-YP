@@ -1,6 +1,8 @@
 package ru.mvrlrd.playlistmaker
 
+
 import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -24,10 +26,9 @@ import kotlin.collections.ArrayList
 private const val INPUT_TEXT = "INPUT_TEXT"
 private const val BASE_URL = "https://itunes.apple.com"
 private const val HISTORY_PREFERENCES = "history_preferences"
-private const val TRACK_KEY = "track_key"
 private const val TRACK_LIST_KEY = "track_list_key"
 
-class SearchActivity : AppCompatActivity(), TrackOnClickListener {
+class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPreferenceChangeListener {
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
@@ -42,16 +43,44 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener {
     private lateinit var placeHolder : LinearLayout
     private lateinit var recyclerView:RecyclerView
     private lateinit var refreshButton: Button
+    private lateinit var clearHistoryButton: Button
     private lateinit var toolbar: Toolbar
     private var query = ""
     private var lastQuery = ""
     private lateinit var historySharedPreferences: SharedPreferences
+
+
+
+    override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
+
+            println("_____CHANGED_______${clearHistoryButton.visibility}")
+            if (clearHistoryButton.visibility == View.VISIBLE) {
+                val historyList = readTracksFromSearchedHistory()
+                trackAdapter.setTracks(historyList)
+            }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
         historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE)
+        historySharedPreferences.registerOnSharedPreferenceChangeListener(this)
+
+
+        clearHistoryButton = findViewById<Button?>(R.id.clearHistoryButton).apply {
+            setOnClickListener{
+                historySharedPreferences
+                    .edit()
+                    .clear()
+                    .apply()
+                trackAdapter.setTracks(null)
+                this.visibility = View.GONE
+            }
+        }
+
+
 
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderImage = findViewById(R.id.placeholderImage)
@@ -66,6 +95,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener {
                     if (searchEditText.text.toString().isNotEmpty()) {
                         lastQuery = searchEditText.text.toString()
                         search(lastQuery)
+                        clearHistoryButton.visibility = View.GONE
                     }
                 }
                 false
@@ -86,12 +116,12 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener {
                 searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
 
                 val historyList = readTracksFromSearchedHistory()
-                historyList.forEach {
-                    println(it.trackName)
+                if (historyList.isNotEmpty()){
+                    clearHistoryButton.visibility = View.VISIBLE
+                    trackAdapter.setTracks(historyList)
                 }
-//                val li = arrayListOf<Track>()
-//                li.addAll(historyList)
-                trackAdapter.setTracks(historyList)
+
+
             }
         }
         refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
@@ -109,6 +139,8 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener {
             clearIcon.visibility = clearButtonVisibility(text)
         }
     }
+
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(INPUT_TEXT, query)
@@ -117,6 +149,25 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener {
         super.onRestoreInstanceState(savedInstanceState)
         query = savedInstanceState.getString(INPUT_TEXT, "")
     }
+
+    override fun onResume() {
+        super.onResume()
+
+
+    }
+
+
+
+    override fun onStart() {
+        super.onStart()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        historySharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
     private fun search(query: String) {
@@ -175,6 +226,8 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener {
 
     override fun trackOnClick(track: Track) {
         writeTracksToSearchedHistory(track)
+
+
     }
 
     private fun writeTracksToSearchedHistory(track: Track){

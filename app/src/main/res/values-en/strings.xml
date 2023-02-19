@@ -17,4 +17,5 @@
     <string name="nothing_found">Nothing found</string>
     <string name="error_connection">Connection error Loading failed. Check internet connection</string>
     <string name="refresh">Refresh</string>
+    <string name="clear_history">Clear history</string>
 </resources>
