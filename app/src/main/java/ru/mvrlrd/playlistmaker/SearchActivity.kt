@@ -84,9 +84,9 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     if (searchEditText.text.toString().isNotEmpty()) {
                         lastQuery = searchEditText.text.toString()
+                        hideHistory(null)
                         search(lastQuery)
-                        clearHistoryButton.visibility = View.GONE
-                        youSearchedTitle.visibility = View.GONE
+
                     }
                 }
                 false
