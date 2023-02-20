@@ -30,11 +30,6 @@ private const val TRACK_LIST_KEY = "track_list_key"
 
 class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPreferenceChangeListener {
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val itunesService = retrofit.create(ItunesApi::class.java)
     private val trackAdapter = TrackAdapter(this as TrackOnClickListener)
     private lateinit var searchEditText: EditText
     private lateinit var clearIcon: ImageButton
@@ -46,10 +41,14 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     private lateinit var clearHistoryButton: Button
     private lateinit var youSearchedTitle: TextView
     private lateinit var toolbar: Toolbar
-
     private var query = ""
     private var lastQuery = ""
     private lateinit var historySharedPreferences: SharedPreferences
+    private val retrofit = Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    private val itunesService = retrofit.create(ItunesApi::class.java)
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
             if (clearHistoryButton.visibility == View.VISIBLE) {
@@ -61,9 +60,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
         youSearchedTitle = findViewById(R.id.youSearchedTitle)
-
         historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE).apply {
             registerOnSharedPreferenceChangeListener(this@SearchActivity as OnSharedPreferenceChangeListener)
         }
@@ -86,7 +83,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                         lastQuery = searchEditText.text.toString()
                         hideHistory(null)
                         search(lastQuery)
-
                     }
                 }
                 false
@@ -105,7 +101,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 trackAdapter.setTracks(null)
                 placeHolder.visibility = View.GONE
                 searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
-
                 showHistory()
             }
         }
@@ -124,7 +119,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             clearIcon.visibility = clearButtonVisibility(text)
         }
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -198,8 +192,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
 
     override fun trackOnClick(track: Track) {
         writeTracksToSearchedHistory(track)
-
-
     }
 
     private fun writeTracksToSearchedHistory(track: Track){
@@ -226,7 +218,8 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             .apply()
         hideHistory(null)
     }
-    private fun hideHistory(trackList: ArrayList<Track>?){
+
+    private fun hideHistory(trackList: ArrayList<Track>? ){
         trackAdapter.setTracks(trackList)
         clearHistoryButton.visibility = View.GONE
         youSearchedTitle.visibility = View.GONE
@@ -245,5 +238,4 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         val json = historySharedPreferences.getString(TRACK_LIST_KEY, null) ?: return arrayListOf()
         return Gson().fromJson(json, Array<Track>::class.java).toCollection(ArrayList())
     }
-
 }
