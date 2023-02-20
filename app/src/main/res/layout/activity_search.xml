@@ -67,11 +67,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/clearHistoryButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/clear_history"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"/>
+                style="@style/RefreshButtonStyle"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -108,14 +105,8 @@
 
            <com.google.android.material.button.MaterialButton
                android:id="@+id/refreshButton"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
                android:text="@string/refresh"
-               android:layout_gravity="center"
                style="@style/RefreshButtonStyle"
-               android:layout_marginTop="@dimen/standart_padding"
-               app:cornerRadius="54dp"
-               android:visibility="gone"
                />
        </LinearLayout>
     </FrameLayout>
