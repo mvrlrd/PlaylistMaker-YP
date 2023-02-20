@@ -44,7 +44,9 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     private lateinit var recyclerView:RecyclerView
     private lateinit var refreshButton: Button
     private lateinit var clearHistoryButton: Button
+    private lateinit var youSearchedTitle: TextView
     private lateinit var toolbar: Toolbar
+
     private var query = ""
     private var lastQuery = ""
     private lateinit var historySharedPreferences: SharedPreferences
@@ -60,6 +62,8 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        youSearchedTitle = findViewById(R.id.youSearchedTitle)
+
         historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE).apply {
             registerOnSharedPreferenceChangeListener(this@SearchActivity as OnSharedPreferenceChangeListener)
         }
@@ -71,6 +75,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                     .apply()
                 trackAdapter.setTracks(null)
                 this.visibility = View.GONE
+                youSearchedTitle.visibility = View.GONE
             }
         }
         placeHolderMessage = findViewById(R.id.placeholderMessage)
@@ -109,6 +114,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 val historyList = readTracksFromSearchedHistory()
                 if (historyList.isNotEmpty()){
                     clearHistoryButton.visibility = View.VISIBLE
+                    youSearchedTitle.visibility = View.VISIBLE
                     trackAdapter.setTracks(historyList)
                 }
             }

@@ -18,4 +18,5 @@
     <string name="error_connection">Connection error Loading failed. Check internet connection</string>
     <string name="refresh">Refresh</string>
     <string name="clear_history">Clear history</string>
+    <string name="you_searched">You looked for</string>
 </resources>
