@@ -69,13 +69,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         }
         clearHistoryButton = findViewById<Button?>(R.id.clearHistoryButton).apply {
             setOnClickListener{
-                historySharedPreferences
-                    .edit()
-                    .clear()
-                    .apply()
-                trackAdapter.setTracks(null)
-                this.visibility = View.GONE
-                youSearchedTitle.visibility = View.GONE
+                clearHistory()
             }
         }
         placeHolderMessage = findViewById(R.id.placeholderMessage)
@@ -92,6 +86,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                         lastQuery = searchEditText.text.toString()
                         search(lastQuery)
                         clearHistoryButton.visibility = View.GONE
+                        youSearchedTitle.visibility = View.GONE
                     }
                 }
                 false
@@ -111,12 +106,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 placeHolder.visibility = View.GONE
                 searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
 
-                val historyList = readTracksFromSearchedHistory()
-                if (historyList.isNotEmpty()){
-                    clearHistoryButton.visibility = View.VISIBLE
-                    youSearchedTitle.visibility = View.VISIBLE
-                    trackAdapter.setTracks(historyList)
-                }
+                showHistory()
             }
         }
         refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
@@ -227,6 +217,28 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             .edit()
             .putString(TRACK_LIST_KEY, json)
             .apply()
+    }
+
+    private fun clearHistory(){
+        historySharedPreferences
+            .edit()
+            .clear()
+            .apply()
+        hideHistory(null)
+    }
+    private fun hideHistory(trackList: ArrayList<Track>?){
+        trackAdapter.setTracks(trackList)
+        clearHistoryButton.visibility = View.GONE
+        youSearchedTitle.visibility = View.GONE
+    }
+
+    private fun showHistory(){
+        val historyList = readTracksFromSearchedHistory()
+        if (historyList.isNotEmpty()){
+            clearHistoryButton.visibility = View.VISIBLE
+            youSearchedTitle.visibility = View.VISIBLE
+            trackAdapter.setTracks(historyList)
+        }
     }
 
     private fun readTracksFromSearchedHistory(): ArrayList<Track>{
