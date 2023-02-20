@@ -4,6 +4,8 @@ package ru.mvrlrd.playlistmaker
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -75,26 +77,41 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         toolbar = findViewById<Toolbar>(R.id.searchToolbar).apply {
             setNavigationOnClickListener { onBackPressed() }
         }
-        searchEditText = findViewById<EditText?>(R.id.searchEditText).apply {
-            setOnEditorActionListener{
-                    _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    if (searchEditText.text.toString().isNotEmpty()) {
-                        lastQuery = searchEditText.text.toString()
-                        hideHistory(null)
-                        search(lastQuery)
+
+        searchEditText = findViewById<EditText?>(R.id.searchEditText)
+            .apply {
+                restoreTextFromBundle(textField = this, savedInstanceState = savedInstanceState)
+            }.apply {
+                setOnEditorActionListener { _, actionId, _ ->
+                    onClickOnEnterOnVirtualKeyboard(actionId)
+                }
+            }.apply {
+                doOnTextChanged { text, _, _, _ ->
+                    query = text.toString()
+                    clearIcon.visibility = clearButtonVisibility(text)
+                }
+            }.apply {
+                setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus && searchEditText.text.isEmpty()) showHistory()
+                }
+            }.apply {
+                addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                     }
-                }
-                false
+
+                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                        if (searchEditText.hasFocus() && p0?.isEmpty() == true) showHistory()
+                    }
+
+                    override fun afterTextChanged(p0: Editable?) {
+                    }
+                })
             }
-            if (savedInstanceState != null) {
-                query = savedInstanceState.getString(INPUT_TEXT)!!
-                if (query.isNotEmpty()) {
-                    setText(query)
-                    search(query)
-                }
-            }
-        }
+
+
+
+
+
         clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
             setOnClickListener {
                 searchEditText.text.clear()
@@ -114,10 +131,13 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
-        searchEditText.doOnTextChanged { text, start, before, count ->
-            query = text.toString()
-            clearIcon.visibility = clearButtonVisibility(text)
-        }
+
+
+
+
+
+
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -237,5 +257,25 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     private fun readTracksFromSearchedHistory(): ArrayList<Track>{
         val json = historySharedPreferences.getString(TRACK_LIST_KEY, null) ?: return arrayListOf()
         return Gson().fromJson(json, Array<Track>::class.java).toCollection(ArrayList())
+    }
+
+    private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
+        if (savedInstanceState != null) {
+            query = savedInstanceState.getString(INPUT_TEXT)!!
+            if (query.isNotEmpty()) {
+                textField.setText(query)
+                search(query)
+            }
+        }
+    }
+    private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (searchEditText.text.toString().isNotEmpty()) {
+                lastQuery = searchEditText.text.toString()
+                hideHistory(null)
+                search(lastQuery)
+            }
+        }
+        return false
     }
 }
