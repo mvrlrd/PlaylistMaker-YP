@@ -108,10 +108,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 })
             }
 
-
-
-
-
         clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
             setOnClickListener {
                 searchEditText.text.clear()
@@ -131,13 +127,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
-
-
-
-
-
-
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
