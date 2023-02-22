@@ -89,23 +89,12 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 doOnTextChanged { text, _, _, _ ->
                     query = text.toString()
                     clearIcon.visibility = clearButtonVisibility(text)
+                    if (searchEditText.hasFocus() && text?.isEmpty() == true) showHistory()
                 }
             }.apply {
                 setOnFocusChangeListener { _, hasFocus ->
                     if (hasFocus && searchEditText.text.isEmpty()) showHistory()
                 }
-            }.apply {
-                addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    }
-
-                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                        if (searchEditText.hasFocus() && p0?.isEmpty() == true) showHistory()
-                    }
-
-                    override fun afterTextChanged(p0: Editable?) {
-                    }
-                })
             }
 
         clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
