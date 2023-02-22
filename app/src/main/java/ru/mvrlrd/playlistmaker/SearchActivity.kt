@@ -213,11 +213,11 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             .edit()
             .clear()
             .apply()
-        hideHistory(null)
+        hideHistory()
     }
 
-    private fun hideHistory(trackList: ArrayList<Track>? ){
-        trackAdapter.setTracks(trackList)
+    private fun hideHistory(){
+        trackAdapter.setTracks(null)
         clearHistoryButton.visibility = View.GONE
         youSearchedTitle.visibility = View.GONE
     }
@@ -249,7 +249,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (searchEditText.text.toString().isNotEmpty()) {
                 lastQuery = searchEditText.text.toString()
-                hideHistory(null)
+                hideHistory()
                 search(lastQuery)
             }
         }

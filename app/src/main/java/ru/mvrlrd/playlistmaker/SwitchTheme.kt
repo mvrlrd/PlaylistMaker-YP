@@ -15,7 +15,7 @@ class SwitchTheme(private val sharedPreferences: SharedPreferences) {
         applyTheme()
     }
 
-    fun applyTheme(): Boolean{
+    fun applyTheme(){
         val darkThemeEnabled = sharedPreferences.getBoolean(IS_DARK_MODE_ON, false)
         AppCompatDelegate.setDefaultNightMode(
             if (darkThemeEnabled) {
@@ -24,6 +24,5 @@ class SwitchTheme(private val sharedPreferences: SharedPreferences) {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-        return darkThemeEnabled
     }
 }

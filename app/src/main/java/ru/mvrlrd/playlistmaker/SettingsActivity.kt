@@ -1,7 +1,9 @@
 package ru.mvrlrd.playlistmaker
 
 
+import android.app.Activity
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
@@ -28,7 +30,8 @@ class SettingsActivity : AppCompatActivity() {
 
         switchTheme = findViewById<SwitchCompat?>(R.id.switchTheme)
             .apply {
-                isChecked = (applicationContext as App).applySavedThemeMode()
+                (applicationContext as App).applySavedThemeMode()
+                isChecked = isDarkTheme()
                 setOnCheckedChangeListener { _, isChecked ->
                     (applicationContext as App).switchTheme(isChecked)
                 }
@@ -64,5 +67,10 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(agreementIntent)
             }
         }
+    }
+
+    private fun isDarkTheme(): Boolean {
+        return this.resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 }

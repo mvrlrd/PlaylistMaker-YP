@@ -19,7 +19,7 @@ class App : Application() {
     fun switchTheme(darkThemeEnabled: Boolean) {
         switchTheme.switch(darkThemeEnabled)
     }
-    fun applySavedThemeMode(): Boolean{
-        return switchTheme.applyTheme()
+    fun applySavedThemeMode(){
+        switchTheme.applyTheme()
     }
 }
