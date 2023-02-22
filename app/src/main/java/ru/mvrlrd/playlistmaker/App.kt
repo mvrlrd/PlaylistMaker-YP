@@ -13,6 +13,7 @@ class App : Application() {
         super.onCreate()
         themePreferences = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE)
         switchTheme = SwitchTheme(themePreferences)
+        applySavedThemeMode()
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
