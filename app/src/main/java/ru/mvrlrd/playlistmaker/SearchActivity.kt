@@ -193,8 +193,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     }
 
     private fun writeTracksToSearchedHistory(track: Track){
-        val searchedTracks = arrayListOf<Track>()
-        searchedTracks.addAll(readTracksFromSearchedHistory())
+        val searchedTracks = readTracksFromSearchedHistory()
         if (searchedTracks.contains(track)){
             searchedTracks.remove(track)
         }
