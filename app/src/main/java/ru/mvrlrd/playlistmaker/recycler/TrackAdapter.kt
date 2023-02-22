@@ -26,7 +26,7 @@ class TrackAdapter(private val onClickListener: TrackOnClickListener): RecyclerV
     }
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
-        holder.setOnclickListener { onClickListener.trackOnClick(tracks[position]) }
+        holder.itemView.setOnClickListener { onClickListener.trackOnClick(tracks[position]) }
     }
     override fun getItemCount(): Int {
         return tracks.size
@@ -48,12 +48,6 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val artistName: TextView = itemView.findViewById(R.id.artistName)
     private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
     private val albumImage: ImageView = itemView.findViewById(R.id.albumImage)
-
-    fun setOnclickListener(listener: () ->Unit){
-        itemView.setOnClickListener {
-            listener()
-        }
-    }
 
     fun bind(track: Track) {
         trackName.text = track.trackName
