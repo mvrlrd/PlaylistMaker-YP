@@ -1,16 +1,19 @@
 package ru.mvrlrd.playlistmaker
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.mvrlrd.playlistmaker.model.Track
+import java.text.SimpleDateFormat
+import java.util.*
 
+private const val TIME_FORMAT = "mm:ss"
 class PlayerActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
     private lateinit var albumImage: ImageView
@@ -53,9 +56,11 @@ class PlayerActivity : AppCompatActivity() {
         country = findViewById(R.id.countryParam)
 
         val track = intent.getSerializableExtra("my_track") as Track
-        duration.text = track.trackTime
+        trackNameText.text = track.trackName
+        singerNameText.text = track.artistName
+        duration.text = SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(track.trackTime.toLong())
         album.text = track.album
-        year.text = track.year
+        year.text = unparseDateToYear(track.year)
         genre.text = track.genre
         country.text = track.country
 
@@ -63,7 +68,7 @@ class PlayerActivity : AppCompatActivity() {
             .with(albumImage)
             .load(track.image)
             .placeholder(R.drawable.album_placeholder_image)
-            .transform(CenterCrop(), RoundedCorners(albumImage.resources.getDimensionPixelSize(R.dimen.radius)))
+            .transform(CenterCrop(), RoundedCorners(albumImage.resources.getDimensionPixelSize(R.dimen.big_radius)))
             .into(albumImage)
     }
 }

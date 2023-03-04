@@ -43,7 +43,7 @@
         android:id="@+id/albumImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/black"
+
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
@@ -51,7 +51,8 @@
         app:layout_constraintTag="imageViewTag"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="82dp"
-        app:srcCompat="@drawable/album_placeholder_image" />
+        app:srcCompat="@drawable/album_placeholder_image"
+        android:backgroundTint="?attr/day_night_text"/>
 
     <TextView
         android:id="@+id/trackName"
@@ -87,7 +88,7 @@
         app:fabCustomSize="51dp"
         app:tint="@color/white"
         android:layout_marginTop="132dp"
-        android:backgroundTint="@color/bledniyFont"
+        android:backgroundTint="?attr/day_night_fab"
         android:src="@drawable/baseline_add_to_photos_24"
         app:layout_constraintHorizontal_bias="0.5"
         app:maxImageSize="23dp"
@@ -101,7 +102,7 @@
         android:id="@+id/playButton"
         android:layout_width="83dp"
         android:layout_height="83dp"
-        android:backgroundTint="@color/black"
+        android:backgroundTint="?attr/day_night_background"
         android:src="@drawable/baseline_play_arrow_24"
         app:fabCustomSize="83dp"
         app:layout_constraintBottom_toBottomOf="@+id/button"
@@ -110,10 +111,10 @@
         app:layout_constraintStart_toEndOf="@+id/button"
         app:layout_constraintTop_toTopOf="@+id/button"
         app:maxImageSize="50dp"
-        app:tint="@color/white"
+        app:tint="?attr/day_night_text"
         app:borderWidth="0dp"
         android:clickable="true"
-        app:rippleColor="@color/white"/>
+        app:rippleColor="?attr/day_night_text"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/likeButton"
@@ -122,7 +123,7 @@
         app:tint="@color/white"
         app:fabCustomSize="51dp"
         app:maxImageSize="23dp"
-        android:backgroundTint="@color/bledniyFont"
+        android:backgroundTint="?attr/day_night_fab"
         android:src="@drawable/baseline_favorite_border_24"
         app:layout_constraintBottom_toBottomOf="@+id/button"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
@@ -196,7 +197,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
         tools:text="5:31"
-        android:textColor="@color/black"
+        android:textColor="?attr/day_night_background"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/usual_padding"
         app:layout_constraintTop_toBottomOf="@+id/button" />
@@ -209,7 +210,7 @@
         android:layout_marginTop="@dimen/info_padding"
         android:layout_marginEnd="@dimen/usual_padding"
         tools:text="Россия"
-        android:textColor="@color/black"
+        android:textColor="?attr/day_night_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/durationParam" />
 
@@ -221,7 +222,7 @@
         android:layout_marginTop="@dimen/info_padding"
         android:layout_marginEnd="@dimen/usual_padding"
         tools:text="2022"
-        android:textColor="@color/black"
+        android:textColor="?attr/day_night_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/albumParam" />
 
@@ -233,7 +234,7 @@
         android:layout_marginTop="@dimen/info_padding"
         android:layout_marginEnd="@dimen/usual_padding"
         tools:text="Рок"
-        android:textColor="@color/black"
+        android:textColor="?attr/day_night_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/yearParam" />
 
@@ -245,7 +246,7 @@
         android:layout_marginTop="@dimen/info_padding"
         android:layout_marginEnd="@dimen/usual_padding"
         tools:text="Россия"
-        android:textColor="@color/black"
+        android:textColor="?attr/day_night_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/genreParam"
         />

@@ -15,6 +15,7 @@ data class Track(
     @SerializedName("primaryGenreName")val genre: String,
     val country: String
 ): Serializable {
+
     override fun equals(other: Any?): Boolean {
         return if (other !is Track){
             false
