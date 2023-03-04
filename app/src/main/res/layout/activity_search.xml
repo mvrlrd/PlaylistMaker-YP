@@ -20,7 +20,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/usual_padding">
+        android:paddingStart="@dimen/usual_padding"
+        android:paddingEnd="@dimen/usual_padding">
 
         <EditText
             android:id="@+id/searchEditText"
@@ -30,18 +31,17 @@
             android:background="@drawable/et_style"
             android:backgroundTint="?attr/button_color"
             android:drawableStart="@drawable/ic_search_icon"
-            android:drawableTint="?attr/search_icons_color"
             android:drawablePadding="11dp"
+            android:drawableTint="?attr/search_icons_color"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
             android:paddingStart="15dp"
+            android:singleLine="true"
             android:textColor="?attr/button_text_color"
             android:textColorHint="?attr/search_icons_color"
-            android:textSize="@dimen/small_text_size"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            />
+            android:textSize="@dimen/small_text_size" />
 
         <ImageButton
             android:id="@+id/clearTextButton"
@@ -54,13 +54,52 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/tracksRecyclerView"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="13dp"/>
+            android:layout_marginTop="32dp"
+            android:orientation="vertical">
 
-       <LinearLayout
+            <TextView
+                android:id="@+id/youSearchedTitle"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:fontFamily="@font/ys_display_medium"
+                android:gravity="center"
+                android:text="@string/you_searched"
+                android:textAlignment="center"
+                android:textColor="?attr/day_night_background"
+                android:textSize="19sp"
+                android:visibility="gone" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/tracksRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="13dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/clearHistoryButton"
+                        style="@style/RefreshButtonStyle"
+                        android:layout_marginBottom="50dp"
+                        android:text="@string/clear_history" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </ScrollView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <LinearLayout
            android:id="@+id/placeHolder"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
@@ -91,14 +130,8 @@
 
            <com.google.android.material.button.MaterialButton
                android:id="@+id/refreshButton"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
                android:text="@string/refresh"
-               android:layout_gravity="center"
                style="@style/RefreshButtonStyle"
-               android:layout_marginTop="@dimen/standart_padding"
-               app:cornerRadius="54dp"
-               android:visibility="gone"
                />
        </LinearLayout>
     </FrameLayout>

@@ -2,16 +2,13 @@ package ru.mvrlrd.playlistmaker
 
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -29,23 +26,13 @@ class SettingsActivity : AppCompatActivity() {
             setNavigationOnClickListener { onBackPressed() }
         }
 
-        switchTheme = findViewById<SwitchCompat?>(R.id.switchTheme).apply {
-            setOnCheckedChangeListener { _, isChecked ->
-                val editor = getSharedPreferences(SWITCH_ENABLED, MODE_PRIVATE).edit()
-                if (isChecked) {
-                    editor.putBoolean(SWITCH_CONDITION, true)
-                    editor.apply()
-                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES)
-                } else {
-                    editor.putBoolean(SWITCH_CONDITION, false)
-                    editor.apply()
-                    AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO)
+        switchTheme = findViewById<SwitchCompat?>(R.id.switchTheme)
+            .apply {
+                isChecked = (applicationContext as App).applySavedThemeMode()
+                setOnCheckedChangeListener { _, isChecked ->
+                    (applicationContext as App).switchTheme(isChecked)
                 }
             }
-        }.also {
-            it.isChecked = isDarkModeOn()
-        }
-
 
         shareContainer = findViewById<ViewGroup?>(R.id.shareContainer).apply {
             setOnClickListener {
@@ -77,15 +64,5 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(agreementIntent)
             }
         }
-    }
-
-private fun isDarkModeOn(): Boolean {
-    val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-    return currentNightMode == Configuration.UI_MODE_NIGHT_YES
-}
-
-    companion object {
-       private const val SWITCH_ENABLED = "SWITCH_ENABLED"
-       private const val SWITCH_CONDITION = "switch_condition"
     }
 }

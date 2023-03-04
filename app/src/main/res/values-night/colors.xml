@@ -4,6 +4,8 @@
     <color name="button_color">#FFFFFF</color>
     <color name="button_text_color">#000000</color>
     <color name="icon_color">#000000</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="artist_name_color">#FFFFFF</color>
     <color name="track_name_color">#FFFFFF</color>
     <color name="search_edittext_color">@color/button_color</color>

@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
-
 class MainActivity : AppCompatActivity() {
     private lateinit var searchButton: Button
     private lateinit var mediaButton: Button
@@ -14,6 +13,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        (applicationContext as App).applySavedThemeMode()
+
         searchButton = findViewById<Button>(R.id.search_button).apply {
             setOnClickListener {
                 navigateTo(SearchActivity::class.java)
@@ -30,7 +32,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun navigateTo(clazz: Class<out AppCompatActivity>) {
         val intent = Intent(this, clazz)

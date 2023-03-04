@@ -11,5 +11,7 @@
         <attr name="search_icons_color" format="color" />
         <attr name="artist_name_color" format="color" />
         <attr name="track_name_color" format="color" />
+        <attr name="day_night_background" format="color" />
+        <attr name="day_night_text" format="color" />
     </declare-styleable>
 </resources>
