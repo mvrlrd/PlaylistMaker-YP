@@ -33,7 +33,7 @@
         app:srcCompat="@drawable/ic_arrow_icon" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/albumImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/black"
@@ -47,7 +47,7 @@
         app:srcCompat="@drawable/album_placeholder_image" />
 
     <TextView
-        android:id="@+id/songNamePlayer"
+        android:id="@+id/trackName"
         style="@style/TitleStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -56,10 +56,10 @@
         android:textStyle="normal"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/albumImageView" />
 
     <TextView
-        android:id="@+id/artistNamePlayer"
+        android:id="@+id/singerName"
         style="@style/TitleStyle"
         android:textSize="14sp"
         android:layout_width="0dp"
@@ -70,7 +70,7 @@
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/songNamePlayer" />
+        app:layout_constraintTop_toBottomOf="@+id/trackName" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -87,7 +87,7 @@
         app:maxImageSize="23dp"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/albumImageView" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/playButton"
