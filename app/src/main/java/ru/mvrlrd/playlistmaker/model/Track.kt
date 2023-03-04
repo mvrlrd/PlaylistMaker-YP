@@ -27,5 +27,6 @@ data class Track(
     override fun hashCode(): Int {
         return trackId
     }
+    fun getCoverArtwork() = image.replaceAfterLast('/',"512x512bb.jpg")
 }
 

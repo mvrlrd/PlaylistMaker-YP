@@ -71,7 +71,7 @@ class PlayerActivity : AppCompatActivity() {
 
         Glide
             .with(albumImage)
-            .load(track.image)
+            .load(track.getCoverArtwork())
             .placeholder(R.drawable.album_placeholder_image)
             .transform(CenterCrop(), RoundedCorners(albumImage.resources.getDimensionPixelSize(R.dimen.big_radius)))
             .into(albumImage)
