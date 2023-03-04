@@ -3,6 +3,7 @@ package ru.mvrlrd.playlistmaker
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextClock
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -22,6 +23,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var addButton: FloatingActionButton
     private lateinit var playButton: FloatingActionButton
     private lateinit var likeButton: FloatingActionButton
+    private lateinit var clockText: TextView
     private lateinit var duration: TextView
     private lateinit var album: TextView
     private lateinit var year: TextView
@@ -49,6 +51,8 @@ class PlayerActivity : AppCompatActivity() {
             setOnClickListener {  }
         }
 
+        clockText = findViewById(R.id.clockTrack)
+
         duration = findViewById(R.id.durationParam)
         album = findViewById(R.id.albumParam)
         year = findViewById(R.id.yearParam)
@@ -56,6 +60,7 @@ class PlayerActivity : AppCompatActivity() {
         country = findViewById(R.id.countryParam)
 
         val track = intent.getSerializableExtra("my_track") as Track
+
         trackNameText.text = track.trackName
         singerNameText.text = track.artistName
         duration.text = SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(track.trackTime.toLong())
