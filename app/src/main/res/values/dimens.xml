@@ -18,6 +18,7 @@
     <dimen name="radius">2dp</dimen>
     <dimen name="standart_padding">24dp</dimen>
     <dimen name="album_size">45dp</dimen>
+    <dimen name="info_padding">17dp</dimen>
 
 
 </resources>
