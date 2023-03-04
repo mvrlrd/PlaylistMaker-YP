@@ -6,18 +6,16 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
     private lateinit var albumImage: ImageView
     private lateinit var trackNameText: TextView
     private lateinit var singerNameText: TextView
-    private lateinit var addButton: Button
-    private lateinit var playButton: Button
-    private lateinit var likeButton: Button
+    private lateinit var addButton: FloatingActionButton
+    private lateinit var playButton: FloatingActionButton
+    private lateinit var likeButton: FloatingActionButton
     private lateinit var duration: TextView
     private lateinit var album: TextView
     private lateinit var year: TextView
@@ -34,13 +32,13 @@ class PlayerActivity : AppCompatActivity() {
         albumImage = findViewById(R.id.albumImageView)
         trackNameText = findViewById(R.id.trackName)
         singerNameText = findViewById(R.id.singerName)
-        addButton = findViewById<Button?>(R.id.button).apply {
+        addButton = findViewById<FloatingActionButton?>(R.id.button).apply {
             setOnClickListener {  }
         }
-        playButton = findViewById<Button?>(R.id.playButton).apply {
+        playButton = findViewById<FloatingActionButton?>(R.id.playButton).apply {
             setOnClickListener {  }
         }
-        likeButton = findViewById<Button?>(R.id.likeButton).apply {
+        likeButton = findViewById<FloatingActionButton?>(R.id.likeButton).apply {
             setOnClickListener {  }
         }
 
@@ -49,7 +47,5 @@ class PlayerActivity : AppCompatActivity() {
         year = findViewById(R.id.yearParam)
         genre = findViewById(R.id.genreParam)
         country = findViewById(R.id.countryParam)
-
-
     }
 }

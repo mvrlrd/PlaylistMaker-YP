@@ -1,11 +1,10 @@
 package ru.mvrlrd.playlistmaker
 
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -189,10 +188,11 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     }
 
     override fun trackOnClick(track: Track) {
-        writeTracksToSearchedHistory(track)
+        addToHistory(track)
+        navigateTo(PlayerActivity::class.java)
     }
 
-    private fun writeTracksToSearchedHistory(track: Track){
+    private fun addToHistory(track: Track){
         val searchedTracks = readTracksFromSearchedHistory()
         if (searchedTracks.contains(track)){
             searchedTracks.remove(track)
@@ -254,5 +254,10 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             }
         }
         return false
+    }
+
+    private fun navigateTo(clazz: Class<out AppCompatActivity>) {
+        val intent = Intent(this, clazz)
+        startActivity(intent)
     }
 }

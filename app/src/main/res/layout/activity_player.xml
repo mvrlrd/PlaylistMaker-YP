@@ -82,12 +82,13 @@
         android:layout_marginTop="132dp"
         android:backgroundTint="@color/bledniyFont"
         android:src="@drawable/baseline_add_to_photos_24"
-
         app:layout_constraintHorizontal_bias="0.5"
         app:maxImageSize="23dp"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="@+id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/albumImageView" />
+        app:layout_constraintTop_toBottomOf="@+id/albumImageView"
+        app:borderWidth="0dp"
+        android:clickable="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/playButton"
@@ -102,7 +103,10 @@
         app:layout_constraintStart_toEndOf="@+id/button"
         app:layout_constraintTop_toTopOf="@+id/button"
         app:maxImageSize="50dp"
-        app:tint="@color/white" />
+        app:tint="@color/white"
+        app:borderWidth="0dp"
+        android:clickable="true"
+        app:rippleColor="@color/white"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/likeButton"
@@ -116,6 +120,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/button"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintHorizontal_bias="0.5"
+        app:borderWidth="0dp"
+        android:clickable="true"
         />
 
     <!--заголовки инфо-->
