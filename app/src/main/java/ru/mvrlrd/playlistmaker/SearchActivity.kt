@@ -131,6 +131,11 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         historySharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        showHistory()
+    }
+
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
     private fun search(query: String) {
@@ -188,8 +193,9 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     }
 
     override fun trackOnClick(track: Track) {
-        addToHistory(track)
         navigateTo(PlayerActivity::class.java, track)
+        hideHistory()
+        addToHistory(track)
     }
 
     private fun addToHistory(track: Track){
