@@ -2,11 +2,14 @@ package ru.mvrlrd.playlistmaker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import ru.mvrlrd.playlistmaker.model.Track
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
@@ -21,6 +24,7 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var year: TextView
     private lateinit var genre: TextView
     private lateinit var country: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,5 +51,19 @@ class PlayerActivity : AppCompatActivity() {
         year = findViewById(R.id.yearParam)
         genre = findViewById(R.id.genreParam)
         country = findViewById(R.id.countryParam)
+
+        val track = intent.getSerializableExtra("my_track") as Track
+        duration.text = track.trackTime
+        album.text = track.album
+        year.text = track.year
+        genre.text = track.genre
+        country.text = track.country
+
+        Glide
+            .with(albumImage)
+            .load(track.image)
+            .placeholder(R.drawable.album_placeholder_image)
+            .transform(CenterCrop(), RoundedCorners(albumImage.resources.getDimensionPixelSize(R.dimen.radius)))
+            .into(albumImage)
     }
 }

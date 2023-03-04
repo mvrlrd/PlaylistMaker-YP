@@ -189,7 +189,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
 
     override fun trackOnClick(track: Track) {
         addToHistory(track)
-        navigateTo(PlayerActivity::class.java)
+        navigateTo(PlayerActivity::class.java, track)
     }
 
     private fun addToHistory(track: Track){
@@ -256,8 +256,9 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         return false
     }
 
-    private fun navigateTo(clazz: Class<out AppCompatActivity>) {
+    private fun navigateTo(clazz: Class<out AppCompatActivity>, track: Track) {
         val intent = Intent(this, clazz)
+        intent.putExtra("my_track", track)
         startActivity(intent)
     }
 }
