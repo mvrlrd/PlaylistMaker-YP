@@ -14,8 +14,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        (applicationContext as App).applySavedThemeMode()
-
         searchButton = findViewById<Button>(R.id.search_button).apply {
             setOnClickListener {
                 navigateTo(SearchActivity::class.java)

@@ -1,11 +1,10 @@
 package ru.mvrlrd.playlistmaker
 
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -24,11 +23,6 @@ import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
 import java.util.*
 import kotlin.collections.ArrayList
 
-
-private const val INPUT_TEXT = "INPUT_TEXT"
-private const val BASE_URL = "https://itunes.apple.com"
-private const val HISTORY_PREFERENCES = "history_preferences"
-private const val TRACK_LIST_KEY = "track_list_key"
 
 class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPreferenceChangeListener {
 
@@ -89,23 +83,12 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 doOnTextChanged { text, _, _, _ ->
                     query = text.toString()
                     clearIcon.visibility = clearButtonVisibility(text)
+                    if (searchEditText.hasFocus() && text?.isEmpty() == true) showHistory()
                 }
             }.apply {
                 setOnFocusChangeListener { _, hasFocus ->
                     if (hasFocus && searchEditText.text.isEmpty()) showHistory()
                 }
-            }.apply {
-                addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    }
-
-                    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                        if (searchEditText.hasFocus() && p0?.isEmpty() == true) showHistory()
-                    }
-
-                    override fun afterTextChanged(p0: Editable?) {
-                    }
-                })
             }
 
         clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
@@ -141,6 +124,11 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     override fun onStop() {
         super.onStop()
         historySharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showHistory()
     }
 
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
@@ -200,12 +188,13 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     }
 
     override fun trackOnClick(track: Track) {
-        writeTracksToSearchedHistory(track)
+        navigateTo(PlayerActivity::class.java, track)
+        hideHistory()
+        addToHistory(track)
     }
 
-    private fun writeTracksToSearchedHistory(track: Track){
-        val searchedTracks = arrayListOf<Track>()
-        searchedTracks.addAll(readTracksFromSearchedHistory())
+    private fun addToHistory(track: Track){
+        val searchedTracks = readTracksFromSearchedHistory()
         if (searchedTracks.contains(track)){
             searchedTracks.remove(track)
         }
@@ -225,11 +214,11 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             .edit()
             .clear()
             .apply()
-        hideHistory(null)
+        hideHistory()
     }
 
-    private fun hideHistory(trackList: ArrayList<Track>? ){
-        trackAdapter.setTracks(trackList)
+    private fun hideHistory(){
+        trackAdapter.setTracks(null)
         clearHistoryButton.visibility = View.GONE
         youSearchedTitle.visibility = View.GONE
     }
@@ -261,10 +250,23 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (searchEditText.text.toString().isNotEmpty()) {
                 lastQuery = searchEditText.text.toString()
-                hideHistory(null)
+                hideHistory()
                 search(lastQuery)
             }
         }
         return false
+    }
+
+    private fun navigateTo(clazz: Class<out AppCompatActivity>, track: Track) {
+        val intent = Intent(this, clazz)
+        intent.putExtra("my_track", track)
+        startActivity(intent)
+    }
+
+    companion object{
+        private const val INPUT_TEXT = "INPUT_TEXT"
+        private const val BASE_URL = "https://itunes.apple.com"
+        private const val HISTORY_PREFERENCES = "history_preferences"
+        private const val TRACK_LIST_KEY = "track_list_key"
     }
 }

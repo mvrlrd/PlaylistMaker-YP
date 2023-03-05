@@ -11,4 +11,5 @@
     <color name="track_name_color">#000000</color>
     <color name="search_edittext_color">@color/button_color</color>
     <color name="search_icons_color">#AEAFB4</color>
+    <color name="strange_grey">#40FFFFFF</color>
 </resources>

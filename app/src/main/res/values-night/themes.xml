@@ -11,6 +11,7 @@
         <item name="bledniy_text_color">@color/bledniyFont</item>
         <item name="day_night_background">@color/white</item>
         <item name="day_night_text">@color/black</item>
+        <item name="day_night_fab">@color/strange_grey</item>
         <item name="android:windowBackground">?attr/background_color</item>
     </style>
 </resources>
