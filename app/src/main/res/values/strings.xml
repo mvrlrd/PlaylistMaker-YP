@@ -25,5 +25,5 @@
     <string name="year">Год</string>
     <string name="genre">Жанр</string>
     <string name="country">Страна</string>
-
+    <string name="track_duration_time_format" translatable="false">mm:ss</string>
 </resources>

@@ -3,7 +3,6 @@ package ru.mvrlrd.playlistmaker
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 
-private const val IS_DARK_MODE_ON = "is_dark_mode_on"
 
 class SwitchTheme(private val sharedPreferences: SharedPreferences) {
 
@@ -24,5 +23,8 @@ class SwitchTheme(private val sharedPreferences: SharedPreferences) {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
+    }
+    companion object{
+        private const val IS_DARK_MODE_ON = "is_dark_mode_on"
     }
 }

@@ -3,7 +3,6 @@ package ru.mvrlrd.playlistmaker
 import android.app.Application
 import android.content.SharedPreferences
 
-private const val THEME_PREFERENCES = "current_theme"
 
 class App : Application() {
     private lateinit var themePreferences: SharedPreferences
@@ -21,5 +20,8 @@ class App : Application() {
     }
     fun applySavedThemeMode(){
         switchTheme.applyTheme()
+    }
+    companion object{
+        private const val THEME_PREFERENCES = "current_theme"
     }
 }

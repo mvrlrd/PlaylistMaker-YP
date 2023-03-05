@@ -24,11 +24,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-private const val INPUT_TEXT = "INPUT_TEXT"
-private const val BASE_URL = "https://itunes.apple.com"
-private const val HISTORY_PREFERENCES = "history_preferences"
-private const val TRACK_LIST_KEY = "track_list_key"
-
 class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPreferenceChangeListener {
 
     private val trackAdapter = TrackAdapter(this as TrackOnClickListener)
@@ -266,5 +261,12 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         val intent = Intent(this, clazz)
         intent.putExtra("my_track", track)
         startActivity(intent)
+    }
+
+    companion object{
+        private const val INPUT_TEXT = "INPUT_TEXT"
+        private const val BASE_URL = "https://itunes.apple.com"
+        private const val HISTORY_PREFERENCES = "history_preferences"
+        private const val TRACK_LIST_KEY = "track_list_key"
     }
 }

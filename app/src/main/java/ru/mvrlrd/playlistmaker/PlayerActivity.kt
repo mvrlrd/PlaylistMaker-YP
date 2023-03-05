@@ -3,7 +3,6 @@ package ru.mvrlrd.playlistmaker
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.TextClock
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -14,7 +13,7 @@ import ru.mvrlrd.playlistmaker.model.Track
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val TIME_FORMAT = "mm:ss"
+
 class PlayerActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
     private lateinit var albumImage: ImageView
@@ -63,7 +62,7 @@ class PlayerActivity : AppCompatActivity() {
 
         trackNameText.text = track.trackName
         singerNameText.text = track.artistName
-        duration.text = SimpleDateFormat(TIME_FORMAT, Locale.getDefault()).format(track.trackTime.toLong())
+        duration.text = SimpleDateFormat(resources.getString(R.string.track_duration_time_format), Locale.getDefault()).format(track.trackTime.toLong())
         album.text = track.album
         year.text = unparseDateToYear(track.year)
         genre.text = track.genre
