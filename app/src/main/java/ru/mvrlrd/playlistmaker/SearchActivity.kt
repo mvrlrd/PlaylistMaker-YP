@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +38,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     private lateinit var clearHistoryButton: Button
     private lateinit var youSearchedTitle: TextView
     private lateinit var toolbar: Toolbar
+    private lateinit var progressBar: ProgressBar
     private var query = ""
     private var lastQuery = ""
     private lateinit var historySharedPreferences: SharedPreferences
@@ -72,6 +74,8 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             setNavigationOnClickListener { onBackPressed() }
         }
 
+        progressBar = findViewById(R.id.progressBar)
+
         searchEditText = findViewById<EditText?>(R.id.searchEditText)
             .apply {
                 restoreTextFromBundle(textField = this, savedInstanceState = savedInstanceState)
@@ -103,6 +107,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
             setOnClickListener {
                 searchEditText.setText(lastQuery)
+                progressBar.isVisible = true
                 search(lastQuery)
             }
         }
@@ -139,9 +144,11 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 override fun onResponse(call: Call<TracksResponse>,
                                         response: Response<TracksResponse>
                 ) {
+                    progressBar.isVisible = false
                     when (response.code()) {
                         200 -> {
                             if (response.body()?.tracks?.isNotEmpty() == true) {
+
                                 trackAdapter.setTracks(response.body()?.tracks!!)
                                 placeHolder.visibility = View.GONE
                             } else {
@@ -155,6 +162,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                     }
                 }
                 override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                    progressBar.isVisible = false
                     showMessage(getString(R.string.error_connection), t.message.toString())
                 }
             })
@@ -251,6 +259,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             if (searchEditText.text.toString().isNotEmpty()) {
                 lastQuery = searchEditText.text.toString()
                 hideHistory()
+                progressBar.isVisible = true
                 search(lastQuery)
             }
         }
