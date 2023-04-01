@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -25,9 +27,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPreferenceChangeListener {
+class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
-    private val trackAdapter = TrackAdapter(this as TrackOnClickListener)
+    private lateinit var trackAdapter : TrackAdapter
     private lateinit var searchEditText: EditText
     private lateinit var clearIcon: ImageButton
     private lateinit var placeHolderMessage: TextView
@@ -39,6 +41,8 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     private lateinit var youSearchedTitle: TextView
     private lateinit var toolbar: Toolbar
     private lateinit var progressBar: ProgressBar
+    private var isClickAllowed = true
+    private lateinit var handler : Handler
     private var query = ""
     private var lastQuery = ""
     private lateinit var historySharedPreferences: SharedPreferences
@@ -54,6 +58,14 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 trackAdapter.setTracks(historyList)
             }
     }
+    private fun trackOnClickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +79,15 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 clearHistory()
             }
         }
+        trackAdapter = TrackAdapter{
+            if (trackOnClickDebounce()) {
+                navigateTo(PlayerActivity::class.java, it)
+                hideHistory()
+                addToHistory(it)
+            }
+        }
+        handler = Handler(Looper.getMainLooper())
+
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderImage = findViewById(R.id.placeholderImage)
         placeHolder = findViewById(R.id.placeHolder)
@@ -195,12 +216,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         }
     }
 
-    override fun trackOnClick(track: Track) {
-        navigateTo(PlayerActivity::class.java, track)
-        hideHistory()
-        addToHistory(track)
-    }
-
     private fun addToHistory(track: Track){
         val searchedTracks = readTracksFromSearchedHistory()
         if (searchedTracks.contains(track)){
@@ -277,5 +292,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         private const val BASE_URL = "https://itunes.apple.com"
         private const val HISTORY_PREFERENCES = "history_preferences"
         private const val TRACK_LIST_KEY = "track_list_key"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
