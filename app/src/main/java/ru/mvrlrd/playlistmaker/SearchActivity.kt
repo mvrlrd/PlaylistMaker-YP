@@ -48,7 +48,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
 
     private val searchRunnable = Runnable {
-        search() }
+        search()
+    }
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
