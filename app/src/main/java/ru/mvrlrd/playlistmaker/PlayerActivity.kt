@@ -115,10 +115,7 @@ class PlayerActivity : AppCompatActivity() {
             playerState = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
-            playButton.setImageResource(R.drawable.baseline_play_arrow_24)
-            playerState = STATE_PREPARED
-            handler.removeCallbacks(timerGo)
-            clockText.text = R.string.null_timer.toString()
+            refreshPlayersSettings()
         }
     }
 
@@ -134,6 +131,13 @@ class PlayerActivity : AppCompatActivity() {
         playButton.setImageResource(R.drawable.baseline_play_arrow_24)
         playerState = STATE_PAUSED
         handler.removeCallbacks(timerGo)
+    }
+
+    private fun refreshPlayersSettings(){
+        playButton.setImageResource(R.drawable.baseline_play_arrow_24)
+        playerState = STATE_PREPARED
+        handler.removeCallbacks(timerGo)
+        clockText.text = resources.getText(R.string.null_timer)
     }
 
     private fun playbackControl() {
