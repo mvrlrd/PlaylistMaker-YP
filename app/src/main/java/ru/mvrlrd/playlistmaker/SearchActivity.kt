@@ -46,6 +46,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private var query = ""
     private var lastQuery = ""
     private lateinit var historySharedPreferences: SharedPreferences
+    private val searchRunnable = Runnable {
+        search() }
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -65,6 +67,13 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
         }
         return current
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        if (query.isNotEmpty()){
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,8 +116,16 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             }.apply {
                 doOnTextChanged { text, _, _, _ ->
                     query = text.toString()
+                    if (query.isNotEmpty()){
+                        hideHistory()
+                    }else{
+                        progressBar.isVisible = false
+                        if (searchEditText.hasFocus() && text?.isEmpty() == true) {
+                            showHistory()
+                        }
+                    }
+                    searchDebounce()
                     clearIcon.visibility = clearButtonVisibility(text)
-                    if (searchEditText.hasFocus() && text?.isEmpty() == true) showHistory()
                 }
             }.apply {
                 setOnFocusChangeListener { _, hasFocus ->
@@ -128,8 +145,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
             setOnClickListener {
                 searchEditText.setText(lastQuery)
-                progressBar.isVisible = true
-                search(lastQuery)
+                search()
             }
         }
         recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
@@ -159,7 +175,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-    private fun search(query: String) {
+    private fun search() {
+        progressBar.isVisible = true
         itunesService.search(query)
             .enqueue(object : Callback<TracksResponse> {
                 override fun onResponse(call: Call<TracksResponse>,
@@ -169,7 +186,6 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                     when (response.code()) {
                         200 -> {
                             if (response.body()?.tracks?.isNotEmpty() == true) {
-
                                 trackAdapter.setTracks(response.body()?.tracks!!)
                                 placeHolder.visibility = View.GONE
                             } else {
@@ -248,6 +264,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
     private fun showHistory(){
         val historyList = readTracksFromSearchedHistory()
+        placeHolder.visibility = View.GONE
         if (historyList.isNotEmpty()){
             clearHistoryButton.visibility = View.VISIBLE
             youSearchedTitle.visibility = View.VISIBLE
@@ -265,7 +282,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             query = savedInstanceState.getString(INPUT_TEXT)!!
             if (query.isNotEmpty()) {
                 textField.setText(query)
-                search(query)
+                search()
             }
         }
     }
@@ -275,7 +292,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 lastQuery = searchEditText.text.toString()
                 hideHistory()
                 progressBar.isVisible = true
-                search(lastQuery)
+                search()
             }
         }
         return false
@@ -293,5 +310,6 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         private const val HISTORY_PREFERENCES = "history_preferences"
         private const val TRACK_LIST_KEY = "track_list_key"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 1000L
     }
 }
