@@ -13,7 +13,8 @@ data class Track(
     @SerializedName("collectionName")val album: String,
     @SerializedName("releaseDate")val year: String,
     @SerializedName("primaryGenreName")val genre: String,
-    val country: String
+    val country: String,
+    val previewUrl:String
 ): Serializable {
 
     override fun equals(other: Any?): Boolean {

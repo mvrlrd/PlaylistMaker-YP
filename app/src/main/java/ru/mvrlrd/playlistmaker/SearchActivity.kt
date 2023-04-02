@@ -45,6 +45,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private lateinit var handler : Handler
     private var query = ""
     private lateinit var historySharedPreferences: SharedPreferences
+
+
     private val searchRunnable = Runnable {
         search() }
     private val retrofit = Retrofit.Builder()

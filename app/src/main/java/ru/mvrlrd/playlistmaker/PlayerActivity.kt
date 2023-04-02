@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -15,6 +16,8 @@ import java.util.*
 
 
 class PlayerActivity : AppCompatActivity() {
+    private var playerState = STATE_DEFAULT
+
     private lateinit var backButton: ImageButton
     private lateinit var albumImage: ImageView
     private lateinit var trackNameText: TextView
@@ -28,11 +31,15 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var year: TextView
     private lateinit var genre: TextView
     private lateinit var country: TextView
+    private lateinit var mediaPlayer : MediaPlayer
+    private lateinit var track: Track
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
+
+        mediaPlayer = MediaPlayer()
 
         backButton = findViewById<ImageButton?>(R.id.backButton).apply {
             setOnClickListener { onBackPressed() }
@@ -44,7 +51,9 @@ class PlayerActivity : AppCompatActivity() {
             setOnClickListener {  }
         }
         playButton = findViewById<FloatingActionButton?>(R.id.playButton).apply {
-            setOnClickListener {  }
+            setOnClickListener {
+                playbackControl()
+            }
         }
         likeButton = findViewById<FloatingActionButton?>(R.id.likeButton).apply {
             setOnClickListener {  }
@@ -58,7 +67,7 @@ class PlayerActivity : AppCompatActivity() {
         genre = findViewById(R.id.genreParam)
         country = findViewById(R.id.countryParam)
 
-        val track = intent.getSerializableExtra("my_track") as Track
+        track = intent.getSerializableExtra("my_track") as Track
 
         trackNameText.text = track.trackName
         singerNameText.text = track.artistName
@@ -74,5 +83,64 @@ class PlayerActivity : AppCompatActivity() {
             .placeholder(R.drawable.album_placeholder_image)
             .transform(CenterCrop(), RoundedCorners(albumImage.resources.getDimensionPixelSize(R.dimen.big_radius)))
             .into(albumImage)
+
+        preparePlayer()
+    }
+
+    private fun preparePlayer() {
+        mediaPlayer.setDataSource(track.previewUrl)
+        mediaPlayer.prepareAsync()
+        mediaPlayer.setOnPreparedListener {
+            playButton.isEnabled = true
+            playerState = STATE_PREPARED
+        }
+        mediaPlayer.setOnCompletionListener {
+            playButton.setImageResource(R.drawable.baseline_play_arrow_24)
+            playerState = STATE_PREPARED
+        }
+    }
+
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playButton.setImageResource(R.drawable.baseline_pause_24)
+        playerState = STATE_PLAYING
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        playButton.setImageResource(R.drawable.baseline_play_arrow_24)
+        playerState = STATE_PAUSED
+    }
+
+    private fun playbackControl() {
+        when(playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+    }
+
+
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
     }
 }
+
+
+
