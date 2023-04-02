@@ -307,6 +307,6 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         private const val HISTORY_PREFERENCES = "history_preferences"
         private const val TRACK_LIST_KEY = "track_list_key"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SEARCH_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
