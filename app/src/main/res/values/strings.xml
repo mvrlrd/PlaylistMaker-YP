@@ -26,4 +26,5 @@
     <string name="genre">Жанр</string>
     <string name="country">Страна</string>
     <string name="track_duration_time_format" translatable="false">mm:ss</string>
+    <string name="null_timer" translatable="false">00:00</string>
 </resources>

@@ -19,7 +19,6 @@ import java.util.*
 
 class PlayerActivity : AppCompatActivity() {
     private var playerState = STATE_DEFAULT
-    private var time = 30
     private lateinit var handler: Handler
     private val timerGo =
         object : Runnable {
@@ -31,8 +30,6 @@ class PlayerActivity : AppCompatActivity() {
                 )
             }
         }
-
-
 
     private lateinit var backButton: ImageButton
     private lateinit var albumImage: ImageView
@@ -57,7 +54,6 @@ class PlayerActivity : AppCompatActivity() {
 
         mediaPlayer = MediaPlayer()
         handler = Handler(Looper.getMainLooper())
-
         backButton = findViewById<ImageButton?>(R.id.backButton).apply {
             setOnClickListener { onBackPressed() }
         }
@@ -122,10 +118,8 @@ class PlayerActivity : AppCompatActivity() {
             playButton.setImageResource(R.drawable.baseline_play_arrow_24)
             playerState = STATE_PREPARED
             handler.removeCallbacks(timerGo)
-            clockText.text = "00:30"
+            clockText.text = R.string.null_timer.toString()
         }
-
-
     }
 
     private fun startPlayer() {
@@ -165,25 +159,21 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun refreshTimer() {
-
-       val seconds = if (time>=10){
-            time--.toString()
-        }else{
-            "0${time--}"
-       }
-        clockText.text = "00:$seconds"
-
+        val time = SimpleDateFormat(TIMER_FORMAT, Locale.getDefault()).format(mediaPlayer.currentPosition)
+        clockText.text = time.toString()
     }
-
 
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
-        const val REFRESH_TIMER_DELAY_MILLIS = 1000L
+        const val REFRESH_TIMER_DELAY_MILLIS = 300L
+        private const val TIMER_FORMAT = "mm:ss"
     }
 }
+
+
 
 
 
