@@ -15,10 +15,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.mvrlrd.playlistmaker.model.Track
 import java.text.SimpleDateFormat
 import java.util.*
-
+import ru.mvrlrd.playlistmaker.PlayerState.*
 
 class PlayerActivity : AppCompatActivity() {
-    private var playerState = STATE_DEFAULT
+    private var playerState: PlayerState = STATE_DEFAULT
     private lateinit var handler: Handler
     private val timerGo =
         object : Runnable {
@@ -144,6 +144,9 @@ class PlayerActivity : AppCompatActivity() {
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
             }
+            STATE_DEFAULT -> {
+
+            }
         }
     }
 
@@ -164,13 +167,16 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
         const val REFRESH_TIMER_DELAY_MILLIS = 300L
         private const val TIMER_FORMAT = "mm:ss"
     }
+}
+
+enum class PlayerState{
+    STATE_DEFAULT,
+    STATE_PREPARED,
+    STATE_PLAYING,
+    STATE_PAUSED
 }
 
 
