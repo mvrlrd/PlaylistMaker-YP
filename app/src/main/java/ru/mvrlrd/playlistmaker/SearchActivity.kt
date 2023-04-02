@@ -44,7 +44,6 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private var isClickAllowed = true
     private lateinit var handler : Handler
     private var query = ""
-    private var lastQuery = ""
     private lateinit var historySharedPreferences: SharedPreferences
     private val searchRunnable = Runnable {
         search() }
@@ -144,7 +143,6 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
         refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
             setOnClickListener {
-                searchEditText.setText(lastQuery)
                 search()
             }
         }
@@ -289,7 +287,6 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (searchEditText.text.toString().isNotEmpty()) {
-                lastQuery = searchEditText.text.toString()
                 hideHistory()
                 progressBar.isVisible = true
                 search()
