@@ -263,6 +263,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         trackAdapter.setTracks(null)
         clearHistoryButton.visibility = View.GONE
         youSearchedTitle.visibility = View.GONE
+        placeHolder.visibility = View.GONE
+        refreshButton.visibility = View.GONE
     }
 
     private fun showHistory(){
