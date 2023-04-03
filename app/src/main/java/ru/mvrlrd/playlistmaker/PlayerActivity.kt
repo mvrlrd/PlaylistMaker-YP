@@ -67,7 +67,7 @@ class PlayerActivity : AppCompatActivity() {
             setOnClickListener {
                 playbackControl()
             }
-            }
+        }
 
         likeButton = findViewById<FloatingActionButton?>(R.id.likeButton).apply {
             setOnClickListener { }
@@ -166,13 +166,12 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun refreshTimer() {
-        val time = SimpleDateFormat(TIMER_FORMAT, Locale.getDefault()).format(mediaPlayer.currentPosition)
-        clockText.text = time.toString()
+        val time = formatTime(mediaPlayer.currentPosition)
+        clockText.text = time
     }
 
     companion object {
         const val REFRESH_TIMER_DELAY_MILLIS = 300L
-        private const val TIMER_FORMAT = "mm:ss"
     }
 }
 
