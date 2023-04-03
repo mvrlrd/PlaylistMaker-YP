@@ -119,7 +119,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 doOnTextChanged { text, _, _, _ ->
                     query = text.toString()
                     if (query.isNotEmpty()){
-                        hideHistory()
+
                     }else{
                         progressBar.isVisible = false
                         if (searchEditText.hasFocus() && text?.isEmpty() == true) {
@@ -177,6 +177,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
     private fun search() {
+        hideHistory()
         progressBar.isVisible = true
         itunesService.search(query)
             .enqueue(object : Callback<TracksResponse> {
