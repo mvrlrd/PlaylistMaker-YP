@@ -93,7 +93,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         trackAdapter = TrackAdapter{
             if (trackOnClickDebounce()) {
                 navigateTo(PlayerActivity::class.java, it)
-                hideHistory()
+                hideTrackList()
                 addToHistory(it)
             }
         }
@@ -177,7 +177,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
     private fun search() {
-        hideHistory()
+        hideTrackList()
         progressBar.isVisible = true
         itunesService.search(query)
             .enqueue(object : Callback<TracksResponse> {
@@ -255,10 +255,11 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             .edit()
             .clear()
             .apply()
-        hideHistory()
+        hideTrackList()
     }
 
-    private fun hideHistory(){
+
+    private fun hideTrackList(){
         trackAdapter.setTracks(null)
         clearHistoryButton.visibility = View.GONE
         youSearchedTitle.visibility = View.GONE
@@ -291,7 +292,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (searchEditText.text.toString().isNotEmpty()) {
-                hideHistory()
+                hideTrackList()
                 progressBar.isVisible = true
                 search()
             }
