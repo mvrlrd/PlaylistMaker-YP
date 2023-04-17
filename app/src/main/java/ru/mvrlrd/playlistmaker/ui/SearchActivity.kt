@@ -21,10 +21,11 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.mvrlrd.playlistmaker.PlayerActivity
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.data.model.Track
+import ru.mvrlrd.playlistmaker.data.model.TrackModel
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.data.network.ItunesApi
-import ru.mvrlrd.playlistmaker.data.network.TracksResponse
+import ru.mvrlrd.playlistmaker.domain.Track
+import ru.mvrlrd.playlistmaker.presenter.SearchPresenter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -47,6 +48,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private lateinit var handler : Handler
     private var query = ""
     private lateinit var historySharedPreferences: SharedPreferences
+
+    private val searchPresenter = SearchPresenter()
 
 
     private val searchRunnable = Runnable {
@@ -92,12 +95,19 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 clearHistory()
             }
         }
+
+
         trackAdapter = TrackAdapter{
             if (trackOnClickDebounce()) {
                 navigateTo(PlayerActivity::class.java, it)
                 hideTrackList()
                 addToHistory(it)
             }
+        }
+
+        searchPresenter.tracks.observe(this){
+            progressBar.visibility=View.GONE
+            trackAdapter.setTracks(it as ArrayList<Track>)
         }
         handler = Handler(Looper.getMainLooper())
 
@@ -181,32 +191,33 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private fun search() {
         hideTrackList()
         progressBar.isVisible = true
-        itunesService.search(query)
-            .enqueue(object : Callback<TracksResponse> {
-                override fun onResponse(call: Call<TracksResponse>,
-                                        response: Response<TracksResponse>
-                ) {
-                    progressBar.isVisible = false
-                    when (response.code()) {
-                        200 -> {
-                            if (response.body()?.tracks?.isNotEmpty() == true) {
-                                trackAdapter.setTracks(response.body()?.tracks!!)
-                                placeHolder.visibility = View.GONE
-                            } else {
-                                showMessage(getString(R.string.nothing_found), "")
-                            }
-                        }
-                        401 ->
-                            showMessage(getString(R.string.authentication_troubles), response.code().toString())
-                        else ->
-                            showMessage(getString(R.string.error_connection), response.code().toString())
-                    }
-                }
-                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                    progressBar.isVisible = false
-                    showMessage(getString(R.string.error_connection), t.message.toString())
-                }
-            })
+        searchPresenter.searchTrack(query)
+//        itunesService.search(query)
+//            .enqueue(object : Callback<TracksResponse> {
+//                override fun onResponse(call: Call<TracksResponse>,
+//                                        response: Response<TracksResponse>
+//                ) {
+//                    progressBar.isVisible = false
+//                    when (response.code()) {
+//                        200 -> {
+//                            if (response.body()?.trackModels?.isNotEmpty() == true) {
+//                                trackAdapter.setTracks(response.body()?.trackModels!!)
+//                                placeHolder.visibility = View.GONE
+//                            } else {
+//                                showMessage(getString(R.string.nothing_found), "")
+//                            }
+//                        }
+//                        401 ->
+//                            showMessage(getString(R.string.authentication_troubles), response.code().toString())
+//                        else ->
+//                            showMessage(getString(R.string.error_connection), response.code().toString())
+//                    }
+//                }
+//                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+//                    progressBar.isVisible = false
+//                    showMessage(getString(R.string.error_connection), t.message.toString())
+//                }
+//            })
     }
     private fun showMessage(text: String, additionalMessage: String) {
         if (text.isNotEmpty()) {
