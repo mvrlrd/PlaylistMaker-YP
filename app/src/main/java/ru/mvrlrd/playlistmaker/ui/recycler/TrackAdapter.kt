@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.recycler
+package ru.mvrlrd.playlistmaker.ui.recycler
 
 
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker
+package ru.mvrlrd.playlistmaker.ui
 
 
 import android.content.Intent
@@ -19,10 +19,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.mvrlrd.playlistmaker.PlayerActivity
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.model.Track
-import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
-import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
-import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
+import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
+import ru.mvrlrd.playlistmaker.network.ItunesApi
+import ru.mvrlrd.playlistmaker.network.TracksResponse
 import java.util.*
 import kotlin.collections.ArrayList
 
