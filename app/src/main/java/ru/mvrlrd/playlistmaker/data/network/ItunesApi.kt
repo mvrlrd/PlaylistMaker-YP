@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.retrofit
+package ru.mvrlrd.playlistmaker.data.network
 
 import retrofit2.Call
 import retrofit2.http.GET
