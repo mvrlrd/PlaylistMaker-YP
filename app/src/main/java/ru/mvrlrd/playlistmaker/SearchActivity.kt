@@ -5,11 +5,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,9 +27,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPreferenceChangeListener {
+class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
-    private val trackAdapter = TrackAdapter(this as TrackOnClickListener)
+    private lateinit var trackAdapter : TrackAdapter
     private lateinit var searchEditText: EditText
     private lateinit var clearIcon: ImageButton
     private lateinit var placeHolderMessage: TextView
@@ -37,9 +40,16 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
     private lateinit var clearHistoryButton: Button
     private lateinit var youSearchedTitle: TextView
     private lateinit var toolbar: Toolbar
+    private lateinit var progressBar: ProgressBar
+    private var isClickAllowed = true
+    private lateinit var handler : Handler
     private var query = ""
-    private var lastQuery = ""
     private lateinit var historySharedPreferences: SharedPreferences
+
+
+    private val searchRunnable = Runnable {
+        search()
+    }
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
@@ -51,6 +61,21 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 val historyList = readTracksFromSearchedHistory()
                 trackAdapter.setTracks(historyList)
             }
+    }
+    private fun trackOnClickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        if (query.isNotEmpty()){
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,12 +90,23 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                 clearHistory()
             }
         }
+        trackAdapter = TrackAdapter{
+            if (trackOnClickDebounce()) {
+                navigateTo(PlayerActivity::class.java, it)
+                hideTrackList()
+                addToHistory(it)
+            }
+        }
+        handler = Handler(Looper.getMainLooper())
+
         placeHolderMessage = findViewById(R.id.placeholderMessage)
         placeHolderImage = findViewById(R.id.placeholderImage)
         placeHolder = findViewById(R.id.placeHolder)
         toolbar = findViewById<Toolbar>(R.id.searchToolbar).apply {
             setNavigationOnClickListener { onBackPressed() }
         }
+
+        progressBar = findViewById(R.id.progressBar)
 
         searchEditText = findViewById<EditText?>(R.id.searchEditText)
             .apply {
@@ -82,8 +118,16 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             }.apply {
                 doOnTextChanged { text, _, _, _ ->
                     query = text.toString()
+                    if (query.isNotEmpty()){
+
+                    }else{
+                        progressBar.isVisible = false
+                        if (searchEditText.hasFocus() && text?.isEmpty() == true) {
+                            showHistory()
+                        }
+                    }
+                    searchDebounce()
                     clearIcon.visibility = clearButtonVisibility(text)
-                    if (searchEditText.hasFocus() && text?.isEmpty() == true) showHistory()
                 }
             }.apply {
                 setOnFocusChangeListener { _, hasFocus ->
@@ -102,8 +146,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         }
         refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
             setOnClickListener {
-                searchEditText.setText(lastQuery)
-                search(lastQuery)
+                search()
             }
         }
         recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
@@ -133,12 +176,15 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
 
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-    private fun search(query: String) {
+    private fun search() {
+        hideTrackList()
+        progressBar.isVisible = true
         itunesService.search(query)
             .enqueue(object : Callback<TracksResponse> {
                 override fun onResponse(call: Call<TracksResponse>,
                                         response: Response<TracksResponse>
                 ) {
+                    progressBar.isVisible = false
                     when (response.code()) {
                         200 -> {
                             if (response.body()?.tracks?.isNotEmpty() == true) {
@@ -155,6 +201,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
                     }
                 }
                 override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                    progressBar.isVisible = false
                     showMessage(getString(R.string.error_connection), t.message.toString())
                 }
             })
@@ -187,12 +234,6 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         }
     }
 
-    override fun trackOnClick(track: Track) {
-        navigateTo(PlayerActivity::class.java, track)
-        hideHistory()
-        addToHistory(track)
-    }
-
     private fun addToHistory(track: Track){
         val searchedTracks = readTracksFromSearchedHistory()
         if (searchedTracks.contains(track)){
@@ -214,17 +255,21 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             .edit()
             .clear()
             .apply()
-        hideHistory()
+        hideTrackList()
     }
 
-    private fun hideHistory(){
+
+    private fun hideTrackList(){
         trackAdapter.setTracks(null)
         clearHistoryButton.visibility = View.GONE
         youSearchedTitle.visibility = View.GONE
+        placeHolder.visibility = View.GONE
+        refreshButton.visibility = View.GONE
     }
 
     private fun showHistory(){
         val historyList = readTracksFromSearchedHistory()
+        placeHolder.visibility = View.GONE
         if (historyList.isNotEmpty()){
             clearHistoryButton.visibility = View.VISIBLE
             youSearchedTitle.visibility = View.VISIBLE
@@ -242,16 +287,16 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
             query = savedInstanceState.getString(INPUT_TEXT)!!
             if (query.isNotEmpty()) {
                 textField.setText(query)
-                search(query)
+                search()
             }
         }
     }
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (searchEditText.text.toString().isNotEmpty()) {
-                lastQuery = searchEditText.text.toString()
-                hideHistory()
-                search(lastQuery)
+                hideTrackList()
+                progressBar.isVisible = true
+                search()
             }
         }
         return false
@@ -268,5 +313,7 @@ class SearchActivity : AppCompatActivity(), TrackOnClickListener, OnSharedPrefer
         private const val BASE_URL = "https://itunes.apple.com"
         private const val HISTORY_PREFERENCES = "history_preferences"
         private const val TRACK_LIST_KEY = "track_list_key"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

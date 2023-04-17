@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import ru.mvrlrd.playlistmaker.TrackOnClickListener
 import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.formatTime
 import ru.mvrlrd.playlistmaker.model.Track
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class TrackAdapter(private val onClickListener: TrackOnClickListener): RecyclerView.Adapter<TrackViewHolder> () {
+class TrackAdapter(private val onClickListener: TrackClickListener): RecyclerView.Adapter<TrackViewHolder> () {
     val tracks: MutableList<Track> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_layout, parent, false)
@@ -26,10 +26,14 @@ class TrackAdapter(private val onClickListener: TrackOnClickListener): RecyclerV
     }
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
-        holder.itemView.setOnClickListener { onClickListener.trackOnClick(tracks[position]) }
+        holder.itemView.setOnClickListener { onClickListener.onTrackClick(tracks[position]) }
     }
     override fun getItemCount(): Int {
         return tracks.size
+    }
+
+    fun interface TrackClickListener {
+        fun onTrackClick(track: Track)
     }
 
     fun setTracks(newTrackList: ArrayList<Track>?) {
@@ -53,7 +57,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         trackName.text = track.trackName
         artistName.text = track.artistName
 //        artistName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ellipse_1, 0, 0, 0);
-        trackTime.text = SimpleDateFormat(trackTime.resources.getString(R.string.track_duration_time_format), Locale.getDefault()).format(track.trackTime.toLong())
+        trackTime.text = formatTime(track.trackTime.toInt())
         Glide
             .with(itemView)
             .load(track.image)
