@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.model
+package ru.mvrlrd.playlistmaker.data.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.formatTime
-import ru.mvrlrd.playlistmaker.model.Track
+import ru.mvrlrd.playlistmaker.data.model.Track
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

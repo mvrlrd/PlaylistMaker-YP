@@ -21,10 +21,10 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.mvrlrd.playlistmaker.PlayerActivity
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.model.Track
+import ru.mvrlrd.playlistmaker.data.model.Track
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
-import ru.mvrlrd.playlistmaker.network.ItunesApi
-import ru.mvrlrd.playlistmaker.network.TracksResponse
+import ru.mvrlrd.playlistmaker.data.network.ItunesApi
+import ru.mvrlrd.playlistmaker.data.network.TracksResponse
 import java.util.*
 import kotlin.collections.ArrayList
 
