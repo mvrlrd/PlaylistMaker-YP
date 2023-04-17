@@ -1,8 +1,6 @@
 package ru.mvrlrd.playlistmaker.data.model
 
 import android.media.MediaPlayer
-import ru.mvrlrd.playlistmaker.R
-
 import ru.mvrlrd.playlistmaker.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.domain.Track
 
@@ -11,23 +9,21 @@ class MyMediaPlayer(track: Track): PlayerInteractor {
     init {
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-////          playButton.isEnabled = true
-//            playerState = STATE_PREPARED
-        }
+    }
 
+
+    override fun preparePlayer(prepare: () -> Unit) {
+        mediaPlayer.setOnPreparedListener { prepare() }
     }
 
     override fun setOnCompletionListener(onComplete: () -> Unit) {
-//        mediaPlayer.setOnCompletionListener {
-////            onComplete()
-//        }
+        mediaPlayer.setOnCompletionListener {
+            onComplete()
+        }
     }
-
 
     override fun start() {
         mediaPlayer.start()
-
     }
 
     override fun pause() {

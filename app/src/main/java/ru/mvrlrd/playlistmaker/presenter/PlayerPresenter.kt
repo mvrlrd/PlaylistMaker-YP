@@ -12,45 +12,46 @@ class PlayerPresenter(track: Track, private val playerView: PlayerView) {
     private val myMediaPlayer: PlayerInteractor = MyMediaPlayer(track)
     private var playerState: PlayerState = STATE_DEFAULT
     init {
-//        onComplete()
+        preparePlayer()
+        setOnCompletionListener()
     }
 
     private fun start() {
         myMediaPlayer.start()
         playerState = STATE_PLAYING
-        playerView.onClickPlayButton(playerState)
-//        handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
+        playerView.handlePlayButton(playerState)
+        playerView.startPostDelay()
     }
     fun pause() {
         myMediaPlayer.pause()
         playerState = STATE_PAUSED
-        playerView.onClickPlayButton(playerState)
-//        handler.removeCallbacks(timerGo)
+        playerView.handlePlayButton(playerState)
+        playerView.removePostDelay()
     }
-
-
 
     fun onDestroy(){
         myMediaPlayer.onDestroy()
     }
 
     fun getCurrentPosition():String{
-//        return "formatTime(myMediaPlayer.getCurrentTime())"
-        return "00:03"
+        return formatTime(myMediaPlayer.getCurrentTime())
+
     }
 
-    private fun onComplete(){
+    private fun setOnCompletionListener() {
         myMediaPlayer.setOnCompletionListener {
-            println("_____))_))___))__))_")
             playerState = STATE_PREPARED
-            playerView.onClickPlayButton(playerState)
-
-//            handler.removeCallbacks(timerGo)
-//            clockText.text = resources.getText(R.string.null_timer)
+            playerView.handlePlayButton(playerState)
+            playerView.onCompletePlaying()
         }
     }
 
-
+    private fun preparePlayer(){
+        myMediaPlayer.preparePlayer {
+            playerView.enablePlayButton()
+            playerState = STATE_PREPARED
+        }
+    }
 
     fun playbackControl() {
         when (playerState) {
@@ -65,7 +66,6 @@ class PlayerPresenter(track: Track, private val playerView: PlayerView) {
             }
         }
     }
-
 }
 
 enum class PlayerState{

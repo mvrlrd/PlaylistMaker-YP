@@ -1,6 +1,5 @@
 package ru.mvrlrd.playlistmaker
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import ru.mvrlrd.playlistmaker.data.model.TrackModel
 import java.text.SimpleDateFormat
 import java.util.*
 import ru.mvrlrd.playlistmaker.domain.Track
@@ -21,12 +19,11 @@ import ru.mvrlrd.playlistmaker.presenter.PlayerState
 import ru.mvrlrd.playlistmaker.ui.PlayerView
 
 class PlayerActivity : AppCompatActivity(), PlayerView {
-//    private var playerState: PlayerState = STATE_DEFAULT
     private lateinit var handler: Handler
     private val timerGo =
         object : Runnable {
             override fun run() {
-                refreshTimer(playerPresenter.getCurrentPosition())
+                updateTimer(playerPresenter.getCurrentPosition())
                 handler.postDelayed(
                     this,
                     REFRESH_TIMER_DELAY_MILLIS,
@@ -35,7 +32,6 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
         }
 
     private lateinit var backButton: ImageButton
-
     private lateinit var albumImage: ImageView
     private lateinit var trackNameText: TextView
     private lateinit var singerNameText: TextView
@@ -48,21 +44,13 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
     private lateinit var year: TextView
     private lateinit var genre: TextView
     private lateinit var country: TextView
-//    private lateinit var mediaPlayer: MediaPlayer
     private lateinit var track: Track
-
     private lateinit var playerPresenter : PlayerPresenter
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
-
-
-//        mediaPlayer = MediaPlayer()
         handler = Handler(Looper.getMainLooper())
         backButton = findViewById<ImageButton?>(R.id.backButton).apply {
             setOnClickListener { onBackPressed() }
@@ -118,14 +106,6 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
             .into(albumImage)
     }
 
-
-
-
-
-
-
-
-
     override fun onPause() {
         super.onPause()
         playerPresenter.pause()
@@ -136,7 +116,7 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
         playerPresenter.onDestroy()
     }
 
-    override fun onClickPlayButton(state: PlayerState) {
+    override fun handlePlayButton(state: PlayerState) {
         when (state) {
             PlayerState.STATE_PLAYING -> {
                 playButton.setImageResource(R.drawable.baseline_pause_24)
@@ -146,7 +126,28 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
             }
         }
     }
-    override fun refreshTimer(time: String) {
+
+    override fun onCompletePlaying() {
+            handler.removeCallbacks(timerGo)
+            clockText.text = resources.getText(R.string.null_timer)
+    }
+
+
+    override fun removePostDelay() {
+        handler.removeCallbacks(timerGo)
+    }
+
+
+
+    override fun startPostDelay() {
+        handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
+    }
+
+    override fun enablePlayButton() {
+        playButton.isEnabled = true
+    }
+
+    override fun updateTimer(time: String) {
         clockText.text = time
     }
 

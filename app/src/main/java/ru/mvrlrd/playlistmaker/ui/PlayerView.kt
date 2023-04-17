@@ -3,7 +3,15 @@ package ru.mvrlrd.playlistmaker.ui
 import ru.mvrlrd.playlistmaker.presenter.PlayerState
 
 interface PlayerView {
-    fun onClickPlayButton(state: PlayerState)
-    fun refreshTimer(time: String)
+    fun handlePlayButton(state: PlayerState)
+    fun updateTimer(time: String)
+
+    fun enablePlayButton()
+
+    fun onCompletePlaying()
+
+    fun removePostDelay()
+
+    fun startPostDelay()
 
 }
