@@ -12,34 +12,34 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.formatTime
-import ru.mvrlrd.playlistmaker.data.model.TrackModel
+import ru.mvrlrd.playlistmaker.data.model.TrackDto
 import kotlin.collections.ArrayList
 
 
 class TrackAdapter(private val onClickListener: TrackClickListener): RecyclerView.Adapter<TrackViewHolder> () {
-    val trackModels: MutableList<TrackModel> = mutableListOf()
+    val trackDtos: MutableList<TrackDto> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_layout, parent, false)
         return TrackViewHolder(view)
     }
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(trackModels[position])
-        holder.itemView.setOnClickListener { onClickListener.onTrackClick(trackModels[position]) }
+        holder.bind(trackDtos[position])
+        holder.itemView.setOnClickListener { onClickListener.onTrackClick(trackDtos[position]) }
     }
     override fun getItemCount(): Int {
-        return trackModels.size
+        return trackDtos.size
     }
 
     fun interface TrackClickListener {
-        fun onTrackClick(trackModel: TrackModel)
+        fun onTrackClick(trackDto: TrackDto)
     }
 
-    fun setTracks(newTrackListModel: ArrayList<TrackModel>?) {
-        if (trackModels.isNotEmpty()) {
-            trackModels.clear()
+    fun setTracks(newTrackListModel: ArrayList<TrackDto>?) {
+        if (trackDtos.isNotEmpty()) {
+            trackDtos.clear()
         }
         newTrackListModel?.let {
-            trackModels.addAll(it)
+            trackDtos.addAll(it)
         }
         notifyDataSetChanged()
     }
@@ -51,14 +51,14 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val trackTime: TextView = itemView.findViewById(R.id.trackTime)
     private val albumImage: ImageView = itemView.findViewById(R.id.albumImage)
 
-    fun bind(trackModel: TrackModel) {
-        trackName.text = trackModel.trackName
-        artistName.text = trackModel.artistName
+    fun bind(trackDto: TrackDto) {
+        trackName.text = trackDto.trackName
+        artistName.text = trackDto.artistName
 //        artistName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ellipse_1, 0, 0, 0);
-        trackTime.text = formatTime(trackModel.trackTime.toInt())
+        trackTime.text = formatTime(trackDto.trackTime.toInt())
         Glide
             .with(itemView)
-            .load(trackModel.image)
+            .load(trackDto.image)
             .placeholder(R.drawable.album_placeholder_image)
             .transform(CenterCrop(), RoundedCorners(albumImage.resources.getDimensionPixelSize(R.dimen.radius)))
             .into(albumImage)

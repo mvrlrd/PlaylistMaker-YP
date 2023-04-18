@@ -1,7 +1,7 @@
 package ru.mvrlrd.playlistmaker.domain
 
 
-import ru.mvrlrd.playlistmaker.data.model.TrackModel
+import ru.mvrlrd.playlistmaker.data.model.TrackDto
 import java.io.Serializable
 
 data class Track(
@@ -18,7 +18,7 @@ data class Track(
 ) : Serializable {
 
     override fun equals(other: Any?): Boolean {
-        return if (other !is TrackModel) {
+        return if (other !is TrackDto) {
             false
         } else {
             other.trackId == trackId
