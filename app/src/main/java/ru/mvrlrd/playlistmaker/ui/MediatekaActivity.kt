@@ -1,9 +1,10 @@
-package ru.mvrlrd.playlistmaker
+package ru.mvrlrd.playlistmaker.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.tabs.TabLayout
+import ru.mvrlrd.playlistmaker.R
 
 class MediatekaActivity : AppCompatActivity() {
     private lateinit var toolbar: Toolbar

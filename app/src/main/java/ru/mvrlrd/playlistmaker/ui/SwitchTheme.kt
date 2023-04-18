@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker
+package ru.mvrlrd.playlistmaker.ui
 
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate

@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker
+package ru.mvrlrd.playlistmaker.ui
 
 
 import android.content.Intent
@@ -19,10 +19,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.mvrlrd.playlistmaker.model.Track
-import ru.mvrlrd.playlistmaker.recycler.TrackAdapter
-import ru.mvrlrd.playlistmaker.retrofit.ItunesApi
-import ru.mvrlrd.playlistmaker.retrofit.TracksResponse
+import ru.mvrlrd.playlistmaker.PlayerActivity
+import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.data.model.TrackModel
+import ru.mvrlrd.playlistmaker.data.model.mapToTrack
+import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
+import ru.mvrlrd.playlistmaker.data.network.ItunesApi
+import ru.mvrlrd.playlistmaker.data.network.TracksResponse
+import ru.mvrlrd.playlistmaker.domain.Track
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -92,7 +96,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
         trackAdapter = TrackAdapter{
             if (trackOnClickDebounce()) {
-                navigateTo(PlayerActivity::class.java, it)
+                navigateTo(PlayerActivity::class.java, it.mapToTrack())
                 hideTrackList()
                 addToHistory(it)
             }
@@ -187,8 +191,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                     progressBar.isVisible = false
                     when (response.code()) {
                         200 -> {
-                            if (response.body()?.tracks?.isNotEmpty() == true) {
-                                trackAdapter.setTracks(response.body()?.tracks!!)
+                            if (response.body()?.trackModels?.isNotEmpty() == true) {
+                                trackAdapter.setTracks(response.body()?.trackModels!!)
                                 placeHolder.visibility = View.GONE
                             } else {
                                 showMessage(getString(R.string.nothing_found), "")
@@ -234,12 +238,12 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
     }
 
-    private fun addToHistory(track: Track){
+    private fun addToHistory(trackModel: TrackModel){
         val searchedTracks = readTracksFromSearchedHistory()
-        if (searchedTracks.contains(track)){
-            searchedTracks.remove(track)
+        if (searchedTracks.contains(trackModel)){
+            searchedTracks.remove(trackModel)
         }
-        searchedTracks.add(0,track)
+        searchedTracks.add(0,trackModel)
         if (searchedTracks.size>10){
             searchedTracks.removeLast()
         }
@@ -277,9 +281,9 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
     }
 
-    private fun readTracksFromSearchedHistory(): ArrayList<Track>{
+    private fun readTracksFromSearchedHistory(): ArrayList<TrackModel>{
         val json = historySharedPreferences.getString(TRACK_LIST_KEY, null) ?: return arrayListOf()
-        return Gson().fromJson(json, Array<Track>::class.java).toCollection(ArrayList())
+        return Gson().fromJson(json, Array<TrackModel>::class.java).toCollection(ArrayList())
     }
 
     private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
@@ -302,9 +306,9 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         return false
     }
 
-    private fun navigateTo(clazz: Class<out AppCompatActivity>, track: Track) {
+    private fun navigateTo(clazz: Class<out AppCompatActivity>, trackModel: Track) {
         val intent = Intent(this, clazz)
-        intent.putExtra("my_track", track)
+        intent.putExtra("my_track", trackModel)
         startActivity(intent)
     }
 

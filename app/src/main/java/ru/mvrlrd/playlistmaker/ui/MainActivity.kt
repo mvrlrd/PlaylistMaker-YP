@@ -1,10 +1,11 @@
-package ru.mvrlrd.playlistmaker
+package ru.mvrlrd.playlistmaker.ui
 
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import ru.mvrlrd.playlistmaker.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var searchButton: Button
