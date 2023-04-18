@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.ui
+package ru.mvrlrd.playlistmaker
 
 
 import android.content.Intent
@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
-import ru.mvrlrd.playlistmaker.R
 
 
 class SettingsActivity : AppCompatActivity() {

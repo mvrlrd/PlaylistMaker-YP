@@ -1,10 +1,10 @@
-package ru.mvrlrd.playlistmaker.data.model
+package ru.mvrlrd.playlistmaker.model
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 
-data class TrackModel(
+data class Track(
     val trackId: Int,
     val trackName: String,
     val artistName: String,
@@ -18,7 +18,7 @@ data class TrackModel(
 ): Serializable {
 
     override fun equals(other: Any?): Boolean {
-        return if (other !is TrackModel){
+        return if (other !is Track){
             false
         }else{
             other.trackId == trackId
