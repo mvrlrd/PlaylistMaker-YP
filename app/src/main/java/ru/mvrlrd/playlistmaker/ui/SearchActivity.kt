@@ -21,11 +21,11 @@ import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.mvrlrd.playlistmaker.PlayerActivity
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.data.model.TrackModel
+import ru.mvrlrd.playlistmaker.data.model.TrackDto
 import ru.mvrlrd.playlistmaker.data.model.mapToTrack
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
-import ru.mvrlrd.playlistmaker.data.network.ItunesApi
-import ru.mvrlrd.playlistmaker.data.network.TracksResponse
+import ru.mvrlrd.playlistmaker.data.network.ItunesApiService
+import ru.mvrlrd.playlistmaker.data.network.TracksSearchResponse
 import ru.mvrlrd.playlistmaker.domain.Track
 import java.util.*
 import kotlin.collections.ArrayList
@@ -58,7 +58,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    private val itunesService = retrofit.create(ItunesApi::class.java)
+    private val itunesService = retrofit.create(ItunesApiService::class.java)
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
             if (clearHistoryButton.visibility == View.VISIBLE) {
@@ -184,15 +184,15 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         hideTrackList()
         progressBar.isVisible = true
         itunesService.search(query)
-            .enqueue(object : Callback<TracksResponse> {
-                override fun onResponse(call: Call<TracksResponse>,
-                                        response: Response<TracksResponse>
+            .enqueue(object : Callback<TracksSearchResponse> {
+                override fun onResponse(call: Call<TracksSearchResponse>,
+                                        response: Response<TracksSearchResponse>
                 ) {
                     progressBar.isVisible = false
                     when (response.code()) {
                         200 -> {
-                            if (response.body()?.trackModels?.isNotEmpty() == true) {
-                                trackAdapter.setTracks(response.body()?.trackModels!!)
+                            if (response.body()?.trackDtos?.isNotEmpty() == true) {
+                                trackAdapter.setTracks(response.body()?.trackDtos!!)
                                 placeHolder.visibility = View.GONE
                             } else {
                                 showMessage(getString(R.string.nothing_found), "")
@@ -204,7 +204,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                             showMessage(getString(R.string.error_connection), response.code().toString())
                     }
                 }
-                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                override fun onFailure(call: Call<TracksSearchResponse>, t: Throwable) {
                     progressBar.isVisible = false
                     showMessage(getString(R.string.error_connection), t.message.toString())
                 }
@@ -238,12 +238,12 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
     }
 
-    private fun addToHistory(trackModel: TrackModel){
+    private fun addToHistory(trackDto: TrackDto){
         val searchedTracks = readTracksFromSearchedHistory()
-        if (searchedTracks.contains(trackModel)){
-            searchedTracks.remove(trackModel)
+        if (searchedTracks.contains(trackDto)){
+            searchedTracks.remove(trackDto)
         }
-        searchedTracks.add(0,trackModel)
+        searchedTracks.add(0,trackDto)
         if (searchedTracks.size>10){
             searchedTracks.removeLast()
         }
@@ -281,9 +281,9 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
     }
 
-    private fun readTracksFromSearchedHistory(): ArrayList<TrackModel>{
+    private fun readTracksFromSearchedHistory(): ArrayList<TrackDto>{
         val json = historySharedPreferences.getString(TRACK_LIST_KEY, null) ?: return arrayListOf()
-        return Gson().fromJson(json, Array<TrackModel>::class.java).toCollection(ArrayList())
+        return Gson().fromJson(json, Array<TrackDto>::class.java).toCollection(ArrayList())
     }
 
     private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
