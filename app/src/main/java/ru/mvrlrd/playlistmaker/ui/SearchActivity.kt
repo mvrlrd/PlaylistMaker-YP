@@ -52,7 +52,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         search()
     }
 
-    private val tracksInteractor = Creator.provideTracksInteractor()
+    private val tracksInteractor = Creator.provideTracksInteractor(this)
 //    private val retrofit = Retrofit.Builder()
 //        .baseUrl(BASE_URL)
 //        .addConverterFactory(GsonConverterFactory.create())
