@@ -191,8 +191,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                     progressBar.isVisible = false
                     when (response.code()) {
                         200 -> {
-                            if (response.body()?.trackDtos?.isNotEmpty() == true) {
-                                trackAdapter.setTracks(response.body()?.trackDtos!!)
+                            if (response.body()?.trackDtoList?.isNotEmpty() == true) {
+                                trackAdapter.setTracks(response.body()?.trackDtoList!!)
                                 placeHolder.visibility = View.GONE
                             } else {
                                 showMessage(getString(R.string.nothing_found), "")
