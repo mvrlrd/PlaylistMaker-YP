@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.ui
+package ru.mvrlrd.playlistmaker.ui.search
 
 
 import android.content.Intent
@@ -10,10 +10,12 @@ import android.os.Looper
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -28,7 +30,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
+class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     private lateinit var trackAdapter : TrackAdapter
     private lateinit var searchEditText: EditText
@@ -46,18 +48,12 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private lateinit var handler : Handler
     private var query = ""
     private lateinit var historySharedPreferences: SharedPreferences
-
-
     private val searchRunnable = Runnable {
-        search()
-    }
 
+//        search()
+    }
+    private lateinit var viewModel : SearchViewModel
     private val tracksInteractor = Creator.provideTracksInteractor(this)
-//    private val retrofit = Retrofit.Builder()
-//        .baseUrl(BASE_URL)
-//        .addConverterFactory(GsonConverterFactory.create())
-//        .build()
-//    private val itunesService = retrofit.create(ItunesApiService::class.java)
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
             if (clearHistoryButton.visibility == View.VISIBLE) {
@@ -84,6 +80,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         youSearchedTitle = findViewById(R.id.youSearchedTitle)
         historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE).apply {
             registerOnSharedPreferenceChangeListener(this@SearchActivity as OnSharedPreferenceChangeListener)
@@ -100,6 +98,10 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
                 addToHistory(it)
             }
         }
+        viewModel.tracksLiveData.observe(this){
+            trackAdapter.setTracks(it as ArrayList<Track>)
+        }
+
         handler = Handler(Looper.getMainLooper())
 
         placeHolderMessage = findViewById(R.id.placeholderMessage)
@@ -149,7 +151,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
         refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
             setOnClickListener {
-                search()
+//                search()
             }
         }
         recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
@@ -284,7 +286,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             query = savedInstanceState.getString(INPUT_TEXT)!!
             if (query.isNotEmpty()) {
                 textField.setText(query)
-                search()
+//                search()
             }
         }
     }
@@ -293,7 +295,8 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
             if (searchEditText.text.toString().isNotEmpty()) {
                 hideTrackList()
                 progressBar.isVisible = true
-                search()
+                viewModel.searchRequest(query)
+//                search()
             }
         }
         return false

@@ -5,7 +5,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.activity.ComponentActivity
 import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.ui.search.SearchActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var searchButton: Button
@@ -17,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         searchButton = findViewById<Button>(R.id.search_button).apply {
             setOnClickListener {
-                navigateTo(SearchActivity::class.java)
+                navigateToC(SearchActivity::class.java)
             }
         }
         mediaButton = findViewById<Button>(R.id.mediateka_button).apply {
@@ -33,6 +35,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateTo(clazz: Class<out AppCompatActivity>) {
+        val intent = Intent(this, clazz)
+        startActivity(intent)
+    }
+    private fun navigateToC(clazz: Class<out ComponentActivity>) {
         val intent = Intent(this, clazz)
         startActivity(intent)
     }

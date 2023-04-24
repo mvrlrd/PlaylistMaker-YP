@@ -25,7 +25,7 @@
             android:name=".ui.MediatekaActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.SearchActivity"
+            android:name=".ui.search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".ui.SettingsActivity"
