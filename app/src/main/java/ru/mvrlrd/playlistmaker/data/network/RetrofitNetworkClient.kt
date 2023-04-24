@@ -21,7 +21,7 @@ class RetrofitNetworkClient(private val context: Context): NetworkClient {
 
     override fun doRequest(dto: Any): Response {
         if (!isConnected()){
-            return Response().apply { resultCode = -1 }
+            return Response().apply { resultCode = NO_INTERNET_CONNECTION_CODE }
         }
         return if (dto is TracksSearchRequest) {
             val resp = itunesService.search(dto.query).execute()

@@ -183,42 +183,25 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         hideTrackList()
         progressBar.isVisible = true
         tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer{
-            override fun consume(foundTracks: List<Track>) {
-                handler.post{
-                    progressBar.isVisible = false
-                    placeHolder.visibility = View.GONE
-                    trackAdapter.setTracks(foundTracks as ArrayList<Track>)
-
+            override fun consume(foundTracks: List<Track>?, errorMessage: String?, code: Int) {
+                handler.post {
+                    progressBar.visibility = View.GONE
+                    when (code) {
+                        200 -> {
+                            placeHolder.visibility = View.GONE
+                            trackAdapter.setTracks(foundTracks as ArrayList<Track>)
+                            if (foundTracks.isNullOrEmpty()) {
+                                showMessage(getString(R.string.nothing_found), "")
+                            }
+                        }
+                        else -> {
+                            placeHolder.visibility = View.VISIBLE
+                            showMessage(errorMessage!!, code.toString())
+                        }
+                    }
                 }
             }
-
         })
-//        itunesService.search(query)
-//            .enqueue(object : Callback<TracksSearchResponse> {
-//                override fun onResponse(call: Call<TracksSearchResponse>,
-//                                        response: Response<TracksSearchResponse>
-//                ) {
-//                    progressBar.isVisible = false
-//                    when (response.code()) {
-//                        200 -> {
-//                            if (response.body()?.results?.isNotEmpty() == true) {
-//                                trackAdapter.setTracks(response.body()?.results!!)
-//                                placeHolder.visibility = View.GONE
-//                            } else {
-//                                showMessage(getString(R.string.nothing_found), "")
-//                            }
-//                        }
-//                        401 ->
-//                            showMessage(getString(R.string.authentication_troubles), response.code().toString())
-//                        else ->
-//                            showMessage(getString(R.string.error_connection), response.code().toString())
-//                    }
-//                }
-//                override fun onFailure(call: Call<TracksSearchResponse>, t: Throwable) {
-//                    progressBar.isVisible = false
-//                    showMessage(getString(R.string.error_connection), t.message.toString())
-//                }
-//            })
     }
     private fun showMessage(text: String, additionalMessage: String) {
         if (text.isNotEmpty()) {
