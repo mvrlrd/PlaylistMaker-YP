@@ -18,15 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
+import ru.mvrlrd.playlistmaker.Creator
 import ru.mvrlrd.playlistmaker.PlayerActivity
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.data.model.TrackDto
-import ru.mvrlrd.playlistmaker.data.model.mapToTrack
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
-import ru.mvrlrd.playlistmaker.data.network.ItunesApiService
-import ru.mvrlrd.playlistmaker.data.network.TracksSearchResponse
 import ru.mvrlrd.playlistmaker.domain.Track
+import ru.mvrlrd.playlistmaker.domain.TracksInteractor
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -54,11 +51,13 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private val searchRunnable = Runnable {
         search()
     }
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    private val itunesService = retrofit.create(ItunesApiService::class.java)
+
+    private val tracksInteractor = Creator.provideTracksInteractor()
+//    private val retrofit = Retrofit.Builder()
+//        .baseUrl(BASE_URL)
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
+//    private val itunesService = retrofit.create(ItunesApiService::class.java)
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
             if (clearHistoryButton.visibility == View.VISIBLE) {
@@ -96,7 +95,7 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
         trackAdapter = TrackAdapter{
             if (trackOnClickDebounce()) {
-                navigateTo(PlayerActivity::class.java, it.mapToTrack())
+                navigateTo(PlayerActivity::class.java, it)
                 hideTrackList()
                 addToHistory(it)
             }
@@ -183,32 +182,43 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
     private fun search() {
         hideTrackList()
         progressBar.isVisible = true
-        itunesService.search(query)
-            .enqueue(object : Callback<TracksSearchResponse> {
-                override fun onResponse(call: Call<TracksSearchResponse>,
-                                        response: Response<TracksSearchResponse>
-                ) {
+        tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer{
+            override fun consume(foundTracks: List<Track>) {
+                handler.post{
                     progressBar.isVisible = false
-                    when (response.code()) {
-                        200 -> {
-                            if (response.body()?.trackDtoList?.isNotEmpty() == true) {
-                                trackAdapter.setTracks(response.body()?.trackDtoList!!)
-                                placeHolder.visibility = View.GONE
-                            } else {
-                                showMessage(getString(R.string.nothing_found), "")
-                            }
-                        }
-                        401 ->
-                            showMessage(getString(R.string.authentication_troubles), response.code().toString())
-                        else ->
-                            showMessage(getString(R.string.error_connection), response.code().toString())
-                    }
+                    placeHolder.visibility = View.GONE
+                    trackAdapter.setTracks(foundTracks as ArrayList<Track>)
+
                 }
-                override fun onFailure(call: Call<TracksSearchResponse>, t: Throwable) {
-                    progressBar.isVisible = false
-                    showMessage(getString(R.string.error_connection), t.message.toString())
-                }
-            })
+            }
+
+        })
+//        itunesService.search(query)
+//            .enqueue(object : Callback<TracksSearchResponse> {
+//                override fun onResponse(call: Call<TracksSearchResponse>,
+//                                        response: Response<TracksSearchResponse>
+//                ) {
+//                    progressBar.isVisible = false
+//                    when (response.code()) {
+//                        200 -> {
+//                            if (response.body()?.results?.isNotEmpty() == true) {
+//                                trackAdapter.setTracks(response.body()?.results!!)
+//                                placeHolder.visibility = View.GONE
+//                            } else {
+//                                showMessage(getString(R.string.nothing_found), "")
+//                            }
+//                        }
+//                        401 ->
+//                            showMessage(getString(R.string.authentication_troubles), response.code().toString())
+//                        else ->
+//                            showMessage(getString(R.string.error_connection), response.code().toString())
+//                    }
+//                }
+//                override fun onFailure(call: Call<TracksSearchResponse>, t: Throwable) {
+//                    progressBar.isVisible = false
+//                    showMessage(getString(R.string.error_connection), t.message.toString())
+//                }
+//            })
     }
     private fun showMessage(text: String, additionalMessage: String) {
         if (text.isNotEmpty()) {
@@ -238,12 +248,12 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
     }
 
-    private fun addToHistory(trackDto: TrackDto){
+    private fun addToHistory(track: Track){
         val searchedTracks = readTracksFromSearchedHistory()
-        if (searchedTracks.contains(trackDto)){
-            searchedTracks.remove(trackDto)
+        if (searchedTracks.contains(track)){
+            searchedTracks.remove(track)
         }
-        searchedTracks.add(0,trackDto)
+        searchedTracks.add(0,track)
         if (searchedTracks.size>10){
             searchedTracks.removeLast()
         }
@@ -281,9 +291,9 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
         }
     }
 
-    private fun readTracksFromSearchedHistory(): ArrayList<TrackDto>{
+    private fun readTracksFromSearchedHistory(): ArrayList<Track>{
         val json = historySharedPreferences.getString(TRACK_LIST_KEY, null) ?: return arrayListOf()
-        return Gson().fromJson(json, Array<TrackDto>::class.java).toCollection(ArrayList())
+        return Gson().fromJson(json, Array<Track>::class.java).toCollection(ArrayList())
     }
 
     private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
@@ -314,7 +324,6 @@ class SearchActivity : AppCompatActivity(), OnSharedPreferenceChangeListener {
 
     companion object{
         private const val INPUT_TEXT = "INPUT_TEXT"
-        private const val BASE_URL = "https://itunes.apple.com"
         private const val HISTORY_PREFERENCES = "history_preferences"
         private const val TRACK_LIST_KEY = "track_list_key"
         private const val CLICK_DEBOUNCE_DELAY = 1000L

@@ -18,7 +18,7 @@ data class Track(
 ) : Serializable {
 
     override fun equals(other: Any?): Boolean {
-        return if (other !is TrackDto) {
+        return if (other !is Track) {
             false
         } else {
             other.trackId == trackId
