@@ -12,16 +12,14 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import retrofit2.*
 import ru.mvrlrd.playlistmaker.PlayerActivity
-import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.domain.Track
 import java.util.*
@@ -31,31 +29,22 @@ import kotlin.collections.ArrayList
 class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     private lateinit var trackAdapter : TrackAdapter
-    private lateinit var searchEditText: EditText
-    private lateinit var clearIcon: ImageButton
-    private lateinit var placeHolderMessage: TextView
-    private lateinit var placeHolderImage: ImageView
-    private lateinit var placeHolder : LinearLayout
-    private lateinit var recyclerView:RecyclerView
-    private lateinit var refreshButton: Button
-    private lateinit var clearHistoryButton: Button
-    private lateinit var youSearchedTitle: TextView
-    private lateinit var toolbar: Toolbar
-    private lateinit var progressBar: ProgressBar
+
     private var isClickAllowed = true
     private lateinit var handler : Handler
     private var query = ""
     private lateinit var historySharedPreferences: SharedPreferences
     private val searchRunnable = Runnable {
         hideTrackList()
-        progressBar.isVisible = true
+        binding.progressBar.isVisible = true
         viewModel.searchRequest(query)
-//        search()
     }
+
+    private lateinit var binding: ActivitySearchBinding
     private lateinit var viewModel : SearchViewModel
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
-            if (clearHistoryButton.visibility == View.VISIBLE) {
+            if (binding.clearHistoryButton.visibility == View.VISIBLE) {
                 val historyList = readTracksFromSearchedHistory()
                 trackAdapter.setTracks(historyList)
             }
@@ -78,19 +67,20 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
 
-        youSearchedTitle = findViewById(R.id.youSearchedTitle)
         historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE).apply {
             registerOnSharedPreferenceChangeListener(this@SearchActivity as OnSharedPreferenceChangeListener)
         }
-        clearHistoryButton = findViewById<Button?>(R.id.clearHistoryButton).apply {
+        binding.clearHistoryButton.apply {
             setOnClickListener{
                 clearHistory()
             }
         }
+
         trackAdapter = TrackAdapter{
             if (trackOnClickDebounce()) {
                 navigateTo(PlayerActivity::class.java, it)
@@ -99,22 +89,16 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
             }
         }
         viewModel.tracksLiveData.observe(this){
-            progressBar.isVisible = false
+            binding.progressBar.isVisible = false
             trackAdapter.setTracks(it as ArrayList<Track>)
         }
 
         handler = Handler(Looper.getMainLooper())
 
-        placeHolderMessage = findViewById(R.id.placeholderMessage)
-        placeHolderImage = findViewById(R.id.placeholderImage)
-        placeHolder = findViewById(R.id.placeHolder)
-        toolbar = findViewById<Toolbar>(R.id.searchToolbar).apply {
+        binding.searchToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }
-
-        progressBar = findViewById(R.id.progressBar)
-
-        searchEditText = findViewById<EditText?>(R.id.searchEditText)
+                binding.searchEditText
             .apply {
                 restoreTextFromBundle(textField = this, savedInstanceState = savedInstanceState)
             }.apply {
@@ -127,35 +111,35 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
                     if (query.isNotEmpty()){
 
                     }else{
-                        progressBar.isVisible = false
-                        if (searchEditText.hasFocus() && text?.isEmpty() == true) {
+                        binding.progressBar.isVisible = false
+                        if (binding.searchEditText.hasFocus() && text?.isEmpty() == true) {
                             showHistory()
                         }
                     }
                     searchDebounce()
-                    clearIcon.visibility = clearButtonVisibility(text)
+                    binding.clearTextButton.visibility = clearButtonVisibility(text)
                 }
             }.apply {
                 setOnFocusChangeListener { _, hasFocus ->
-                    if (hasFocus && searchEditText.text.isEmpty()) showHistory()
+                    if (hasFocus && binding.searchEditText.text.isEmpty()) showHistory()
                 }
             }
 
-        clearIcon = findViewById<ImageButton?>(R.id.clearTextButton).apply {
+        binding.clearTextButton.apply {
             setOnClickListener {
-                searchEditText.text.clear()
+                binding.searchEditText.text.clear()
                 trackAdapter.setTracks(null)
-                placeHolder.visibility = View.GONE
-                searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                binding.placeHolder.visibility = View.GONE
+                binding.searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
                 showHistory()
             }
         }
-        refreshButton = findViewById<Button?>(R.id.refreshButton).apply {
+        binding.refreshButton.apply {
             setOnClickListener {
 //                search()
             }
         }
-        recyclerView = findViewById<RecyclerView>(R.id.tracksRecyclerView).apply {
+        binding.tracksRecyclerView.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
@@ -182,57 +166,33 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-//    private fun search() {
-//        hideTrackList()
-//        progressBar.isVisible = true
-//        tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer{
-//            override fun consume(foundTracks: List<Track>?, errorMessage: String?, code: Int) {
-//                handler.post {
-//                    progressBar.visibility = View.GONE
-//                    when (code) {
-//                        200 -> {
-//                            placeHolder.visibility = View.GONE
-//                            trackAdapter.setTracks(foundTracks as ArrayList<Track>)
-//                            if (foundTracks.isNullOrEmpty()) {
-//                                showMessage(getString(R.string.nothing_found), "")
-//                            }
-//                        }
-//                        else -> {
-//                            placeHolder.visibility = View.VISIBLE
-//                            showMessage(errorMessage!!, code.toString())
-//                        }
-//                    }
+//    private fun showMessage(text: String, additionalMessage: String) {
+//        if (text.isNotEmpty()) {
+//            val image = when (text) {
+//                getString(R.string.nothing_found) -> {
+//                    binding.refreshButton.visibility = View.GONE
+//                    R.drawable.nothing_found
+//                }
+//                getString(R.string.error_connection) -> {
+//                    binding.refreshButton.visibility = View.VISIBLE
+//                    R.drawable.connection_error
+//                }
+//                else -> {
+//                    R.drawable.connection_error
 //                }
 //            }
-//        })
+//            binding.placeholderImage.setImageResource(image)
+//            binding.placeholderMessage.text = text
+//            binding.placeHolder.visibility = View.VISIBLE
+//            trackAdapter.setTracks(null)
+//            if (additionalMessage.isNotEmpty()) {
+//                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
+//                    .show()
+//            }
+//        } else {
+//            binding.placeHolder.visibility = View.GONE
+//        }
 //    }
-    private fun showMessage(text: String, additionalMessage: String) {
-        if (text.isNotEmpty()) {
-            val image = when (text) {
-                getString(R.string.nothing_found) -> {
-                    refreshButton.visibility = View.GONE
-                    R.drawable.nothing_found
-                }
-                getString(R.string.error_connection) -> {
-                    refreshButton.visibility = View.VISIBLE
-                    R.drawable.connection_error
-                }
-                else -> {
-                    R.drawable.connection_error
-                }
-            }
-            placeHolderImage.setImageResource(image)
-            placeHolderMessage.text = text
-            placeHolder.visibility = View.VISIBLE
-            trackAdapter.setTracks(null)
-            if (additionalMessage.isNotEmpty()) {
-                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
-                    .show()
-            }
-        } else {
-            placeHolder.visibility = View.GONE
-        }
-    }
 
     private fun addToHistory(track: Track){
         val searchedTracks = readTracksFromSearchedHistory()
@@ -261,18 +221,18 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     private fun hideTrackList(){
         trackAdapter.setTracks(null)
-        clearHistoryButton.visibility = View.GONE
-        youSearchedTitle.visibility = View.GONE
-        placeHolder.visibility = View.GONE
-        refreshButton.visibility = View.GONE
+        binding.clearTextButton.visibility = View.GONE
+        binding.youSearchedTitle.visibility = View.GONE
+        binding.placeHolder.visibility = View.GONE
+        binding.refreshButton.visibility = View.GONE
     }
 
     private fun showHistory(){
         val historyList = readTracksFromSearchedHistory()
-        placeHolder.visibility = View.GONE
+        binding.placeHolder.visibility = View.GONE
         if (historyList.isNotEmpty()){
-            clearHistoryButton.visibility = View.VISIBLE
-            youSearchedTitle.visibility = View.VISIBLE
+            binding.clearTextButton.visibility = View.VISIBLE
+            binding.youSearchedTitle.visibility = View.VISIBLE
             trackAdapter.setTracks(historyList)
         }
     }
@@ -293,9 +253,9 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
     }
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
         if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (searchEditText.text.toString().isNotEmpty()) {
+            if (binding.searchEditText.text.toString().isNotEmpty()) {
                 hideTrackList()
-                progressBar.isVisible = true
+                binding.progressBar.isVisible = true
                 viewModel.searchRequest(query)
 //                search()
             }
