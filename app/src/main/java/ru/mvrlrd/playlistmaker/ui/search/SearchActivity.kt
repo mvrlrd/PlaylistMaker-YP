@@ -100,7 +100,7 @@ class SearchActivity : ComponentActivity() {
                         }
                     }
                     searchDebounce()
-                    binding.clearTextButton.visibility = clearButtonVisibility(text)
+                    binding.clearTextButton.visibility = clearButtonVisibility(text.toString())
                 }
             }.apply {
                 setOnFocusChangeListener { _, hasFocus ->
