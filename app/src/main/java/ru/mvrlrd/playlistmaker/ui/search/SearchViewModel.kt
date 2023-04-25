@@ -11,15 +11,11 @@ import ru.mvrlrd.playlistmaker.domain.TracksInteractor
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     private val tracksInteractor = Creator.provideTracksInteractor(getApplication<Application>())
 
-
     private val _screenState = MutableLiveData<SearchScreenState>()
     val screenState: LiveData<SearchScreenState> = _screenState
 
-
 //    val handler = Handler(application.mainLooper)
     // Код без изменений
-
-
 
      fun searchRequest(query: String){
          _screenState.postValue(SearchScreenState.Loading())

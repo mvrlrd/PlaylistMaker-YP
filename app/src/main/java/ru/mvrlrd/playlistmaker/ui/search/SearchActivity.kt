@@ -52,59 +52,31 @@ class SearchActivity : ComponentActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
-        viewModel.screenState.observe(this){
-            when(it){
+        viewModel.screenState.observe(this){screenState ->
+            when(screenState){
                 is SearchScreenState.Loading->{
-                    binding.progressBar.visibility = View.VISIBLE
-                    binding.errorPlaceHolder.visibility = View.GONE
-                    binding.clearHistoryButton.visibility = View.GONE
-                    binding.youSearchedTitle.visibility = View.GONE
-                    binding.refreshButton.visibility = View.GONE
                     trackAdapter.setTracks(null)
                 }
                is SearchScreenState.NothingFound->{
                    val image = R.drawable.nothing_found
                    binding.placeholderImage.setImageResource(image)
                    binding.placeholderMessage.text = resources.getText(R.string.nothing_found)
-
-                   binding.progressBar.visibility = View.GONE
-                   binding.errorPlaceHolder.visibility = View.VISIBLE
-                   binding.clearHistoryButton.visibility = View.GONE
-                   binding.youSearchedTitle.visibility = View.GONE
-                   binding.refreshButton.visibility = View.GONE
                }
 
                is SearchScreenState.Error->{
                    val image = R.drawable.connection_error
                    binding.placeholderImage.setImageResource(image)
-                   binding.placeholderMessage.text = it.message
+                   binding.placeholderMessage.text = screenState.message
                    trackAdapter.setTracks(null)
-
-                   binding.progressBar.visibility = View.GONE
-                   binding.errorPlaceHolder.visibility = View.VISIBLE
-                   binding.clearHistoryButton.visibility = View.GONE
-                   binding.youSearchedTitle.visibility = View.GONE
-                   binding.refreshButton.visibility = View.VISIBLE
                }
                 is SearchScreenState.Success->{
-                    trackAdapter.setTracks(it.tracks)
-                    binding.progressBar.visibility = View.GONE
-                    binding.errorPlaceHolder.visibility = View.GONE
-                    binding.clearHistoryButton.visibility = View.GONE
-                    binding.youSearchedTitle.visibility = View.GONE
-                    binding.refreshButton.visibility = View.GONE
-
+                    trackAdapter.setTracks(screenState.tracks)
                 }
                 is SearchScreenState.ShowHistory->{
-                    trackAdapter.setTracks(it.tracks)
-                    binding.progressBar.visibility = View.GONE
-                    binding.errorPlaceHolder.visibility = View.GONE
-                    binding.clearHistoryButton.visibility = View.VISIBLE
-                    binding.youSearchedTitle.visibility = View.VISIBLE
-                    binding.refreshButton.visibility = View.GONE
-
+                    trackAdapter.setTracks(screenState.tracks)
                 }
             }
+            screenState.render(binding)
         }
         initRecycler()
         initEditText(savedInstanceState)
