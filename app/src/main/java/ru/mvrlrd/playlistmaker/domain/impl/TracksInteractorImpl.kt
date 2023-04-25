@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker.domain.impl
 
+import ru.mvrlrd.playlistmaker.domain.Track
 import ru.mvrlrd.playlistmaker.domain.TracksInteractor
 import ru.mvrlrd.playlistmaker.domain.TracksRepository
 import ru.mvrlrd.playlistmaker.util.Resource
@@ -14,5 +15,16 @@ class TracksInteractorImpl(private val repository: TracksRepository): TracksInte
                 is Resource.Error -> {consumer.consume(null, resource.message, resource.code)}
             }
         }
+    }
+
+    override fun addTrackToHistory(track: Track) {
+        repository.addTrackToHistory(track)
+    }
+
+    override fun clearHistory() {
+        repository.clearHistory()
+    }
+    override fun getHistory(): List<Track> {
+        return repository.getHistory()
     }
 }

@@ -2,8 +2,6 @@ package ru.mvrlrd.playlistmaker.ui.search
 
 
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,37 +14,23 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
-import retrofit2.*
 import ru.mvrlrd.playlistmaker.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.domain.Track
-import java.util.*
 import kotlin.collections.ArrayList
 
-
-class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
+class SearchActivity : ComponentActivity() {
 
     private lateinit var binding: ActivitySearchBinding
     private lateinit var viewModel : SearchViewModel
     private lateinit var trackAdapter : TrackAdapter
     private lateinit var handler : Handler
     private var isClickAllowed = true
-    private lateinit var historySharedPreferences: SharedPreferences
     private val searchRunnable = Runnable {
         hideTrackList()
         binding.progressBar.isVisible = true
         viewModel.searchRequest(binding.searchEditText.text.toString())
-    }
-
-
-
-    override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
-            if (binding.clearHistoryButton.visibility == View.VISIBLE) {
-                val historyList = readTracksFromSearchedHistory()
-                trackAdapter.setTracks(historyList)
-            }
     }
     private fun trackOnClickDebounce() : Boolean {
         val current = isClickAllowed
@@ -68,12 +52,7 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
-
-        historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE).apply {
-            registerOnSharedPreferenceChangeListener(this@SearchActivity as OnSharedPreferenceChangeListener)
-        }
         binding.clearHistoryButton.apply {
             setOnClickListener{
                 clearHistory()
@@ -140,7 +119,9 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
         }
         binding.refreshButton.apply {
             setOnClickListener {
-//                search()
+                if (binding.searchEditText.text.toString().isNotEmpty()){
+                    viewModel.searchRequest(binding.searchEditText.text.toString())
+                }
             }
         }
         binding.tracksRecyclerView.apply {
@@ -158,17 +139,76 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
         binding.searchEditText.setText(savedInstanceState.getString(INPUT_TEXT, ""))
     }
 
-    override fun onStop() {
-        super.onStop()
-        historySharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
     override fun onResume() {
         super.onResume()
         showHistory()
     }
-
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
+
+    private fun addToHistory(track: Track){
+        viewModel.addToHistory(track)
+    }
+
+    private fun clearHistory(){
+        viewModel.clearHistory()
+        hideTrackList()
+    }
+
+    private fun hideTrackList(){
+        viewModel.clearTrackList()
+        binding.clearHistoryButton.visibility = View.GONE
+        binding.youSearchedTitle.visibility = View.GONE
+        binding.placeHolder.visibility = View.GONE
+        binding.refreshButton.visibility = View.GONE
+    }
+
+    private fun showHistory(){
+        val historyList = readTracksFromSearchedHistory()
+        binding.placeHolder.visibility = View.GONE
+        if (historyList.isNotEmpty()){
+            binding.clearHistoryButton.visibility = View.VISIBLE
+            binding.clearTextButton.visibility = View.VISIBLE
+            binding.youSearchedTitle.visibility = View.VISIBLE
+            trackAdapter.setTracks(historyList as ArrayList<Track>)
+        }
+    }
+
+    private fun readTracksFromSearchedHistory(): List<Track>{
+        return viewModel.getHistory()
+    }
+
+    private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getString(INPUT_TEXT)!!.isNotEmpty()) {
+                textField.setText(savedInstanceState.getString(INPUT_TEXT)!!)
+                viewModel.searchRequest(savedInstanceState.getString(INPUT_TEXT)!!)
+            }
+        }
+    }
+    private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            if (binding.searchEditText.text.toString().isNotEmpty()) {
+                hideTrackList()
+                binding.progressBar.isVisible = true
+                viewModel.searchRequest(binding.searchEditText.text.toString())
+            }
+        }
+        return false
+    }
+
+    private fun navigateTo(clazz: Class<out AppCompatActivity>, trackModel: Track) {
+        val intent = Intent(this, clazz)
+        intent.putExtra("my_track", trackModel)
+        startActivity(intent)
+    }
+
+    companion object{
+        private const val INPUT_TEXT = "INPUT_TEXT"
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
+}
+
 
 //    private fun showMessage(text: String, additionalMessage: String) {
 //        if (text.isNotEmpty()) {
@@ -197,86 +237,3 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 //            binding.placeHolder.visibility = View.GONE
 //        }
 //    }
-
-    private fun addToHistory(track: Track){
-        val searchedTracks = readTracksFromSearchedHistory()
-        if (searchedTracks.contains(track)){
-            searchedTracks.remove(track)
-        }
-        searchedTracks.add(0,track)
-        if (searchedTracks.size>10){
-            searchedTracks.removeLast()
-        }
-        val json = Gson().toJson(searchedTracks)
-        historySharedPreferences
-            .edit()
-            .putString(TRACK_LIST_KEY, json)
-            .apply()
-    }
-
-    private fun clearHistory(){
-        historySharedPreferences
-            .edit()
-            .clear()
-            .apply()
-        hideTrackList()
-    }
-
-
-    private fun hideTrackList(){
-        viewModel.clearTrackList()
-        binding.youSearchedTitle.visibility = View.GONE
-        binding.placeHolder.visibility = View.GONE
-        binding.refreshButton.visibility = View.GONE
-    }
-
-    private fun showHistory(){
-        val historyList = readTracksFromSearchedHistory()
-        binding.placeHolder.visibility = View.GONE
-        if (historyList.isNotEmpty()){
-            binding.clearTextButton.visibility = View.VISIBLE
-            binding.youSearchedTitle.visibility = View.VISIBLE
-            trackAdapter.setTracks(historyList)
-        }
-    }
-
-    private fun readTracksFromSearchedHistory(): ArrayList<Track>{
-        val json = historySharedPreferences.getString(TRACK_LIST_KEY, null) ?: return arrayListOf()
-        return Gson().fromJson(json, Array<Track>::class.java).toCollection(ArrayList())
-    }
-
-    private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
-        if (savedInstanceState != null) {
-//            binding.searchEditText.setText(savedInstanceState.getString(INPUT_TEXT)!!)
-            if (savedInstanceState.getString(INPUT_TEXT)!!.isNotEmpty()) {
-                textField.setText(savedInstanceState.getString(INPUT_TEXT)!!)
-//                search()
-            }
-        }
-    }
-    private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
-        if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (binding.searchEditText.text.toString().isNotEmpty()) {
-                hideTrackList()
-                binding.progressBar.isVisible = true
-                viewModel.searchRequest(binding.searchEditText.text.toString())
-//                search()
-            }
-        }
-        return false
-    }
-
-    private fun navigateTo(clazz: Class<out AppCompatActivity>, trackModel: Track) {
-        val intent = Intent(this, clazz)
-        intent.putExtra("my_track", trackModel)
-        startActivity(intent)
-    }
-
-    companion object{
-        private const val INPUT_TEXT = "INPUT_TEXT"
-        private const val HISTORY_PREFERENCES = "history_preferences"
-        private const val TRACK_LIST_KEY = "track_list_key"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-    }
-}

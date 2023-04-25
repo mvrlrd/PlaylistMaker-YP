@@ -33,4 +33,14 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         _tracksLiveData.value = emptyList()
     }
 
+    fun addToHistory(track: Track){
+        tracksInteractor.addTrackToHistory(track)
+    }
+    fun clearHistory(){
+        tracksInteractor.clearHistory()
+    }
+    fun getHistory(): List<Track>{
+        return tracksInteractor.getHistory()
+    }
+
 }
