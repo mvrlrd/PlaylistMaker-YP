@@ -53,61 +53,16 @@ class SearchActivity : ComponentActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
-        binding.clearHistoryButton.apply {
-            setOnClickListener{
-                clearHistory()
-            }
-        }
-
-        trackAdapter = TrackAdapter{
-            if (trackOnClickDebounce()) {
-                navigateTo(PlayerActivity::class.java, it)
-                hideTrackList()
-                addToHistory(it)
-            }
-        }
-        viewModel.tracksLiveData.observe(this){
-            binding.progressBar.isVisible = false
-            if (it.isNullOrEmpty()){
-                trackAdapter.setTracks(null)
-            }else{
-                trackAdapter.setTracks(it as ArrayList<Track>)
-            }
-
-        }
-
+        initRecycler()
+        initEditText(savedInstanceState)
+        initButtons()
         handler = Handler(Looper.getMainLooper())
-
         binding.searchToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }
-                binding.searchEditText
-            .apply {
-                restoreTextFromBundle(textField = this, savedInstanceState = savedInstanceState)
-            }.apply {
-                setOnEditorActionListener { _, actionId, _ ->
-                    onClickOnEnterOnVirtualKeyboard(actionId)
-                }
-            }.apply {
-                doOnTextChanged { text, _, _, _ ->
+    }
 
-                    if (binding.searchEditText.text.toString().isNotEmpty()){
-
-                    }else{
-                        binding.progressBar.isVisible = false
-                        if (binding.searchEditText.hasFocus() && text?.isEmpty() == true) {
-                            showHistory()
-                        }
-                    }
-                    searchDebounce()
-                    binding.clearTextButton.visibility = clearButtonVisibility(text.toString())
-                }
-            }.apply {
-                setOnFocusChangeListener { _, hasFocus ->
-                    if (hasFocus && binding.searchEditText.text.isEmpty()) showHistory()
-                }
-            }
-
+    private fun initButtons() {
         binding.clearTextButton.apply {
             setOnClickListener {
                 binding.searchEditText.text.clear()
@@ -117,17 +72,63 @@ class SearchActivity : ComponentActivity() {
                 showHistory()
             }
         }
+        binding.clearHistoryButton.apply {
+            setOnClickListener {
+                clearHistory()
+            }
+        }
         binding.refreshButton.apply {
             setOnClickListener {
-                if (binding.searchEditText.text.toString().isNotEmpty()){
+                if (binding.searchEditText.text.toString().isNotEmpty()) {
                     viewModel.searchRequest(binding.searchEditText.text.toString())
                 }
+            }
+        }
+    }
+
+    private fun initRecycler() {
+        trackAdapter = TrackAdapter {
+            if (trackOnClickDebounce()) {
+                navigateTo(PlayerActivity::class.java, it)
+                hideTrackList()
+                viewModel.addToHistory(it)
             }
         }
         binding.tracksRecyclerView.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
+        viewModel.tracksLiveData.observe(this) {
+            binding.progressBar.isVisible = false
+            if (it.isNullOrEmpty()) {
+                trackAdapter.setTracks(null)
+            } else {
+                trackAdapter.setTracks(it as ArrayList<Track>)
+            }
+        }
+    }
+
+    private fun initEditText(savedInstanceState: Bundle?) {
+        binding.searchEditText
+            .apply {
+                restoreTextFromBundle(textField = this, savedInstanceState = savedInstanceState)
+                setOnEditorActionListener { _, actionId, _ ->
+                    onClickOnEnterOnVirtualKeyboard(actionId)
+                }
+                setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus && binding.searchEditText.text.isEmpty()) showHistory()
+                }
+                doOnTextChanged { text, _, _, _ ->
+                    if (binding.searchEditText.text.toString().isEmpty()) {
+                        binding.progressBar.isVisible = false
+                        if (binding.searchEditText.hasFocus() && text?.isEmpty() == true) {
+                            showHistory()
+                        }
+                    }
+                    searchDebounce()
+                    binding.clearTextButton.visibility = clearButtonVisibility(text.toString())
+                }
+            }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -145,10 +146,6 @@ class SearchActivity : ComponentActivity() {
     }
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-    private fun addToHistory(track: Track){
-        viewModel.addToHistory(track)
-    }
-
     private fun clearHistory(){
         viewModel.clearHistory()
         hideTrackList()
@@ -163,7 +160,7 @@ class SearchActivity : ComponentActivity() {
     }
 
     private fun showHistory(){
-        val historyList = readTracksFromSearchedHistory()
+        val historyList = viewModel.getHistory()
         binding.placeHolder.visibility = View.GONE
         if (historyList.isNotEmpty()){
             binding.clearHistoryButton.visibility = View.VISIBLE
@@ -171,10 +168,6 @@ class SearchActivity : ComponentActivity() {
             binding.youSearchedTitle.visibility = View.VISIBLE
             trackAdapter.setTracks(historyList as ArrayList<Track>)
         }
-    }
-
-    private fun readTracksFromSearchedHistory(): List<Track>{
-        return viewModel.getHistory()
     }
 
     private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
