@@ -20,12 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import retrofit2.*
-import ru.mvrlrd.playlistmaker.Creator
 import ru.mvrlrd.playlistmaker.PlayerActivity
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.domain.Track
-import ru.mvrlrd.playlistmaker.domain.TracksInteractor
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -49,11 +47,12 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
     private var query = ""
     private lateinit var historySharedPreferences: SharedPreferences
     private val searchRunnable = Runnable {
-
+        hideTrackList()
+        progressBar.isVisible = true
+        viewModel.searchRequest(query)
 //        search()
     }
     private lateinit var viewModel : SearchViewModel
-    private val tracksInteractor = Creator.provideTracksInteractor(this)
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
             if (clearHistoryButton.visibility == View.VISIBLE) {
@@ -82,6 +81,7 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
         setContentView(R.layout.activity_search)
 
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+
         youSearchedTitle = findViewById(R.id.youSearchedTitle)
         historySharedPreferences = getSharedPreferences(HISTORY_PREFERENCES, MODE_PRIVATE).apply {
             registerOnSharedPreferenceChangeListener(this@SearchActivity as OnSharedPreferenceChangeListener)
@@ -99,6 +99,7 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
             }
         }
         viewModel.tracksLiveData.observe(this){
+            progressBar.isVisible = false
             trackAdapter.setTracks(it as ArrayList<Track>)
         }
 
@@ -181,30 +182,30 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-    private fun search() {
-        hideTrackList()
-        progressBar.isVisible = true
-        tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer{
-            override fun consume(foundTracks: List<Track>?, errorMessage: String?, code: Int) {
-                handler.post {
-                    progressBar.visibility = View.GONE
-                    when (code) {
-                        200 -> {
-                            placeHolder.visibility = View.GONE
-                            trackAdapter.setTracks(foundTracks as ArrayList<Track>)
-                            if (foundTracks.isNullOrEmpty()) {
-                                showMessage(getString(R.string.nothing_found), "")
-                            }
-                        }
-                        else -> {
-                            placeHolder.visibility = View.VISIBLE
-                            showMessage(errorMessage!!, code.toString())
-                        }
-                    }
-                }
-            }
-        })
-    }
+//    private fun search() {
+//        hideTrackList()
+//        progressBar.isVisible = true
+//        tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer{
+//            override fun consume(foundTracks: List<Track>?, errorMessage: String?, code: Int) {
+//                handler.post {
+//                    progressBar.visibility = View.GONE
+//                    when (code) {
+//                        200 -> {
+//                            placeHolder.visibility = View.GONE
+//                            trackAdapter.setTracks(foundTracks as ArrayList<Track>)
+//                            if (foundTracks.isNullOrEmpty()) {
+//                                showMessage(getString(R.string.nothing_found), "")
+//                            }
+//                        }
+//                        else -> {
+//                            placeHolder.visibility = View.VISIBLE
+//                            showMessage(errorMessage!!, code.toString())
+//                        }
+//                    }
+//                }
+//            }
+//        })
+//    }
     private fun showMessage(text: String, additionalMessage: String) {
         if (text.isNotEmpty()) {
             val image = when (text) {
