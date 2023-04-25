@@ -15,6 +15,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.mvrlrd.playlistmaker.PlayerActivity
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.domain.Track
@@ -53,6 +54,35 @@ class SearchActivity : ComponentActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+        viewModel.toast.observe(this){
+            when(it){
+               is PlaceHolderState.NothingFound->{
+                   binding.progressBar.visibility = View.GONE
+                   binding.refreshButton.visibility = View.GONE
+                  val image = R.drawable.nothing_found
+                   binding.placeholderImage.setImageResource(image)
+                   binding.placeholderMessage.text = "Not"
+                   binding.placeHolder.visibility = View.VISIBLE
+                   viewModel.clearTrackList()
+               }
+               is PlaceHolderState.Loading->{
+                   viewModel.clearTrackList()
+                   binding.progressBar.visibility = View.VISIBLE
+               }
+               is PlaceHolderState.Error->{
+                   binding.progressBar.visibility = View.GONE
+                   binding.placeHolder.visibility = View.VISIBLE
+                   val image = R.drawable.connection_error
+                   binding.placeholderImage.setImageResource(image)
+                   binding.placeholderMessage.text = it.message
+               }
+                is PlaceHolderState.Empty->{
+                    binding.progressBar.visibility = View.GONE
+                    binding.placeHolder.visibility = View.GONE
+                }
+            }
+//            showMessage(it, "fe")
+        }
         initRecycler()
         initEditText(savedInstanceState)
         initButtons()
@@ -188,6 +218,33 @@ class SearchActivity : ComponentActivity() {
         }
         return false
     }
+    private fun showMessage(text: String, additionalMessage: String) {
+        if (text.isNotEmpty()) {
+            val image = when (text) {
+                getString(R.string.nothing_found) -> {
+                    binding.refreshButton.visibility = View.GONE
+                    R.drawable.nothing_found
+                }
+                getString(R.string.error_connection) -> {
+                    binding.refreshButton.visibility = View.VISIBLE
+                    R.drawable.connection_error
+                }
+                else -> {
+                    R.drawable.connection_error
+                }
+            }
+            binding.placeholderImage.setImageResource(image)
+            binding.placeholderMessage.text = text
+            binding.placeHolder.visibility = View.VISIBLE
+            trackAdapter.setTracks(null)
+            if (additionalMessage.isNotEmpty()) {
+                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
+                    .show()
+            }
+        } else {
+            binding.placeHolder.visibility = View.GONE
+        }
+    }
 
     private fun navigateTo(clazz: Class<out AppCompatActivity>, trackModel: Track) {
         val intent = Intent(this, clazz)
@@ -203,30 +260,3 @@ class SearchActivity : ComponentActivity() {
 }
 
 
-//    private fun showMessage(text: String, additionalMessage: String) {
-//        if (text.isNotEmpty()) {
-//            val image = when (text) {
-//                getString(R.string.nothing_found) -> {
-//                    binding.refreshButton.visibility = View.GONE
-//                    R.drawable.nothing_found
-//                }
-//                getString(R.string.error_connection) -> {
-//                    binding.refreshButton.visibility = View.VISIBLE
-//                    R.drawable.connection_error
-//                }
-//                else -> {
-//                    R.drawable.connection_error
-//                }
-//            }
-//            binding.placeholderImage.setImageResource(image)
-//            binding.placeholderMessage.text = text
-//            binding.placeHolder.visibility = View.VISIBLE
-//            trackAdapter.setTracks(null)
-//            if (additionalMessage.isNotEmpty()) {
-//                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
-//                    .show()
-//            }
-//        } else {
-//            binding.placeHolder.visibility = View.GONE
-//        }
-//    }
