@@ -29,4 +29,8 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         })
     }
 
+    fun clearTrackList(){
+        _tracksLiveData.value = emptyList()
+    }
+
 }

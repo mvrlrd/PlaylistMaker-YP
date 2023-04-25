@@ -29,7 +29,6 @@ import kotlin.collections.ArrayList
 class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     private lateinit var trackAdapter : TrackAdapter
-
     private var isClickAllowed = true
     private lateinit var handler : Handler
     private var query = ""
@@ -90,7 +89,12 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
         }
         viewModel.tracksLiveData.observe(this){
             binding.progressBar.isVisible = false
-            trackAdapter.setTracks(it as ArrayList<Track>)
+            if (it.isNullOrEmpty()){
+                trackAdapter.setTracks(null)
+            }else{
+                trackAdapter.setTracks(it as ArrayList<Track>)
+            }
+
         }
 
         handler = Handler(Looper.getMainLooper())
@@ -220,7 +224,7 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
 
     private fun hideTrackList(){
-        trackAdapter.setTracks(null)
+        viewModel.clearTrackList()
         binding.clearTextButton.visibility = View.GONE
         binding.youSearchedTitle.visibility = View.GONE
         binding.placeHolder.visibility = View.GONE
