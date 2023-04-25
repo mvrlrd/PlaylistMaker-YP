@@ -33,7 +33,7 @@ class TrackAdapter(private val onClickListener: TrackClickListener): RecyclerVie
         fun onTrackClick(tracks: Track)
     }
 
-    fun setTracks(newTrackList: ArrayList<Track>?) {
+    fun setTracks(newTrackList: List<Track>?) {
         if (tracks.isNotEmpty()) {
             tracks.clear()
         }

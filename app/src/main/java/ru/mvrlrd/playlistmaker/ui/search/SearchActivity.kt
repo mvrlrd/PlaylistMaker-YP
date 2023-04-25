@@ -19,7 +19,7 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.domain.Track
-import kotlin.collections.ArrayList
+
 
 class SearchActivity : ComponentActivity() {
 
@@ -29,8 +29,6 @@ class SearchActivity : ComponentActivity() {
     private lateinit var handler : Handler
     private var isClickAllowed = true
     private val searchRunnable = Runnable {
-        hideTrackList()
-        binding.progressBar.isVisible = true
         viewModel.searchRequest(binding.searchEditText.text.toString())
     }
     private fun trackOnClickDebounce() : Boolean {
@@ -54,34 +52,59 @@ class SearchActivity : ComponentActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
-        viewModel.toast.observe(this){
+        viewModel.screenState.observe(this){
             when(it){
-               is PlaceHolderState.NothingFound->{
-                   binding.progressBar.visibility = View.GONE
-                   binding.refreshButton.visibility = View.GONE
-                  val image = R.drawable.nothing_found
+                is SearchScreenState.Loading->{
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.errorPlaceHolder.visibility = View.GONE
+                    binding.clearHistoryButton.visibility = View.GONE
+                    binding.youSearchedTitle.visibility = View.GONE
+                    binding.refreshButton.visibility = View.GONE
+                    trackAdapter.setTracks(null)
+                }
+               is SearchScreenState.NothingFound->{
+                   val image = R.drawable.nothing_found
                    binding.placeholderImage.setImageResource(image)
-                   binding.placeholderMessage.text = "Not"
-                   binding.placeHolder.visibility = View.VISIBLE
-                   viewModel.clearTrackList()
-               }
-               is PlaceHolderState.Loading->{
-                   viewModel.clearTrackList()
-                   binding.progressBar.visibility = View.VISIBLE
-               }
-               is PlaceHolderState.Error->{
+                   binding.placeholderMessage.text = resources.getText(R.string.nothing_found)
+
                    binding.progressBar.visibility = View.GONE
-                   binding.placeHolder.visibility = View.VISIBLE
+                   binding.errorPlaceHolder.visibility = View.VISIBLE
+                   binding.clearHistoryButton.visibility = View.GONE
+                   binding.youSearchedTitle.visibility = View.GONE
+                   binding.refreshButton.visibility = View.GONE
+               }
+
+               is SearchScreenState.Error->{
                    val image = R.drawable.connection_error
                    binding.placeholderImage.setImageResource(image)
                    binding.placeholderMessage.text = it.message
+                   trackAdapter.setTracks(null)
+
+                   binding.progressBar.visibility = View.GONE
+                   binding.errorPlaceHolder.visibility = View.VISIBLE
+                   binding.clearHistoryButton.visibility = View.GONE
+                   binding.youSearchedTitle.visibility = View.GONE
+                   binding.refreshButton.visibility = View.VISIBLE
                }
-                is PlaceHolderState.Empty->{
+                is SearchScreenState.Success->{
+                    trackAdapter.setTracks(it.tracks)
                     binding.progressBar.visibility = View.GONE
-                    binding.placeHolder.visibility = View.GONE
+                    binding.errorPlaceHolder.visibility = View.GONE
+                    binding.clearHistoryButton.visibility = View.GONE
+                    binding.youSearchedTitle.visibility = View.GONE
+                    binding.refreshButton.visibility = View.GONE
+
+                }
+                is SearchScreenState.ShowHistory->{
+                    trackAdapter.setTracks(it.tracks)
+                    binding.progressBar.visibility = View.GONE
+                    binding.errorPlaceHolder.visibility = View.GONE
+                    binding.clearHistoryButton.visibility = View.VISIBLE
+                    binding.youSearchedTitle.visibility = View.VISIBLE
+                    binding.refreshButton.visibility = View.GONE
+
                 }
             }
-//            showMessage(it, "fe")
         }
         initRecycler()
         initEditText(savedInstanceState)
@@ -96,20 +119,20 @@ class SearchActivity : ComponentActivity() {
         binding.clearTextButton.apply {
             setOnClickListener {
                 binding.searchEditText.text.clear()
-                trackAdapter.setTracks(null)
-                binding.placeHolder.visibility = View.GONE
+                binding.errorPlaceHolder.visibility = View.GONE
                 binding.searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
-                showHistory()
+                viewModel.showHistory()
             }
         }
         binding.clearHistoryButton.apply {
             setOnClickListener {
-                clearHistory()
+                viewModel.clearHistory()
             }
         }
         binding.refreshButton.apply {
             setOnClickListener {
                 if (binding.searchEditText.text.toString().isNotEmpty()) {
+                    handler.removeCallbacks(searchRunnable)
                     viewModel.searchRequest(binding.searchEditText.text.toString())
                 }
             }
@@ -120,21 +143,12 @@ class SearchActivity : ComponentActivity() {
         trackAdapter = TrackAdapter {
             if (trackOnClickDebounce()) {
                 navigateTo(PlayerActivity::class.java, it)
-                hideTrackList()
                 viewModel.addToHistory(it)
             }
         }
         binding.tracksRecyclerView.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
-        }
-        viewModel.tracksLiveData.observe(this) {
-            binding.progressBar.isVisible = false
-            if (it.isNullOrEmpty()) {
-                trackAdapter.setTracks(null)
-            } else {
-                trackAdapter.setTracks(it as ArrayList<Track>)
-            }
         }
     }
 
@@ -146,13 +160,13 @@ class SearchActivity : ComponentActivity() {
                     onClickOnEnterOnVirtualKeyboard(actionId)
                 }
                 setOnFocusChangeListener { _, hasFocus ->
-                    if (hasFocus && binding.searchEditText.text.isEmpty()) showHistory()
+                    if (hasFocus && binding.searchEditText.text.isEmpty()) viewModel.showHistory()
                 }
                 doOnTextChanged { text, _, _, _ ->
                     if (binding.searchEditText.text.toString().isEmpty()) {
                         binding.progressBar.isVisible = false
                         if (binding.searchEditText.hasFocus() && text?.isEmpty() == true) {
-                            showHistory()
+                            viewModel.showHistory()
                         }
                     }
                     searchDebounce()
@@ -172,33 +186,11 @@ class SearchActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        showHistory()
+        viewModel.showHistory()
     }
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-    private fun clearHistory(){
-        viewModel.clearHistory()
-        hideTrackList()
-    }
 
-    private fun hideTrackList(){
-        viewModel.clearTrackList()
-        binding.clearHistoryButton.visibility = View.GONE
-        binding.youSearchedTitle.visibility = View.GONE
-        binding.placeHolder.visibility = View.GONE
-        binding.refreshButton.visibility = View.GONE
-    }
-
-    private fun showHistory(){
-        val historyList = viewModel.getHistory()
-        binding.placeHolder.visibility = View.GONE
-        if (historyList.isNotEmpty()){
-            binding.clearHistoryButton.visibility = View.VISIBLE
-            binding.clearTextButton.visibility = View.VISIBLE
-            binding.youSearchedTitle.visibility = View.VISIBLE
-            trackAdapter.setTracks(historyList as ArrayList<Track>)
-        }
-    }
 
     private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
         if (savedInstanceState != null) {
@@ -211,39 +203,11 @@ class SearchActivity : ComponentActivity() {
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (binding.searchEditText.text.toString().isNotEmpty()) {
-                hideTrackList()
-                binding.progressBar.isVisible = true
+                handler.removeCallbacks(searchRunnable)
                 viewModel.searchRequest(binding.searchEditText.text.toString())
             }
         }
         return false
-    }
-    private fun showMessage(text: String, additionalMessage: String) {
-        if (text.isNotEmpty()) {
-            val image = when (text) {
-                getString(R.string.nothing_found) -> {
-                    binding.refreshButton.visibility = View.GONE
-                    R.drawable.nothing_found
-                }
-                getString(R.string.error_connection) -> {
-                    binding.refreshButton.visibility = View.VISIBLE
-                    R.drawable.connection_error
-                }
-                else -> {
-                    R.drawable.connection_error
-                }
-            }
-            binding.placeholderImage.setImageResource(image)
-            binding.placeholderMessage.text = text
-            binding.placeHolder.visibility = View.VISIBLE
-            trackAdapter.setTracks(null)
-            if (additionalMessage.isNotEmpty()) {
-                Toast.makeText(applicationContext, additionalMessage, Toast.LENGTH_LONG)
-                    .show()
-            }
-        } else {
-            binding.placeHolder.visibility = View.GONE
-        }
     }
 
     private fun navigateTo(clazz: Class<out AppCompatActivity>, trackModel: Track) {
