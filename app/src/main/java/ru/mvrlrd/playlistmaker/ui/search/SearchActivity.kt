@@ -28,19 +28,19 @@ import kotlin.collections.ArrayList
 
 class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
+    private lateinit var binding: ActivitySearchBinding
+    private lateinit var viewModel : SearchViewModel
     private lateinit var trackAdapter : TrackAdapter
-    private var isClickAllowed = true
     private lateinit var handler : Handler
-    private var query = ""
+    private var isClickAllowed = true
     private lateinit var historySharedPreferences: SharedPreferences
     private val searchRunnable = Runnable {
         hideTrackList()
         binding.progressBar.isVisible = true
-        viewModel.searchRequest(query)
+        viewModel.searchRequest(binding.searchEditText.text.toString())
     }
 
-    private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel : SearchViewModel
+
 
     override fun onSharedPreferenceChanged(p0: SharedPreferences?, p1: String?) {
             if (binding.clearHistoryButton.visibility == View.VISIBLE) {
@@ -59,7 +59,7 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     private fun searchDebounce() {
         handler.removeCallbacks(searchRunnable)
-        if (query.isNotEmpty()){
+        if (binding.searchEditText.text.toString().isNotEmpty()){
             handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
         }
     }
@@ -111,8 +111,8 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
                 }
             }.apply {
                 doOnTextChanged { text, _, _, _ ->
-                    query = text.toString()
-                    if (query.isNotEmpty()){
+
+                    if (binding.searchEditText.text.toString().isNotEmpty()){
 
                     }else{
                         binding.progressBar.isVisible = false
@@ -151,11 +151,11 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(INPUT_TEXT, query)
+        outState.putString(INPUT_TEXT, binding.searchEditText.text.toString())
     }
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        query = savedInstanceState.getString(INPUT_TEXT, "")
+        binding.searchEditText.setText(savedInstanceState.getString(INPUT_TEXT, ""))
     }
 
     override fun onStop() {
@@ -225,7 +225,6 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     private fun hideTrackList(){
         viewModel.clearTrackList()
-        binding.clearTextButton.visibility = View.GONE
         binding.youSearchedTitle.visibility = View.GONE
         binding.placeHolder.visibility = View.GONE
         binding.refreshButton.visibility = View.GONE
@@ -248,9 +247,9 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
 
     private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
         if (savedInstanceState != null) {
-            query = savedInstanceState.getString(INPUT_TEXT)!!
-            if (query.isNotEmpty()) {
-                textField.setText(query)
+//            binding.searchEditText.setText(savedInstanceState.getString(INPUT_TEXT)!!)
+            if (savedInstanceState.getString(INPUT_TEXT)!!.isNotEmpty()) {
+                textField.setText(savedInstanceState.getString(INPUT_TEXT)!!)
 //                search()
             }
         }
@@ -260,7 +259,7 @@ class SearchActivity : ComponentActivity(), OnSharedPreferenceChangeListener {
             if (binding.searchEditText.text.toString().isNotEmpty()) {
                 hideTrackList()
                 binding.progressBar.isVisible = true
-                viewModel.searchRequest(query)
+                viewModel.searchRequest(binding.searchEditText.text.toString())
 //                search()
             }
         }
