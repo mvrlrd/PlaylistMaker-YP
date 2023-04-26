@@ -39,10 +39,10 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer) : ViewModel() {
     private fun start() {
         playerInteractor.start()
         playerState = STATE_PLAYING
-        handler.postDelayed(timerGo, PlayerActivity.REFRESH_TIMER_DELAY_MILLIS)
+        handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
         _screenState.value = PlayerScreenState.StartStop(playerState)
     }
-    private fun pause() {
+     fun pause() {
         playerInteractor.pause()
         playerState = STATE_PAUSED
         handler.removeCallbacks(timerGo)
@@ -92,7 +92,7 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer) : ViewModel() {
     }
 
     companion object {
-        private const val REFRESH_TIMER_DELAY_MILLIS = 1000L
+        private const val REFRESH_TIMER_DELAY_MILLIS = 300L
         private val SEARCH_REQUEST_TOKEN = Any()
         fun getViewModelFactory(trackForPlayer: TrackForPlayer): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
