@@ -1,10 +1,10 @@
-package ru.mvrlrd.playlistmaker.search.data.model
+package ru.mvrlrd.playlistmaker.player.data
 
 import android.media.MediaPlayer
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
-import ru.mvrlrd.playlistmaker.search.domain.Track
+import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 
-class MyMediaPlayer(track: Track): PlayerInteractor {
+class MyMediaPlayer(track: TrackForPlayer): PlayerInteractor {
     private val mediaPlayer: MediaPlayer = MediaPlayer()
     init {
         mediaPlayer.setDataSource(track.previewUrl)

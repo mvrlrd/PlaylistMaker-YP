@@ -6,7 +6,7 @@ import ru.mvrlrd.playlistmaker.formatTime
 import ru.mvrlrd.playlistmaker.player.ui.PlayerView
 import ru.mvrlrd.playlistmaker.presenter.PlayerState.*
 import ru.mvrlrd.playlistmaker.search.data.model.MyMediaPlayer
-import ru.mvrlrd.playlistmaker.search.domain.PlayerInteractor
+import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
 class PlayerPresenter(track: Track, private val playerView: PlayerView) {
