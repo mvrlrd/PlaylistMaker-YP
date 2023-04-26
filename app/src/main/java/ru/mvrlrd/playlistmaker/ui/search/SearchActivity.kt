@@ -53,29 +53,24 @@ class SearchActivity : ComponentActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         viewModel.screenState.observe(this){screenState ->
-            when(screenState){
-                is SearchScreenState.Loading->{
-                    trackAdapter.setTracks(null)
-                }
-               is SearchScreenState.NothingFound->{
-                   val image = R.drawable.nothing_found
-                   binding.placeholderImage.setImageResource(image)
-                   binding.placeholderMessage.text = resources.getText(R.string.nothing_found)
-               }
-
-               is SearchScreenState.Error->{
-                   val image = R.drawable.connection_error
-                   binding.placeholderImage.setImageResource(image)
-                   binding.placeholderMessage.text = screenState.message
-                   trackAdapter.setTracks(null)
-               }
-                is SearchScreenState.Success->{
-                    trackAdapter.setTracks(screenState.tracks)
-                }
-                is SearchScreenState.ShowHistory->{
-                    trackAdapter.setTracks(screenState.tracks)
-                }
-            }
+//            when(screenState){
+//                is SearchScreenState.Loading->{
+//                    trackAdapter.setTracks(null)
+//                }
+//               is SearchScreenState.Error->{
+//                   trackAdapter.setTracks(null)
+//               }
+//                is SearchScreenState.Success->{
+//                    trackAdapter.setTracks(screenState.tracks)
+//                }
+//                is SearchScreenState.ShowHistory->{
+//                    trackAdapter.setTracks(screenState.tracks)
+//                }
+//                is SearchScreenState.NothingFound->{
+//
+//                }
+//            }
+            trackAdapter.setTracks(screenState.tracks)
             screenState.render(binding)
         }
         initRecycler()

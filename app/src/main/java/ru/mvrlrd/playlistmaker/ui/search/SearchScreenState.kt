@@ -1,11 +1,12 @@
 package ru.mvrlrd.playlistmaker.ui.search
 
 import android.view.View
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.domain.Track
 
 sealed class SearchScreenState(val message: String? = null, val tracks: List<Track>? = null)
-    : Refresh
+
 {
     class Loading : SearchScreenState(){
         override fun render(binding: ActivitySearchBinding) {
@@ -23,6 +24,9 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
             binding.clearHistoryButton.visibility = View.GONE
             binding.youSearchedTitle.visibility = View.GONE
             binding.refreshButton.visibility = View.GONE
+
+            binding.placeholderImage.setImageResource(R.drawable.nothing_found)
+            binding.placeholderMessage.text = binding.placeholderMessage.resources.getText(R.string.nothing_found)
         }
     }
     class Error(message: String?) : SearchScreenState(message = message){
@@ -32,6 +36,9 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
             binding.clearHistoryButton.visibility = View.GONE
             binding.youSearchedTitle.visibility = View.GONE
             binding.refreshButton.visibility = View.VISIBLE
+
+            binding.placeholderImage.setImageResource(R.drawable.connection_error)
+            binding.placeholderMessage.text = message
         }
     }
     class Success(tracks: List<Track>?): SearchScreenState(tracks = tracks){
@@ -52,7 +59,6 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
             binding.refreshButton.visibility = View.GONE
         }
     }
+    abstract fun render(binding: ActivitySearchBinding)
 }
-interface Refresh{
-    fun render(binding: ActivitySearchBinding)
-}
+

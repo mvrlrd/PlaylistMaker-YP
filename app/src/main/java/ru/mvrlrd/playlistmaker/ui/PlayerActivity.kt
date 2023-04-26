@@ -91,7 +91,7 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
             Locale.getDefault()
         ).format(track.trackTime.toLong())
         album.text = track.album
-        year.text = unparseDateToYear(track.year)
+        year.text = unparseDateToYear(track.year!!)
         genre.text = track.genre
         country.text = track.country
 

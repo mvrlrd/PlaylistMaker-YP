@@ -1,7 +1,5 @@
 package ru.mvrlrd.playlistmaker.domain
 
-
-import ru.mvrlrd.playlistmaker.data.model.TrackDto
 import java.io.Serializable
 
 data class Track(

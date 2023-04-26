@@ -37,6 +37,8 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         })
     }
 
+
+
     fun addToHistory(track: Track){
         tracksInteractor.addTrackToHistory(track)
     }
