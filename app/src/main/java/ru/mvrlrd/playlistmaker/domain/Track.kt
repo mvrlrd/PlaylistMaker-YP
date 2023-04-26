@@ -9,10 +9,10 @@ data class Track(
     val trackTime: String,
     val image: String,
     val album: String,
-    val year: String,
+    val year: String?,
     val genre: String,
     val country: String,
-    val previewUrl: String
+    val previewUrl: String?
 ) : Serializable {
 
     override fun equals(other: Any?): Boolean {
