@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.ui
+package ru.mvrlrd.playlistmaker.main
 
 
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.widget.Button
 import androidx.activity.ComponentActivity
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.search.ui.SearchActivity
+import ru.mvrlrd.playlistmaker.mediateka.MediatekaActivity
+import ru.mvrlrd.playlistmaker.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var searchButton: Button

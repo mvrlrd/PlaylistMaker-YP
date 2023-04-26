@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.mvrlrd.playlistmaker.Creator
+import ru.mvrlrd.playlistmaker.di.Creator
 import ru.mvrlrd.playlistmaker.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.player.ui.PlayerState.*

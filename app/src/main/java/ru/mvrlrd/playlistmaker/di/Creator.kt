@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker
+package ru.mvrlrd.playlistmaker.di
 
 import android.content.Context
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
@@ -24,7 +24,6 @@ object Creator {
      fun provideTracksInteractor(context: Context): TracksInteractor {
         return TracksInteractorImpl(getTracksRepository(context))
     }
-
     private fun getPlayerRepository(trackForPlayer: TrackForPlayer): PlayerRepository{
         return PlayerRepositoryImpl(MyMediaPlayer(trackForPlayer))
     }

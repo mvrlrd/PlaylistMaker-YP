@@ -7,7 +7,7 @@ import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.mvrlrd.playlistmaker.Creator
+import ru.mvrlrd.playlistmaker.di.Creator
 import ru.mvrlrd.playlistmaker.search.data.network.SUCCESS_CODE
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
