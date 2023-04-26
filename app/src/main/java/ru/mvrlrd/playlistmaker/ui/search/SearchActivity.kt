@@ -27,10 +27,11 @@ class SearchActivity : ComponentActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
+        binding.searchToolbar.apply {
+            setNavigationOnClickListener { onBackPressed() }
+        }
         viewModel.screenState.observe(this){screenState ->
-            if ((screenState is SearchScreenState.Success
-                && binding.searchEditText.text.isNotEmpty())
-                ||(screenState !is SearchScreenState.Success)){
+            if (viewModel.isReadyToRender(screenState,binding.searchEditText.text.toString())){
                 trackAdapter.setTracks(screenState.tracks)
                 screenState.render(binding)
             }
@@ -38,9 +39,26 @@ class SearchActivity : ComponentActivity() {
         initRecycler()
         initEditText(savedInstanceState)
         initButtons()
-        binding.searchToolbar.apply {
-            setNavigationOnClickListener { onBackPressed() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (binding.searchEditText.text.toString().isNotEmpty()){
+            viewModel.searchRightAway(binding.searchEditText.text.toString())
+        }else{
+            viewModel.showHistory()
         }
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(INPUT_TEXT, binding.searchEditText.text.toString())
+    }
+
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
     }
 
     private fun initButtons() {
@@ -59,7 +77,7 @@ class SearchActivity : ComponentActivity() {
         binding.refreshButton.apply {
             setOnClickListener {
                 if (binding.searchEditText.text.toString().isNotEmpty()) {
-                    viewModel.searchDebounce()
+                    viewModel.searchRightAway()
                 }
             }
         }
@@ -98,41 +116,20 @@ class SearchActivity : ComponentActivity() {
             }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(INPUT_TEXT, binding.searchEditText.text.toString())
-    }
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        binding.searchEditText.setText(savedInstanceState.getString(INPUT_TEXT, ""))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.showHistory()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onDestroy()
-    }
-
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
-
-
 
     private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?){
         if (savedInstanceState != null) {
             if (savedInstanceState.getString(INPUT_TEXT)!!.isNotEmpty()) {
                 textField.setText(savedInstanceState.getString(INPUT_TEXT)!!)
-                viewModel.searchRequest(savedInstanceState.getString(INPUT_TEXT)!!)
+                viewModel.searchRightAway(savedInstanceState.getString(INPUT_TEXT)!!)
             }
         }
     }
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (binding.searchEditText.text.toString().isNotEmpty()) {
-                viewModel.searchDebounce(binding.searchEditText.text.toString())
+                viewModel.searchRightAway(binding.searchEditText.text.toString())
             }
         }
         return false

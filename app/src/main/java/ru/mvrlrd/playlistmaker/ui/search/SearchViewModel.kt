@@ -13,18 +13,23 @@ import ru.mvrlrd.playlistmaker.domain.TracksInteractor
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     private val tracksInteractor = Creator.provideTracksInteractor(getApplication<Application>())
-
     private val _screenState = MutableLiveData<SearchScreenState>()
     val screenState: LiveData<SearchScreenState> = _screenState
-
-
     private val handler = Handler(Looper.getMainLooper())
-
     private var lastQuery: String? = null
-
     private var isClickAllowed = true
 
-    fun trackOnClickDebounce() : Boolean {
+    private fun makeDelaySearching(changedText: String) {
+        val searchRunnable = Runnable { searchRightAway(changedText) }
+        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
+        handler.postAtTime(
+            searchRunnable,
+            SEARCH_REQUEST_TOKEN,
+            postTime,
+        )
+    }
+
+    fun trackOnClickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -33,19 +38,10 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         return current
     }
 
-     fun onDestroy() {
+    fun onDestroy() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 
-    private fun makeDelaySearching(changedText: String){
-        val searchRunnable = Runnable { searchRequest(changedText) }
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            SEARCH_REQUEST_TOKEN,
-            postTime,
-        )
-    }
     fun searchDebounce(changedText: String? = lastQuery) {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
         if (!changedText.isNullOrEmpty()) {
@@ -57,40 +53,54 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-     fun searchRequest(query: String){
-         _screenState.postValue(SearchScreenState.Loading())
-        tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer{
-            override fun consume(foundTracks: List<Track>?, errorMessage: String?, code: Int) {
-                when (code){
-                    200 -> {
-                        if (foundTracks!!.isNotEmpty()) {
-                            _screenState.postValue(SearchScreenState.Success(foundTracks))
-                        }else{
-                            _screenState.postValue(SearchScreenState.NothingFound())
+    fun searchRightAway(query: String? = lastQuery) {
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        query?.let {
+            _screenState.postValue(SearchScreenState.Loading())
+            tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer {
+                override fun consume(foundTracks: List<Track>?, errorMessage: String?, code: Int) {
+                    when (code) {
+                        200 -> {
+                            if (foundTracks!!.isNotEmpty()) {
+                                _screenState.postValue(SearchScreenState.Success(foundTracks))
+                            } else {
+                                _screenState.postValue(SearchScreenState.NothingFound())
+                            }
+                        }
+                        else -> {
+                            _screenState.postValue(SearchScreenState.Error(errorMessage))
                         }
                     }
-                    else ->{
-                        _screenState.postValue(SearchScreenState.Error(errorMessage))
-                    }
                 }
-            }
-        })
+            })
+        }
     }
 
-    fun addToHistory(track: Track){
+    fun addToHistory(track: Track) {
         tracksInteractor.addTrackToHistory(track)
     }
-    fun clearHistory(){
+
+    fun clearHistory() {
         tracksInteractor.clearHistory()
         _screenState.postValue(SearchScreenState.ShowHistory(null))
     }
-    fun showHistory(){
-        if (tracksInteractor.getHistory().isNotEmpty()){
+
+    fun showHistory() {
+        if (tracksInteractor.getHistory().isNotEmpty()) {
             _screenState.value = SearchScreenState.ShowHistory(tracksInteractor.getHistory())
-        }else{
+        } else {
             _screenState.value = SearchScreenState.Success(null)
         }
+    }
 
+    fun isReadyToRender(screenState: SearchScreenState, queryText: String): Boolean {
+        if ((screenState is SearchScreenState.Success
+                    && queryText.isNotEmpty())
+            || (screenState !is SearchScreenState.Success)
+        ) {
+            return true
+        }
+        return false
     }
 
     companion object {
@@ -98,5 +108,4 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         private val SEARCH_REQUEST_TOKEN = Any()
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
-
 }
