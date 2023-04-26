@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.mvrlrd.playlistmaker.play.ui.PlayerActivity
+import ru.mvrlrd.playlistmaker.player.ui.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
@@ -134,7 +134,7 @@ class SearchActivity : ComponentActivity() {
         return false
     }
 
-    private fun navigateTo(clazz: Class<out AppCompatActivity>, trackModel: Track) {
+    private fun navigateTo(clazz: Class<out ComponentActivity>, trackModel: Track) {
         val intent = Intent(this, clazz)
         intent.putExtra("my_track", trackModel)
         startActivity(intent)
