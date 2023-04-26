@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.ComponentActivity
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.ui.search.SearchActivity
+import ru.mvrlrd.playlistmaker.search.ui.SearchActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var searchButton: Button

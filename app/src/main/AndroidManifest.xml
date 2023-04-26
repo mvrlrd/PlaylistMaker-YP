@@ -18,14 +18,14 @@
         android:theme="@style/Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".PlayerActivity"
+            android:name=".play.ui.PlayerActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ui.MediatekaActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.search.SearchActivity"
+            android:name=".search.ui.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".ui.SettingsActivity"
