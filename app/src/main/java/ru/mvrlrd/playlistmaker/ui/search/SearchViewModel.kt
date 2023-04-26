@@ -8,6 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.mvrlrd.playlistmaker.Creator
+import ru.mvrlrd.playlistmaker.data.network.SUCCESS_CODE
 import ru.mvrlrd.playlistmaker.domain.Track
 import ru.mvrlrd.playlistmaker.domain.TracksInteractor
 
@@ -60,7 +61,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer {
                 override fun consume(foundTracks: List<Track>?, errorMessage: String?, code: Int) {
                     when (code) {
-                        200 -> {
+                        SUCCESS_CODE -> {
                             if (foundTracks!!.isNotEmpty()) {
                                 _screenState.postValue(SearchScreenState.Success(foundTracks))
                             } else {
