@@ -1,6 +1,9 @@
 package ru.mvrlrd.playlistmaker
 
 import android.content.Context
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
+import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
+import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.search.data.TracksRepositoryImpl
 import ru.mvrlrd.playlistmaker.search.data.network.RetrofitNetworkClient
 import ru.mvrlrd.playlistmaker.search.data.storage.LocalStorage
@@ -17,5 +20,9 @@ object Creator {
     }
      fun provideTracksInteractor(context: Context): TracksInteractor {
         return TracksInteractorImpl(getTracksRepository(context))
+    }
+
+    fun providePlayerInteractor(trackForPlayer: TrackForPlayer): PlayerInteractor{
+        return MyMediaPlayer(trackForPlayer)
     }
 }

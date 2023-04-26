@@ -5,11 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
-import ru.mvrlrd.playlistmaker.presenter.PlayerState
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
-class PlayerActivity : ComponentActivity(), PlayerView {
+class PlayerActivity : ComponentActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private lateinit var viewModel: PlayerViewModel
 
@@ -32,7 +31,7 @@ class PlayerActivity : ComponentActivity(), PlayerView {
         }
         binding.playButton.apply {
             setOnClickListener {
-//               playerPresenter.playbackControl()
+                viewModel.playbackControl()
             }
         }
         binding.likeButton.apply {
@@ -40,7 +39,7 @@ class PlayerActivity : ComponentActivity(), PlayerView {
         }
 
 
-        viewModel.d()
+//        viewModel.d()
 //        handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
 
         viewModel.screenState.observe(this){
@@ -59,39 +58,30 @@ class PlayerActivity : ComponentActivity(), PlayerView {
         viewModel.onDestroy()
     }
 
-    override fun handlePlayButton(state: PlayerState) {
-        when (state) {
-            PlayerState.STATE_PLAYING -> {
-                binding.playButton.setImageResource(R.drawable.baseline_pause_24)
-            }
-            else -> {
-                binding.playButton.setImageResource(R.drawable.baseline_play_arrow_24)
-            }
-        }
-    }
-
-    override fun onCompletePlaying() {
-        viewModel.onDestroy()
-//            handler.removeCallbacks(timerGo)
-            binding.clockTrack.text = resources.getText(R.string.null_timer)
-    }
 
 
-    override fun removePostDelay() {
-        viewModel.onDestroy()
-//        handler.removeCallbacks(timerGo)
-    }
+//    override fun onCompletePlaying() {
+//        viewModel.onDestroy()
+////            handler.removeCallbacks(timerGo)
+//            binding.clockTrack.text = resources.getText(R.string.null_timer)
+//    }
+
+
+//    override fun removePostDelay() {
+//        viewModel.onDestroy()
+////        handler.removeCallbacks(timerGo)
+//    }
 
 
 
-    override fun startPostDelay() {
-        viewModel.d()
-//        handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
-    }
-
-    override fun enablePlayButton() {
-        binding.playButton.isEnabled = true
-    }
+//    override fun startPostDelay() {
+//        viewModel.d()
+////        handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
+//    }
+//
+//    override fun enablePlayButton() {
+//        binding.playButton.isEnabled = true
+//    }
 
 //    override fun updateTimer(time: String) {
 //        binding.clockTrack.text = time
