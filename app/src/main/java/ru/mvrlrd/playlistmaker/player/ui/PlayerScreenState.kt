@@ -10,35 +10,33 @@ import ru.mvrlrd.playlistmaker.unparseDateToYear
 import java.text.SimpleDateFormat
 import java.util.*
 
-sealed class PlayerScreenState(val track: TrackForPlayer? = null, val playerState: PlayerState? = null) {
-    class Preview(track: TrackForPlayer): PlayerScreenState(track){
+sealed class PlayerScreenState {
+    class DefaultScreen(val track: TrackForPlayer): PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
-            track?.let {
-                binding.trackName.text = track.trackName
-                binding.singerName.text = track.artistName
-                binding.durationParam.text = SimpleDateFormat(
-                    binding.durationParam.resources.getString(R.string.track_duration_time_format),
-                    Locale.getDefault()
-                ).format(track.trackTime?.toLong() ?: 0L)
-                binding.albumParam.text = track.album
-                binding.yearParam.text = unparseDateToYear(track.year!!)
-                binding.genreParam.text = track.genre
-                binding.countryParam.text = track.country
+            binding.trackName.text = track.trackName
+            binding.singerName.text = track.artistName
+            binding.durationParam.text = SimpleDateFormat(
+                binding.durationParam.resources.getString(R.string.track_duration_time_format),
+                Locale.getDefault()
+            ).format(track.trackTime?.toLong() ?: 0L)
+            binding.albumParam.text = track.album
+            binding.yearParam.text = unparseDateToYear(track.year!!)
+            binding.genreParam.text = track.genre
+            binding.countryParam.text = track.country
 
-                Glide
-                    .with(binding.albumImageView)
-                    .load(track.getCoverArtwork())
-                    .placeholder(R.drawable.album_placeholder_image)
-                    .transform(
-                        CenterCrop(),
-                        RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.big_radius))
-                    )
-                    .into(binding.albumImageView)
-            }
+            Glide
+                .with(binding.albumImageView)
+                .load(track.getCoverArtwork())
+                .placeholder(R.drawable.album_placeholder_image)
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.big_radius))
+                )
+                .into(binding.albumImageView)
         }
     }
 
-    class StartStop(playerState: PlayerState) : PlayerScreenState(playerState = playerState) {
+    class StartStopHandler(private val playerState: PlayerState) : PlayerScreenState() {
         override fun render(binding: ActivityPlayerBinding) {
             when (playerState) {
                 PlayerState.STATE_PLAYING -> {
@@ -52,23 +50,22 @@ sealed class PlayerScreenState(val track: TrackForPlayer? = null, val playerStat
 
     }
 
-    class Prepare(): PlayerScreenState(){
+    class Preparer(): PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
             binding.playButton.isEnabled = true
         }
     }
-    class Timer(private val time: String): PlayerScreenState(){
+    class TimerUpdater(private val time: String): PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
             binding.clockTrack.text = time
         }
     }
-    class CompletePlaying(): PlayerScreenState(){
+    class CompletePlaying: PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
             binding.clockTrack.text = binding.clockTrack.resources.getText(R.string.null_timer)
             binding.playButton.setImageResource(R.drawable.baseline_play_arrow_24)
         }
     }
-
 
     abstract fun render(binding: ActivityPlayerBinding)
 }

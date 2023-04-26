@@ -29,39 +29,17 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer) : ViewModel() {
                 )
             }
         }
-
     init {
-        _screenState.value = PlayerScreenState.Preview(trackForPlayer)
+        _screenState.value = PlayerScreenState.DefaultScreen(trackForPlayer)
         preparePlayer()
         setOnCompletionListener()
     }
-
-    private fun start() {
-        playerInteractor.start()
-        playerState = STATE_PLAYING
-        handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
-        _screenState.value = PlayerScreenState.StartStop(playerState)
+    private fun preparePlayer(){
+        playerInteractor.preparePlayer {
+            playerState = STATE_PREPARED
+            _screenState.value = PlayerScreenState.Preparer()
+        }
     }
-     fun pause() {
-        playerInteractor.pause()
-        playerState = STATE_PAUSED
-        handler.removeCallbacks(timerGo)
-        _screenState.value = PlayerScreenState.StartStop(playerState)
-    }
-
-    fun onDestroy(){
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-        playerInteractor.onDestroy()
-    }
-
-    private fun updateTimer(time: String) {
-        _screenState.postValue(PlayerScreenState.Timer(time))
-    }
-
-    private fun getCurrentPosition():String{
-        return formatTime(playerInteractor.getCurrentTime())
-    }
-
     private fun setOnCompletionListener() {
         playerInteractor.setOnCompletionListener {
             playerState = STATE_PREPARED
@@ -69,12 +47,30 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer) : ViewModel() {
             _screenState.value = PlayerScreenState.CompletePlaying()
         }
     }
+    private fun start() {
+        playerInteractor.start()
+        playerState = STATE_PLAYING
+        handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
+        _screenState.value = PlayerScreenState.StartStopHandler(playerState)
+    }
+    fun pause() {
+        playerInteractor.pause()
+        playerState = STATE_PAUSED
+        handler.removeCallbacks(timerGo)
+        _screenState.value = PlayerScreenState.StartStopHandler(playerState)
+    }
+    private fun updateTimer(time: String) {
+        _screenState.postValue(PlayerScreenState.TimerUpdater(time))
+    }
 
-    private fun preparePlayer(){
-        playerInteractor.preparePlayer {
-            _screenState.value = PlayerScreenState.Prepare()
-            playerState = STATE_PREPARED
-        }
+    private fun getCurrentPosition():String{
+        return formatTime(playerInteractor.getCurrentTime())
+    }
+
+
+    fun onDestroy(){
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        playerInteractor.onDestroy()
     }
 
     fun playbackControl() {
