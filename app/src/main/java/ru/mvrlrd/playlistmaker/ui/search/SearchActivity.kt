@@ -3,8 +3,6 @@ package ru.mvrlrd.playlistmaker.ui.search
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -13,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.mvrlrd.playlistmaker.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.domain.Track
@@ -24,26 +21,19 @@ class SearchActivity : ComponentActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var viewModel : SearchViewModel
     private lateinit var trackAdapter : TrackAdapter
-    private lateinit var handler : Handler
-    private var isClickAllowed = true
-    private val searchRunnable = Runnable {
-        viewModel.searchRequest(binding.searchEditText.text.toString())
-    }
-    private fun trackOnClickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
 
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        if (binding.searchEditText.text.toString().isNotEmpty()){
-            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-        }
-    }
+    private var isClickAllowed = true
+
+//    private fun trackOnClickDebounce() : Boolean {
+//        val current = isClickAllowed
+//        if (isClickAllowed) {
+//            isClickAllowed = false
+//            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+//        }
+//        return current
+//    }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,7 +51,6 @@ class SearchActivity : ComponentActivity() {
         initRecycler()
         initEditText(savedInstanceState)
         initButtons()
-        handler = Handler(Looper.getMainLooper())
         binding.searchToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }
@@ -70,9 +59,6 @@ class SearchActivity : ComponentActivity() {
     private fun initButtons() {
         binding.clearTextButton.apply {
             setOnClickListener {
-                //если прерываю поиск этой кнопкой то сначала покажетс истори а потом все равно результат поиска но поисковый запрос в строке булдет пустой
-//                binding.progressBar.isVisible = false
-//                handler.removeCallbacks(searchRunnable)
 
                 binding.searchEditText.text.clear()
                 binding.searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
@@ -87,8 +73,7 @@ class SearchActivity : ComponentActivity() {
         binding.refreshButton.apply {
             setOnClickListener {
                 if (binding.searchEditText.text.toString().isNotEmpty()) {
-                    handler.removeCallbacks(searchRunnable)
-                    viewModel.searchRequest(binding.searchEditText.text.toString())
+                    viewModel.searchDebounce()
                 }
             }
         }
@@ -96,10 +81,10 @@ class SearchActivity : ComponentActivity() {
 
     private fun initRecycler() {
         trackAdapter = TrackAdapter {
-            if (trackOnClickDebounce()) {
-                navigateTo(PlayerActivity::class.java, it)
-                viewModel.addToHistory(it)
-            }
+//            if (trackOnClickDebounce()) {
+//                navigateTo(PlayerActivity::class.java, it)
+//                viewModel.addToHistory(it)
+//            }
         }
         binding.tracksRecyclerView.apply {
             adapter = trackAdapter
@@ -121,7 +106,7 @@ class SearchActivity : ComponentActivity() {
                     if (binding.searchEditText.hasFocus() && text.toString().isEmpty()) {
                         viewModel.showHistory()
                     }
-                    searchDebounce()
+                    viewModel.searchDebounce(binding.searchEditText.text.toString())
                     binding.clearTextButton.visibility = clearButtonVisibility(text.toString())
                 }
             }
@@ -155,8 +140,7 @@ class SearchActivity : ComponentActivity() {
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean{
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (binding.searchEditText.text.toString().isNotEmpty()) {
-                handler.removeCallbacks(searchRunnable)
-                viewModel.searchRequest(binding.searchEditText.text.toString())
+                viewModel.searchDebounce(binding.searchEditText.text.toString())
             }
         }
         return false
@@ -170,8 +154,8 @@ class SearchActivity : ComponentActivity() {
 
     companion object{
         private const val INPUT_TEXT = "INPUT_TEXT"
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+//        private const val CLICK_DEBOUNCE_DELAY = 1000L
+//        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
 

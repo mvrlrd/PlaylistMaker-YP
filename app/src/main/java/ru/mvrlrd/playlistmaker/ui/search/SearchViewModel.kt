@@ -1,6 +1,9 @@
 package ru.mvrlrd.playlistmaker.ui.search
 
 import android.app.Application
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,8 +17,34 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val _screenState = MutableLiveData<SearchScreenState>()
     val screenState: LiveData<SearchScreenState> = _screenState
 
-//    val handler = Handler(application.mainLooper)
-    // Код без изменений
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private var lastQuery: String? = null
+
+     fun onDestroy() {
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+    }
+
+    private fun makeDelaySearching(changedText: String){
+        val searchRunnable = Runnable { searchRequest(changedText) }
+        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
+        handler.postAtTime(
+            searchRunnable,
+            SEARCH_REQUEST_TOKEN,
+            postTime,
+        )
+    }
+    fun searchDebounce(changedText: String? = lastQuery) {
+        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        if (!changedText.isNullOrEmpty()) {
+            if ((lastQuery == changedText)) {
+                return
+            }
+            this.lastQuery = changedText
+            makeDelaySearching(changedText)
+        }
+    }
 
      fun searchRequest(query: String){
          _screenState.postValue(SearchScreenState.Loading())
@@ -37,8 +66,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         })
     }
 
-
-
     fun addToHistory(track: Track){
         tracksInteractor.addTrackToHistory(track)
     }
@@ -53,6 +80,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
             _screenState.value = SearchScreenState.Success(null)
         }
 
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+        private val SEARCH_REQUEST_TOKEN = Any()
     }
 
 }
