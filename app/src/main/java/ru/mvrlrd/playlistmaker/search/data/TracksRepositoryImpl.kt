@@ -15,7 +15,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
     TracksRepository {
     override fun searchTracks(query: String): Resource<List<Track>> {
         val response = networkClient.doRequest(
-            ru.mvrlrd.playlistmaker.search.data.TracksSearchRequest(
+            TracksSearchRequest(
                 query
             )
         )
