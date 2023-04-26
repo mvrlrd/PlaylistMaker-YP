@@ -22,6 +22,17 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
 
     private var lastQuery: String? = null
 
+    private var isClickAllowed = true
+
+    fun trackOnClickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
      fun onDestroy() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
@@ -71,7 +82,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
     fun clearHistory(){
         tracksInteractor.clearHistory()
-        _screenState.postValue(SearchScreenState.Success(null))
+        _screenState.postValue(SearchScreenState.ShowHistory(null))
     }
     fun showHistory(){
         if (tracksInteractor.getHistory().isNotEmpty()){
@@ -85,6 +96,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 }

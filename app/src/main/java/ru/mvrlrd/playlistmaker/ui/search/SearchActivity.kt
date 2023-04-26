@@ -11,29 +11,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.mvrlrd.playlistmaker.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.domain.Track
 
 
 class SearchActivity : ComponentActivity() {
-
     private lateinit var binding: ActivitySearchBinding
     private lateinit var viewModel : SearchViewModel
     private lateinit var trackAdapter : TrackAdapter
-
-    private var isClickAllowed = true
-
-//    private fun trackOnClickDebounce() : Boolean {
-//        val current = isClickAllowed
-//        if (isClickAllowed) {
-//            isClickAllowed = false
-//            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-//        }
-//        return current
-//    }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +46,6 @@ class SearchActivity : ComponentActivity() {
     private fun initButtons() {
         binding.clearTextButton.apply {
             setOnClickListener {
-
                 binding.searchEditText.text.clear()
                 binding.searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
                 viewModel.showHistory()
@@ -81,10 +67,10 @@ class SearchActivity : ComponentActivity() {
 
     private fun initRecycler() {
         trackAdapter = TrackAdapter {
-//            if (trackOnClickDebounce()) {
-//                navigateTo(PlayerActivity::class.java, it)
-//                viewModel.addToHistory(it)
-//            }
+            if (viewModel.trackOnClickDebounce()) {
+                viewModel.addToHistory(it)
+                navigateTo(PlayerActivity::class.java, it)
+            }
         }
         binding.tracksRecyclerView.apply {
             adapter = trackAdapter
@@ -125,6 +111,12 @@ class SearchActivity : ComponentActivity() {
         super.onResume()
         viewModel.showHistory()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
+    }
+
     private fun clearButtonVisibility(p0: CharSequence?) = if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
 
@@ -154,8 +146,6 @@ class SearchActivity : ComponentActivity() {
 
     companion object{
         private const val INPUT_TEXT = "INPUT_TEXT"
-//        private const val CLICK_DEBOUNCE_DELAY = 1000L
-//        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }
 

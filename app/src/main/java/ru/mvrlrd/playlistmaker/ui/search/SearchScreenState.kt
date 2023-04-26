@@ -52,10 +52,15 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
     }
     class ShowHistory(tracks: List<Track>?): SearchScreenState(tracks = tracks){
         override fun render(binding: ActivitySearchBinding) {
+            if (tracks.isNullOrEmpty()){
+                binding.clearHistoryButton.visibility = View.GONE
+                binding.youSearchedTitle.visibility = View.GONE
+            }else{
+                binding.clearHistoryButton.visibility = View.VISIBLE
+                binding.youSearchedTitle.visibility = View.VISIBLE
+            }
             binding.progressBar.visibility = View.GONE
             binding.errorPlaceHolder.visibility = View.GONE
-            binding.clearHistoryButton.visibility = View.VISIBLE
-            binding.youSearchedTitle.visibility = View.VISIBLE
             binding.refreshButton.visibility = View.GONE
         }
     }
