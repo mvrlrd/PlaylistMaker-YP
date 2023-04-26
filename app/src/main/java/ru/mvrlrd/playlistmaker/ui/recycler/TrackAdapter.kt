@@ -50,7 +50,7 @@ class TrackViewHolder(private val binding: TrackLayoutBinding): RecyclerView.Vie
         binding.trackName.text = track.trackName
         binding.artistName.text = track.artistName
 //        artistName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ellipse_1, 0, 0, 0);
-        binding.trackTime.text = formatTime(track.trackTime.toInt())
+        binding.trackTime.text = track.trackTime?.let { formatTime(it.toInt()) }
         Glide
             .with(itemView)
             .load(track.image)

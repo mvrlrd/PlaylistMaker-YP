@@ -10,12 +10,10 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.mvrlrd.playlistmaker.PlayerActivity
-import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.ui.recycler.TrackAdapter
 import ru.mvrlrd.playlistmaker.domain.Track
@@ -53,25 +51,12 @@ class SearchActivity : ComponentActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         viewModel.screenState.observe(this){screenState ->
-//            when(screenState){
-//                is SearchScreenState.Loading->{
-//                    trackAdapter.setTracks(null)
-//                }
-//               is SearchScreenState.Error->{
-//                   trackAdapter.setTracks(null)
-//               }
-//                is SearchScreenState.Success->{
-//                    trackAdapter.setTracks(screenState.tracks)
-//                }
-//                is SearchScreenState.ShowHistory->{
-//                    trackAdapter.setTracks(screenState.tracks)
-//                }
-//                is SearchScreenState.NothingFound->{
-//
-//                }
-//            }
-            trackAdapter.setTracks(screenState.tracks)
-            screenState.render(binding)
+            if ((screenState is SearchScreenState.Success
+                && binding.searchEditText.text.isNotEmpty())
+                ||(screenState !is SearchScreenState.Success)){
+                trackAdapter.setTracks(screenState.tracks)
+                screenState.render(binding)
+            }
         }
         initRecycler()
         initEditText(savedInstanceState)
@@ -85,8 +70,11 @@ class SearchActivity : ComponentActivity() {
     private fun initButtons() {
         binding.clearTextButton.apply {
             setOnClickListener {
+                //если прерываю поиск этой кнопкой то сначала покажетс истори а потом все равно результат поиска но поисковый запрос в строке булдет пустой
+//                binding.progressBar.isVisible = false
+//                handler.removeCallbacks(searchRunnable)
+
                 binding.searchEditText.text.clear()
-                binding.errorPlaceHolder.visibility = View.GONE
                 binding.searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
                 viewModel.showHistory()
             }
@@ -130,11 +118,8 @@ class SearchActivity : ComponentActivity() {
                     if (hasFocus && binding.searchEditText.text.isEmpty()) viewModel.showHistory()
                 }
                 doOnTextChanged { text, _, _, _ ->
-                    if (binding.searchEditText.text.toString().isEmpty()) {
-                        binding.progressBar.isVisible = false
-                        if (binding.searchEditText.hasFocus() && text?.isEmpty() == true) {
-                            viewModel.showHistory()
-                        }
+                    if (binding.searchEditText.hasFocus() && text.toString().isEmpty()) {
+                        viewModel.showHistory()
                     }
                     searchDebounce()
                     binding.clearTextButton.visibility = clearButtonVisibility(text.toString())

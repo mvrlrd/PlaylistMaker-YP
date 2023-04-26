@@ -89,7 +89,7 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
         duration.text = SimpleDateFormat(
             resources.getString(R.string.track_duration_time_format),
             Locale.getDefault()
-        ).format(track.trackTime.toLong())
+        ).format(track.trackTime?.toLong() ?: 0L)
         album.text = track.album
         year.text = unparseDateToYear(track.year!!)
         genre.text = track.genre
