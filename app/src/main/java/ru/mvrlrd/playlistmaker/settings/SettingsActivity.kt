@@ -5,31 +5,25 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
-import androidx.appcompat.widget.Toolbar
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.App
+import ru.mvrlrd.playlistmaker.databinding.ActivitySettingsBinding
 
 
 class SettingsActivity : AppCompatActivity() {
-
-    private lateinit var toolbar: Toolbar
-    private lateinit var switchTheme : SwitchCompat
-    private lateinit var shareContainer: ViewGroup
-    private lateinit var supportContainer: ViewGroup
-    private lateinit var agreementContainer: ViewGroup
+    private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        toolbar = findViewById<Toolbar>(R.id.settingsToolbar).apply {
+        binding.settingsToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }
 
-        switchTheme = findViewById<SwitchCompat?>(R.id.switchTheme)
+        binding.switchTheme
             .apply {
                 (applicationContext as App).applySavedThemeMode()
                 isChecked = isDarkTheme()
@@ -38,7 +32,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
 
-        shareContainer = findViewById<ViewGroup?>(R.id.shareContainer).apply {
+        binding.shareContainer.apply {
             setOnClickListener {
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND
@@ -50,7 +44,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        supportContainer = findViewById<ViewGroup?>(R.id.supportContainer).apply {
+        binding.supportContainer.apply {
             setOnClickListener {
                 val emailIntent = Intent(Intent.ACTION_SENDTO)
                 emailIntent.data = Uri.parse("mailto:")
@@ -61,7 +55,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
-        agreementContainer = findViewById<ViewGroup?>(R.id.agreementContainer).apply {
+        binding.agreementContainer.apply {
             setOnClickListener {
                 val agreementIntent = Intent(Intent.ACTION_VIEW)
                 agreementIntent.data = Uri.parse(resources.getString(R.string.praktikum_link))

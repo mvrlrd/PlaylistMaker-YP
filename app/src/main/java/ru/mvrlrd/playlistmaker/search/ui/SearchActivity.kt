@@ -133,9 +133,9 @@ class SearchActivity : ComponentActivity() {
         return false
     }
 
-    private fun navigateTo(clazz: Class<out ComponentActivity>, trackModel: Track) {
+    private fun navigateTo(clazz: Class<out ComponentActivity>, track: Track) {
         val intent = Intent(this, clazz)
-        intent.putExtra("my_track", trackModel)
+        intent.putExtra("my_track", track)
         startActivity(intent)
     }
 
