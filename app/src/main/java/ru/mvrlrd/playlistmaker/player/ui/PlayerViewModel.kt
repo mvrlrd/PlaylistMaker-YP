@@ -30,43 +30,42 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer) : ViewModel() {
             }
         }
     init {
-        _screenState.value = PlayerScreenState.DefaultScreen(trackForPlayer)
+        _screenState.value = PlayerScreenState.BeginningState(trackForPlayer)
         preparePlayer()
         setOnCompletionListener()
     }
     private fun preparePlayer(){
         playerInteractor.preparePlayer {
             playerState = STATE_PREPARED
-            _screenState.value = PlayerScreenState.Preparer()
+            _screenState.value = PlayerScreenState.Preparing()
         }
     }
     private fun setOnCompletionListener() {
         playerInteractor.setOnCompletionListener {
             playerState = STATE_PREPARED
             handler.removeCallbacks(timerGo)
-            _screenState.value = PlayerScreenState.CompletePlaying()
+            _screenState.value = PlayerScreenState.PlayCompleting()
         }
     }
     private fun start() {
         playerInteractor.start()
         playerState = STATE_PLAYING
         handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
-        _screenState.value = PlayerScreenState.StartStopHandler(playerState)
+        _screenState.value = PlayerScreenState.PlayButtonHandling(playerState)
     }
     fun pause() {
         playerInteractor.pause()
         playerState = STATE_PAUSED
         handler.removeCallbacks(timerGo)
-        _screenState.value = PlayerScreenState.StartStopHandler(playerState)
+        _screenState.value = PlayerScreenState.PlayButtonHandling(playerState)
     }
     private fun updateTimer(time: String) {
-        _screenState.postValue(PlayerScreenState.TimerUpdater(time))
+        _screenState.postValue(PlayerScreenState.TimerUpdating(time))
     }
 
     private fun getCurrentPosition():String{
         return formatTime(playerInteractor.getCurrentTime())
     }
-
 
     fun onDestroy(){
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)

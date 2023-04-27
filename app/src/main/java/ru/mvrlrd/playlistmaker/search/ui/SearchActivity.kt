@@ -7,7 +7,6 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +36,7 @@ class SearchActivity : ComponentActivity() {
         }
         initRecycler()
         initEditText(savedInstanceState)
-        initButtons()
+        handleButtons()
     }
 
     override fun onResume() {
@@ -60,7 +59,7 @@ class SearchActivity : ComponentActivity() {
         viewModel.onDestroy()
     }
 
-    private fun initButtons() {
+    private fun handleButtons() {
         binding.clearTextButton.apply {
             setOnClickListener {
                 binding.searchEditText.text.clear()

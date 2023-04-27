@@ -3,7 +3,6 @@ package ru.mvrlrd.playlistmaker.player.data
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 
 class PlayerRepositoryImpl(private val playerClient: PlayerClient): PlayerRepository {
-    //тут пишу логику
     override fun preparePlayer(prepare: () -> Unit) {
         playerClient.preparePlayer(prepare)
     }

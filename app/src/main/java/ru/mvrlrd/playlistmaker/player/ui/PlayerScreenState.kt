@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 sealed class PlayerScreenState {
-    class DefaultScreen(val track: TrackForPlayer): PlayerScreenState(){
+    class BeginningState(val track: TrackForPlayer): PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
             binding.trackName.text = track.trackName
             binding.singerName.text = track.artistName
@@ -36,7 +36,7 @@ sealed class PlayerScreenState {
         }
     }
 
-    class StartStopHandler(private val playerState: PlayerState) : PlayerScreenState() {
+    class PlayButtonHandling(private val playerState: PlayerState) : PlayerScreenState() {
         override fun render(binding: ActivityPlayerBinding) {
             when (playerState) {
                 PlayerState.STATE_PLAYING -> {
@@ -47,20 +47,19 @@ sealed class PlayerScreenState {
                 }
             }
         }
-
     }
 
-    class Preparer(): PlayerScreenState(){
+    class Preparing: PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
             binding.playButton.isEnabled = true
         }
     }
-    class TimerUpdater(private val time: String): PlayerScreenState(){
+    class TimerUpdating(private val time: String): PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
             binding.clockTrack.text = time
         }
     }
-    class CompletePlaying: PlayerScreenState(){
+    class PlayCompleting: PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
             binding.clockTrack.text = binding.clockTrack.resources.getText(R.string.null_timer)
             binding.playButton.setImageResource(R.drawable.baseline_play_arrow_24)
