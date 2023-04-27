@@ -8,7 +8,7 @@ import androidx.activity.ComponentActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivityMainBinding
 import ru.mvrlrd.playlistmaker.search.ui.SearchActivity
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaActivity
-import ru.mvrlrd.playlistmaker.settings.SettingsActivity
+import ru.mvrlrd.playlistmaker.settings.ui.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

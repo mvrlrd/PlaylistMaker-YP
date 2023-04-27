@@ -1,35 +1,24 @@
 package ru.mvrlrd.playlistmaker
 
 import android.app.Application
-import android.content.SharedPreferences
-import ru.mvrlrd.playlistmaker.settings.SwitchTheme
-
+import ru.mvrlrd.playlistmaker.di.Creator
+import ru.mvrlrd.playlistmaker.settings.domain.ThemeSwitchInteractor
 
 class App : Application(), ThemeSwitcher {
-    private lateinit var themePreferences: SharedPreferences
-    private lateinit var switchTheme: SwitchTheme
+    private lateinit var themeSwitcherInteractor: ThemeSwitchInteractor
 
     override fun onCreate() {
         super.onCreate()
-        themePreferences = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE)
-        switchTheme = SwitchTheme(themePreferences)
-        applySavedThemeMode()
-    }
-
-    private fun applySavedThemeMode() {
-        switchTheme.applyTheme()
+        themeSwitcherInteractor = Creator.provideThemeSwitchInteractor(this)
+        themeSwitcherInteractor.applyCurrentTheme()
     }
 
     override fun switchTheme(darkThemeEnabled: Boolean) {
-        switchTheme.switch(darkThemeEnabled)
+        themeSwitcherInteractor.switch(darkThemeEnabled)
     }
 
     override fun isDarkModeOn(): Boolean {
-        return switchTheme.isDarkModeOn()
-    }
-
-    companion object {
-        private const val THEME_PREFERENCES = "current_theme"
+        return themeSwitcherInteractor.isDarkModeOn()
     }
 }
 

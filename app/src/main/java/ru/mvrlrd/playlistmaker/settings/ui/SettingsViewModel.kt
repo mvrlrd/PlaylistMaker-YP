@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.settings
+package ru.mvrlrd.playlistmaker.settings.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,11 +8,9 @@ class SettingsViewModel(val application: ThemeSwitcher) : ViewModel() {
     fun switchTheme(isChecked: Boolean) {
         application.switchTheme(isChecked)
     }
-
     fun isDarkThemeOn(): Boolean {
         return application.isDarkModeOn()
     }
-
     companion object {
         fun getViewModelFactory(application: ThemeSwitcher): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {

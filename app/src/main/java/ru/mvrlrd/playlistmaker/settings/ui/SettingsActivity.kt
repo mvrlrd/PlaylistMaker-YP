@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.settings
+package ru.mvrlrd.playlistmaker.settings.ui
 
 
 import android.content.Intent
@@ -20,7 +20,9 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, SettingsViewModel.getViewModelFactory(application as ThemeSwitcher))[SettingsViewModel::class.java]
+        viewModel = ViewModelProvider(this,
+            SettingsViewModel.getViewModelFactory(application as ThemeSwitcher)
+        )[SettingsViewModel::class.java]
         binding.settingsToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }
