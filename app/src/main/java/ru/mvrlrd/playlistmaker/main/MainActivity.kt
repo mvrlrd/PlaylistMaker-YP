@@ -4,32 +4,30 @@ package ru.mvrlrd.playlistmaker.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.ComponentActivity
-import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.databinding.ActivityMainBinding
 import ru.mvrlrd.playlistmaker.search.ui.SearchActivity
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaActivity
 import ru.mvrlrd.playlistmaker.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var searchButton: Button
-    private lateinit var mediaButton: Button
-    private lateinit var settingsButton: Button
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        searchButton = findViewById<Button>(R.id.search_button).apply {
+        binding.searchButton.apply {
             setOnClickListener {
                 navigateToC(SearchActivity::class.java)
             }
         }
-        mediaButton = findViewById<Button>(R.id.mediateka_button).apply {
+        binding.mediatekaButton.apply {
             setOnClickListener {
                 navigateTo(MediatekaActivity::class.java)
             }
         }
-        settingsButton = findViewById<Button>(R.id.settings_button).apply {
+        binding.settingsButton.apply {
             setOnClickListener {
                 navigateTo(SettingsActivity::class.java)
             }
