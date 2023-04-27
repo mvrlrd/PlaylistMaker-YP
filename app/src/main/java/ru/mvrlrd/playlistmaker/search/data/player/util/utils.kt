@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker
+package ru.mvrlrd.playlistmaker.search.data.player.util
 
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -8,12 +8,11 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val TIMER_FORMAT = "mm:ss"
-fun unparseDateToYear(input: String): String{
+fun unparseDateToYear(input: String): String {
     val instant: Instant = Instant.parse(input)
     val odt: OffsetDateTime = instant.atOffset(ZoneOffset.UTC)
     val f: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu")
-    val output = odt.format(f)
-    return output
+    return odt.format(f)
 }
 
 

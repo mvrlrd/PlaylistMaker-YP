@@ -10,7 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import ru.mvrlrd.playlistmaker.player.ui.PlayerActivity
+import ru.mvrlrd.playlistmaker.search.data.player.ui.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.search.domain.Track
 

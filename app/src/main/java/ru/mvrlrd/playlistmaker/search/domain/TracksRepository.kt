@@ -1,6 +1,6 @@
 package ru.mvrlrd.playlistmaker.search.domain
 
-import ru.mvrlrd.playlistmaker.util.Resource
+import ru.mvrlrd.playlistmaker.search.util.Resource
 
 interface TracksRepository {
     fun searchTracks(query: String): Resource<List<Track>>

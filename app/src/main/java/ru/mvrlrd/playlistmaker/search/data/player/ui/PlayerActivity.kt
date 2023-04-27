@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.player.ui
+package ru.mvrlrd.playlistmaker.search.data.player.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,7 +14,9 @@ class PlayerActivity : ComponentActivity() {
         val binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val track = intent.getSerializableExtra("my_track") as Track
-        viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory(trackForPlayer = track.mapTrackToTrackForPlayer()))[PlayerViewModel::class.java]
+        viewModel = ViewModelProvider(this,
+            PlayerViewModel.getViewModelFactory(trackForPlayer = track.mapTrackToTrackForPlayer())
+        )[PlayerViewModel::class.java]
         binding.backButton.apply {
             setOnClickListener { onBackPressed() }
         }

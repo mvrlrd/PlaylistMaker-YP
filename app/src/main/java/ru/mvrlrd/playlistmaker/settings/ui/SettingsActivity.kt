@@ -23,6 +23,7 @@ class SettingsActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this,
             SettingsViewModel.getViewModelFactory(application as ThemeSwitcher)
         )[SettingsViewModel::class.java]
+
         binding.settingsToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }

@@ -1,7 +1,7 @@
-package ru.mvrlrd.playlistmaker.player.domain.impl
+package ru.mvrlrd.playlistmaker.search.data.player.domain.impl
 
-import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
-import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
+import ru.mvrlrd.playlistmaker.search.data.player.domain.PlayerInteractor
+import ru.mvrlrd.playlistmaker.search.data.player.domain.PlayerRepository
 
 class PlayerInteractorImpl(private val playerRepository: PlayerRepository): PlayerInteractor {
 

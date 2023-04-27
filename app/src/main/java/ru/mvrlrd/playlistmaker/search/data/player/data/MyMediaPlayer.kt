@@ -1,7 +1,7 @@
-package ru.mvrlrd.playlistmaker.player.data
+package ru.mvrlrd.playlistmaker.search.data.player.data
 
 import android.media.MediaPlayer
-import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.search.data.player.domain.TrackForPlayer
 
 class MyMediaPlayer(track: TrackForPlayer): PlayerClient {
     private val mediaPlayer: MediaPlayer = MediaPlayer()
