@@ -2,13 +2,12 @@ package ru.mvrlrd.playlistmaker.settings
 
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.App
+import ru.mvrlrd.playlistmaker.ThemeSwitcher
 import ru.mvrlrd.playlistmaker.databinding.ActivitySettingsBinding
 
 
@@ -21,19 +20,16 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, SettingsViewModel.getViewModelFactory(application as App))[SettingsViewModel::class.java]
+        viewModel = ViewModelProvider(this, SettingsViewModel.getViewModelFactory(application as ThemeSwitcher))[SettingsViewModel::class.java]
         binding.settingsToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }
 
         binding.switchTheme
             .apply {
-                viewModel.applyTheme()
-//                (applicationContext as App).applySavedThemeMode()
                 isChecked = viewModel.isDarkThemeOn()
                 setOnCheckedChangeListener { _, isChecked ->
                     viewModel.switchTheme(isChecked)
-//                    (applicationContext as App).switchTheme(isChecked)
                 }
             }
 
@@ -67,10 +63,5 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(agreementIntent)
             }
         }
-    }
-
-    private fun isDarkTheme(): Boolean {
-        return this.resources.configuration.uiMode and
-                Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 }

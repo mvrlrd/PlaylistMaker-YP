@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import ru.mvrlrd.playlistmaker.settings.SwitchTheme
 
 
-class App : Application() {
+class App : Application(), ThemeSwitcher {
     private lateinit var themePreferences: SharedPreferences
     private lateinit var switchTheme: SwitchTheme
 
@@ -16,17 +16,24 @@ class App : Application() {
         applySavedThemeMode()
     }
 
-    fun switchTheme(darkThemeEnabled: Boolean) {
-        switchTheme.switch(darkThemeEnabled)
-    }
-    fun applySavedThemeMode(){
+    private fun applySavedThemeMode() {
         switchTheme.applyTheme()
     }
 
-fun isDarkModeOn():Boolean{
-    return switchTheme.isDarkModeOn()
-}
-    companion object{
+    override fun switchTheme(darkThemeEnabled: Boolean) {
+        switchTheme.switch(darkThemeEnabled)
+    }
+
+    override fun isDarkModeOn(): Boolean {
+        return switchTheme.isDarkModeOn()
+    }
+
+    companion object {
         private const val THEME_PREFERENCES = "current_theme"
     }
+}
+
+interface ThemeSwitcher{
+    fun switchTheme(darkThemeEnabled: Boolean)
+    fun isDarkModeOn():Boolean
 }
