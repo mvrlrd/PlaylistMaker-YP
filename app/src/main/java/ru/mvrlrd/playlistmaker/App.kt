@@ -22,6 +22,8 @@ class App : Application() {
     fun applySavedThemeMode(){
         switchTheme.applyTheme()
     }
+
+
     companion object{
         private const val THEME_PREFERENCES = "current_theme"
     }

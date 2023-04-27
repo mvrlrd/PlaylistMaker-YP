@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.App
 import ru.mvrlrd.playlistmaker.databinding.ActivitySettingsBinding
@@ -13,22 +14,26 @@ import ru.mvrlrd.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
+    private lateinit var viewModel: SettingsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this, SettingsViewModel.getViewModelFactory(application as App))[SettingsViewModel::class.java]
         binding.settingsToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }
 
         binding.switchTheme
             .apply {
-                (applicationContext as App).applySavedThemeMode()
+                viewModel.applyTheme()
+//                (applicationContext as App).applySavedThemeMode()
                 isChecked = isDarkTheme()
                 setOnCheckedChangeListener { _, isChecked ->
-                    (applicationContext as App).switchTheme(isChecked)
+                    viewModel.switchTheme(isChecked)
+//                    (applicationContext as App).switchTheme(isChecked)
                 }
             }
 
