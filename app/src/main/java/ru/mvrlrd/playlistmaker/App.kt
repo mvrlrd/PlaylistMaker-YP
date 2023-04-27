@@ -2,7 +2,7 @@ package ru.mvrlrd.playlistmaker
 
 import android.app.Application
 import android.content.SharedPreferences
-import ru.mvrlrd.playlistmaker.util.SwitchTheme
+import ru.mvrlrd.playlistmaker.settings.SwitchTheme
 
 
 class App : Application() {
