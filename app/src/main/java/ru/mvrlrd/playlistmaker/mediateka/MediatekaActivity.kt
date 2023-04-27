@@ -1,11 +1,11 @@
 package ru.mvrlrd.playlistmaker.mediateka
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import com.google.android.material.tabs.TabLayout
 import ru.mvrlrd.playlistmaker.databinding.ActivityMediatekaBinding
 
-class MediatekaActivity : AppCompatActivity() {
+class MediatekaActivity : ComponentActivity() {
     private lateinit var binding: ActivityMediatekaBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

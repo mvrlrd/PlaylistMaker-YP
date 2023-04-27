@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.searchButton.apply {
             setOnClickListener {
-                navigateToC(SearchActivity::class.java)
+                navigateTo(SearchActivity::class.java)
             }
         }
         binding.mediatekaButton.apply {
@@ -34,11 +34,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateTo(clazz: Class<out AppCompatActivity>) {
-        val intent = Intent(this, clazz)
-        startActivity(intent)
-    }
-    private fun navigateToC(clazz: Class<out ComponentActivity>) {
+    private fun navigateTo(clazz: Class<out ComponentActivity>) {
         val intent = Intent(this, clazz)
         startActivity(intent)
     }
