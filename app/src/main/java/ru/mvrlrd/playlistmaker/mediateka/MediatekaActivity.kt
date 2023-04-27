@@ -2,24 +2,23 @@ package ru.mvrlrd.playlistmaker.mediateka
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
 import com.google.android.material.tabs.TabLayout
-import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.databinding.ActivityMediatekaBinding
 
 class MediatekaActivity : AppCompatActivity() {
-    private lateinit var toolbar: Toolbar
-    private lateinit var myTab: TabLayout
+    private lateinit var binding: ActivityMediatekaBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_mediateka)
+        binding = ActivityMediatekaBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        toolbar = findViewById<Toolbar>(R.id.mediatekaToolbar).apply {
+        binding.mediatekaToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }
 
 
-        myTab = findViewById<TabLayout>(R.id.mediatekaTab).apply {
+        binding.mediatekaTab.apply {
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     when (tab!!.position) {
