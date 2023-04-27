@@ -30,7 +30,7 @@ class SettingsActivity : AppCompatActivity() {
             .apply {
                 viewModel.applyTheme()
 //                (applicationContext as App).applySavedThemeMode()
-                isChecked = isDarkTheme()
+                isChecked = viewModel.isDarkThemeOn()
                 setOnCheckedChangeListener { _, isChecked ->
                     viewModel.switchTheme(isChecked)
 //                    (applicationContext as App).switchTheme(isChecked)

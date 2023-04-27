@@ -23,7 +23,9 @@ class App : Application() {
         switchTheme.applyTheme()
     }
 
-
+fun isDarkModeOn():Boolean{
+    return switchTheme.isDarkModeOn()
+}
     companion object{
         private const val THEME_PREFERENCES = "current_theme"
     }

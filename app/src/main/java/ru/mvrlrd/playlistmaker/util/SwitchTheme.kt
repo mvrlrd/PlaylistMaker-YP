@@ -24,6 +24,10 @@ class SwitchTheme(private val sharedPreferences: SharedPreferences) {
             }
         )
     }
+
+    fun isDarkModeOn():Boolean{
+        return sharedPreferences.getBoolean(IS_DARK_MODE_ON, false)
+    }
     companion object{
         private const val IS_DARK_MODE_ON = "is_dark_mode_on"
     }
