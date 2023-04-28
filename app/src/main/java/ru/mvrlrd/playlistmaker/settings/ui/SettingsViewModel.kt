@@ -1,18 +1,20 @@
 package ru.mvrlrd.playlistmaker.settings.ui
 
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.mvrlrd.playlistmaker.ThemeSwitcher
+import ru.mvrlrd.playlistmaker.App
 
-class SettingsViewModel(val application: ThemeSwitcher) : ViewModel() {
+class SettingsViewModel(application: App) : AndroidViewModel(application) {
+    private val switchThemeInteractor = application.themeSwitcherInteractor
     fun switchTheme(isChecked: Boolean) {
-        application.switchTheme(isChecked)
+        switchThemeInteractor.switch(isChecked)
     }
     fun isDarkThemeOn(): Boolean {
-        return application.isDarkModeOn()
+        return switchThemeInteractor.isDarkModeOn()
     }
     companion object {
-        fun getViewModelFactory(application: ThemeSwitcher): ViewModelProvider.Factory =
+        fun getViewModelFactory(application: App): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {

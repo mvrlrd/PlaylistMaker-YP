@@ -6,8 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import ru.mvrlrd.playlistmaker.App
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.ThemeSwitcher
 import ru.mvrlrd.playlistmaker.databinding.ActivitySettingsBinding
 
 
@@ -21,7 +21,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel = ViewModelProvider(this,
-            SettingsViewModel.getViewModelFactory(application as ThemeSwitcher)
+            SettingsViewModel.getViewModelFactory(application as App)
         )[SettingsViewModel::class.java]
 
         binding.settingsToolbar.apply {
