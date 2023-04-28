@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.mvrlrd.playlistmaker.player.ui.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
+import ru.mvrlrd.playlistmaker.search.data.network.TRACK_KEY
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
 
@@ -135,7 +136,7 @@ class SearchActivity : ComponentActivity() {
 
     private fun navigateTo(clazz: Class<out ComponentActivity>, track: Track) {
         val intent = Intent(this, clazz)
-        intent.putExtra("my_track", track)
+        intent.putExtra(TRACK_KEY, track)
         startActivity(intent)
     }
 

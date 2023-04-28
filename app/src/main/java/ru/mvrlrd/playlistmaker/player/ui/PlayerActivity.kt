@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
+import ru.mvrlrd.playlistmaker.search.data.network.TRACK_KEY
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
 class PlayerActivity : ComponentActivity() {
@@ -13,7 +14,7 @@ class PlayerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val track = intent.getSerializableExtra("my_track") as Track
+        val track = intent.getSerializableExtra(TRACK_KEY) as Track
         viewModel = ViewModelProvider(this,
             PlayerViewModel.getViewModelFactory(trackForPlayer = track.mapTrackToTrackForPlayer())
         )[PlayerViewModel::class.java]
