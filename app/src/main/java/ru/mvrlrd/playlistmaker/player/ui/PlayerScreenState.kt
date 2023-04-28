@@ -1,12 +1,12 @@
-package ru.mvrlrd.playlistmaker.search.data.player.ui
+package ru.mvrlrd.playlistmaker.player.ui
 
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
-import ru.mvrlrd.playlistmaker.search.data.player.domain.TrackForPlayer
-import ru.mvrlrd.playlistmaker.search.data.player.util.unparseDateToYear
+import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.player.util.unparseDateToYear
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.search.data.player.ui
+package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

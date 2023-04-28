@@ -1,12 +1,12 @@
 package ru.mvrlrd.playlistmaker.di
 
 import android.content.Context
-import ru.mvrlrd.playlistmaker.search.data.player.data.MyMediaPlayer
-import ru.mvrlrd.playlistmaker.search.data.player.data.PlayerRepositoryImpl
-import ru.mvrlrd.playlistmaker.search.data.player.domain.PlayerInteractor
-import ru.mvrlrd.playlistmaker.search.data.player.domain.PlayerRepository
-import ru.mvrlrd.playlistmaker.search.data.player.domain.TrackForPlayer
-import ru.mvrlrd.playlistmaker.search.data.player.domain.impl.PlayerInteractorImpl
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
+import ru.mvrlrd.playlistmaker.player.data.PlayerRepositoryImpl
+import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
+import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
+import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.player.domain.impl.PlayerInteractorImpl
 import ru.mvrlrd.playlistmaker.search.data.TracksRepositoryImpl
 import ru.mvrlrd.playlistmaker.search.data.network.RetrofitNetworkClient
 import ru.mvrlrd.playlistmaker.search.data.storage.LocalStorage

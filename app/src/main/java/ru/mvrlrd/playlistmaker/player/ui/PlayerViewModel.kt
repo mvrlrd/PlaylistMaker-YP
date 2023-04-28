@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.search.data.player.ui
+package ru.mvrlrd.playlistmaker.player.ui
 
 
 import android.os.Handler
@@ -8,9 +8,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.mvrlrd.playlistmaker.di.Creator
-import ru.mvrlrd.playlistmaker.search.data.player.util.formatTime
-import ru.mvrlrd.playlistmaker.search.data.player.domain.TrackForPlayer
-import ru.mvrlrd.playlistmaker.search.data.player.ui.PlayerState.*
+import ru.mvrlrd.playlistmaker.player.util.formatTime
+import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.player.ui.PlayerState.*
 
 class PlayerViewModel(trackForPlayer: TrackForPlayer) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()

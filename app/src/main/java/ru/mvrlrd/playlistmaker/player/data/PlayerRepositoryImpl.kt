@@ -1,6 +1,6 @@
-package ru.mvrlrd.playlistmaker.search.data.player.data
+package ru.mvrlrd.playlistmaker.player.data
 
-import ru.mvrlrd.playlistmaker.search.data.player.domain.PlayerRepository
+import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 
 class PlayerRepositoryImpl(private val playerClient: PlayerClient): PlayerRepository {
     override fun preparePlayer(prepare: () -> Unit) {

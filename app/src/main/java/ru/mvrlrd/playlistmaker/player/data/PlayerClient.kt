@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.search.data.player.data
+package ru.mvrlrd.playlistmaker.player.data
 
 interface PlayerClient {
      fun preparePlayer(prepare: () -> Unit)

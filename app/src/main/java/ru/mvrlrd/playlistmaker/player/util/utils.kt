@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.search.data.player.util
+package ru.mvrlrd.playlistmaker.player.util
 
 import java.text.SimpleDateFormat
 import java.time.Instant

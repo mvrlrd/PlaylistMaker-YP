@@ -1,6 +1,6 @@
 package ru.mvrlrd.playlistmaker.search.data.model
 
-import ru.mvrlrd.playlistmaker.search.data.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.search.data.storage.TrackToStorage
 import ru.mvrlrd.playlistmaker.search.domain.Track
 

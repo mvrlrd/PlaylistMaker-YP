@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.search.data.player.domain
+package ru.mvrlrd.playlistmaker.player.domain
 
 interface PlayerInteractor {
     fun start()

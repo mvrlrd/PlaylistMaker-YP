@@ -18,7 +18,7 @@
         android:theme="@style/Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".search.data.player.ui.PlayerActivity"
+            android:name=".player.ui.PlayerActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
