@@ -1,14 +1,14 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.data.network.TRACK_KEY
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
-class PlayerActivity : ComponentActivity() {
+class PlayerActivity : AppCompatActivity() {
     private lateinit var viewModel: PlayerViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
