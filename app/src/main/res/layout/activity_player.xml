@@ -26,24 +26,23 @@
         app:layout_constraintGuide_percent="0.94"
         />
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/backButton"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_arrow_icon"
+            app:buttonGravity="center_vertical"
+            />
 
-
-    <ImageButton
-        android:id="@+id/backButton"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_icon" />
 
     <ImageView
         android:id="@+id/albumImageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-
         android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"

@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:paddingTop="10dp"
     android:paddingBottom= "15dp"
+    android:background="?attr/main_background"
     >
 
     <com.google.android.material.button.MaterialButton
