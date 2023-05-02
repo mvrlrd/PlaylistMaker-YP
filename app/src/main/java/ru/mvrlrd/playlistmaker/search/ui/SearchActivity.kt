@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +17,7 @@ import ru.mvrlrd.playlistmaker.search.data.network.TRACK_KEY
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
 
-class SearchActivity : ComponentActivity() {
+class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var viewModel : SearchViewModel
     private lateinit var trackAdapter : TrackAdapter
