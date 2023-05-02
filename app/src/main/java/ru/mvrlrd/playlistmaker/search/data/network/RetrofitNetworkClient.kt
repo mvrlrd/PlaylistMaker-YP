@@ -5,7 +5,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.mvrlrd.playlistmaker.search.data.Response
 import ru.mvrlrd.playlistmaker.search.data.TracksSearchRequest
+import java.net.SocketTimeoutException
 
 
 class RetrofitNetworkClient(private val context: Context):
@@ -18,17 +20,24 @@ class RetrofitNetworkClient(private val context: Context):
 
     private val itunesService = retrofit.create(ItunesApiService::class.java)
 
-    override fun doRequest(dto: Any): ru.mvrlrd.playlistmaker.search.data.Response {
+    override fun doRequest(dto: Any): Response {
         if (!isConnected()){
-            return ru.mvrlrd.playlistmaker.search.data.Response()
+            return Response()
                 .apply { resultCode = NO_INTERNET_CONNECTION_CODE }
         }
         return if (dto is TracksSearchRequest) {
-            val resp = itunesService.search(dto.query).execute()
-            val body = resp.body() ?: ru.mvrlrd.playlistmaker.search.data.Response()
-            body.apply { resultCode = resp.code() }
+            return try {
+                val resp = itunesService.search(dto.query).execute()
+                val body = resp.body() ?: Response()
+                body.apply { resultCode = resp.code() }
+            }catch (e: SocketTimeoutException){
+                println("${e.stackTrace}")
+                Response()
+            }
+
+
         }else{
-            ru.mvrlrd.playlistmaker.search.data.Response().apply { resultCode = BAD_REQUEST_CODE }
+            Response().apply { resultCode = BAD_REQUEST_CODE }
         }
     }
 
