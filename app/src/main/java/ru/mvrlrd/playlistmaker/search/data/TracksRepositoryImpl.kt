@@ -20,15 +20,19 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient, private val
             )
         )
         return when (response.resultCode) {
+
             NO_INTERNET_CONNECTION_CODE -> {
+                println("______${response.resultCode}")
                 Resource.Error(message = INTERNET_CONNECTION_ERROR, code = NO_INTERNET_CONNECTION_CODE)
             }
             SUCCESS_CODE -> {
+                println("______${response.resultCode}")
                 Resource.Success((response as TracksSearchResponse).results.map {
                     it.mapToTrack()
                 }, code = SUCCESS_CODE)
             }
             else -> {
+                println("______${response.resultCode}")
                 Resource.Error(message = SERVER_ERROR, code = response.resultCode)
             }
         }

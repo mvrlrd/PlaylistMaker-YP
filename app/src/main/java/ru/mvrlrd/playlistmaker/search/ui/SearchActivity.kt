@@ -32,7 +32,7 @@ class SearchActivity : AppCompatActivity() {
         }
         viewModel.screenState.observe(this){screenState ->
             if (viewModel.isReadyToRender(screenState,binding.searchEditText.text.toString())){
-                trackAdapter.setTracks(screenState.tracks)
+                trackAdapter.submitList(screenState.tracks)
                 screenState.render(binding)
             }
         }
@@ -46,7 +46,9 @@ class SearchActivity : AppCompatActivity() {
         if (binding.searchEditText.text.toString().isNotEmpty()){
             viewModel.searchRightAway(binding.searchEditText.text.toString())
         }else{
+//            binding.tracksRecyclerView.itemAnimator = null
             viewModel.showHistory()
+//            binding.tracksRecyclerView.itemAnimator= DefaultItemAnimator()
         }
     }
     override fun onSaveInstanceState(outState: Bundle) {
@@ -84,12 +86,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initRecycler() {
-        trackAdapter = TrackAdapter {
-            if (viewModel.trackOnClickDebounce()) {
-                viewModel.addToHistory(it)
-                navigateTo(PlayerActivity::class.java, it)
+        trackAdapter = TrackAdapter().apply {
+            onClickListener = {
+                if (viewModel.trackOnClickDebounce()) {
+                    viewModel.addToHistory(it)
+                    navigateTo(PlayerActivity::class.java, it)
+                }
             }
         }
+
         binding.tracksRecyclerView.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
