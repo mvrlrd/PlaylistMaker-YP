@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.mvrlrd.playlistmaker.player.ui.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
@@ -32,7 +33,7 @@ class SearchActivity : AppCompatActivity() {
         }
         viewModel.screenState.observe(this){screenState ->
             if (viewModel.isReadyToRender(screenState,binding.searchEditText.text.toString())){
-                trackAdapter.setTracks(screenState.tracks)
+                trackAdapter.submitList(screenState.tracks)
                 screenState.render(binding)
             }
         }
@@ -46,6 +47,7 @@ class SearchActivity : AppCompatActivity() {
         if (binding.searchEditText.text.toString().isNotEmpty()){
             viewModel.searchRightAway(binding.searchEditText.text.toString())
         }else{
+            binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
             viewModel.showHistory()
         }
     }
@@ -66,6 +68,7 @@ class SearchActivity : AppCompatActivity() {
             setOnClickListener {
                 binding.searchEditText.text.clear()
                 binding.searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                binding.tracksRecyclerView.itemAnimator = null
                 viewModel.showHistory()
             }
         }
@@ -84,12 +87,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initRecycler() {
-        trackAdapter = TrackAdapter {
-            if (viewModel.trackOnClickDebounce()) {
-                viewModel.addToHistory(it)
-                navigateTo(PlayerActivity::class.java, it)
+        trackAdapter = TrackAdapter().apply {
+            onClickListener = {
+                if (viewModel.trackOnClickDebounce()) {
+                    viewModel.addToHistory(it)
+                    navigateTo(PlayerActivity::class.java, it)
+                }
             }
         }
+
         binding.tracksRecyclerView.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)

@@ -3,6 +3,7 @@ package ru.mvrlrd.playlistmaker.search.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -13,50 +14,42 @@ import ru.mvrlrd.playlistmaker.databinding.TrackLayoutBinding
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
 
-class TrackAdapter(private val onClickListener: TrackClickListener): RecyclerView.Adapter<TrackViewHolder> () {
-    private val tracks: MutableList<Track> = mutableListOf()
+class TrackAdapter : ListAdapter<Track, TrackAdapter.TrackViewHolder>(TrackItemDiffCallback()) {
+    var onClickListener: ((Track) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         val binding = TrackLayoutBinding.inflate(layoutInspector, parent, false)
         return TrackViewHolder(binding)
     }
+
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position])
-        holder.itemView.setOnClickListener { onClickListener.onTrackClick(tracks[position]) }
-    }
-    override fun getItemCount(): Int {
-        return tracks.size
-    }
-
-    fun interface TrackClickListener {
-        fun onTrackClick(tracks: Track)
-    }
-
-    fun setTracks(newTrackList: List<Track>?) {
-        if (tracks.isNotEmpty()) {
-            tracks.clear()
+        val item = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener?.invoke(item)
         }
-        newTrackList?.let {
-            tracks.addAll(it)
-        }
-        notifyDataSetChanged()
+        holder.bind(item)
     }
-}
 
-class TrackViewHolder(private val binding: TrackLayoutBinding): RecyclerView.ViewHolder(binding.root) {
+    class TrackViewHolder(private val binding: TrackLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(track: Track) {
-        binding.trackName.text = track.trackName
-        binding.artistName.text = track.artistName
+        fun bind(track: Track) {
+            binding.trackName.text = track.trackName
+            binding.artistName.text = track.artistName
 //        artistName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ellipse_1, 0, 0, 0);
-        binding.trackTime.text = track.trackTime?.let { formatTime(it.toInt()) }
-        Glide
-            .with(itemView)
-            .load(track.image)
-            .placeholder(R.drawable.album_placeholder_image)
-            .transform(CenterCrop(), RoundedCorners(binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius)))
-            .into(binding.albumImage)
-
+            binding.trackTime.text = track.trackTime?.let { formatTime(it.toInt()) }
+            Glide
+                .with(itemView)
+                .load(track.image)
+                .placeholder(R.drawable.album_placeholder_image)
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius))
+                )
+                .into(binding.albumImage)
+        }
     }
 }
+
+
 
