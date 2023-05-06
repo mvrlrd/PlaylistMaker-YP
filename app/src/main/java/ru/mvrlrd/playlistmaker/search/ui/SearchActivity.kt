@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
 
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,7 +10,6 @@ import android.widget.*
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.mvrlrd.playlistmaker.player.ui.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
@@ -19,14 +19,13 @@ import ru.mvrlrd.playlistmaker.search.domain.Track
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel : SearchViewModel
+    private val viewModel : SearchViewModel by viewModel()
     private lateinit var trackAdapter : TrackAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         binding.searchToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }

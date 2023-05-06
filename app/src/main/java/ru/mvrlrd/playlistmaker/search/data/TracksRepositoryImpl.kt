@@ -11,7 +11,7 @@ import ru.mvrlrd.playlistmaker.search.domain.TracksRepository
 import ru.mvrlrd.playlistmaker.search.util.Resource
 import ru.mvrlrd.playlistmaker.search.data.model.*
 
-class TracksRepositoryImpl(private val networkClient: NetworkClient, private val localStorage: LocalStorage) :
+class TracksRepositoryImpl(private val networkClient: NetworkClient, private val localStorage: ILocalStorage) :
     TracksRepository {
     override fun searchTracks(query: String): Resource<List<Track>> {
         val response = networkClient.doRequest(

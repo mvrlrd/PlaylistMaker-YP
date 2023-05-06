@@ -6,8 +6,7 @@ import ru.mvrlrd.playlistmaker.search.data.ILocalStorage
 import ru.mvrlrd.playlistmaker.search.data.model.*
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
-class LocalStorage(private val sharedPreferences: SharedPreferences) :
-    ILocalStorage {
+class LocalStorage(private val sharedPreferences: SharedPreferences) : ILocalStorage {
     private companion object {
         const val HISTORY_KEY = "HISTORY_KEY"
         const val MAX_SIZE_OF_HISTORY_LIST = 10

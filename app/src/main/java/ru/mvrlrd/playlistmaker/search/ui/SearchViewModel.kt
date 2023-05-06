@@ -1,19 +1,16 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.mvrlrd.playlistmaker.di.Creator
+import androidx.lifecycle.ViewModel
 import ru.mvrlrd.playlistmaker.search.data.network.SUCCESS_CODE
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
-    private val tracksInteractor = Creator.provideTracksInteractor(getApplication<Application>())
+class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
     private val _screenState = MutableLiveData<SearchScreenState>()
     val screenState: LiveData<SearchScreenState> = _screenState
     private val handler = Handler(Looper.getMainLooper())

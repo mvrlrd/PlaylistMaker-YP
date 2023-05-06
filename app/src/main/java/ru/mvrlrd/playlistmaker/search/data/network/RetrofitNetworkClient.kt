@@ -5,18 +5,19 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.mvrlrd.playlistmaker.search.data.NetworkClient
 import ru.mvrlrd.playlistmaker.search.data.TracksSearchRequest
 
 
-class RetrofitNetworkClient(private val context: Context):
-    ru.mvrlrd.playlistmaker.search.data.NetworkClient {
+class RetrofitNetworkClient(private val context: Context,
+                            private val itunesService:ItunesApiService) : NetworkClient {
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(APPLE_MUSIC_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+//    private val retrofit = Retrofit.Builder()
+//        .baseUrl(APPLE_MUSIC_BASE_URL)
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
 
-    private val itunesService = retrofit.create(ItunesApiService::class.java)
+//    private val itunesService = retrofit.create(ItunesApiService::class.java)
 
     override fun doRequest(dto: Any): ru.mvrlrd.playlistmaker.search.data.Response {
         if (!isConnected()){
