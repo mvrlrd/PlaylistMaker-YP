@@ -7,7 +7,7 @@ import org.koin.dsl.module
 import ru.mvrlrd.playlistmaker.settings.data.IThemeStorage
 import ru.mvrlrd.playlistmaker.settings.data.storage.ThemeStorage
 
-val dataModule = module {
+val settingsDataModule = module {
     single<IThemeStorage>{
         ThemeStorage(sharedPreferences = get())
     }

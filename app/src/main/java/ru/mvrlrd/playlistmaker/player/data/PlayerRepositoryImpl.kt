@@ -1,10 +1,11 @@
 package ru.mvrlrd.playlistmaker.player.data
 
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
+import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 
 class PlayerRepositoryImpl(private val playerClient: PlayerClient): PlayerRepository {
-    override fun preparePlayer(prepare: () -> Unit) {
-        playerClient.preparePlayer(prepare)
+    override fun preparePlayer(trackForPlayer: TrackForPlayer, prepare: () -> Unit) {
+        playerClient.preparePlayer(trackForPlayer, prepare)
     }
 
     override fun setOnCompletionListener(onComplete: () -> Unit) {

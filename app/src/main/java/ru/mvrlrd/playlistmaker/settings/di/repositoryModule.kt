@@ -5,7 +5,7 @@ import org.koin.dsl.module
 import ru.mvrlrd.playlistmaker.settings.data.ThemeSwitchRepositoryImpl
 import ru.mvrlrd.playlistmaker.settings.domain.ThemeSwitchRepository
 
-val repositoryModule = module {
+val settingsRepositoryModule = module {
     single<ThemeSwitchRepository>{
         ThemeSwitchRepositoryImpl(themeStorage = get())
     }

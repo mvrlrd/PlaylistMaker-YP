@@ -4,7 +4,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.mvrlrd.playlistmaker.settings.ui.SettingsViewModel
 
-val viewModelModule = module {
+val settingsViewModelModule = module {
     viewModel {
         SettingsViewModel(themeSwitcherInteractor = get())
     }

@@ -21,7 +21,6 @@ import ru.mvrlrd.playlistmaker.settings.domain.impl.ThemeSwitchInteractorImpl
 
 object Creator {
     private const val LOCAL_STORAGE = "local_storage"
-    private const val THEME_PREFERENCES = "current_theme"
     private fun getTracksRepository(context: Context): TracksRepository {
         return TracksRepositoryImpl(
             RetrofitNetworkClient(context),
@@ -30,19 +29,5 @@ object Creator {
     }
      fun provideTracksInteractor(context: Context): TracksInteractor {
         return TracksInteractorImpl(getTracksRepository(context))
-    }
-    private fun getPlayerRepository(trackForPlayer: TrackForPlayer): PlayerRepository {
-        return PlayerRepositoryImpl(MyMediaPlayer(trackForPlayer))
-    }
-    fun providePlayerInteractor(trackForPlayer: TrackForPlayer): PlayerInteractor {
-        return PlayerInteractorImpl(getPlayerRepository(trackForPlayer))
-    }
-    private fun getThemeSwitchRepository(context: Context): ThemeSwitchRepository {
-        return ThemeSwitchRepositoryImpl(
-            ThemeStorage(context.getSharedPreferences(THEME_PREFERENCES, Context.MODE_PRIVATE))
-        )
-    }
-    fun provideThemeSwitchInteractor(context: Context): ThemeSwitchInteractor {
-        return ThemeSwitchInteractorImpl(getThemeSwitchRepository(context))
     }
 }
