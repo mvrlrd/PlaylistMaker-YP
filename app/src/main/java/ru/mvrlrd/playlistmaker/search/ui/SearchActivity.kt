@@ -9,25 +9,24 @@ import android.widget.*
 import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.player.ui.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import ru.mvrlrd.playlistmaker.search.data.network.TRACK_KEY
 import ru.mvrlrd.playlistmaker.search.domain.Track
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel : SearchViewModel
-    private lateinit var trackAdapter : TrackAdapter
+    private val viewModel : SearchViewModel by viewModel()
+    private val trackAdapter : TrackAdapter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
         binding.searchToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
         }
@@ -55,8 +54,6 @@ class SearchActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putString(INPUT_TEXT, binding.searchEditText.text.toString())
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -87,7 +84,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initRecycler() {
-        trackAdapter = TrackAdapter().apply {
+        trackAdapter.apply {
             onClickListener = {
                 if (viewModel.trackOnClickDebounce()) {
                     viewModel.addToHistory(it)

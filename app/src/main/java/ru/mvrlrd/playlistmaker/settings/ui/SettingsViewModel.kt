@@ -1,6 +1,5 @@
 package ru.mvrlrd.playlistmaker.settings.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import ru.mvrlrd.playlistmaker.settings.domain.ThemeSwitchInteractor
 
