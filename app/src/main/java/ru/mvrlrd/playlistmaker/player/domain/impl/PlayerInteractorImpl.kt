@@ -2,6 +2,7 @@ package ru.mvrlrd.playlistmaker.player.domain.impl
 
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
+import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 
 class PlayerInteractorImpl(private val playerRepository: PlayerRepository): PlayerInteractor {
 
@@ -25,7 +26,7 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         return playerRepository.getCurrentTime()
     }
 
-    override fun preparePlayer(prepare: () -> Unit) {
-        playerRepository.preparePlayer(prepare)
+    override fun preparePlayer(trackForPlayer: TrackForPlayer, prepare: () -> Unit) {
+        playerRepository.preparePlayer(trackForPlayer, prepare)
     }
 }

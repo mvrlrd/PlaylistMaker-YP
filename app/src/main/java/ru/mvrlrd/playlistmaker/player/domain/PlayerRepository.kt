@@ -1,7 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.domain
 
 interface PlayerRepository {
-    fun preparePlayer(prepare: () -> Unit)
+    fun preparePlayer(trackForPlayer: TrackForPlayer, prepare: () -> Unit)
 
     fun setOnCompletionListener(onComplete: () -> Unit)
 

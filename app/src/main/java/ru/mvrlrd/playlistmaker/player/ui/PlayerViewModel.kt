@@ -6,16 +6,14 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import ru.mvrlrd.playlistmaker.di.Creator
+import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.player.ui.PlayerState.*
 
-class PlayerViewModel(trackForPlayer: TrackForPlayer) : ViewModel() {
+class PlayerViewModel(private val trackForPlayer: TrackForPlayer, private val playerInteractor: PlayerInteractor) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
-    private val playerInteractor = Creator.providePlayerInteractor(trackForPlayer)
     private var playerState: PlayerState = STATE_DEFAULT
     private val handler: Handler = Handler(Looper.getMainLooper())
 
@@ -35,7 +33,7 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer) : ViewModel() {
         setOnCompletionListener()
     }
     private fun preparePlayer(){
-        playerInteractor.preparePlayer {
+        playerInteractor.preparePlayer(trackForPlayer) {
             playerState = STATE_PREPARED
             _screenState.value = PlayerScreenState.Preparing()
         }
@@ -89,15 +87,6 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer) : ViewModel() {
     companion object {
         private const val REFRESH_TIMER_DELAY_MILLIS = 300L
         private val SEARCH_REQUEST_TOKEN = Any()
-        fun getViewModelFactory(trackForPlayer: TrackForPlayer): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return PlayerViewModel(
-                        trackForPlayer
-                    ) as T
-                }
-            }
     }
 }
 enum class PlayerState{

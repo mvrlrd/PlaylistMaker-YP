@@ -5,39 +5,31 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.mvrlrd.playlistmaker.search.data.Response
+import ru.mvrlrd.playlistmaker.search.data.NetworkClient
 import ru.mvrlrd.playlistmaker.search.data.TracksSearchRequest
-import java.net.SocketTimeoutException
 
 
-class RetrofitNetworkClient(private val context: Context):
-    ru.mvrlrd.playlistmaker.search.data.NetworkClient {
+class RetrofitNetworkClient(private val context: Context,
+                            private val itunesService:ItunesApiService) : NetworkClient {
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(APPLE_MUSIC_BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+//    private val retrofit = Retrofit.Builder()
+//        .baseUrl(APPLE_MUSIC_BASE_URL)
+//        .addConverterFactory(GsonConverterFactory.create())
+//        .build()
 
-    private val itunesService = retrofit.create(ItunesApiService::class.java)
+//    private val itunesService = retrofit.create(ItunesApiService::class.java)
 
-    override fun doRequest(dto: Any): Response {
+    override fun doRequest(dto: Any): ru.mvrlrd.playlistmaker.search.data.Response {
         if (!isConnected()){
-            return Response()
+            return ru.mvrlrd.playlistmaker.search.data.Response()
                 .apply { resultCode = NO_INTERNET_CONNECTION_CODE }
         }
         return if (dto is TracksSearchRequest) {
-            return try {
-                val resp = itunesService.search(dto.query).execute()
-                val body = resp.body() ?: Response()
-                body.apply { resultCode = resp.code() }
-            }catch (e: SocketTimeoutException){
-                println("${e.stackTrace}")
-                Response()
-            }
-
-
+            val resp = itunesService.search(dto.query).execute()
+            val body = resp.body() ?: ru.mvrlrd.playlistmaker.search.data.Response()
+            body.apply { resultCode = resp.code() }
         }else{
-            Response().apply { resultCode = BAD_REQUEST_CODE }
+            ru.mvrlrd.playlistmaker.search.data.Response().apply { resultCode = BAD_REQUEST_CODE }
         }
     }
 

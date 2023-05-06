@@ -3,14 +3,11 @@ package ru.mvrlrd.playlistmaker.player.data
 import android.media.MediaPlayer
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 
-class MyMediaPlayer(track: TrackForPlayer): PlayerClient {
-    private val mediaPlayer: MediaPlayer = MediaPlayer()
-    init {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-    }
+class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
 
-    override fun preparePlayer(prepare: () -> Unit) {
+    override fun preparePlayer(trackForPlayer: TrackForPlayer, prepare: () -> Unit) {
+        mediaPlayer.setDataSource(trackForPlayer.previewUrl)
+        mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener { prepare() }
     }
 

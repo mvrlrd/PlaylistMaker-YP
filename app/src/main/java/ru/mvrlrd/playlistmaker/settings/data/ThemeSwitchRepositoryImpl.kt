@@ -3,7 +3,7 @@ package ru.mvrlrd.playlistmaker.settings.data
 import androidx.appcompat.app.AppCompatDelegate
 import ru.mvrlrd.playlistmaker.settings.domain.ThemeSwitchRepository
 
-class ThemeSwitchRepositoryImpl(private val themeStorage: IThemeStorage):ThemeSwitchRepository {
+class ThemeSwitchRepositoryImpl(private val themeStorage: IThemeStorage) : ThemeSwitchRepository {
     override fun switchTheme(darkThemeEnabled: Boolean) {
         themeStorage.switch(darkThemeEnabled)
         applyCurrentTheme()

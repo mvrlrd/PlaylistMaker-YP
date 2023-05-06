@@ -5,24 +5,19 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import ru.mvrlrd.playlistmaker.App
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivitySettingsBinding
 
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(this,
-            SettingsViewModel.getViewModelFactory(application as App)
-        )[SettingsViewModel::class.java]
 
         binding.settingsToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }
@@ -41,7 +36,7 @@ class SettingsActivity : AppCompatActivity() {
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     putExtra(Intent.EXTRA_TEXT, resources.getString(R.string.praktikum_link))
-                    type = "text/plain"
+                    type = INTENT_TYPE_FOR_SENDING
                 }
                 val shareIntent = Intent.createChooser(sendIntent, null)
                 startActivity(shareIntent)
@@ -51,7 +46,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.supportContainer.apply {
             setOnClickListener {
                 val emailIntent = Intent(Intent.ACTION_SENDTO)
-                emailIntent.data = Uri.parse("mailto:")
+                emailIntent.data = Uri.parse(MAIL_TO)
                 emailIntent.putExtra(Intent.EXTRA_EMAIL, R.string.developer_email)
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.email_subject)
                 emailIntent.putExtra(Intent.EXTRA_TEXT, R.string.email_text)
@@ -66,5 +61,9 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(agreementIntent)
             }
         }
+    }
+    companion object{
+        private const val INTENT_TYPE_FOR_SENDING = "text/plain"
+        private const val MAIL_TO = "mailto:"
     }
 }
