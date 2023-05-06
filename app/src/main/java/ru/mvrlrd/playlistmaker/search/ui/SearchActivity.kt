@@ -10,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.mvrlrd.playlistmaker.player.ui.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
@@ -46,9 +47,8 @@ class SearchActivity : AppCompatActivity() {
         if (binding.searchEditText.text.toString().isNotEmpty()){
             viewModel.searchRightAway(binding.searchEditText.text.toString())
         }else{
-//            binding.tracksRecyclerView.itemAnimator = null
+            binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
             viewModel.showHistory()
-//            binding.tracksRecyclerView.itemAnimator= DefaultItemAnimator()
         }
     }
     override fun onSaveInstanceState(outState: Bundle) {
@@ -68,6 +68,7 @@ class SearchActivity : AppCompatActivity() {
             setOnClickListener {
                 binding.searchEditText.text.clear()
                 binding.searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                binding.tracksRecyclerView.itemAnimator = null
                 viewModel.showHistory()
             }
         }
