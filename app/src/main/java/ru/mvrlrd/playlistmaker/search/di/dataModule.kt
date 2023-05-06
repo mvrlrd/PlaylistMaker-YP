@@ -2,7 +2,6 @@ package ru.mvrlrd.playlistmaker.search.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
