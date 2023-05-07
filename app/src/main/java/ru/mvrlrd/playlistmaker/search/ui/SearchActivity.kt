@@ -1,12 +1,10 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -14,8 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.player.ui.PlayerActivity
 import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
-import ru.mvrlrd.playlistmaker.search.data.network.TRACK_KEY
-import ru.mvrlrd.playlistmaker.search.domain.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
@@ -85,10 +81,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initRecycler() {
         trackAdapter.apply {
-            onClickListener = {
+            onClickListener = {track->
                 if (viewModel.trackOnClickDebounce()) {
-                    viewModel.addToHistory(it)
-                    navigateTo(PlayerActivity::class.java, it)
+                    viewModel.addToHistory(track)
+                    val intent = PlayerActivity.startPlayerActivity(this@SearchActivity, track)
+                    startActivity(intent)
                 }
             }
         }
@@ -137,13 +134,6 @@ class SearchActivity : AppCompatActivity() {
         }
         return false
     }
-
-    private fun navigateTo(clazz: Class<out ComponentActivity>, track: Track) {
-        val intent = Intent(this, clazz)
-        intent.putExtra(TRACK_KEY, track)
-        startActivity(intent)
-    }
-
     companion object{
         private const val INPUT_TEXT = "INPUT_TEXT"
     }
