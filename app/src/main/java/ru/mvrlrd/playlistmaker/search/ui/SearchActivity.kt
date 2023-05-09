@@ -30,6 +30,9 @@ class SearchActivity : AppCompatActivity() {
             if (viewModel.isReadyToRender(screenState,binding.searchEditText.text.toString())){
                 trackAdapter.submitList(screenState.tracks)
                 screenState.render(binding)
+                if (screenState is SearchScreenState.Error){
+                    showToast(screenState.code)
+                }
             }
         }
         initRecycler()
@@ -133,6 +136,9 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         return false
+    }
+     fun showToast(text: String){
+        Toast.makeText(this, text,Toast.LENGTH_SHORT).show()
     }
     companion object{
         private const val INPUT_TEXT = "INPUT_TEXT"

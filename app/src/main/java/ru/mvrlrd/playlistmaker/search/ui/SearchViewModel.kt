@@ -6,7 +6,8 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.mvrlrd.playlistmaker.search.data.network.SUCCESS_CODE
+import ru.mvrlrd.playlistmaker.search.data.Response
+import ru.mvrlrd.playlistmaker.search.data.TracksRepositoryImpl.Companion.SUCCESS_CODE
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 
@@ -56,8 +57,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         query?.let {
             _screenState.postValue(SearchScreenState.Loading())
             tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>?, errorMessage: String?, code: Int) {
-                    when (code) {
+                override fun consume(foundTracks: List<Track>?, response: Response) {
+                    when (response.resultCode) {
                         SUCCESS_CODE -> {
                             if (foundTracks!!.isNotEmpty()) {
                                 _screenState.postValue(SearchScreenState.Success(foundTracks))
@@ -66,7 +67,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
                             }
                         }
                         else -> {
-                            _screenState.postValue(SearchScreenState.Error(errorMessage))
+                            _screenState.postValue(SearchScreenState.Error(response.errorMessage, response.resultCode.toString()))
                         }
                     }
                 }
@@ -105,5 +106,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
         private const val CLICK_DEBOUNCE_DELAY = 1000L
+
     }
 }

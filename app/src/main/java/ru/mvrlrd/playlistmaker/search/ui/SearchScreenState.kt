@@ -29,7 +29,7 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
         }
     }
 
-    class Error(message: String?) : SearchScreenState(message = message) {
+    class Error(message: String?,val code: String) : SearchScreenState(message = message) {
         override fun render(binding: ActivitySearchBinding) {
             binding.progressBar.visibility = View.GONE
             binding.errorPlaceHolder.visibility = View.VISIBLE
