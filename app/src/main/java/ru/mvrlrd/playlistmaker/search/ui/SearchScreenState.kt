@@ -13,6 +13,7 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
             binding.clearHistoryButton.visibility = View.GONE
             binding.youSearchedTitle.visibility = View.GONE
             binding.refreshButton.visibility = View.GONE
+            //hello
         }
     }
 
