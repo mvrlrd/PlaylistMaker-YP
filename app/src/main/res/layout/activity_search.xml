@@ -10,14 +10,10 @@
         android:id="@+id/searchToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:navigationIcon="@drawable/ic_arrow_icon"
         app:buttonGravity="center_vertical"
+        app:navigationIcon="@drawable/ic_arrow_icon"
         app:title="@string/search"
-        app:titleTextAppearance="@style/TitleStyle">
-
-    </com.google.android.material.appbar.MaterialToolbar>
-
-
+        app:titleTextAppearance="@style/TitleStyle" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -62,13 +58,14 @@
             android:layout_marginTop="32dp"
             android:orientation="vertical">
 
-            <ProgressBar android:id="@+id/progressBar"
+            <ProgressBar
+                android:id="@+id/progressBar"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
-                android:layout_marginTop="148dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="148dp"
                 android:indeterminateTint="@color/progress_bar_color"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/youSearchedTitle"
@@ -108,41 +105,25 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/error_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="110dp">
 
-        <LinearLayout
-           android:id="@+id/errorPlaceHolder"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_gravity="center_horizontal"
-           android:orientation="vertical"
-           android:paddingTop="110dp"
-           android:visibility="gone">
+            <include
+                android:id="@+id/info_placeholder"
+                layout="@layout/info_place_holder_layout"
+                android:visibility="visible" />
 
-           <ImageView
-               android:layout_gravity="center_horizontal"
-               android:id="@+id/placeholderImage"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:src="@drawable/connection_error"
-               android:paddingBottom="20dp"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/refreshButton"
+                style="@style/RefreshButtonStyle"
+                android:text="@string/refresh"
+                android:visibility="visible" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-           <TextView android:id="@+id/placeholderMessage"
-               android:paddingStart="@dimen/standart_padding"
-               android:paddingEnd="@dimen/standart_padding"
-               android:layout_width="300dp"
-               android:layout_height="wrap_content"
-               android:layout_gravity="center"
-               android:textAlignment="center"
-               android:textSize="19sp"
-               android:textColor="@color/track_name_color"
-               android:textStyle="bold"
-               android:text="@string/error_connection"/>
-
-           <com.google.android.material.button.MaterialButton
-               android:id="@+id/refreshButton"
-               android:text="@string/refresh"
-               style="@style/RefreshButtonStyle"
-               />
-       </LinearLayout>
     </FrameLayout>
 </LinearLayout>
