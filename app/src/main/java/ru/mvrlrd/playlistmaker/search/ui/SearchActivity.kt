@@ -19,6 +19,7 @@ class SearchActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     private val viewModel : SearchViewModel by viewModel()
     private val trackAdapter : TrackAdapter by inject()
+    //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
