@@ -7,7 +7,6 @@ import org.koin.core.context.startKoin
 import ru.mvrlrd.playlistmaker.player.di.*
 import ru.mvrlrd.playlistmaker.search.di.*
 import ru.mvrlrd.playlistmaker.settings.di.*
-
 import ru.mvrlrd.playlistmaker.settings.domain.ThemeSwitchInteractor
 
 class App : Application() {

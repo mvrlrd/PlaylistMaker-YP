@@ -12,13 +12,15 @@ import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
 class PlayerActivity : AppCompatActivity() {
+    private var _binding: ActivityPlayerBinding? = null
+    private val binding get() = _binding!!
 
     private val viewModel: PlayerViewModel by viewModel{
         parametersOf(parseIntent())
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityPlayerBinding.inflate(layoutInflater)
+        _binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.backButton.apply {

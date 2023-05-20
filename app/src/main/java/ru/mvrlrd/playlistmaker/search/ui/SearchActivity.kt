@@ -15,13 +15,14 @@ import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: ActivitySearchBinding? = null
+    private val binding get() = _binding!!
     private val viewModel : SearchViewModel by viewModel()
     private val trackAdapter : TrackAdapter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+        _binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.searchToolbar.apply {
             setNavigationOnClickListener { onBackPressed() }

@@ -7,11 +7,12 @@ import com.google.android.material.tabs.TabLayout
 import ru.mvrlrd.playlistmaker.databinding.ActivityMediatekaBinding
 
 class MediatekaActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMediatekaBinding
+    private var _binding: ActivityMediatekaBinding? =null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMediatekaBinding.inflate(layoutInflater)
+        _binding = ActivityMediatekaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.mediatekaToolbar.apply {
