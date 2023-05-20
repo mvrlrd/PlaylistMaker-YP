@@ -7,18 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.databinding.ActivityMediatekaBinding
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? =null
     private val binding get() = _binding!!
+    private val viewModel: FavoritesViewModel by viewModel()
+
 
     companion object {
         fun newInstance() = FavoritesFragment()
     }
 
-    private lateinit var viewModel: FavoritesViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
