@@ -2,33 +2,33 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/info_place_holder"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:orientation="vertical"
-    android:visibility="visible"
-    android:paddingTop="210dp">
+    android:visibility="visible">
 
         <ImageView
-            android:layout_gravity="center_horizontal"
             android:id="@+id/placeholderImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/nothing_found"
-            android:paddingBottom="20dp"/>
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="20dp"
+            android:src="@drawable/nothing_found" />
 
-        <TextView android:id="@+id/placeholder_message"
-            android:paddingStart="@dimen/standart_padding"
-            android:paddingEnd="@dimen/standart_padding"
+        <TextView
+            android:id="@+id/placeholder_message"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textAlignment="center"
-            android:textSize="19sp"
-            android:textColor="@color/track_name_color"
-            android:textStyle="bold"
+            android:paddingStart="@dimen/standart_padding"
+            android:paddingEnd="@dimen/standart_padding"
             android:text="@string/error_connection"
-            tools:text="@string/mediateka_is_empty"/>
+            android:textAlignment="center"
+            android:textColor="@color/track_name_color"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            tools:text="@string/mediateka_is_empty" />
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

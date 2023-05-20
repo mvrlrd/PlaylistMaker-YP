@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         app:tabTextColor="?attr/day_night_background"
         app:tabIndicatorColor="?attr/day_night_background"
+        app:tabIndicatorHeight="2dp"
         >
 
 
