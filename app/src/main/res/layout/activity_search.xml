@@ -111,18 +111,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="110dp">
+            android:paddingTop="110dp"
+            android:visibility="gone">
 
             <include
                 android:id="@+id/info_placeholder"
-                layout="@layout/info_place_holder_layout"
-                android:visibility="visible" />
+                layout="@layout/info_place_holder_layout" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/refreshButton"
                 style="@style/RefreshButtonStyle"
-                android:text="@string/refresh"
-                android:visibility="visible" />
+                android:text="@string/refresh" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </FrameLayout>
