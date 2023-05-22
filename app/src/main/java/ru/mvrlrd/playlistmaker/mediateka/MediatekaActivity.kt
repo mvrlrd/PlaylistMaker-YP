@@ -26,8 +26,8 @@ class MediatekaActivity : AppCompatActivity() {
         tabMediator = TabLayoutMediator(binding.mediatekaTab, binding.viewPager){
             tab, position ->
             when(position){
-                0 -> tab.text = "Избранные треки"
-                1 -> tab.text = "Плейлисты"
+                0 -> tab.text = this.resources.getText(R.string.favorites)
+                1 -> tab.text = this.resources.getText(R.string.playlists)
             }
         }.apply {
             attach()
