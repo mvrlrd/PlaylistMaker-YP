@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="24dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".mediateka.playlists.PlaylistsFragment">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/materialButton"
+        android:layout_gravity="center"
+        style="@style/RefreshButtonStyle"
+        android:visibility="visible"
+        android:text="@string/new_playlist"
+        android:textAllCaps="false"
+        android:textColor="?attr/day_night_text"
+         />
+
+    <include
+        android:layout_marginTop="31dp"
+        android:id="@+id/place_holder"
+        layout="@layout/info_place_holder_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

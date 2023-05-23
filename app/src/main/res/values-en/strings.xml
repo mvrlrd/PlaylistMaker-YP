@@ -24,4 +24,7 @@
     <string name="year">Year</string>
     <string name="genre">Genre</string>
     <string name="country">Country</string>
+    <string name="mediateka_is_empty">Empty</string>
+    <string name="no_playlists">No playlists</string>
+    <string name="new_playlist">New playlist</string>
 </resources>

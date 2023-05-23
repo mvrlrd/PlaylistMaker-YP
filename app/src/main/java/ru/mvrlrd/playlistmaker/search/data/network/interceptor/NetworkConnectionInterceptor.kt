@@ -9,36 +9,28 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.ResponseBody
 import ru.mvrlrd.playlistmaker.R
-import java.net.ConnectException
-import java.net.SocketTimeoutException
 
 
 class NetworkConnectionInterceptor(private val context: Context) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
+        var code = 0
         try {
             if (!isConnected) {
+                code = NO_INTERNET_CONNECTION_CODE
                 throw NoConnectivityException()
             }
             val builder: Request.Builder = request.newBuilder()
-            return chain.proceed(builder.build())
+            val chainProceed = chain.proceed(builder.build())
+            code = chainProceed.code()
+            if (code == SUCCESS) {
+                return chainProceed
+            } else {
+                throw Exception()
+            }
         } catch (e: Exception) {
             val message = context.resources.getString(R.string.error_connection)
-            val code = when (e) {
-                is ConnectException -> {
-                    CONNECTION_ERROR
-                }
-                is NoConnectivityException -> {
-                    NO_INTERNET_CONNECTION_CODE
-                }
-                is SocketTimeoutException -> {
-                    SOCKET_TIME_OUT_EXCEPTION
-                }
-                else -> {
-                    BAD_REQUEST_CODE
-                }
-            }
             return Response.Builder()
                 .request(request)
                 .protocol(Protocol.HTTP_1_1)
@@ -66,9 +58,10 @@ class NetworkConnectionInterceptor(private val context: Context) : Interceptor {
         }
 
     companion object{
-        const val BAD_REQUEST_CODE = 400
-        const val CONNECTION_ERROR = 10
-        const val SOCKET_TIME_OUT_EXCEPTION = 20
+        const val SUCCESS = 200
         const val NO_INTERNET_CONNECTION_CODE = 30
     }
+
+    //SocketTimeoutException
+    //ConnectException
 }
