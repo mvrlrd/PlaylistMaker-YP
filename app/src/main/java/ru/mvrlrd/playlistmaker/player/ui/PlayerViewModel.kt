@@ -11,7 +11,7 @@ import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.player.ui.PlayerState.*
 
-class PlayerViewModel(private val trackForPlayer: TrackForPlayer, private val playerInteractor: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(trackForPlayer: TrackForPlayer, private val playerInteractor: PlayerInteractor) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
     private var playerState: PlayerState = STATE_DEFAULT
@@ -29,10 +29,10 @@ class PlayerViewModel(private val trackForPlayer: TrackForPlayer, private val pl
         }
     init {
         _screenState.value = PlayerScreenState.BeginningState(trackForPlayer)
-        preparePlayer()
+        preparePlayer(trackForPlayer)
         setOnCompletionListener()
     }
-    private fun preparePlayer(){
+    private fun preparePlayer(trackForPlayer: TrackForPlayer){
         playerInteractor.preparePlayer(trackForPlayer) {
             playerState = STATE_PREPARED
             _screenState.value = PlayerScreenState.Preparing()
