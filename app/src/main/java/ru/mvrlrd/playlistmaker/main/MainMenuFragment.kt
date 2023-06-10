@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentMainMenuBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragment
+import ru.mvrlrd.playlistmaker.search.ui.SearchFragment
 import ru.mvrlrd.playlistmaker.settings.ui.SettingsFragment
 
 class MainMenuFragment : Fragment() {
@@ -29,7 +30,10 @@ class MainMenuFragment : Fragment() {
 
         binding.searchButton.apply {
             setOnClickListener {
-//                navigateTo(SearchActivity::class.java)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.rootFragmentContainerView, SearchFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
         binding.mediatekaButton.apply {
