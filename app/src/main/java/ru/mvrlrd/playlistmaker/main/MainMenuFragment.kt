@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentMainMenuBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragment
+import ru.mvrlrd.playlistmaker.settings.ui.SettingsFragment
 
 class MainMenuFragment : Fragment() {
     private var _binding: FragmentMainMenuBinding? = null
@@ -41,7 +42,10 @@ class MainMenuFragment : Fragment() {
         }
         binding.settingsButton.apply {
             setOnClickListener {
-//                navigateTo(SettingsActivity::class.java)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.rootFragmentContainerView, SettingsFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
     }
