@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentMainMenuBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaActivity
+import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragment
 import ru.mvrlrd.playlistmaker.search.ui.SearchActivity
 import ru.mvrlrd.playlistmaker.settings.ui.SettingsActivity
 
@@ -32,26 +34,22 @@ class MainMenuFragment : Fragment() {
 
         binding.searchButton.apply {
             setOnClickListener {
-                navigateTo(SearchActivity::class.java)
+//                navigateTo(SearchActivity::class.java)
             }
         }
         binding.mediatekaButton.apply {
             setOnClickListener {
-                navigateTo(MediatekaActivity::class.java)
+                parentFragmentManager.beginTransaction()
+                    .replace(R.id.rootFragmentContainerView, MediatekaFragment.newInstance())
+                    .addToBackStack(null)
+                    .commit()
             }
         }
         binding.settingsButton.apply {
             setOnClickListener {
-                navigateTo(SettingsActivity::class.java)
+//                navigateTo(SettingsActivity::class.java)
             }
         }
-    }
-
-
-
-        private fun navigateTo(clazz: Class<out AppCompatActivity>) {
-        val intent = Intent(requireContext(), clazz)
-        startActivity(intent)
     }
 
     companion object {
