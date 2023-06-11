@@ -15,7 +15,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
 
-
+//TODO сделать инфо плэйсхолдер скролабл потому что если переворачиваем экран его не видно
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
@@ -38,7 +38,8 @@ class SearchFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
-        viewModel.screenState.observe(requireActivity()) { screenState ->
+
+        viewModel.screenState.observe(this) { screenState ->
             if (viewModel.isReadyToRender(screenState, binding.searchEditText.text.toString())) {
                 trackAdapter.submitList(screenState.tracks)
                 screenState.render(binding)
@@ -48,7 +49,7 @@ class SearchFragment : Fragment() {
             }
         }
         initRecycler()
-        initEditText(savedInstanceState)
+        initEditText()
         handleButtons()
     }
 
@@ -67,16 +68,8 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        println("__________onDestroyView")
         viewModel.onDestroy()
     }
-
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//            println("______onSaveInstanceState")
-//            outState.putString(INPUT_TEXT, binding.searchEditText.text.toString())
-//    }
-
 
     private fun initRecycler() {
         trackAdapter.apply {
@@ -98,10 +91,9 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun initEditText(savedInstanceState: Bundle?) {
+    private fun initEditText() {
         binding.searchEditText
             .apply {
-//                restoreTextFromBundle(textField = this, savedInstanceState = savedInstanceState)
                 setOnEditorActionListener { _, actionId, _ ->
                     onClickOnEnterOnVirtualKeyboard(actionId)
                 }
@@ -124,15 +116,6 @@ class SearchFragment : Fragment() {
 
     private fun clearButtonVisibility(p0: CharSequence?) =
         if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
-
-//    private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?) {
-//        if (savedInstanceState != null) {
-//            if (savedInstanceState.getString(INPUT_TEXT)!!.isNotEmpty()) {
-//                textField.setText(savedInstanceState.getString(INPUT_TEXT)!!)
-//                viewModel.searchRightAway(savedInstanceState.getString(INPUT_TEXT)!!)
-//            }
-//        }
-//    }
 
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -164,9 +147,5 @@ class SearchFragment : Fragment() {
                 }
             }
         }
-    }
-
-    companion object {
-        private const val INPUT_TEXT = "INPUT_TEXT"
     }
 }
