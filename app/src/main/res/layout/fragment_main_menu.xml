@@ -8,7 +8,10 @@
         android:orientation="vertical"
         android:paddingTop="10dp"
         android:paddingBottom="15dp"
-        tools:context=".main.MainMenuFragment">
+        tools:context=".main.MainMenuFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/main_nav"
+        app:defaultNavHost="true">
 
         <TextView
             style="@style/TitleStyle"
