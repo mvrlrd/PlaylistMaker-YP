@@ -94,6 +94,8 @@ class SearchFragment : Fragment() {
                     onClickOnEnterOnVirtualKeyboard(actionId)
                 }
                 setOnFocusChangeListener { _, hasFocus ->
+                    //TODO когда в фокусе - убрать боттом если не в фокусе то вернуть
+
 //                    val act = requireActivity() as MainActivity
 //                    if (hasFocus){
 //                        act.binding.navView.visibility = View.GONE
