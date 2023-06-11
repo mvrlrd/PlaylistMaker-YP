@@ -5,17 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentMainMenuBinding
-import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragment
-import ru.mvrlrd.playlistmaker.search.ui.SearchFragment
-import ru.mvrlrd.playlistmaker.settings.ui.SettingsFragment
 
 class MainMenuFragment : Fragment() {
     private var _binding: FragmentMainMenuBinding? = null
     private val binding: FragmentMainMenuBinding
         get() = _binding ?: throw RuntimeException("FragmentMainMenuBinding == null")
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,33 +27,18 @@ class MainMenuFragment : Fragment() {
 
         binding.searchButton.apply {
             setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.rootFragmentContainerView, SearchFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
+                findNavController().navigate(R.id.action_mainMenuFragment_to_searchFragment)
             }
         }
         binding.mediatekaButton.apply {
             setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.rootFragmentContainerView, MediatekaFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
+                findNavController().navigate(R.id.action_mainMenuFragment_to_mediatekaFragment)
             }
         }
         binding.settingsButton.apply {
             setOnClickListener {
-                parentFragmentManager.beginTransaction()
-                    .replace(R.id.rootFragmentContainerView, SettingsFragment.newInstance())
-                    .addToBackStack(null)
-                    .commit()
+                findNavController().navigate(R.id.action_mainMenuFragment_to_settingsFragment)
             }
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            MainMenuFragment()
     }
 }

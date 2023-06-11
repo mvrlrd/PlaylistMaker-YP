@@ -15,9 +15,7 @@ class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding: FragmentSettingsBinding
         get() = _binding ?: throw RuntimeException("FragmentSettingsBinding == null")
-
     private val viewModel: SettingsViewModel by viewModel()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,9 +80,5 @@ class SettingsFragment : Fragment() {
     companion object {
         private const val INTENT_TYPE_FOR_SENDING = "text/plain"
         private const val MAIL_TO = "mailto:"
-
-        @JvmStatic
-        fun newInstance() =
-            SettingsFragment()
     }
 }

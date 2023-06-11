@@ -9,19 +9,18 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
-import ru.mvrlrd.playlistmaker.player.ui.PlayerActivity
 
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
         get() = _binding ?: throw RuntimeException("FragmentSearchBinding == null")
-
     private val viewModel: SearchViewModel by viewModel()
     private val trackAdapter: TrackAdapter by inject()
 
@@ -79,8 +78,11 @@ class SearchFragment : Fragment() {
             onClickListener = { track ->
                 if (viewModel.trackOnClickDebounce()) {
                     viewModel.addToHistory(track)
-                    val intent = PlayerActivity.startPlayerActivity(requireContext(), track)
-                    startActivity(intent)
+                    findNavController().navigate(
+                        SearchFragmentDirections.actionSearchFragmentToPlayerActivity(
+                            track
+                        )
+                    )
                 }
             }
         }
@@ -161,9 +163,5 @@ class SearchFragment : Fragment() {
 
     companion object {
         private const val INPUT_TEXT = "INPUT_TEXT"
-
-        @JvmStatic
-        fun newInstance() =
-            SearchFragment()
     }
 }

@@ -3,44 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/mainMenuFragment2">
-
+    app:startDestination="@id/mainMenuFragment">
 
     <fragment
-        android:id="@+id/mainMenuFragment2"
+        android:id="@+id/mainMenuFragment"
         android:name="ru.mvrlrd.playlistmaker.main.MainMenuFragment"
         android:label="fragment_main_menu"
         tools:layout="@layout/fragment_main_menu" >
         <action
-            android:id="@+id/action_mainMenuFragment2_to_mediatekaFragment"
-            app:destination="@id/mediatekaFragment" />
-        <action
-            android:id="@+id/action_mainMenuFragment2_to_searchFragment2"
-            app:destination="@id/searchFragment2" />
-        <action
-            android:id="@+id/action_mainMenuFragment2_to_settingsFragment"
+            android:id="@+id/action_mainMenuFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/searchFragment2"
-        android:name="ru.mvrlrd.playlistmaker.search.ui.SearchFragment"
-        android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_searchFragment2_to_playerActivity"
-            app:destination="@id/playerActivity" />
-    </fragment>
-    <fragment
-        android:id="@+id/mediatekaFragment"
-        android:name="ru.mvrlrd.playlistmaker.mediateka.MediatekaFragment"
-        android:label="fragment_mediateka"
-        tools:layout="@layout/fragment_mediateka" >
+            android:id="@+id/action_mainMenuFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
         <action
-            android:id="@+id/action_mediatekaFragment_to_playlistsFragment"
-            app:destination="@id/playlistsFragment" />
-        <action
-            android:id="@+id/action_mediatekaFragment_to_favoritesFragment"
-            app:destination="@id/favoritesFragment" />
+            android:id="@+id/action_mainMenuFragment_to_mediatekaFragment"
+            app:destination="@id/mediatekaFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -48,17 +26,25 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/playlistsFragment"
-        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsFragment"
-        android:label="fragment_playlists"
-        tools:layout="@layout/fragment_playlists" />
+        android:id="@+id/searchFragment"
+        android:name="ru.mvrlrd.playlistmaker.search.ui.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_playerActivity"
+            app:destination="@id/playerActivity" />
+    </fragment>
     <fragment
-        android:id="@+id/favoritesFragment"
-        android:name="ru.mvrlrd.playlistmaker.mediateka.favorites.FavoritesFragment"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        android:id="@+id/mediatekaFragment"
+        android:name="ru.mvrlrd.playlistmaker.mediateka.MediatekaFragment"
+        android:label="fragment_mediateka"
+        tools:layout="@layout/fragment_mediateka" />
     <activity
         android:id="@+id/playerActivity"
         android:name="ru.mvrlrd.playlistmaker.player.ui.PlayerActivity"
-        android:label="PlayerActivity" />
+        android:label="PlayerActivity" >
+        <argument
+            android:name="track"
+            app:argType="ru.mvrlrd.playlistmaker.search.domain.Track" />
+    </activity>
 </navigation>
