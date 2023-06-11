@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:buttonGravity="center_vertical"
-        app:navigationIcon="@drawable/ic_arrow_icon"
         app:title="@string/search"
         app:titleTextAppearance="@style/TitleStyle" />
 

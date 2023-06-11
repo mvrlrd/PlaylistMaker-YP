@@ -33,11 +33,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.searchToolbar.apply {
-            setNavigationOnClickListener {
-                findNavController().navigateUp()
-            }
-        }
 
         viewModel.screenState.observe(this) { screenState ->
             if (viewModel.isReadyToRender(screenState, binding.searchEditText.text.toString())) {
