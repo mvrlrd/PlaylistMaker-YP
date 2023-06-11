@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
@@ -56,7 +55,9 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         if (binding.searchEditText.text.toString().isNotEmpty()) {
-            viewModel.searchRightAway(binding.searchEditText.text.toString())
+            if (trackAdapter.isListEmpty()){
+                viewModel.searchRightAway(binding.searchEditText.text.toString())
+            }
         } else {
             binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
             viewModel.showHistory()
@@ -66,17 +67,15 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        println("__________")
+        println("__________onDestroyView")
         viewModel.onDestroy()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-            println("_+++++++++")
-            outState.putString(INPUT_TEXT, binding.searchEditText.text.toString())
-
-
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        super.onSaveInstanceState(outState)
+//            println("______onSaveInstanceState")
+//            outState.putString(INPUT_TEXT, binding.searchEditText.text.toString())
+//    }
 
 
     private fun initRecycler() {
@@ -102,7 +101,7 @@ class SearchFragment : Fragment() {
     private fun initEditText(savedInstanceState: Bundle?) {
         binding.searchEditText
             .apply {
-                restoreTextFromBundle(textField = this, savedInstanceState = savedInstanceState)
+//                restoreTextFromBundle(textField = this, savedInstanceState = savedInstanceState)
                 setOnEditorActionListener { _, actionId, _ ->
                     onClickOnEnterOnVirtualKeyboard(actionId)
                 }
@@ -126,14 +125,14 @@ class SearchFragment : Fragment() {
     private fun clearButtonVisibility(p0: CharSequence?) =
         if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
-    private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
-            if (savedInstanceState.getString(INPUT_TEXT)!!.isNotEmpty()) {
-                textField.setText(savedInstanceState.getString(INPUT_TEXT)!!)
-                viewModel.searchRightAway(savedInstanceState.getString(INPUT_TEXT)!!)
-            }
-        }
-    }
+//    private fun restoreTextFromBundle(textField: EditText, savedInstanceState: Bundle?) {
+//        if (savedInstanceState != null) {
+//            if (savedInstanceState.getString(INPUT_TEXT)!!.isNotEmpty()) {
+//                textField.setText(savedInstanceState.getString(INPUT_TEXT)!!)
+//                viewModel.searchRightAway(savedInstanceState.getString(INPUT_TEXT)!!)
+//            }
+//        }
+//    }
 
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean {
         if (actionId == EditorInfo.IME_ACTION_DONE) {

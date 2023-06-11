@@ -22,6 +22,10 @@ class TrackAdapter : ListAdapter<Track, TrackAdapter.TrackViewHolder>(TrackItemD
         return TrackViewHolder(binding)
     }
 
+    fun isListEmpty(): Boolean{
+        return itemCount==0
+    }
+
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = getItem(position)
         holder.itemView.setOnClickListener {
