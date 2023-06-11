@@ -23,7 +23,10 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.backButton.apply {
-            setOnClickListener { onBackPressed() }
+            setOnClickListener {
+                //TODO сделать возврат назад из активити с помощью jetpack navigation
+                 onBackPressed()
+            }
         }
         binding.playButton.apply {
             setOnClickListener {

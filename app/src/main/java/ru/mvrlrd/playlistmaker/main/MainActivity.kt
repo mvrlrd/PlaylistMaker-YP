@@ -3,6 +3,8 @@ package ru.mvrlrd.playlistmaker.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.fragment.NavHostFragment
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

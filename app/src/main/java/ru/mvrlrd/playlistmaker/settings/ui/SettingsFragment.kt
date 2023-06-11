@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentSettingsBinding
@@ -29,7 +30,9 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.settingsToolbar.apply {
-            setNavigationOnClickListener { requireActivity().onBackPressed() }
+            setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
         }
 
         binding.switchTheme
