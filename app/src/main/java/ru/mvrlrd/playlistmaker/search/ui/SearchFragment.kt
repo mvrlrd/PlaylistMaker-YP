@@ -21,7 +21,7 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
         get() = _binding ?: throw RuntimeException("FragmentSearchBinding == null")
-
+//hello
     private val viewModel: SearchViewModel by viewModel()
     private val trackAdapter: TrackAdapter by inject()
 
