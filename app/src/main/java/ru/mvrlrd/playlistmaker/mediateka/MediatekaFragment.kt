@@ -45,11 +45,4 @@ class MediatekaFragment : Fragment() {
             setNavigationOnClickListener { requireActivity().onBackPressed() }
         }
     }
-
-    companion object {
-
-        @JvmStatic
-        fun newInstance() =
-            MediatekaFragment()
-    }
 }
