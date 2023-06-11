@@ -40,12 +40,5 @@ class MediatekaFragment : Fragment() {
         }.apply {
             attach()
         }
-
-
-        binding.mediatekaToolbar.apply {
-            setNavigationOnClickListener {
-                findNavController().navigateUp()
-            }
-        }
     }
 }
