@@ -3,23 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/mainMenuFragment">
+    app:startDestination="@id/searchFragment">
 
-    <fragment
-        android:id="@+id/mainMenuFragment"
-        android:name="ru.mvrlrd.playlistmaker.main.MainMenuFragment"
-        android:label="fragment_main_menu"
-        tools:layout="@layout/fragment_main_menu" >
-        <action
-            android:id="@+id/action_mainMenuFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_mainMenuFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_mainMenuFragment_to_mediatekaFragment"
-            app:destination="@id/mediatekaFragment" />
-    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="ru.mvrlrd.playlistmaker.settings.ui.SettingsFragment"

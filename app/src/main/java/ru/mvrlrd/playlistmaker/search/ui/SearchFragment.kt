@@ -66,12 +66,16 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        println("__________")
         viewModel.onDestroy()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(INPUT_TEXT, binding.searchEditText.text.toString())
+            println("_+++++++++")
+            outState.putString(INPUT_TEXT, binding.searchEditText.text.toString())
+
+
     }
 
 
