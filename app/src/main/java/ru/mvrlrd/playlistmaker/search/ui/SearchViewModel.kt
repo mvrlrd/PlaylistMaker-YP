@@ -3,7 +3,6 @@ package ru.mvrlrd.playlistmaker.search.ui
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -58,8 +57,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         query?.let {
             _screenState.postValue(SearchScreenState.Loading())
             tracksInteractor.searchTracks(query, object : TracksInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>?, response: Response) {
-                    when (response.resultCode) {
+                override fun consume(foundTracks: List<Track>?, responseCode: Int, message: String?) {
+                    when (responseCode) {
                         SUCCESS_CODE -> {
                             if (foundTracks!!.isNotEmpty()) {
                                 _screenState.postValue(SearchScreenState.Success(foundTracks))
@@ -68,7 +67,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
                             }
                         }
                         else -> {
-                            _screenState.postValue(SearchScreenState.Error(response.errorMessage, response.resultCode.toString()))
+                            _screenState.postValue(SearchScreenState.Error(message, responseCode.toString()))
                         }
                     }
                 }

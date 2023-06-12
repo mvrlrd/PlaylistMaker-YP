@@ -1,11 +1,10 @@
 package ru.mvrlrd.playlistmaker.search.domain
 
-import ru.mvrlrd.playlistmaker.search.data.Response
 
 interface TracksInteractor {
     fun searchTracks(query: String, consumer: TracksConsumer)
     interface TracksConsumer{
-        fun consume(foundTracks: List<Track>?, response: Response)
+        fun consume(foundTracks: List<Track>?, responseCode: Int, message: String? = null)
     }
 
     fun addTrackToHistory(track: Track)

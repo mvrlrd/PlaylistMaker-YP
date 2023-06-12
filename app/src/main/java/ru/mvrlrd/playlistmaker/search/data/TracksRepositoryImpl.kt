@@ -19,10 +19,10 @@ class TracksRepositoryImpl(
             SUCCESS_CODE -> {
                 Resource.Success((response as TracksSearchResponse).results.map {
                     it.mapToTrack()
-                }, response = response)
+                }, responseCode = response.resultCode)
             }
             else -> {
-                Resource.Error(response = response)
+                Resource.Error(responseCode = response.resultCode, message = response.errorMessage)
             }
         }
     }
