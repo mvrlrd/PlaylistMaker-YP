@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
-import ru.mvrlrd.playlistmaker.main.MainActivity
 
 //TODO сделать инфо плэйсхолдер скролабл потому что если переворачиваем экран его не видно
 class SearchFragment : Fragment() {
@@ -92,16 +91,6 @@ class SearchFragment : Fragment() {
             .apply {
                 setOnEditorActionListener { _, actionId, _ ->
                     onClickOnEnterOnVirtualKeyboard(actionId)
-                }
-                setOnFocusChangeListener { _, hasFocus ->
-                    //TODO когда в фокусе - убрать боттом если не в фокусе то вернуть
-
-//                    val act = requireActivity() as MainActivity
-//                    if (hasFocus){
-//                        act.binding.navView.visibility = View.GONE
-//                    }
-
-                    if (hasFocus && binding.searchEditText.text.isEmpty()) viewModel.showHistory()
                 }
                 doOnTextChanged { text, _, _, _ ->
                     if (binding.searchEditText.hasFocus() && text.toString().isEmpty()) {

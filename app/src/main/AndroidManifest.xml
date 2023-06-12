@@ -22,17 +22,10 @@
             android:name=".player.ui.PlayerActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".mediateka.MediatekaActivity"
-            android:exported="false" />
-        <activity
-            android:name=".search.ui.SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".settings.ui.SettingsActivity"
-            android:exported="false" />
+
         <activity
             android:name=".main.MainActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

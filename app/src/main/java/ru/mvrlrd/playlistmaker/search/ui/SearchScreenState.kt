@@ -5,8 +5,6 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
-//TODO На экранах «Поиск», «Медиатека» и «Настройки» больше не должно быть кнопки «Назад» в левом верхнем углу. Не забудьте её удалить.
-//TODO Обратите внимание, что, когда клавиатура присутствует на экране, панель навигации скрыта за ней. Не забудьте указать верное значение параметру windowSoftInputMode в манифесте:
 sealed class SearchScreenState(val message: String? = null, val tracks: List<Track>? = null) {
     class Loading : SearchScreenState() {
         override fun render(binding: FragmentSearchBinding) {
