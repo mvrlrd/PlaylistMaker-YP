@@ -20,20 +20,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     val screenState: LiveData<SearchScreenState> = _screenState
     private val handler = Handler(Looper.getMainLooper())
     private var lastQuery: String? = null
-    private var isClickAllowed = true
-
-//    private fun makeDelaySearching(changedText: String) {
-//        val searchRunnable = Runnable { searchRightAway(changedText) }
-//        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-//        handler.postAtTime(
-//            searchRunnable,
-//            SEARCH_REQUEST_TOKEN,
-//            postTime,
-//        )
-//    }
-
     private var latestSearchText: String? = null
-
     private var searchJob: Job? = null
 
     fun searchDebounce(changedText: String) {
@@ -48,30 +35,9 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         }
     }
 
-    fun trackOnClickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
-
     fun onDestroy() {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
-
-//    fun searchDebounce(changedText: String? = lastQuery) {
-//        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-//        if (!changedText.isNullOrEmpty()) {
-//            if ((lastQuery == changedText)) {
-//                return
-//            }
-//            this.lastQuery = changedText
-//            makeDelaySearching(changedText)
-//        }
-//    }
-
 
      fun searchRequest(query: String? = lastQuery) {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
@@ -126,7 +92,5 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-
     }
 }
