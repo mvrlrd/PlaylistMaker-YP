@@ -52,7 +52,7 @@ class SearchFragment : Fragment() {
         super.onResume()
         if (binding.searchEditText.text.toString().isNotEmpty()) {
             if (trackAdapter.isListEmpty()){
-                viewModel.searchRightAway(binding.searchEditText.text.toString())
+                viewModel.searchRequest(binding.searchEditText.text.toString())
             }
         } else {
             binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -112,7 +112,7 @@ class SearchFragment : Fragment() {
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (binding.searchEditText.text.toString().isNotEmpty()) {
-                viewModel.searchRightAway(binding.searchEditText.text.toString())
+                viewModel.searchRequest(binding.searchEditText.text.toString())
             }
         }
         return false
@@ -135,7 +135,7 @@ class SearchFragment : Fragment() {
         binding.refreshButton.apply {
             setOnClickListener {
                 if (binding.searchEditText.text.toString().isNotEmpty()) {
-                    viewModel.searchRightAway()
+                    viewModel.searchRequest()
                 }
             }
         }

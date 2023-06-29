@@ -6,6 +6,10 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.search.data.Response
 import ru.mvrlrd.playlistmaker.search.data.TracksRepositoryImpl.Companion.SUCCESS_CODE
 import ru.mvrlrd.playlistmaker.search.domain.Track
@@ -18,14 +22,30 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
     private var lastQuery: String? = null
     private var isClickAllowed = true
 
-    private fun makeDelaySearching(changedText: String) {
-        val searchRunnable = Runnable { searchRightAway(changedText) }
-        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
-        handler.postAtTime(
-            searchRunnable,
-            SEARCH_REQUEST_TOKEN,
-            postTime,
-        )
+//    private fun makeDelaySearching(changedText: String) {
+//        val searchRunnable = Runnable { searchRightAway(changedText) }
+//        val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
+//        handler.postAtTime(
+//            searchRunnable,
+//            SEARCH_REQUEST_TOKEN,
+//            postTime,
+//        )
+//    }
+
+    private var latestSearchText: String? = null
+
+    private var searchJob: Job? = null
+
+    fun searchDebounce(changedText: String) {
+        if (latestSearchText == changedText) {
+            return
+        }
+        latestSearchText = changedText
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchRequest(changedText)
+        }
     }
 
     fun trackOnClickDebounce(): Boolean {
@@ -41,18 +61,19 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
     }
 
-    fun searchDebounce(changedText: String? = lastQuery) {
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
-        if (!changedText.isNullOrEmpty()) {
-            if ((lastQuery == changedText)) {
-                return
-            }
-            this.lastQuery = changedText
-            makeDelaySearching(changedText)
-        }
-    }
+//    fun searchDebounce(changedText: String? = lastQuery) {
+//        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+//        if (!changedText.isNullOrEmpty()) {
+//            if ((lastQuery == changedText)) {
+//                return
+//            }
+//            this.lastQuery = changedText
+//            makeDelaySearching(changedText)
+//        }
+//    }
 
-    fun searchRightAway(query: String? = lastQuery) {
+
+     fun searchRequest(query: String? = lastQuery) {
         handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
         query?.let {
             _screenState.postValue(SearchScreenState.Loading())
