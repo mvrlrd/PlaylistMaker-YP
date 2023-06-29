@@ -26,6 +26,7 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
     }
 
     override fun onDestroy() {
+        mediaPlayer.stop()
         mediaPlayer.release()
     }
 

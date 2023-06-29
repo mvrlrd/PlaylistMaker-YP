@@ -39,7 +39,7 @@ sealed class PlayerScreenState {
     class PlayButtonHandling(private val playerState: PlayerState) : PlayerScreenState() {
         override fun render(binding: ActivityPlayerBinding) {
             when (playerState) {
-                PlayerState.STATE_PLAYING -> {
+                 PlayerState.PLAYING -> {
                     binding.playButton.setImageResource(R.drawable.baseline_pause_24)
                 }
                 else -> {
@@ -54,9 +54,9 @@ sealed class PlayerScreenState {
             binding.playButton.isEnabled = true
         }
     }
-    class TimerUpdating(private val time: String): PlayerScreenState(){
+    class Playing(private val progress: String): PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
-            binding.clockTrack.text = time
+            binding.clockTrack.text = progress
         }
     }
     class PlayCompleting: PlayerScreenState(){
