@@ -30,7 +30,8 @@
     <string name="mediateka_is_empty">Ваша медиатека пуста</string>
     <string name="no_playlists">Вы не создали\nни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

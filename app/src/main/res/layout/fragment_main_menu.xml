@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/main_background"
+        android:orientation="vertical"
+        android:paddingTop="10dp"
+        android:paddingBottom="15dp"
+        tools:context=".main.MainMenuFragment"
+
+
+        >
+
+        <TextView
+            style="@style/TitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="40dp"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textStyle="normal" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/search_button"
+                style="@style/MainMenuButtonStyle"
+                android:text="@string/search"
+                app:icon="@drawable/ic_search_icon" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/mediateka_button"
+                style="@style/MainMenuButtonStyle"
+                android:text="@string/mediateka"
+                app:icon="@drawable/ic_mediateca_icon" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settings_button"
+                style="@style/MainMenuButtonStyle"
+                android:text="@string/settings"
+                app:icon="@drawable/ic_settings_icon" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>

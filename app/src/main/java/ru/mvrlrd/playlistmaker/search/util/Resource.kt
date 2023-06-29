@@ -1,8 +1,6 @@
 package ru.mvrlrd.playlistmaker.search.util
 
-import ru.mvrlrd.playlistmaker.search.data.Response
-
-sealed class Resource<T> (val data: T? = null, val response: Response){
-    class Success<T>(data: T, response: Response): Resource<T>(data, response = response)
-    class Error<T>(response: Response, data: T? = null): Resource<T>(data = data, response = response)
+sealed class Resource<T> (val data: T? = null, val responseCode: Int, val message: String? = null){
+    class Success<T>(data: T, responseCode: Int): Resource<T>(data, responseCode = responseCode)
+    class Error<T>(responseCode: Int, data: T? = null, message: String): Resource<T>(data = data, responseCode = responseCode, message = message)
 }

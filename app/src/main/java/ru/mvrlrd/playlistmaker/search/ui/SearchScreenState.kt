@@ -2,12 +2,12 @@ package ru.mvrlrd.playlistmaker.search.ui
 
 import android.view.View
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.databinding.ActivitySearchBinding
+import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
 sealed class SearchScreenState(val message: String? = null, val tracks: List<Track>? = null) {
     class Loading : SearchScreenState() {
-        override fun render(binding: ActivitySearchBinding) {
+        override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.VISIBLE
             binding.errorPlaceholder.visibility= View.GONE
             binding.clearHistoryButton.visibility = View.GONE
@@ -17,7 +17,7 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
     }
 
     class NothingFound : SearchScreenState() {
-        override fun render(binding: ActivitySearchBinding) {
+        override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
             binding.errorPlaceholder.visibility = View.VISIBLE
             binding.clearHistoryButton.visibility = View.GONE
@@ -30,7 +30,7 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
     }
 
     class Error(message: String?,val code: String) : SearchScreenState(message = message) {
-        override fun render(binding: ActivitySearchBinding) {
+        override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
             binding.errorPlaceholder.visibility = View.VISIBLE
             binding.clearHistoryButton.visibility = View.GONE
@@ -42,7 +42,7 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
     }
 
     class Success(tracks: List<Track>?) : SearchScreenState(tracks = tracks) {
-        override fun render(binding: ActivitySearchBinding) {
+        override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
             binding.errorPlaceholder.visibility = View.GONE
             binding.clearHistoryButton.visibility = View.GONE
@@ -52,7 +52,7 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
     }
 
     class ShowHistory(tracks: List<Track>?) : SearchScreenState(tracks = tracks) {
-        override fun render(binding: ActivitySearchBinding) {
+        override fun render(binding: FragmentSearchBinding) {
             if (tracks.isNullOrEmpty()) {
                 binding.clearHistoryButton.visibility = View.GONE
                 binding.youSearchedTitle.visibility = View.GONE
@@ -66,6 +66,6 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
         }
     }
 
-    abstract fun render(binding: ActivitySearchBinding)
+    abstract fun render(binding: FragmentSearchBinding)
 }
 
