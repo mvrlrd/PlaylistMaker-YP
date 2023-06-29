@@ -1,5 +1,7 @@
 package ru.mvrlrd.playlistmaker.search.domain.impl
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 import ru.mvrlrd.playlistmaker.search.domain.TracksRepository
@@ -7,12 +9,16 @@ import ru.mvrlrd.playlistmaker.search.util.Resource
 import java.util.concurrent.Executors
 
 class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
-    private val executor = Executors.newCachedThreadPool()
-    override fun searchTracks(query: String, consumer: TracksInteractor.TracksConsumer) {
-        executor.execute {
-            when (val resource = repository.searchTracks(query)){
-                is Resource.Success ->{consumer.consume(foundTracks = resource.data, responseCode = resource.responseCode)}
-                is Resource.Error -> {consumer.consume(null, responseCode = resource.responseCode, message = resource.message)}
+    override fun searchTracks(query: String) : Flow<Pair<List<Track>?, Pair<String, String>?>> {
+
+        return repository.searchTracks(query).map { result ->
+            when (result) {
+                is Resource.Success -> {
+                    Pair(result.data, null)
+                }
+                is Resource.Error -> {
+                    Pair(null, result.message!! to result.responseCode.toString())
+                }
             }
         }
     }

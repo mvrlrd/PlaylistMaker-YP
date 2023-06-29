@@ -33,9 +33,6 @@ class PlayerActivity : AppCompatActivity() {
                 viewModel.playbackControl()
             }
         }
-
-
-
         viewModel.screenState.observe(this) {
             it.render(binding)
         }

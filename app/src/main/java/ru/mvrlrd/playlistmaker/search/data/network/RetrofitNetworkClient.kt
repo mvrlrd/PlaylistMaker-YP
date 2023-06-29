@@ -1,6 +1,8 @@
 package ru.mvrlrd.playlistmaker.search.data.network
 
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import ru.mvrlrd.playlistmaker.search.data.NetworkClient
 import ru.mvrlrd.playlistmaker.search.data.Response
 import ru.mvrlrd.playlistmaker.search.data.TracksSearchRequest
@@ -10,15 +12,25 @@ import java.io.InterruptedIOException
 class RetrofitNetworkClient(
     private val itunesService: ItunesApiService
 ) : NetworkClient {
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
         return try {
             if (dto is TracksSearchRequest) {
-                val resp = itunesService.search(dto.query).execute()
-                val body = resp.body() ?: Response()
-                body.apply {
-                    resultCode = resp.code()
-                    errorMessage = resp.message()
+
+                return withContext(Dispatchers.IO) {
+                    try {
+                        val response = itunesService.search(dto.query)
+                        response.apply { resultCode = 200 }
+                    } catch (e: Throwable) {
+                        Response().apply { resultCode = 500 }
+                    }
                 }
+
+//                val resp = itunesService.search(dto.query).execute()
+//                val body = resp.body() ?: Response()
+//                body.apply {
+//                    resultCode = resp.code()
+//                    errorMessage = resp.message()
+//                }
             } else {
                 throw IOException("REQUEST IS NOT TracksSearchRequest")
             }
