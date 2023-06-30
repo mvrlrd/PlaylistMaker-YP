@@ -6,11 +6,9 @@ import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 import ru.mvrlrd.playlistmaker.search.domain.TracksRepository
 import ru.mvrlrd.playlistmaker.search.util.Resource
-import java.util.concurrent.Executors
 
 class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
     override fun searchTracks(query: String) : Flow<Pair<List<Track>?, Pair<String, String>?>> {
-
         return repository.searchTracks(query).map { result ->
             when (result) {
                 is Resource.Success -> {

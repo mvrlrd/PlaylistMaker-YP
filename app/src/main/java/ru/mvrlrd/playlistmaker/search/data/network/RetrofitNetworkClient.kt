@@ -13,9 +13,8 @@ class RetrofitNetworkClient(
     private val itunesService: ItunesApiService
 ) : NetworkClient {
     override suspend fun doRequest(dto: Any): Response {
-        return try {
+         try {
             if (dto is TracksSearchRequest) {
-
                 return withContext(Dispatchers.IO) {
                     try {
                         val response = itunesService.search(dto.query)
@@ -24,19 +23,11 @@ class RetrofitNetworkClient(
                         Response().apply { resultCode = 500 }
                     }
                 }
-
-//                val resp = itunesService.search(dto.query).execute()
-//                val body = resp.body() ?: Response()
-//                body.apply {
-//                    resultCode = resp.code()
-//                    errorMessage = resp.message()
-//                }
             } else {
                 throw IOException("REQUEST IS NOT TracksSearchRequest")
             }
         }catch (e: InterruptedIOException){
             throw InterruptedIOException(" call Timeout finished")
         }
-
     }
 }
