@@ -43,7 +43,7 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer, private val playerInteract
     private fun setOnCompletionListener() {
         playerInteractor.setOnCompletionListener {
             playerState = PREPARED
-            timerJob!!.cancel()
+            timerJob?.cancel()
             _screenState.value = PlayerScreenState.PlayCompleting()
         }
     }
