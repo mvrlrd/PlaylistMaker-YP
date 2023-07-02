@@ -36,9 +36,10 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor, private va
         searchJob?.cancel()
     }
 
-     fun searchRequest(query: String? = lastQuery) {
+    fun searchRequest(query: String? = lastQuery) {
         query?.let {
             _screenState.postValue(SearchScreenState.Loading())
+            searchJob?.cancel()
             viewModelScope.launch {
                 tracksInteractor.searchTracks(query)
                     .collect{
