@@ -27,4 +27,6 @@
     <string name="mediateka_is_empty">Empty</string>
     <string name="no_playlists">No playlists</string>
     <string name="new_playlist">New playlist</string>
+    <string name="bad_request">"page not found"</string>
+    <string name="server_error">"server error"</string>
 </resources>

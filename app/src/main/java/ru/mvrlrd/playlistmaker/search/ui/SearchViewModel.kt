@@ -1,17 +1,18 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
-import ru.mvrlrd.playlistmaker.search.util.Resource
 
-class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
+class SearchViewModel(private val tracksInteractor: TracksInteractor, private val context: Application) : AndroidViewModel(context) {
     private val _screenState = MutableLiveData<SearchScreenState>()
     val screenState: LiveData<SearchScreenState> = _screenState
 
@@ -42,21 +43,24 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
                 tracksInteractor.searchTracks(query)
                     .collect{
                         resp ->
-                            handleResponse(resp.responseCode, resp.data, resp.message)
+                        val trackList = resp.first
+                        val code = resp.second.first
+                        val errorMessage = resp.second.second
+                        handleResponse(tracks = trackList, code = code, errorMessage = errorMessage)
                     }
             }
         }
     }
 
-    private fun handleResponse(code: Int, tracks: List<Track>?, message: String?){
-        if (code==200){
+    private fun handleResponse(tracks: List<Track>?, code: Int, errorMessage: String?){
+        if (code == context.resources.getString(R.string.success_code).toInt()){
             if (tracks!!.isNotEmpty()){
                 _screenState.postValue(SearchScreenState.Success(tracks))
             }else{
                 _screenState.postValue(SearchScreenState.NothingFound())
             }
         }else{
-            _screenState.postValue(SearchScreenState.Error(message!!, code.toString()))
+            _screenState.postValue(SearchScreenState.Error(code.toString(), errorMessage!!))
         }
     }
 

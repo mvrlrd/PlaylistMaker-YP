@@ -5,7 +5,7 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
-sealed class SearchScreenState(val message: String? = null, val tracks: List<Track>? = null) {
+sealed class SearchScreenState(val tracks: List<Track>? = null, val message: String? = null) {
     class Loading : SearchScreenState() {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.VISIBLE
@@ -29,7 +29,7 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
         }
     }
 
-    class Error(message: String?,val code: String) : SearchScreenState(message = message) {
+    class Error(val code: String, private val errorMessage: String?) : SearchScreenState(message = errorMessage) {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
             binding.errorPlaceholder.visibility = View.VISIBLE
@@ -37,7 +37,7 @@ sealed class SearchScreenState(val message: String? = null, val tracks: List<Tra
             binding.youSearchedTitle.visibility = View.GONE
             binding.refreshButton.visibility = View.VISIBLE
             binding.infoPlaceholder.placeholderImage.setImageResource(R.drawable.connection_error)
-            binding.infoPlaceholder.placeholderMessage.text = message
+            binding.infoPlaceholder.placeholderMessage.text = errorMessage
         }
     }
 
