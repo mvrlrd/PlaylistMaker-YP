@@ -9,6 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
+import ru.mvrlrd.playlistmaker.search.util.Resource
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
     private val _screenState = MutableLiveData<SearchScreenState>()
@@ -40,23 +41,22 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
             viewModelScope.launch {
                 tracksInteractor.searchTracks(query)
                     .collect{
-                        pair ->
-                            handleResponse(pair.first, pair.second)
+                        resp ->
+                            handleResponse(resp.responseCode, resp.data, resp.message)
                     }
             }
         }
     }
 
-    private fun handleResponse(tracks: List<Track>?, error: Pair<String,String>?){
-        if (tracks!=null){
-            if (tracks.isNotEmpty()){
+    private fun handleResponse(code: Int, tracks: List<Track>?, message: String?){
+        if (code==200){
+            if (tracks!!.isNotEmpty()){
                 _screenState.postValue(SearchScreenState.Success(tracks))
             }else{
                 _screenState.postValue(SearchScreenState.NothingFound())
             }
-        }
-        if(error!=null){
-            _screenState.postValue(SearchScreenState.Error(error.first, error.second))
+        }else{
+            _screenState.postValue(SearchScreenState.Error(message!!, code.toString()))
         }
     }
 

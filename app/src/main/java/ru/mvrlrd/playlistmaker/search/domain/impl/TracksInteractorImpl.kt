@@ -8,14 +8,14 @@ import ru.mvrlrd.playlistmaker.search.domain.TracksRepository
 import ru.mvrlrd.playlistmaker.search.util.Resource
 
 class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
-    override fun searchTracks(query: String) : Flow<Pair<List<Track>?, Pair<String, String>?>> {
+    override fun searchTracks(query: String) : Flow<Resource<List<Track>>> {
         return repository.searchTracks(query).map { result ->
             when (result) {
                 is Resource.Success -> {
-                    Pair(result.data, null)
+                    Resource.Success(data = result.data!!, responseCode = 200)
                 }
                 is Resource.Error -> {
-                    Pair(null, result.message!! to result.responseCode.toString())
+                    Resource.Error(message = result.message!!, responseCode = result.responseCode)
                 }
             }
         }
