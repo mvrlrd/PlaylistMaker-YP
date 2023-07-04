@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -72,6 +73,7 @@ class SearchFragment : Fragment() {
         } else {
             binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
             viewModel.showHistory()
+
         }
     }
 

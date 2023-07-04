@@ -20,7 +20,7 @@ data class Track(
         return if (other !is Track) {
             false
         } else {
-            other.trackId == trackId
+            other.trackId == this.trackId
         }
     }
 

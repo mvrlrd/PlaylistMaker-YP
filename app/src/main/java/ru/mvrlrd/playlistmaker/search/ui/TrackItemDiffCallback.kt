@@ -9,6 +9,6 @@ class TrackItemDiffCallback: DiffUtil.ItemCallback<Track>() {
     }
 
     override fun areContentsTheSame(oldItem: Track, newItem: Track): Boolean {
-        return oldItem == newItem
+        return ((oldItem.trackId == newItem.trackId)&&(oldItem.isFavorite==newItem.isFavorite))
     }
 }

@@ -13,7 +13,8 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 
-class SearchViewModel(private val tracksInteractor: TracksInteractor, private val context: Application) : AndroidViewModel(context) {
+class SearchViewModel(private val tracksInteractor: TracksInteractor,
+                      private val context: Application) : AndroidViewModel(context) {
     private val _screenState = MutableLiveData<SearchScreenState>()
     val screenState: LiveData<SearchScreenState> = _screenState
 
@@ -81,9 +82,6 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor, private va
         viewModelScope.launch {
             tracksInteractor.getHistory().collect() { historyTracks ->
                 if (historyTracks.isNotEmpty()) {
-                    historyTracks.forEach {
-                        println(it.isFavorite)
-                    }
                     _screenState.value = SearchScreenState.ShowHistory(historyTracks)
                 } else {
                     _screenState.value = SearchScreenState.Success(null)

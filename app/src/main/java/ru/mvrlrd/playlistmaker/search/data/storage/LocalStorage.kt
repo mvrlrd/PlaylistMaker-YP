@@ -14,6 +14,7 @@ class LocalStorage(private val sharedPreferences: SharedPreferences) : ILocalSto
 
    override fun addToHistory(track: Track) {
         val searchedTracks = getHistory().map { it.mapToTrackToStorage() } as MutableList
+
         if (searchedTracks.contains(track.mapToTrackToStorage())){
             searchedTracks.remove(track)
         }
