@@ -17,4 +17,9 @@ interface FavoriteDao {
     suspend fun getFavoriteTracks(): List<TrackEntity>
     @Query("SELECT id FROM favorite_tracks")
     suspend fun getFavoriteTrackIds(): List<Int>
+
+    @Query("DELETE FROM favorite_tracks")
+    suspend fun clearFavorites()
+
+
 }

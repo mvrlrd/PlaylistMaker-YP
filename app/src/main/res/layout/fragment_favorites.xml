@@ -1,15 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    tools:context=".mediateka.favorites.FavoritesFragment"
-    android:paddingTop="106dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:tools="http://schemas.android.com/tools"
+android:orientation="vertical"
+android:theme="@style/Theme.PlaylistMaker"
+tools:context=".mediateka.favorites.FavoritesFragment">
 
 
-    <include
-        android:id="@+id/place_holder"
-        layout="@layout/info_place_holder_layout" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-</FrameLayout>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/favsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="13dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clearHistoryButton"
+                    style="@style/RefreshButtonStyle"
+                    android:layout_marginBottom="50dp"
+                    android:text="@string/clear_history" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </ScrollView>
+
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/error_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="110dp"
+        android:visibility="gone">
+
+        <include
+            android:id="@+id/info_placeholder"
+            layout="@layout/info_place_holder_layout" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+</LinearLayout>
+
+
+<!--    <?xml version="1.0" encoding="utf-8"?>-->
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_gravity="center_horizontal"-->
+<!--tools:context=".mediateka.favorites.FavoritesFragment"-->
+<!--android:paddingTop="106dp">-->
+
+
+<!--<include-->
+<!--    android:id="@+id/place_holder"-->
+<!--    layout="@layout/info_place_holder_layout" />-->
+
+<!--</FrameLayout>-->

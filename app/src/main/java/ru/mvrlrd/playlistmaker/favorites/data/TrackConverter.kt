@@ -46,7 +46,7 @@ class TrackConverter {
         )
 
     fun mapToAdapter(track: TrackEntity) =
-        TrackForPlayer(
+        Track(
             trackId = track.id,
             trackName = track.trackName,
             artistName = track.artistName,
