@@ -6,16 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
-import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.favorites.FavoriteAdapter
-import ru.mvrlrd.playlistmaker.search.ui.SearchFragmentDirections
-import ru.mvrlrd.playlistmaker.search.ui.SearchScreenState
-import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? =null
@@ -45,7 +42,6 @@ class FavoritesFragment : Fragment() {
     private fun initRecycler() {
         trackAdapter.apply {
             onClickListener = { track ->
-                Unit
 //                if (clickDebounce()) {
 //                    viewModel.addToHistory(track)
 //                    findNavController().navigate(
@@ -72,9 +68,16 @@ class FavoritesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.tracks.observe(this) { trackList ->
             trackAdapter.submitList(trackList)
+            if (!trackList.isEmpty()){
+                println("__)))__))")
+//                        binding.emptyPlaceholder.placeholderImage.setImageDrawable((
+//                            R.drawable.baseline_favorite_full))
+//                binding.emptyPlaceholder.placeholderMessage.text = "hello"
+//                binding.emptyPlaceholder.placeholderImage.visibility = View.VISIBLE
+            }
         }
 
-//        binding.placeHolder.placeholderMessage.text = this.resources.getText(R.string.mediateka_is_empty)
+
     }
 
     override fun onDestroyView() {
