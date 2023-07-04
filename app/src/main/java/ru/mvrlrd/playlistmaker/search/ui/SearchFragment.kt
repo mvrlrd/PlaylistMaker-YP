@@ -66,14 +66,11 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (binding.searchEditText.text.toString().isNotEmpty()) {
-            if (trackAdapter.isListEmpty()){
-                viewModel.searchRequest(binding.searchEditText.text.toString())
-            }
-        } else {
+        if (binding.searchEditText.text.toString().isEmpty()){
             binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
             viewModel.showHistory()
-
+        }else{
+            viewModel.searchRequest(binding.searchEditText.text.toString())
         }
     }
 
