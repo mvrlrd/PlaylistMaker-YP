@@ -29,4 +29,13 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
     override fun preparePlayer(trackForPlayer: TrackForPlayer, prepare: () -> Unit) {
         playerRepository.preparePlayer(trackForPlayer, prepare)
     }
+
+    override suspend fun addTrackToFavorite(trackForPlayer: TrackForPlayer) {
+        playerRepository.addToFavorite(trackForPlayer)
+    }
+
+    override suspend fun removeTrackFromFavorite(trackId: Int) {
+        playerRepository.removeFromFavorite(trackId)
+    }
+
 }

@@ -21,14 +21,16 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor, private va
     private var searchJob: Job? = null
 
     fun searchDebounce(changedText: String) {
-        if (latestSearchText == changedText) {
-            return
-        }
-        latestSearchText = changedText
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-            searchRequest(changedText)
+        if (changedText.isNotEmpty()) {
+            if (latestSearchText == changedText) {
+                return
+            }
+            latestSearchText = changedText
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DEBOUNCE_DELAY)
+                searchRequest(changedText)
+            }
         }
     }
 

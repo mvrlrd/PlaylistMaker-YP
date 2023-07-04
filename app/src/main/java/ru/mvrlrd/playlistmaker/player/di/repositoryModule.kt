@@ -6,6 +6,6 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 
 val playerRepositoryModule = module {
     factory   <PlayerRepository>{
-        PlayerRepositoryImpl(playerClient = get())
+        PlayerRepositoryImpl(playerClient = get(), favoriteDb = get(), trackConverter = get())
     }
 }

@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.data
+package ru.mvrlrd.playlistmaker.favorites.data
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.Track
 

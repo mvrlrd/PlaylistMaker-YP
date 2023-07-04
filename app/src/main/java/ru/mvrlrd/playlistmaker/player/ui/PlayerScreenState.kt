@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
+import android.os.Build
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -23,6 +24,18 @@ sealed class PlayerScreenState {
             binding.yearParam.text = unparseDateToYear(track.year!!)
             binding.genreParam.text = track.genre
             binding.countryParam.text = track.country
+            println("is fav = ${track.isFavorite}")
+            if (track.isFavorite){
+                println("jjj")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    binding.likeButton.setImageDrawable(binding.likeButton.resources.getDrawable(R.drawable.baseline_favorite_full, binding.likeButton.context.getTheme()));
+                } else {
+                    binding.likeButton.setImageDrawable(binding.likeButton.resources.getDrawable(R.drawable.baseline_favorite_full));
+                }
+            }else{
+
+            }
+
 
             Glide
                 .with(binding.albumImageView)

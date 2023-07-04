@@ -1,9 +1,15 @@
 package ru.mvrlrd.playlistmaker.player.data
 
+import ru.mvrlrd.playlistmaker.favorites.data.FavoriteDb
+import ru.mvrlrd.playlistmaker.favorites.data.TrackConverter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 
-class PlayerRepositoryImpl(private val playerClient: PlayerClient): PlayerRepository {
+class PlayerRepositoryImpl(
+    private val playerClient: PlayerClient,
+    private val favoriteDb: FavoriteDb,
+    private val trackConverter: TrackConverter
+) : PlayerRepository {
     override fun preparePlayer(trackForPlayer: TrackForPlayer, prepare: () -> Unit) {
         playerClient.preparePlayer(trackForPlayer, prepare)
     }
@@ -26,5 +32,13 @@ class PlayerRepositoryImpl(private val playerClient: PlayerClient): PlayerReposi
 
     override fun getCurrentTime(): Int {
         return playerClient.getCurrentTime()
+    }
+
+    override suspend fun addToFavorite(trackForPlayer: TrackForPlayer) {
+        favoriteDb.getDao().insertTrack(trackConverter.mapToEntity(trackForPlayer))
+    }
+
+    override suspend fun removeFromFavorite(trackId: Int) {
+        favoriteDb.getDao().deleteTrack(trackId)
     }
 }

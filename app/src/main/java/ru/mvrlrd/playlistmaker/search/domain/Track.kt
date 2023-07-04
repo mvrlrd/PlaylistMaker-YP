@@ -12,7 +12,8 @@ data class Track(
     val year: String?,
     val genre: String,
     val country: String,
-    val previewUrl: String?
+    val previewUrl: String?,
+    var isFavorite: Boolean = false
 ) : Serializable {
 
     override fun equals(other: Any?): Boolean {

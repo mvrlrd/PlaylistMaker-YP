@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.data
+package ru.mvrlrd.playlistmaker.favorites.data
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -11,7 +11,7 @@ import androidx.room.Query
 interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTrack(trackEntity: TrackEntity)
-    @Delete
+    @Query("DELETE FROM favorite_tracks WHERE id =:id")
     suspend fun deleteTrack(id: Int)
     @Query("SELECT * FROM favorite_tracks")
     suspend fun getFavoriteTracks(): List<TrackEntity>

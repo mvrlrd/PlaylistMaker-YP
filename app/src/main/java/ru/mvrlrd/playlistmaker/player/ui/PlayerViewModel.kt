@@ -26,6 +26,12 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer, private val playerInteract
         setOnCompletionListener()
     }
 
+    fun addToFavorite(trackForPlayer: TrackForPlayer){
+        viewModelScope.launch {
+            playerInteractor.addTrackToFavorite(trackForPlayer)
+        }
+    }
+
     private fun startTimer(){
         timerJob = viewModelScope.launch {
             while (playerState == PLAYING) {

@@ -1,13 +1,19 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.navArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
+import kotlin.random.Random.Default.nextInt
 
 class PlayerActivity : AppCompatActivity() {
     private var _binding: ActivityPlayerBinding? = null
@@ -31,6 +37,17 @@ class PlayerActivity : AppCompatActivity() {
         binding.playButton.apply {
             setOnClickListener {
                 viewModel.playbackControl()
+            }
+        }
+        binding.likeButton.apply {
+            setOnClickListener {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    binding.likeButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_favorite_full, context.getTheme()));
+                } else {
+                    binding.likeButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_favorite_full));
+                }
+
+                viewModel.addToFavorite(parseIntent())
             }
         }
         viewModel.screenState.observe(this) {

@@ -3,6 +3,7 @@ package ru.mvrlrd.playlistmaker.search.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import ru.mvrlrd.playlistmaker.favorites.data.FavoriteDb
 import ru.mvrlrd.playlistmaker.search.data.network.TracksSearchResponse
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksRepository
@@ -11,7 +12,8 @@ import ru.mvrlrd.playlistmaker.search.data.model.*
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val localStorage: ILocalStorage
+    private val localStorage: ILocalStorage,
+    private val favoriteDb: FavoriteDb
 ) :
     TracksRepository {
 
@@ -28,7 +30,8 @@ override fun searchTracks(query: String): Flow<Resource<List<Track>>> = flow {
         }
         SUCCESS_CODE -> {
             with(response as TracksSearchResponse) {
-                val data = results.map { it.mapToTrack() }
+                val favoriteIds = favoriteDb.getDao().getFavoriteTrackIds()
+                val data = results.map { it.mapToTrack(favoriteIds.contains(it.trackId)) }
                 emit(Resource.Success(responseCode = response.resultCode, data = data))
             }
         }

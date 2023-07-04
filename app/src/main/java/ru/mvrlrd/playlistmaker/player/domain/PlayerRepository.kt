@@ -12,4 +12,9 @@ interface PlayerRepository {
     fun onDestroy()
 
     fun getCurrentTime(): Int
+
+    suspend fun addToFavorite(trackForPlayer: TrackForPlayer)
+
+    suspend fun removeFromFavorite(trackId: Int)
+
 }
