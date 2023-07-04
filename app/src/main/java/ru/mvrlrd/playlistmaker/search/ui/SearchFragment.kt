@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
@@ -22,6 +25,18 @@ class SearchFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentSearchBinding == null")
     private val viewModel: SearchViewModel by viewModel()
     private val trackAdapter: TrackAdapter by inject()
+    private var isClickAllowed = true
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +67,7 @@ class SearchFragment : Fragment() {
         super.onResume()
         if (binding.searchEditText.text.toString().isNotEmpty()) {
             if (trackAdapter.isListEmpty()){
-                viewModel.searchRightAway(binding.searchEditText.text.toString())
+                viewModel.searchRequest(binding.searchEditText.text.toString())
             }
         } else {
             binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -69,7 +84,7 @@ class SearchFragment : Fragment() {
     private fun initRecycler() {
         trackAdapter.apply {
             onClickListener = { track ->
-                if (viewModel.trackOnClickDebounce()) {
+                if (clickDebounce()) {
                     viewModel.addToHistory(track)
                     findNavController().navigate(
                         SearchFragmentDirections.actionSearchFragmentToPlayerActivity(
@@ -112,7 +127,7 @@ class SearchFragment : Fragment() {
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
             if (binding.searchEditText.text.toString().isNotEmpty()) {
-                viewModel.searchRightAway(binding.searchEditText.text.toString())
+                viewModel.searchRequest(binding.searchEditText.text.toString())
             }
         }
         return false
@@ -135,9 +150,12 @@ class SearchFragment : Fragment() {
         binding.refreshButton.apply {
             setOnClickListener {
                 if (binding.searchEditText.text.toString().isNotEmpty()) {
-                    viewModel.searchRightAway()
+                    viewModel.searchRequest()
                 }
             }
         }
+    }
+    companion object{
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

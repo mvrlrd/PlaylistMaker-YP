@@ -1,13 +1,12 @@
 package ru.mvrlrd.playlistmaker.search.domain
 
+import kotlinx.coroutines.flow.Flow
+
 
 interface TracksInteractor {
-    fun searchTracks(query: String, consumer: TracksConsumer)
-    interface TracksConsumer{
-        fun consume(foundTracks: List<Track>?, responseCode: Int, message: String? = null)
-    }
-
+    fun searchTracks(query: String): Flow<Pair<List<Track>?, Pair<String,String>?>>
     fun addTrackToHistory(track: Track)
     fun clearHistory()
     fun getHistory(): List<Track>
 }
+

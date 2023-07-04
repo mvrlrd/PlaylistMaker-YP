@@ -1,11 +1,13 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
@@ -14,51 +16,48 @@ import ru.mvrlrd.playlistmaker.player.ui.PlayerState.*
 class PlayerViewModel(trackForPlayer: TrackForPlayer, private val playerInteractor: PlayerInteractor) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
-    private var playerState: PlayerState = STATE_DEFAULT
-    private val handler: Handler = Handler(Looper.getMainLooper())
+    private var playerState: PlayerState = DEFAULT
+    private var timerJob: Job? = null
 
-    private val timerGo =
-        object : Runnable {
-            override fun run() {
-                updateTimer(getCurrentPosition())
-                handler.postDelayed(
-                    this,
-                    REFRESH_TIMER_DELAY_MILLIS,
-                )
-            }
-        }
+
     init {
         _screenState.value = PlayerScreenState.BeginningState(trackForPlayer)
         preparePlayer(trackForPlayer)
         setOnCompletionListener()
     }
+
+    private fun startTimer(){
+        timerJob = viewModelScope.launch {
+            while (playerState == PLAYING) {
+                delay(300L)
+                _screenState.postValue(PlayerScreenState.Playing(getCurrentPosition()))
+            }
+        }
+    }
     private fun preparePlayer(trackForPlayer: TrackForPlayer){
         playerInteractor.preparePlayer(trackForPlayer) {
-            playerState = STATE_PREPARED
+            playerState = PREPARED
             _screenState.value = PlayerScreenState.Preparing()
         }
     }
     private fun setOnCompletionListener() {
         playerInteractor.setOnCompletionListener {
-            playerState = STATE_PREPARED
-            handler.removeCallbacks(timerGo)
+            playerState = PREPARED
+            timerJob?.cancel()
             _screenState.value = PlayerScreenState.PlayCompleting()
         }
     }
     private fun start() {
         playerInteractor.start()
-        playerState = STATE_PLAYING
-        handler.postDelayed(timerGo, REFRESH_TIMER_DELAY_MILLIS)
-        _screenState.value = PlayerScreenState.PlayButtonHandling(playerState)
+        playerState = PLAYING
+        startTimer()
+        _screenState.value =  PlayerScreenState.PlayButtonHandling(playerState)
     }
     fun pause() {
         playerInteractor.pause()
-        playerState = STATE_PAUSED
-        handler.removeCallbacks(timerGo)
-        _screenState.value = PlayerScreenState.PlayButtonHandling(playerState)
-    }
-    private fun updateTimer(time: String) {
-        _screenState.postValue(PlayerScreenState.TimerUpdating(time))
+        timerJob?.cancel()
+        playerState = PAUSED
+        _screenState.value =  PlayerScreenState.PlayButtonHandling(playerState)
     }
 
     private fun getCurrentPosition():String{
@@ -66,32 +65,33 @@ class PlayerViewModel(trackForPlayer: TrackForPlayer, private val playerInteract
     }
 
     fun onDestroy(){
-        handler.removeCallbacksAndMessages(SEARCH_REQUEST_TOKEN)
+        playerState = DEFAULT
         playerInteractor.onDestroy()
     }
 
     fun playbackControl() {
         when (playerState) {
-            STATE_PLAYING -> {
+             PLAYING -> {
                 pause()
             }
-            STATE_PREPARED, STATE_PAUSED -> {
+             PREPARED,  PAUSED -> {
                 start()
             }
-            STATE_DEFAULT -> {
+            DEFAULT -> {
 
             }
         }
     }
-
-    companion object {
-        private const val REFRESH_TIMER_DELAY_MILLIS = 300L
-        private val SEARCH_REQUEST_TOKEN = Any()
-    }
 }
-enum class PlayerState{
-    STATE_DEFAULT,
-    STATE_PREPARED,
-    STATE_PLAYING,
-    STATE_PAUSED
+
+enum class PlayerState {
+
+     DEFAULT,
+
+     PREPARED,
+
+     PLAYING,
+
+     PAUSED
+
 }
