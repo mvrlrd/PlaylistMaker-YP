@@ -41,13 +41,8 @@ class PlayerActivity : AppCompatActivity() {
         }
         binding.likeButton.apply {
             setOnClickListener {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    binding.likeButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_favorite_full, context.getTheme()));
-                } else {
-                    binding.likeButton.setImageDrawable(getResources().getDrawable(R.drawable.baseline_favorite_full));
-                }
 
-                viewModel.addToFavorite(parseIntent())
+                viewModel.handleLikeButton()
             }
         }
         viewModel.screenState.observe(this) {

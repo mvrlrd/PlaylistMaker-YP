@@ -32,10 +32,12 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
 
     override suspend fun addTrackToFavorite(trackForPlayer: TrackForPlayer) {
         playerRepository.addToFavorite(trackForPlayer)
+        println("${trackForPlayer.trackName} was added")
     }
 
     override suspend fun removeTrackFromFavorite(trackId: Int) {
         playerRepository.removeFromFavorite(trackId)
+        println("${trackId} was removed")
     }
 
 }

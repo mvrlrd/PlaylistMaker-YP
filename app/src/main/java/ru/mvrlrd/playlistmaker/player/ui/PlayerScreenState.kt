@@ -25,16 +25,19 @@ sealed class PlayerScreenState {
             binding.genreParam.text = track.genre
             binding.countryParam.text = track.country
             println("is fav = ${track.isFavorite}")
-            if (track.isFavorite){
-                println("jjj")
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    binding.likeButton.setImageDrawable(binding.likeButton.resources.getDrawable(R.drawable.baseline_favorite_full, binding.likeButton.context.getTheme()));
-                } else {
-                    binding.likeButton.setImageDrawable(binding.likeButton.resources.getDrawable(R.drawable.baseline_favorite_full));
-                }
-            }else{
 
-            }
+                println("jjj")
+                val icon = if (track.isFavorite){
+                    binding.likeButton.resources.getDrawable(R.drawable.baseline_favorite_full, binding.likeButton.context.getTheme())
+                }else{
+                    binding.likeButton.resources.getDrawable(R.drawable.baseline_favorite_border_24, binding.likeButton.context.getTheme())
+                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    binding.likeButton.setImageDrawable(binding.likeButton.resources.getDrawable(R.drawable.baseline_favorite_full, binding.likeButton.context.getTheme()));
+//                } else {
+//                    binding.likeButton.setImageDrawable(binding.likeButton.resources.getDrawable(R.drawable.baseline_favorite_full));
+//                }
+                    binding.likeButton.setImageDrawable(icon)
 
 
             Glide

@@ -13,22 +13,30 @@ import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.player.ui.PlayerState.*
 
-class PlayerViewModel(trackForPlayer: TrackForPlayer, private val playerInteractor: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(val trackForPlayer: TrackForPlayer, private val playerInteractor: PlayerInteractor) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
     private var playerState: PlayerState = DEFAULT
     private var timerJob: Job? = null
 
-
     init {
+        println("111  ${trackForPlayer.isFavorite}")
         _screenState.value = PlayerScreenState.BeginningState(trackForPlayer)
         preparePlayer(trackForPlayer)
         setOnCompletionListener()
     }
 
-    fun addToFavorite(trackForPlayer: TrackForPlayer){
+    fun handleLikeButton(){
+        trackForPlayer.isFavorite = !trackForPlayer.isFavorite
+        _screenState.postValue(PlayerScreenState.BeginningState(trackForPlayer))
         viewModelScope.launch {
-            playerInteractor.addTrackToFavorite(trackForPlayer)
+            if (trackForPlayer.isFavorite){
+                println(1)
+                playerInteractor.removeTrackFromFavorite(trackForPlayer.trackId)
+            }else{
+                println(2)
+                playerInteractor.addTrackToFavorite(trackForPlayer)
+            }
         }
     }
 

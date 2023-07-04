@@ -15,6 +15,7 @@ interface PlayerRepository {
 
     suspend fun addToFavorite(trackForPlayer: TrackForPlayer)
 
+
     suspend fun removeFromFavorite(trackId: Int)
 
 }
