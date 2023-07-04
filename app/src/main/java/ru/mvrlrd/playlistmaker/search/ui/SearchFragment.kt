@@ -150,7 +150,7 @@ class SearchFragment : Fragment() {
         binding.refreshButton.apply {
             setOnClickListener {
                 if (binding.searchEditText.text.toString().isNotEmpty()) {
-                    viewModel.searchRequest()
+                    viewModel.searchRequest(binding.searchEditText.text.toString())
                 }
             }
         }

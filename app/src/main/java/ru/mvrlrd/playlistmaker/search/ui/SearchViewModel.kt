@@ -1,16 +1,18 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 
-class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewModel() {
+class SearchViewModel(private val tracksInteractor: TracksInteractor, private val context: Application) : AndroidViewModel(context) {
     private val _screenState = MutableLiveData<SearchScreenState>()
     val screenState: LiveData<SearchScreenState> = _screenState
 
@@ -34,29 +36,32 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor) : ViewMode
         searchJob?.cancel()
     }
 
-     fun searchRequest(query: String? = lastQuery) {
+    fun searchRequest(query: String? = lastQuery) {
         query?.let {
             _screenState.postValue(SearchScreenState.Loading())
+            searchJob?.cancel()
             viewModelScope.launch {
                 tracksInteractor.searchTracks(query)
                     .collect{
-                        pair ->
-                            handleResponse(pair.first, pair.second)
+                        resp ->
+                        val trackList = resp.first
+                        val code = resp.second.first
+                        val errorMessage = resp.second.second
+                        handleResponse(tracks = trackList, code = code, errorMessage = errorMessage)
                     }
             }
         }
     }
 
-    private fun handleResponse(tracks: List<Track>?, error: Pair<String,String>?){
-        if (tracks!=null){
-            if (tracks.isNotEmpty()){
+    private fun handleResponse(tracks: List<Track>?, code: Int, errorMessage: String?){
+        if (code == context.resources.getString(R.string.success_code).toInt()){
+            if (tracks!!.isNotEmpty()){
                 _screenState.postValue(SearchScreenState.Success(tracks))
             }else{
                 _screenState.postValue(SearchScreenState.NothingFound())
             }
-        }
-        if(error!=null){
-            _screenState.postValue(SearchScreenState.Error(error.first, error.second))
+        }else{
+            _screenState.postValue(SearchScreenState.Error(code.toString(), errorMessage!!))
         }
     }
 

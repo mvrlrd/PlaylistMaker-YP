@@ -14,22 +14,30 @@ class TracksRepositoryImpl(
     private val localStorage: ILocalStorage
 ) :
     TracksRepository {
-    override fun searchTracks(query: String): Flow<Resource<List<Track>>>  = flow {
-        val response = networkClient.doRequest(TracksSearchRequest(query))
 
-         when (response.resultCode) {
-            SUCCESS_CODE -> {
-                emit(Resource.Success((response as TracksSearchResponse).results.map {
-                    it.mapToTrack()
-                }, responseCode = response.resultCode))
-
-            }
-            else -> {
-                emit(Resource.Error(responseCode = response.resultCode, message = response.errorMessage))
-
+override fun searchTracks(query: String): Flow<Resource<List<Track>>> = flow {
+    val response = networkClient.doRequest(TracksSearchRequest(query))
+    when (response.resultCode) {
+        CONNECTION_ERROR -> {
+            emit(
+                Resource.Error(
+                    responseCode = response.resultCode,
+                    errorMessage = response.errorMessage
+                )
+            )
+        }
+        SUCCESS_CODE -> {
+            with(response as TracksSearchResponse) {
+                val data = results.map { it.mapToTrack() }
+                emit(Resource.Success(responseCode = response.resultCode, data = data))
             }
         }
+        else -> {
+            emit(Resource.Error(responseCode = response.resultCode, errorMessage = response.errorMessage))
+        }
     }
+}
+
     override fun addTrackToHistory(track: Track) {
         localStorage.addToHistory(track)
     }
@@ -43,6 +51,7 @@ class TracksRepositoryImpl(
     }
     companion object{
         const val SUCCESS_CODE = 200
+        const val CONNECTION_ERROR = -1
     }
 }
 
