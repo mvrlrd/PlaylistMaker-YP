@@ -20,7 +20,7 @@ class PlayerViewModel(val trackForPlayer: TrackForPlayer, private val playerInte
     private var timerJob: Job? = null
 
     init {
-        println("111  ${trackForPlayer.isFavorite}")
+        println("PlayerViewModel init  ${trackForPlayer.isFavorite}")
         _screenState.value = PlayerScreenState.BeginningState(trackForPlayer)
         preparePlayer(trackForPlayer)
         setOnCompletionListener()
@@ -29,14 +29,14 @@ class PlayerViewModel(val trackForPlayer: TrackForPlayer, private val playerInte
     fun handleLikeButton(){
         trackForPlayer.isFavorite = !trackForPlayer.isFavorite
         _screenState.postValue(PlayerScreenState.BeginningState(trackForPlayer))
+        println("handleLikeButton before  ${trackForPlayer.isFavorite}")
         viewModelScope.launch {
-            if (trackForPlayer.isFavorite){
-                println(1)
+            if (!trackForPlayer.isFavorite){
                 playerInteractor.removeTrackFromFavorite(trackForPlayer.trackId)
             }else{
-                println(2)
                 playerInteractor.addTrackToFavorite(trackForPlayer)
             }
+            println("handleLikeButton after  ${trackForPlayer.isFavorite}")
         }
     }
 

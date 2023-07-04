@@ -24,9 +24,6 @@ sealed class PlayerScreenState {
             binding.yearParam.text = unparseDateToYear(track.year!!)
             binding.genreParam.text = track.genre
             binding.countryParam.text = track.country
-            println("is fav = ${track.isFavorite}")
-
-                println("jjj")
                 val icon = if (track.isFavorite){
                     binding.likeButton.resources.getDrawable(R.drawable.baseline_favorite_full, binding.likeButton.context.getTheme())
                 }else{

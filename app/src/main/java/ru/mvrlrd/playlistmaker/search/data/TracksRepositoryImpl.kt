@@ -49,9 +49,14 @@ override fun searchTracks(query: String): Flow<Resource<List<Track>>> = flow {
         localStorage.clearHistory()
     }
 
-    override fun getHistory(): List<Track> {
-        return localStorage.getHistory()
+    override suspend fun getHistory(): Flow<List<Track>> = flow {
+        val favoriteIds = favoriteDb.getDao().getFavoriteTrackIds()
+        val historyTracks = localStorage.getHistory()
+        historyTracks.forEach { it.isFavorite = (favoriteIds.contains(it.trackId)) }
+        emit(historyTracks)
     }
+
+
     companion object{
         const val SUCCESS_CODE = 200
         const val CONNECTION_ERROR = -1

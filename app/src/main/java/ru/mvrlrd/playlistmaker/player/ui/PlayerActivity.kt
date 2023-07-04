@@ -41,7 +41,6 @@ class PlayerActivity : AppCompatActivity() {
         }
         binding.likeButton.apply {
             setOnClickListener {
-
                 viewModel.handleLikeButton()
             }
         }

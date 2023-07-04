@@ -7,6 +7,6 @@ interface TracksInteractor {
     fun searchTracks(query: String): Flow<Pair<List<Track>?, Pair<Int, String?>>>
     fun addTrackToHistory(track: Track)
     fun clearHistory()
-    fun getHistory(): List<Track>
+    suspend fun getHistory(): Flow<List<Track>>
 }
 
