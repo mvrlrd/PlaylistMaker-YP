@@ -1,6 +1,9 @@
 package ru.mvrlrd.playlistmaker.favorites.data
+import android.os.SystemClock
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.Track
+import java.sql.Date
+import java.util.Calendar
 
 class TrackConverter {
     fun mapToEntity(track: Track) =
@@ -14,7 +17,8 @@ class TrackConverter {
             year = track.year,
             genre = track.genre,
             country = track.country,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
+            date = SystemClock.currentThreadTimeMillis()
         )
 
     fun mapToEntity(track: TrackForPlayer) =
@@ -28,7 +32,8 @@ class TrackConverter {
             year = track.year,
             genre = track.genre,
             country = track.country,
-            previewUrl = track.previewUrl
+            previewUrl = track.previewUrl,
+            date = SystemClock.currentThreadTimeMillis()
         )
 
     fun mapToPlayer(track: TrackEntity) =

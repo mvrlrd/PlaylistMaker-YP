@@ -9,6 +9,7 @@ import ru.mvrlrd.playlistmaker.favorites.data.TrackConverter
 val dataBaseModule = module {
     single {
         Room.databaseBuilder(androidContext(), FavoriteDb::class.java, "fav_database.db")
+            .fallbackToDestructiveMigration()
             .build()
     }
 
