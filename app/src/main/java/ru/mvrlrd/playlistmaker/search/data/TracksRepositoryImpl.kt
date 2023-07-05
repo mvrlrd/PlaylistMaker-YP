@@ -54,10 +54,7 @@ override fun searchTracks(query: String): Flow<Resource<List<Track>>> = flow {
     }
 
     override suspend fun getHistory(): Flow<List<Track>> = flow {
-        val favoriteIds = favoriteDb.getDao().getFavoriteTrackIds()
-        val historyTracks = localStorage.getHistory()
-        historyTracks.forEach { it.isFavorite = (favoriteIds.contains(it.trackId)) }
-        emit(historyTracks)
+        emit(localStorage.getHistory())
     }
 
     override suspend fun getFavIds(): Flow<List<Int>> {

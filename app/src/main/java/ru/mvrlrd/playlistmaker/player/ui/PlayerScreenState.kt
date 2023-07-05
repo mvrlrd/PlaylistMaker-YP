@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
-import android.os.Build
+import android.content.res.ColorStateList
+import android.graphics.Color
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -26,8 +27,11 @@ sealed class PlayerScreenState {
             binding.genreParam.text = track.genre
             binding.countryParam.text = track.country
                 val icon = if (track.isFavorite){
+                    binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.red, binding.likeButton.context.theme))
                     ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_full, binding.likeButton.context.theme)
+
                 }else{
+                    binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.white, binding.likeButton.context.theme))
                     ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_border_24, binding.likeButton.context.theme)
                 }
                     binding.likeButton.setImageDrawable(icon)
