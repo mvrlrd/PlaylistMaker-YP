@@ -44,6 +44,6 @@ class FavoritesViewModel(private val favoriteInteractor: FavoriteInteractor) : V
         loadingFavoritesJob?.cancel()
     }
     companion object{
-        private const val PROGRESS_BAR_DURATION = 125L
+        private const val PROGRESS_BAR_DURATION = 300L
     }
 }
