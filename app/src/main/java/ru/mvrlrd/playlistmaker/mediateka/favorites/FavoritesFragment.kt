@@ -8,26 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.favorites.FavoriteAdapter
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
+import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? =null
     private val binding get() = _binding!!
     private val viewModel: FavoritesViewModel by viewModel()
     private val trackAdapter: FavoriteAdapter by inject()
-    private var isClickAllowed = true
+
 
     companion object {
         fun newInstance() = FavoritesFragment()
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
     override fun onCreateView(
@@ -42,7 +39,7 @@ class FavoritesFragment : Fragment() {
     private fun initRecycler() {
         trackAdapter.apply {
             onClickListener = { track ->
-                if (clickDebounce()) {
+                if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
                     findNavController().navigate(MediatekaFragmentDirections.actionMediatekaFragmentToPlayerActivity(track.apply { isFavorite = true }))
                 }
             }
@@ -53,27 +50,15 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
 
     override fun onResume() {
         super.onResume()
         viewModel.updateFavorites()
-        binding.favsRecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.favsRecyclerView.itemAnimator = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loading()
         viewModel.screenState.observe(viewLifecycleOwner){
             screenState ->
             screenState.render(binding)

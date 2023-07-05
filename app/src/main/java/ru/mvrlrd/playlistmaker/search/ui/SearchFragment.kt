@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
+import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
 //TODO сделать инфо плэйсхолдер скролабл потому что если переворачиваем экран его не видно
 class SearchFragment : Fragment() {
@@ -25,19 +26,7 @@ class SearchFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentSearchBinding == null")
     private val viewModel: SearchViewModel by viewModel()
     private val trackAdapter: TrackAdapter by inject()
-    private var isClickAllowed = true
 
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            viewLifecycleOwner.lifecycleScope.launch {
-                delay(CLICK_DEBOUNCE_DELAY)
-                isClickAllowed = true
-            }
-        }
-        return current
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,7 +70,7 @@ class SearchFragment : Fragment() {
     private fun initRecycler() {
         trackAdapter.apply {
             onClickListener = { track ->
-                if (clickDebounce()) {
+                if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
                     viewModel.addToHistory(track)
                     findNavController().navigate(
                         SearchFragmentDirections.actionSearchFragmentToPlayerActivity(track.apply {

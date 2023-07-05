@@ -1,7 +1,6 @@
 package ru.mvrlrd.playlistmaker.mediateka.favorites
 
 import android.view.View
-import androidx.core.content.res.ResourcesCompat
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 
@@ -10,7 +9,7 @@ sealed class FavoriteScreenState {
         override fun render(binding: FragmentFavoritesBinding) {
             binding.progressBar.visibility = View.VISIBLE
             binding.emptyFavoritesPlaceholder.visibility = View.GONE
-            binding.favsRecyclerView.visibility = View.GONE
+//            binding.favsRecyclerView.visibility = View.GONE
         }
     }
     class Empty(): FavoriteScreenState(){
