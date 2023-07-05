@@ -67,9 +67,8 @@ class FavoritesFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loading()
         viewModel.updateFavorites()
-//        binding.favsRecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.favsRecyclerView.itemAnimator = DefaultItemAnimator()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
