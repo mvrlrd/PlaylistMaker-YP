@@ -71,20 +71,19 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.updateFavorites()
+        viewModel.loading()
         viewModel.screenState.observe(viewLifecycleOwner){
             screenState ->
             screenState.render(binding)
         }
-
         viewModel.tracks.observe(this) { trackList ->
             trackAdapter.submitList(trackList)
         }
-
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        viewModel.onDestroy()
     }
 }
