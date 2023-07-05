@@ -12,16 +12,23 @@ class FavoritesViewModel(private val favoriteInteractor: FavoriteInteractor) : V
     private val _tracks = MutableLiveData<List<Track>>()
     val tracks: LiveData<List<Track>> get() = _tracks
 
+    private val _screenState = MutableLiveData<FavoriteScreenState>()
+    val screenState : LiveData<FavoriteScreenState> get() = _screenState
+
     init {
        updateFavorites()
     }
 
     fun updateFavorites(){
-
+        _screenState.value = (FavoriteScreenState.Loading())
         viewModelScope.launch {
-//            favoriteInteractor.clearFavorites()
             favoriteInteractor.getFavoriteTracks().collect() { favorites ->
                 _tracks.postValue(favorites)
+                if (favorites.isEmpty()){
+                    _screenState.postValue(FavoriteScreenState.Empty())
+                }else{
+                    _screenState.postValue(FavoriteScreenState.Loaded())
+                }
             }
         }
     }

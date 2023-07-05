@@ -84,9 +84,7 @@ class SearchFragment : Fragment() {
                 if (clickDebounce()) {
                     viewModel.addToHistory(track)
                     findNavController().navigate(
-                        SearchFragmentDirections.actionSearchFragmentToPlayerActivity(
-                            track
-                        )
+                        SearchFragmentDirections.actionSearchFragmentToPlayerActivity(track)
                     )
                 }
             }

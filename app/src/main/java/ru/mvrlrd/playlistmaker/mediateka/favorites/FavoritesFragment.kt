@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,10 +14,8 @@ import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.favorites.FavoriteAdapter
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
-import ru.mvrlrd.playlistmaker.search.ui.SearchFragment
 
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? =null
@@ -32,16 +29,11 @@ class FavoritesFragment : Fragment() {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
-
-
-
         initRecycler()
         return binding.root
     }
@@ -54,7 +46,6 @@ class FavoritesFragment : Fragment() {
                 }
             }
         }
-
         binding.favsRecyclerView.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
@@ -80,17 +71,15 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.tracks.observe(this) { trackList ->
-            trackAdapter.submitList(trackList)
-            if (!trackList.isEmpty()){
-                println("__)))__))")
-//                        binding.emptyPlaceholder.placeholderImage.setImageDrawable((
-//                            R.drawable.baseline_favorite_full))
-//                binding.emptyPlaceholder.placeholderMessage.text = "hello"
-//                binding.emptyPlaceholder.placeholderImage.visibility = View.VISIBLE
-            }
+        viewModel.updateFavorites()
+        viewModel.screenState.observe(viewLifecycleOwner){
+            screenState ->
+            screenState.render(binding)
         }
 
+        viewModel.tracks.observe(this) { trackList ->
+            trackAdapter.submitList(trackList)
+        }
 
     }
 
@@ -98,6 +87,4 @@ class FavoritesFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }
