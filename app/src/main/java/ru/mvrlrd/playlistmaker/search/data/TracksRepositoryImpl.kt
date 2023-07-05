@@ -60,6 +60,11 @@ override fun searchTracks(query: String): Flow<Resource<List<Track>>> = flow {
         emit(historyTracks)
     }
 
+    override suspend fun getFavIds(): Flow<List<Int>> {
+        return flow {
+           emit(favoriteDb.getDao().getFavoriteTrackIds())
+        }
+    }
 
     companion object{
         const val SUCCESS_CODE = 200

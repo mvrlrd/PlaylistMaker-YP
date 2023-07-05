@@ -26,6 +26,7 @@ class SearchFragment : Fragment() {
     private val viewModel: SearchViewModel by viewModel()
     private val trackAdapter: TrackAdapter by inject()
     private var isClickAllowed = true
+
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -64,11 +65,13 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        println(1221212)
+        viewModel.updateFavIds()
         if (binding.searchEditText.text.toString().isEmpty()){
             binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
             viewModel.showHistory()
         }else{
-            viewModel.searchRequest(binding.searchEditText.text.toString())
+//            viewModel.searchRequest(binding.searchEditText.text.toString())
         }
     }
 
@@ -84,7 +87,9 @@ class SearchFragment : Fragment() {
                 if (clickDebounce()) {
                     viewModel.addToHistory(track)
                     findNavController().navigate(
-                        SearchFragmentDirections.actionSearchFragmentToPlayerActivity(track)
+                        SearchFragmentDirections.actionSearchFragmentToPlayerActivity(track.apply {
+                            isFavorite = viewModel.isFavorite(this.trackId)
+                        })
                     )
                 }
             }

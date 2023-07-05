@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.search.domain.Track
@@ -20,6 +21,10 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
     private var lastQuery: String? = null
     private var latestSearchText: String? = null
     private var searchJob: Job? = null
+    private var updateFavsJob : Job? = null
+
+    private val _favIds = MutableLiveData<List<Int>>()
+    val favIds : LiveData<List<Int>> get() = _favIds
 
     fun searchDebounce(changedText: String) {
         if (changedText.isNotEmpty()) {
@@ -37,6 +42,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
 
     fun onDestroy() {
         searchJob?.cancel()
+        updateFavsJob?.cancel()
     }
 
     fun searchRequest(query: String? = lastQuery) {
@@ -54,6 +60,18 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
                     }
             }
         }
+    }
+
+    fun updateFavIds(){
+       updateFavsJob = viewModelScope.launch {
+            tracksInteractor.getFavIds().collect(){
+                _favIds.postValue(it)
+            }
+        }
+    }
+
+    fun isFavorite(trackId: Int) :Boolean {
+       return favIds.value?.contains(trackId)!!
     }
 
     private fun handleResponse(tracks: List<Track>?, code: Int, errorMessage: String?){
