@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.favorites.data
+package ru.mvrlrd.playlistmaker.database.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,10 +1,10 @@
-package ru.mvrlrd.playlistmaker.favorites.data.di
+package ru.mvrlrd.playlistmaker.database.data.di
 
 import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
-import ru.mvrlrd.playlistmaker.favorites.data.FavoriteDb
-import ru.mvrlrd.playlistmaker.favorites.data.TrackConverter
+import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
+import ru.mvrlrd.playlistmaker.database.data.TrackConverter
 
 val dataBaseModule = module {
     single {

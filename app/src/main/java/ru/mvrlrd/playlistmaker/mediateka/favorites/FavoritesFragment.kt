@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.mvrlrd.playlistmaker.favorites.FavoriteAdapter
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 

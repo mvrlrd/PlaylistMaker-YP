@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.mvrlrd.playlistmaker.mediateka.domain.FavoriteInteractor
+import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoriteInteractor
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
 class FavoritesViewModel(private val favoriteInteractor: FavoriteInteractor) : ViewModel() {

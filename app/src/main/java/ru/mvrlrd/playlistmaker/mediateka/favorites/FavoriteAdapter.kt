@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.favorites
+package ru.mvrlrd.playlistmaker.mediateka.favorites
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +11,6 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.TrackLayoutBinding
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.search.domain.Track
-import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.ui.TrackItemDiffCallback
 
 class FavoriteAdapter: ListAdapter<Track, FavoriteAdapter.TrackViewHolder>(TrackItemDiffCallback()) {

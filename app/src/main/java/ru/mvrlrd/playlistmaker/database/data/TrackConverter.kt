@@ -1,9 +1,7 @@
-package ru.mvrlrd.playlistmaker.favorites.data
+package ru.mvrlrd.playlistmaker.database.data
 import android.os.SystemClock
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.Track
-import java.sql.Date
-import java.util.Calendar
 
 class TrackConverter {
     fun mapToEntity(track: Track) =

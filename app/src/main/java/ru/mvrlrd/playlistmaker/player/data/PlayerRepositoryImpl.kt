@@ -1,7 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.data
 
-import ru.mvrlrd.playlistmaker.favorites.data.FavoriteDb
-import ru.mvrlrd.playlistmaker.favorites.data.TrackConverter
+import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
+import ru.mvrlrd.playlistmaker.database.data.TrackConverter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
 

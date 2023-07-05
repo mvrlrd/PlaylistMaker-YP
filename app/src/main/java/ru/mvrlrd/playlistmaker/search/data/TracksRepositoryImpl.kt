@@ -3,7 +3,7 @@ package ru.mvrlrd.playlistmaker.search.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.mvrlrd.playlistmaker.favorites.data.FavoriteDb
+import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
 import ru.mvrlrd.playlistmaker.search.data.network.TracksSearchResponse
 import ru.mvrlrd.playlistmaker.search.domain.Track
 import ru.mvrlrd.playlistmaker.search.domain.TracksRepository

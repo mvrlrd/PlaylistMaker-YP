@@ -1,10 +1,10 @@
-package ru.mvrlrd.playlistmaker.mediateka.data
+package ru.mvrlrd.playlistmaker.mediateka.favorites.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.mvrlrd.playlistmaker.favorites.data.FavoriteDb
-import ru.mvrlrd.playlistmaker.favorites.data.TrackConverter
-import ru.mvrlrd.playlistmaker.mediateka.domain.FavoritesRepository
+import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
+import ru.mvrlrd.playlistmaker.database.data.TrackConverter
+import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoritesRepository
 import ru.mvrlrd.playlistmaker.search.domain.Track
 
 class FavoritesRepositoryImpl(
