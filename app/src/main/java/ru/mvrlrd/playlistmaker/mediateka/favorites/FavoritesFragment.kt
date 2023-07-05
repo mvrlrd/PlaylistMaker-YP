@@ -7,22 +7,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.favorites.FavoriteAdapter
+import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
+import ru.mvrlrd.playlistmaker.search.ui.SearchFragment
 
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? =null
     private val binding get() = _binding!!
     private val viewModel: FavoritesViewModel by viewModel()
     private val trackAdapter: FavoriteAdapter by inject()
-
+    private var isClickAllowed = true
 
     companion object {
         fun newInstance() = FavoritesFragment()
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 
 
@@ -42,14 +49,9 @@ class FavoritesFragment : Fragment() {
     private fun initRecycler() {
         trackAdapter.apply {
             onClickListener = { track ->
-//                if (clickDebounce()) {
-//                    viewModel.addToHistory(track)
-//                    findNavController().navigate(
-//                        SearchFragmentDirections.actionSearchFragmentToPlayerActivity(
-//                            track
-//                        )
-//                    )
-//                }
+                if (clickDebounce()) {
+                    findNavController().navigate(MediatekaFragmentDirections.actionMediatekaFragmentToPlayerActivity(track.apply { isFavorite = true }))
+                }
             }
         }
 
@@ -57,6 +59,18 @@ class FavoritesFragment : Fragment() {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            viewLifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
+        }
+        return current
     }
 
     override fun onResume() {
@@ -84,4 +98,6 @@ class FavoritesFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }
