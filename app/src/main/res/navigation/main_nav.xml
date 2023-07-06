@@ -35,6 +35,6 @@
         android:label="PlayerActivity" >
         <argument
             android:name="track"
-            app:argType="ru.mvrlrd.playlistmaker.search.domain.Track" />
+            app:argType="ru.mvrlrd.playlistmaker.search.domain.AdapterTrack" />
     </activity>
 </navigation>

@@ -4,10 +4,10 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface TracksInteractor {
-    fun searchTracks(query: String): Flow<Pair<List<Track>?, Pair<Int, String?>>>
-    fun addTrackToHistory(track: Track)
+    fun searchTracks(query: String): Flow<Pair<List<AdapterTrack>?, Pair<Int, String?>>>
+    fun addTrackToHistory(adapterTrack: AdapterTrack)
     fun clearHistory()
-    suspend fun getHistory(): Flow<List<Track>>
+    suspend fun getHistory(): Flow<List<AdapterTrack>>
     suspend fun getFavIds():Flow<List<Int>>
 }
 

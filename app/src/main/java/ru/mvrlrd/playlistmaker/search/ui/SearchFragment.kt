@@ -12,8 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
@@ -40,7 +38,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.screenState.observe(this) { screenState ->
             if (viewModel.isReadyToRender(screenState, binding.searchEditText.text.toString())) {
-                trackAdapter.submitList(screenState.tracks)
+                trackAdapter.submitList(screenState.adapterTracks)
                 screenState.render(binding)
                 if (screenState is SearchScreenState.Error) {
                     showToast(screenState.code)

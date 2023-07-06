@@ -2,13 +2,13 @@ package ru.mvrlrd.playlistmaker.search.domain.impl
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.mvrlrd.playlistmaker.search.domain.Track
+import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 import ru.mvrlrd.playlistmaker.search.domain.TracksRepository
 import ru.mvrlrd.playlistmaker.search.util.Resource
 
 class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
-    override fun searchTracks(query: String) : Flow<Pair<List<Track>?, Pair<Int, String?>>> {
+    override fun searchTracks(query: String) : Flow<Pair<List<AdapterTrack>?, Pair<Int, String?>>> {
         return repository.searchTracks(query).map { result ->
             when (result) {
                 is Resource.Success -> {
@@ -21,14 +21,14 @@ class TracksInteractorImpl(private val repository: TracksRepository): TracksInte
         }
     }
 
-    override fun addTrackToHistory(track: Track) {
-        repository.addTrackToHistory(track)
+    override fun addTrackToHistory(adapterTrack: AdapterTrack) {
+        repository.addTrackToHistory(adapterTrack)
     }
 
     override fun clearHistory() {
         repository.clearHistory()
     }
-    override suspend fun getHistory(): Flow<List<Track>> {
+    override suspend fun getHistory(): Flow<List<AdapterTrack>> {
         return repository.getHistory()
     }
 

@@ -6,9 +6,9 @@ interface PlayerInteractor {
     fun onDestroy()
     fun setOnCompletionListener(onComplete: ()->Unit)
     fun getCurrentTime(): Int
-    fun preparePlayer(trackForPlayer: TrackForPlayer, prepare: () -> Unit)
+    fun preparePlayer(playerTrack: PlayerTrack, prepare: () -> Unit)
 
-    suspend fun addTrackToFavorite(trackForPlayer: TrackForPlayer)
+    suspend fun addTrackToFavorite(playerTrack: PlayerTrack)
 
     suspend fun removeTrackFromFavorite(trackId: Int)
 

@@ -1,20 +1,19 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
-import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.util.unparseDateToYear
 import java.text.SimpleDateFormat
 import java.util.*
 
 sealed class PlayerScreenState {
-    class BeginningState(val track: TrackForPlayer): PlayerScreenState(){
+    class BeginningState(val track: PlayerTrack): PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
             binding.trackName.text = track.trackName
             binding.singerName.text = track.artistName

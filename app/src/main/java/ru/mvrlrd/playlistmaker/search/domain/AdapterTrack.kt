@@ -1,8 +1,8 @@
-package ru.mvrlrd.playlistmaker.player.domain
+package ru.mvrlrd.playlistmaker.search.domain
 
 import java.io.Serializable
 
-data class TrackForPlayer(
+data class AdapterTrack(
     val trackId: Int,
     val trackName: String,
     val artistName: String,
@@ -17,10 +17,10 @@ data class TrackForPlayer(
 ) : Serializable {
 
     override fun equals(other: Any?): Boolean {
-        return if (other !is TrackForPlayer) {
+        return if (other !is AdapterTrack) {
             false
         } else {
-            other.trackId == trackId
+            other.trackId == this.trackId
         }
     }
 

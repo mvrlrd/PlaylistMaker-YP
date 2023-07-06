@@ -1,10 +1,25 @@
 package ru.mvrlrd.playlistmaker.database.data
 import android.os.SystemClock
-import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
-import ru.mvrlrd.playlistmaker.search.domain.Track
+import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
+import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
 
 class TrackConverter {
-    fun mapToEntity(track: Track) =
+    fun mapAdapterTrackToEntity(adapterTrack: AdapterTrack) =
+        TrackEntity(
+            id = adapterTrack.trackId,
+            trackName = adapterTrack.trackName,
+            artistName = adapterTrack.artistName,
+            trackTime = adapterTrack.trackTime,
+            image = adapterTrack.image,
+            album = adapterTrack.album,
+            year = adapterTrack.year,
+            genre = adapterTrack.genre,
+            country = adapterTrack.country,
+            previewUrl = adapterTrack.previewUrl,
+            date = SystemClock.currentThreadTimeMillis()
+        )
+
+    fun mapPlayerTrackToEntity(track: PlayerTrack) =
         TrackEntity(
             id = track.trackId,
             trackName = track.trackName,
@@ -19,23 +34,8 @@ class TrackConverter {
             date = SystemClock.currentThreadTimeMillis()
         )
 
-    fun mapToEntity(track: TrackForPlayer) =
-        TrackEntity(
-            id = track.trackId,
-            trackName = track.trackName,
-            artistName = track.artistName,
-            trackTime = track.trackTime,
-            image = track.image,
-            album = track.album,
-            year = track.year,
-            genre = track.genre,
-            country = track.country,
-            previewUrl = track.previewUrl,
-            date = SystemClock.currentThreadTimeMillis()
-        )
-
-    fun mapToPlayer(track: TrackEntity) =
-        TrackForPlayer(
+    fun mapEntityToPlayerTrack(track: TrackEntity) =
+        PlayerTrack(
             trackId = track.id,
             trackName = track.trackName,
             artistName = track.artistName,
@@ -48,8 +48,8 @@ class TrackConverter {
             previewUrl = track.previewUrl
         )
 
-    fun mapToAdapter(track: TrackEntity) =
-        Track(
+    fun mapEntityToAdapterTrack(track: TrackEntity) =
+        AdapterTrack(
             trackId = track.id,
             trackName = track.trackName,
             artistName = track.artistName,

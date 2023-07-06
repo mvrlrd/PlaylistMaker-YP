@@ -5,16 +5,16 @@ import kotlinx.coroutines.flow.flow
 import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
 import ru.mvrlrd.playlistmaker.database.data.TrackConverter
 import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoritesRepository
-import ru.mvrlrd.playlistmaker.search.domain.Track
+import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
 
 class FavoritesRepositoryImpl(
     private val favoriteDb: FavoriteDb,
     private val trackConverter: TrackConverter
 ) : FavoritesRepository {
-    override fun getFavoriteTracks(): Flow<List<Track>> {
+    override fun getFavoriteTracks(): Flow<List<AdapterTrack>> {
         return flow {
             emit(favoriteDb.getDao().getFavoriteTracks().map {
-                trackConverter.mapToAdapter(it)
+                trackConverter.mapEntityToAdapterTrack(it)
             })
         }
     }

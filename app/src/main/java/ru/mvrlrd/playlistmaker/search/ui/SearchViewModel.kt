@@ -9,7 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.search.domain.Track
+import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor,
@@ -54,7 +54,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
                         val trackList = resp.first
                         val code = resp.second.first
                         val errorMessage = resp.second.second
-                        handleResponse(tracks = trackList, code = code, errorMessage = errorMessage)
+                        handleResponse(adapterTracks = trackList, code = code, errorMessage = errorMessage)
                     }
             }
         }
@@ -73,10 +73,10 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
        return favIds.contains(trackId)
     }
 
-    private fun handleResponse(tracks: List<Track>?, code: Int, errorMessage: String?){
+    private fun handleResponse(adapterTracks: List<AdapterTrack>?, code: Int, errorMessage: String?){
         if (code == context.resources.getString(R.string.success_code).toInt()){
-            if (tracks!!.isNotEmpty()){
-                _screenState.postValue(SearchScreenState.Success(tracks))
+            if (adapterTracks!!.isNotEmpty()){
+                _screenState.postValue(SearchScreenState.Success(adapterTracks))
             }else{
                 _screenState.postValue(SearchScreenState.NothingFound())
             }
@@ -85,8 +85,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
         }
     }
 
-    fun addToHistory(track: Track) {
-        tracksInteractor.addTrackToHistory(track)
+    fun addToHistory(adapterTrack: AdapterTrack) {
+        tracksInteractor.addTrackToHistory(adapterTrack)
     }
 
     fun clearHistory() {

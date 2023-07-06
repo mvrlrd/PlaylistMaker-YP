@@ -1,7 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.domain
 
 interface PlayerRepository {
-    fun preparePlayer(trackForPlayer: TrackForPlayer, prepare: () -> Unit)
+    fun preparePlayer(playerTrack: PlayerTrack, prepare: () -> Unit)
 
     fun setOnCompletionListener(onComplete: () -> Unit)
 
@@ -13,7 +13,7 @@ interface PlayerRepository {
 
     fun getCurrentTime(): Int
 
-    suspend fun addToFavorite(trackForPlayer: TrackForPlayer)
+    suspend fun addToFavorite(playerTrack: PlayerTrack)
 
 
     suspend fun removeFromFavorite(trackId: Int)

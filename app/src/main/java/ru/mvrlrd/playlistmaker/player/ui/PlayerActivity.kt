@@ -7,7 +7,7 @@ import androidx.navigation.navArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
-import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
@@ -59,7 +59,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.onDestroy()
     }
 
-    private fun parseIntent(): TrackForPlayer {
+    private fun parseIntent(): PlayerTrack {
         return args.track.mapTrackToTrackForPlayer()
     }
 

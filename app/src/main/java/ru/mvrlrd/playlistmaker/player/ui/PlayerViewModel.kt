@@ -10,33 +10,33 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime
-import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.ui.PlayerState.*
 
-class PlayerViewModel(val trackForPlayer: TrackForPlayer, private val playerInteractor: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor: PlayerInteractor) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
     private var playerState: PlayerState = DEFAULT
     private var timerJob: Job? = null
 
     init {
-        println("PlayerViewModel init  ${trackForPlayer.isFavorite}")
-        _screenState.value = PlayerScreenState.BeginningState(trackForPlayer)
-        preparePlayer(trackForPlayer)
+        println("PlayerViewModel init  ${playerTrack.isFavorite}")
+        _screenState.value = PlayerScreenState.BeginningState(playerTrack)
+        preparePlayer(playerTrack)
         setOnCompletionListener()
     }
 
     fun handleLikeButton(){
-        trackForPlayer.isFavorite = !trackForPlayer.isFavorite
-        _screenState.postValue(PlayerScreenState.BeginningState(trackForPlayer))
-        println("handleLikeButton before  ${trackForPlayer.isFavorite}")
+        playerTrack.isFavorite = !playerTrack.isFavorite
+        _screenState.postValue(PlayerScreenState.BeginningState(playerTrack))
+        println("handleLikeButton before  ${playerTrack.isFavorite}")
         viewModelScope.launch {
-            if (!trackForPlayer.isFavorite){
-                playerInteractor.removeTrackFromFavorite(trackForPlayer.trackId)
+            if (!playerTrack.isFavorite){
+                playerInteractor.removeTrackFromFavorite(playerTrack.trackId)
             }else{
-                playerInteractor.addTrackToFavorite(trackForPlayer)
+                playerInteractor.addTrackToFavorite(playerTrack)
             }
-            println("handleLikeButton after  ${trackForPlayer.isFavorite}")
+            println("handleLikeButton after  ${playerTrack.isFavorite}")
         }
     }
 
@@ -48,8 +48,8 @@ class PlayerViewModel(val trackForPlayer: TrackForPlayer, private val playerInte
             }
         }
     }
-    private fun preparePlayer(trackForPlayer: TrackForPlayer){
-        playerInteractor.preparePlayer(trackForPlayer) {
+    private fun preparePlayer(playerTrack: PlayerTrack){
+        playerInteractor.preparePlayer(playerTrack) {
             playerState = PREPARED
             _screenState.value = PlayerScreenState.Preparing()
         }
