@@ -7,8 +7,8 @@ import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 sealed class FavoriteScreenState {
     class Loading(): FavoriteScreenState(){
         override fun render(binding: FragmentFavoritesBinding) {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.emptyFavoritesPlaceholder.visibility = View.GONE
+//            binding.progressBar.visibility = View.VISIBLE
+//            binding.emptyFavoritesPlaceholder.visibility = View.GONE
 //            binding.favsRecyclerView.visibility = View.GONE
         }
     }
