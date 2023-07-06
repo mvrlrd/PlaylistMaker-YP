@@ -42,7 +42,6 @@ class TrackAdapter : ListAdapter<AdapterTrack, TrackAdapter.TrackViewHolder>(Tra
         fun bind(adapterTrack: AdapterTrack) {
             binding.trackName.text = adapterTrack.trackName
             binding.artistName.text = adapterTrack.artistName
-//        artistName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ellipse_1, 0, 0, 0);
             binding.trackTime.text = adapterTrack.trackTime?.let { formatTime(it.toInt()) }
             Glide
                 .with(itemView)

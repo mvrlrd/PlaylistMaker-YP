@@ -8,5 +8,5 @@ interface TracksRepository {
     fun addTrackToHistory(adapterTrack: AdapterTrack)
     fun clearHistory()
     suspend fun getHistory(): Flow<List<AdapterTrack>>
-   suspend fun getFavIds(): Flow<List<Int>>
+    suspend fun getFavIds(): Flow<List<Int>>
 }

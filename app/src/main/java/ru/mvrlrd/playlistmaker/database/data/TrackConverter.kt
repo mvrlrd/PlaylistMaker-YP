@@ -2,6 +2,7 @@ package ru.mvrlrd.playlistmaker.database.data
 import android.os.SystemClock
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
+import java.util.Calendar
 
 class TrackConverter {
     fun mapAdapterTrackToEntity(adapterTrack: AdapterTrack) =
@@ -16,7 +17,7 @@ class TrackConverter {
             genre = adapterTrack.genre,
             country = adapterTrack.country,
             previewUrl = adapterTrack.previewUrl,
-            date = SystemClock.currentThreadTimeMillis()
+            date = Calendar.getInstance().timeInMillis
         )
 
     fun mapPlayerTrackToEntity(track: PlayerTrack) =
@@ -31,7 +32,7 @@ class TrackConverter {
             genre = track.genre,
             country = track.country,
             previewUrl = track.previewUrl,
-            date = SystemClock.currentThreadTimeMillis()
+            date = Calendar.getInstance().timeInMillis
         )
 
     fun mapEntityToPlayerTrack(track: TrackEntity) =
