@@ -15,7 +15,7 @@ tools:context=".mediateka.favorites.FavoritesFragment">
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="148dp"
         android:indeterminateTint="@color/progress_bar_color"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 
         <ScrollView

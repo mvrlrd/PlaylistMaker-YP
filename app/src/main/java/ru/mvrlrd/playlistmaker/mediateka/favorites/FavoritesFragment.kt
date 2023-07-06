@@ -32,6 +32,9 @@ class FavoritesFragment : Fragment() {
     ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         initRecycler()
+        viewModel.tracks.observe(this) { trackList ->
+            trackAdapter.submitList(trackList)
+        }
         return binding.root
     }
 
@@ -62,9 +65,7 @@ class FavoritesFragment : Fragment() {
             screenState ->
             screenState.render(binding)
         }
-        viewModel.tracks.observe(this) { trackList ->
-            trackAdapter.submitList(trackList)
-        }
+
     }
 
     override fun onDestroyView() {
