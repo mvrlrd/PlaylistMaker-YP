@@ -20,7 +20,6 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
     private var timerJob: Job? = null
 
     init {
-        println("PlayerViewModel init  ${playerTrack.isFavorite}")
         _screenState.value = PlayerScreenState.BeginningState(playerTrack)
         preparePlayer(playerTrack)
         setOnCompletionListener()
@@ -29,14 +28,12 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
     fun handleLikeButton(){
         playerTrack.isFavorite = !playerTrack.isFavorite
         _screenState.postValue(PlayerScreenState.BeginningState(playerTrack))
-        println("handleLikeButton before  ${playerTrack.isFavorite}")
         viewModelScope.launch {
             if (!playerTrack.isFavorite){
                 playerInteractor.removeTrackFromFavorite(playerTrack.trackId)
             }else{
                 playerInteractor.addTrackToFavorite(playerTrack)
             }
-            println("handleLikeButton after  ${playerTrack.isFavorite}")
         }
     }
 
@@ -79,6 +76,7 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
     }
 
     fun onDestroy(){
+        timerJob?.cancel()
         playerState = DEFAULT
         playerInteractor.onDestroy()
     }
@@ -99,13 +97,8 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
 }
 
 enum class PlayerState {
-
      DEFAULT,
-
      PREPARED,
-
      PLAYING,
-
      PAUSED
-
 }

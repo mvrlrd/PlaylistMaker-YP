@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
@@ -26,8 +27,11 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.backButton.apply {
             setOnClickListener {
-                //TODO сделать возврат назад из активити с помощью jetpack navigation
-                 onBackPressed()
+                onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        finishAndRemoveTask()
+                    }
+                })
             }
         }
         binding.playButton.apply {

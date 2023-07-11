@@ -112,7 +112,8 @@
         app:maxImageSize="50dp"
         app:tint="?attr/day_night_text"
         app:borderWidth="0dp"
-        android:clickable="false"
+        android:enabled="false"
+        android:clickable="true"
         app:rippleColor="?attr/day_night_text" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
