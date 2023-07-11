@@ -24,13 +24,17 @@
         android:id="@+id/mediatekaFragment"
         android:name="ru.mvrlrd.playlistmaker.mediateka.MediatekaFragment"
         android:label="fragment_mediateka"
-        tools:layout="@layout/fragment_mediateka" />
+        tools:layout="@layout/fragment_mediateka" >
+        <action
+            android:id="@+id/action_mediatekaFragment_to_playerActivity"
+            app:destination="@id/playerActivity" />
+    </fragment>
     <activity
         android:id="@+id/playerActivity"
         android:name="ru.mvrlrd.playlistmaker.player.ui.PlayerActivity"
         android:label="PlayerActivity" >
         <argument
             android:name="track"
-            app:argType="ru.mvrlrd.playlistmaker.search.domain.Track" />
+            app:argType="ru.mvrlrd.playlistmaker.search.domain.AdapterTrack" />
     </activity>
 </navigation>

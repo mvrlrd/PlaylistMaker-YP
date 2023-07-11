@@ -1,13 +1,16 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
-import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
+import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
 class PlayerActivity : AppCompatActivity() {
     private var _binding: ActivityPlayerBinding? = null
@@ -24,13 +27,25 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.backButton.apply {
             setOnClickListener {
-                //TODO сделать возврат назад из активити с помощью jetpack navigation
-                 onBackPressed()
+                onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        finishAndRemoveTask()
+                    }
+                })
             }
         }
         binding.playButton.apply {
             setOnClickListener {
-                viewModel.playbackControl()
+                if(Debouncer().playClickDebounce(this, lifecycleScope)) {
+                    viewModel.playbackControl()
+                }
+            }
+        }
+        binding.likeButton.apply {
+            setOnClickListener {
+                if(Debouncer().playClickDebounce(this, lifecycleScope)) {
+                    viewModel.handleLikeButton()
+                }
             }
         }
         viewModel.screenState.observe(this) {
@@ -48,9 +63,11 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.onDestroy()
     }
 
-    private fun parseIntent(): TrackForPlayer {
+    private fun parseIntent(): PlayerTrack {
         return args.track.mapTrackToTrackForPlayer()
     }
+
+
 }
 
 

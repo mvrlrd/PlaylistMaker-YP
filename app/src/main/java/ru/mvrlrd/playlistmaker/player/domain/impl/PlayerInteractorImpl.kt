@@ -2,7 +2,7 @@ package ru.mvrlrd.playlistmaker.player.domain.impl
 
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
-import ru.mvrlrd.playlistmaker.player.domain.TrackForPlayer
+import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
 class PlayerInteractorImpl(private val playerRepository: PlayerRepository): PlayerInteractor {
 
@@ -26,7 +26,16 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         return playerRepository.getCurrentTime()
     }
 
-    override fun preparePlayer(trackForPlayer: TrackForPlayer, prepare: () -> Unit) {
-        playerRepository.preparePlayer(trackForPlayer, prepare)
+    override fun preparePlayer(playerTrack: PlayerTrack, prepare: () -> Unit) {
+        playerRepository.preparePlayer(playerTrack, prepare)
     }
+
+    override suspend fun addTrackToFavorite(playerTrack: PlayerTrack) {
+        playerRepository.addToFavorite(playerTrack)
+    }
+
+    override suspend fun removeTrackFromFavorite(trackId: Int) {
+        playerRepository.removeFromFavorite(trackId)
+    }
+
 }

@@ -7,7 +7,7 @@ import ru.mvrlrd.playlistmaker.player.data.PlayerClient
 
 val playerDataModule = module{
     factory <PlayerClient> {
-        MyMediaPlayer(mediaPlayer = get())
+        MyMediaPlayer(mediaPlayer = get(), )
     }
     factory{
         MediaPlayer()

@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import ru.mvrlrd.playlistmaker.search.data.ILocalStorage
 import ru.mvrlrd.playlistmaker.search.data.model.*
-import ru.mvrlrd.playlistmaker.search.domain.Track
+import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
 
 class LocalStorage(private val sharedPreferences: SharedPreferences) : ILocalStorage {
     private companion object {
@@ -12,12 +12,13 @@ class LocalStorage(private val sharedPreferences: SharedPreferences) : ILocalSto
         const val MAX_SIZE_OF_HISTORY_LIST = 10
     }
 
-   override fun addToHistory(track: Track) {
+   override fun addToHistory(adapterTrack: AdapterTrack) {
         val searchedTracks = getHistory().map { it.mapToTrackToStorage() } as MutableList
-        if (searchedTracks.contains(track.mapToTrackToStorage())){
-            searchedTracks.remove(track)
+
+        if (searchedTracks.contains(adapterTrack.mapToTrackToStorage())){
+            searchedTracks.remove(adapterTrack)
         }
-        searchedTracks.add(0,track)
+        searchedTracks.add(0,adapterTrack)
         if (searchedTracks.size> MAX_SIZE_OF_HISTORY_LIST){
             searchedTracks.removeLast()
         }
@@ -35,7 +36,7 @@ class LocalStorage(private val sharedPreferences: SharedPreferences) : ILocalSto
             .apply()
     }
 
-    override fun getHistory(): List<Track>{
+    override fun getHistory(): List<AdapterTrack>{
         val json = sharedPreferences.getString(HISTORY_KEY, null) ?: return arrayListOf()
         val tracksToStorage = Gson().fromJson(json, Array<TrackToStorage>::class.java).toCollection(ArrayList())
         return tracksToStorage.map { it.mapToTrack() }

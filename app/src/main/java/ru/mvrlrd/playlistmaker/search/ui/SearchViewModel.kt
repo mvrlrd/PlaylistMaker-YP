@@ -9,31 +9,38 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.search.domain.Track
+import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 
-class SearchViewModel(private val tracksInteractor: TracksInteractor, private val context: Application) : AndroidViewModel(context) {
+class SearchViewModel(private val tracksInteractor: TracksInteractor,
+                      private val context: Application) : AndroidViewModel(context) {
     private val _screenState = MutableLiveData<SearchScreenState>()
     val screenState: LiveData<SearchScreenState> = _screenState
 
     private var lastQuery: String? = null
     private var latestSearchText: String? = null
     private var searchJob: Job? = null
+    private var updateFavsJob : Job? = null
+
+    private val favIds = mutableListOf<Int>()
 
     fun searchDebounce(changedText: String) {
-        if (latestSearchText == changedText) {
-            return
-        }
-        latestSearchText = changedText
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(SEARCH_DEBOUNCE_DELAY)
-            searchRequest(changedText)
+        if (changedText.isNotEmpty()) {
+            if (latestSearchText == changedText) {
+                return
+            }
+            latestSearchText = changedText
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DEBOUNCE_DELAY)
+                searchRequest(changedText)
+            }
         }
     }
 
     fun onDestroy() {
         searchJob?.cancel()
+        updateFavsJob?.cancel()
     }
 
     fun searchRequest(query: String? = lastQuery) {
@@ -47,16 +54,29 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor, private va
                         val trackList = resp.first
                         val code = resp.second.first
                         val errorMessage = resp.second.second
-                        handleResponse(tracks = trackList, code = code, errorMessage = errorMessage)
+                        handleResponse(adapterTracks = trackList, code = code, errorMessage = errorMessage)
                     }
             }
         }
     }
 
-    private fun handleResponse(tracks: List<Track>?, code: Int, errorMessage: String?){
+    fun updateFavIds(){
+       updateFavsJob = viewModelScope.launch {
+            tracksInteractor.getFavIds().collect(){
+                favIds.clear()
+                favIds.addAll(it)
+            }
+        }
+    }
+
+    fun isFavorite(trackId: Int) :Boolean {
+       return favIds.contains(trackId)
+    }
+
+    private fun handleResponse(adapterTracks: List<AdapterTrack>?, code: Int, errorMessage: String?){
         if (code == context.resources.getString(R.string.success_code).toInt()){
-            if (tracks!!.isNotEmpty()){
-                _screenState.postValue(SearchScreenState.Success(tracks))
+            if (adapterTracks!!.isNotEmpty()){
+                _screenState.postValue(SearchScreenState.Success(adapterTracks))
             }else{
                 _screenState.postValue(SearchScreenState.NothingFound())
             }
@@ -65,8 +85,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor, private va
         }
     }
 
-    fun addToHistory(track: Track) {
-        tracksInteractor.addTrackToHistory(track)
+    fun addToHistory(adapterTrack: AdapterTrack) {
+        tracksInteractor.addTrackToHistory(adapterTrack)
     }
 
     fun clearHistory() {
@@ -75,10 +95,14 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor, private va
     }
 
     fun showHistory() {
-        if (tracksInteractor.getHistory().isNotEmpty()) {
-            _screenState.value = SearchScreenState.ShowHistory(tracksInteractor.getHistory())
-        } else {
-            _screenState.value = SearchScreenState.Success(null)
+        viewModelScope.launch {
+            tracksInteractor.getHistory().collect() { historyTracks ->
+                if (historyTracks.isNotEmpty()) {
+                    _screenState.value = SearchScreenState.ShowHistory(historyTracks)
+                } else {
+                    _screenState.value = SearchScreenState.Success(null)
+                }
+            }
         }
     }
 

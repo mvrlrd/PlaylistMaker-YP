@@ -4,6 +4,7 @@ import android.app.Application
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
+import ru.mvrlrd.playlistmaker.database.data.di.dataBaseModule
 import ru.mvrlrd.playlistmaker.mediateka.di.mediatekaVMModule
 import ru.mvrlrd.playlistmaker.player.di.*
 import ru.mvrlrd.playlistmaker.search.di.*
@@ -15,6 +16,7 @@ class App : Application() {
         super.onCreate()
         startKoin {
             androidContext(this@App)
+            modules(dataBaseModule)
             modules(
                 settingsDataModule,
                 settingsInteractorModule,
@@ -25,7 +27,7 @@ class App : Application() {
                 playerDataModule,
                 playerInteractorModule,
                 playerRepositoryModule,
-                playerViewModelModule
+                playerViewModelModule,
             )
             modules(
                 searchNetworkDataModule,
