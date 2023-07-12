@@ -30,11 +30,7 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.backButton.apply {
             setOnClickListener {
-                onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        finishAndRemoveTask()
-                    }
-                })
+                onBackPressed()
             }
         }
         binding.playButton.apply {
