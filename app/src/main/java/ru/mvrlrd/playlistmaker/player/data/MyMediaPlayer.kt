@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.data
 
 import android.media.MediaPlayer
+import android.util.Log
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
 class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
@@ -28,7 +29,7 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
     }
 
     override fun onDestroy() {
-        mediaPlayer.release()
+        mediaPlayer.reset()
     }
 
     override fun getCurrentTime(): Int {
