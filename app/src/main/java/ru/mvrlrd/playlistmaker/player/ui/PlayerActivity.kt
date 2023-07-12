@@ -28,7 +28,6 @@ class PlayerActivity : AppCompatActivity() {
             setOnClickListener {
                 viewModel.onDestroy()
                 this@PlayerActivity.finish()
-//                onBackPressed()
             }
         }
         

@@ -83,15 +83,13 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
 
     fun playbackControl() {
         when (playerState) {
-             PLAYING -> {
+            PLAYING -> {
                 pause()
             }
-             PREPARED,  PAUSED -> {
+            PREPARED, PAUSED -> {
                 start()
             }
-            DEFAULT -> {
-
-            }
+            DEFAULT -> {}
         }
     }
 }
