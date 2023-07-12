@@ -21,7 +21,6 @@ class FavoritesFragment : Fragment() {
     private val viewModel: FavoritesViewModel by viewModel()
     private val trackAdapter: FavoriteAdapter by inject()
 
-
     companion object {
         fun newInstance() = FavoritesFragment()
     }
@@ -65,7 +64,6 @@ class FavoritesFragment : Fragment() {
             screenState ->
             screenState.render(binding)
         }
-
     }
 
     override fun onDestroyView() {
