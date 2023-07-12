@@ -22,11 +22,15 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
     }
 
     override fun pause() {
-        mediaPlayer.pause()
+        if(mediaPlayer.isPlaying){
+            mediaPlayer.pause()
+        }
     }
 
     override fun onDestroy() {
-        mediaPlayer.stop()
+//        if (mediaPlayer.isPlaying) {
+//            mediaPlayer.stop()
+//        }
         mediaPlayer.release()
     }
 

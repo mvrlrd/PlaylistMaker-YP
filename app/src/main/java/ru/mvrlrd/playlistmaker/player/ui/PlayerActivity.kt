@@ -1,7 +1,6 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
@@ -25,14 +24,14 @@ class PlayerActivity : AppCompatActivity() {
         _binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
-
         binding.backButton.apply {
             setOnClickListener {
-                onBackPressed()
+                viewModel.onDestroy()
+                this@PlayerActivity.finish()
+//                onBackPressed()
             }
         }
+        
         binding.playButton.apply {
             setOnClickListener {
                 if(Debouncer().playClickDebounce(this, lifecycleScope)) {
