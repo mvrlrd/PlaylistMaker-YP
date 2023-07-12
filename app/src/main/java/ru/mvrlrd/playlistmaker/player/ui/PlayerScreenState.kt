@@ -15,6 +15,7 @@ import java.util.*
 sealed class PlayerScreenState {
     class BeginningState(val track: PlayerTrack): PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
+            binding.playButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
             binding.trackName.text = track.trackName
             binding.singerName.text = track.artistName
             binding.durationParam.text = SimpleDateFormat(
@@ -64,6 +65,7 @@ sealed class PlayerScreenState {
     class Preparing: PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
             binding.playButton.isEnabled = true
+            binding.playButton.alpha = ACTIVE_PLAY_BUTTON_ALPHA
         }
     }
     class Playing(private val progress: String): PlayerScreenState(){
@@ -79,4 +81,9 @@ sealed class PlayerScreenState {
     }
 
     abstract fun render(binding: ActivityPlayerBinding)
+
+    companion object{
+        private const val INACTIVE_PLAY_BUTTON_ALPHA = 0.5f
+        private const val ACTIVE_PLAY_BUTTON_ALPHA = 1f
+    }
 }

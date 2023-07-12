@@ -21,7 +21,8 @@
         <activity
             android:name=".player.ui.PlayerActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            />
 
         <activity
             android:name=".main.MainActivity"

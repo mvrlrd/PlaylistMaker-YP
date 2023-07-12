@@ -25,6 +25,9 @@ class PlayerActivity : AppCompatActivity() {
         _binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
+
         binding.backButton.apply {
             setOnClickListener {
                 onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
