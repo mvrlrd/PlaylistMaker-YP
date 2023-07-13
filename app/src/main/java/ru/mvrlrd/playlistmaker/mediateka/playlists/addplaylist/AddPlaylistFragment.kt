@@ -1,5 +1,8 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -15,12 +18,14 @@ import androidx.navigation.fragment.findNavController
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import java.io.FileOutputStream
 
 class AddPlaylistFragment : Fragment() {
     private var _binding: FragmentAddPlaylistBinding? = null
     private val binding
         get() = _binding ?: throw RuntimeException("FragmentAddPlaylistBinding == null")
     private val viewModel: AddPlaylistViewModel by viewModel()
+    private var _uri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,12 +42,11 @@ class AddPlaylistFragment : Fragment() {
     }
 
     private fun registerImagePicker() {
-        //регистрируем событие, которое вызывает photo picker
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.albumImageView.setImageURI(uri)
-    //                    saveImageToPrivateStorage(uri)
+                    _uri = uri
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -73,18 +77,30 @@ class AddPlaylistFragment : Fragment() {
             findNavController().popBackStack()
         }
         binding.createPlaylistButton.setOnClickListener {
-            setPickedImage()
-            Toast.makeText(requireContext(), "плейлист ${binding.nameEtContainer.nameEt.text} создан", Toast.LENGTH_SHORT).show()
+            val message = try {
+                saveImageToPrivateStorage(_uri!!)
+                findNavController().popBackStack()
+                "плейлист ${binding.nameEtContainer.nameEt.text} создан"
+            } catch (e: Exception) {
+                println(e)
+                "error"
+            }
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun setPickedImage() {
-        val filePath =
-            File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+    private fun saveImageToPrivateStorage(uri: Uri) {
+        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+        if (!filePath.exists()){
+            filePath.mkdirs()
+        }
         val file = File(filePath, viewModel.generateImageNameForStorage())
-        binding.albumImageView.setImageURI(file.toUri())
+        val inputStream = requireActivity().contentResolver.openInputStream(uri)
+        val outputStream = FileOutputStream(file)
+        BitmapFactory
+            .decodeStream(inputStream)
+            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
-
 
 
     override fun onDestroy() {
