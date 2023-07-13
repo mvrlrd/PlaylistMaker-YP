@@ -49,8 +49,8 @@
      android:src="@drawable/playlist_image_placeholder"
      android:backgroundTint="?attr/day_night_text"/>
 
- <FrameLayout
-     android:id="@+id/a"
+  <FrameLayout
+     android:id="@+id/name_frame"
      android:layout_width="match_parent"
      android:layout_height="54dp"
      android:layout_marginTop="32dp"
@@ -60,27 +60,30 @@
      app:layout_constraintTop_toBottomOf="@+id/albumImageView" >
 
   <include
-      android:id="@+id/ma"
+      android:id="@+id/name_et_container"
       layout="@layout/my_edit_text"
       />
+
  </FrameLayout>
 
  <FrameLayout
-     android:id="@+id/b"
+     android:id="@+id/description_frame"
      android:layout_width="match_parent"
      android:layout_height="54dp"
      android:layout_marginTop="16dp"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/a" >
+     app:layout_constraintTop_toBottomOf="@+id/name_frame" >
 
-<!--  <include-->
-<!--      android:id="@+id/ma"-->
-<!--      layout="@layout/my_edit_text"/>-->
+  <include
+      android:id="@+id/description_et_container"
+      layout="@layout/my_edit_text"/>
  </FrameLayout>
 
-  <androidx.appcompat.widget.AppCompatButton
+
+
+ <androidx.appcompat.widget.AppCompatButton
      android:id="@+id/createPlaylistButton"
      android:layout_width="match_parent"
      android:layout_height="44dp"
