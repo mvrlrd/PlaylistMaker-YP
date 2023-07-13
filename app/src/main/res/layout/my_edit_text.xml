@@ -26,7 +26,8 @@
             android:textColor="?attr/button_text_color"
             android:textColorHint="?attr/search_icons_color"
             android:textSize="@dimen/small_text_size"
-            tools:text="Название" />
+            tools:text="Название"
+           />
 
         <ImageButton
             android:id="@+id/clearTextButton"

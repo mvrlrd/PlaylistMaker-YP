@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -48,7 +49,7 @@ class AddPlaylistFragment : Fragment() {
             findNavController().popBackStack()
         }
         binding.createPlaylistButton.setOnClickListener {
-            Log.e("AddPlaylistFragment", "createPlaylistButton pressed")
+            Toast.makeText(requireContext(), "плейлист ${binding.nameEtContainer.nameEt.text} создан", Toast.LENGTH_SHORT).show()
         }
     }
 
