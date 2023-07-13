@@ -26,15 +26,7 @@ sealed class PlayerScreenState {
             binding.yearParam.text = unparseDateToYear(track.year!!)
             binding.genreParam.text = track.genre
             binding.countryParam.text = track.country
-                val icon = if (track.isFavorite){
-                    binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.red, binding.likeButton.context.theme))
-                    ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_full, binding.likeButton.context.theme)
-
-                }else{
-                    binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.white, binding.likeButton.context.theme))
-                    ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_border_24, binding.likeButton.context.theme)
-                }
-                    binding.likeButton.setImageDrawable(icon)
+            handleLikeButton(binding, track)
 
 
             Glide
@@ -51,15 +43,7 @@ sealed class PlayerScreenState {
 
     class LikeButtonHandler(val track: PlayerTrack) : PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
-            val icon = if (track.isFavorite){
-                binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.red, binding.likeButton.context.theme))
-                ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_full, binding.likeButton.context.theme)
-
-            }else{
-                binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.white, binding.likeButton.context.theme))
-                ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_border_24, binding.likeButton.context.theme)
-            }
-            binding.likeButton.setImageDrawable(icon)
+            handleLikeButton(binding, track)
         }
     }
     class PlayButtonHandling(private val playerState: PlayerState) : PlayerScreenState() {
@@ -95,6 +79,36 @@ sealed class PlayerScreenState {
     }
 
     abstract fun render(binding: ActivityPlayerBinding)
+
+     fun handleLikeButton(binding: ActivityPlayerBinding, track: PlayerTrack) {
+        val icon = if (track.isFavorite) {
+            binding.likeButton.imageTintList = ColorStateList.valueOf(
+                binding.likeButton.resources.getColor(
+                    R.color.red,
+                    binding.likeButton.context.theme
+                )
+            )
+            ResourcesCompat.getDrawable(
+                binding.likeButton.resources,
+                R.drawable.baseline_favorite_full,
+                binding.likeButton.context.theme
+            )
+
+        } else {
+            binding.likeButton.imageTintList = ColorStateList.valueOf(
+                binding.likeButton.resources.getColor(
+                    R.color.white,
+                    binding.likeButton.context.theme
+                )
+            )
+            ResourcesCompat.getDrawable(
+                binding.likeButton.resources,
+                R.drawable.baseline_favorite_border_24,
+                binding.likeButton.context.theme
+            )
+        }
+        binding.likeButton.setImageDrawable(icon)
+    }
 
     companion object{
         private const val INACTIVE_PLAY_BUTTON_ALPHA = 0.5f
