@@ -1,16 +1,12 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
-import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,84 +20,40 @@ class AddPlaylistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
          _binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
+
+        observeViewModel()
+
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
         binding.createPlaylistButton.setOnClickListener {
             Log.e("AddPlaylistFragment", "createPlaylistButton pressed")
         }
-        initNameEditText()
-        initDescriptionEditText()
-        clearButtonHandle()
+
+        viewModel.initEditTextFields()
+        setOnClickListeners()
         return binding.root
     }
 
-    private fun initNameEditText() {
-        binding.nameEtContainer.nameEt
-            .apply {
-//                setOnEditorActionListener { _, actionId, _ ->
-//                    onClickOnEnterOnVirtualKeyboard(actionId)
-//                }
-                doOnTextChanged { text, _, _, _ ->
-                    if (this.hasFocus() && text.toString().isEmpty()) {
+    private fun observeViewModel(){
+        viewModel.screenState.observe(this){screenState->
+            screenState.render(binding)
+        }
 
-                    }
-                    if (!text.isNullOrBlank()){
-                      enableCreateButton()
-                    }else{
-                        disableCreateButton()
-                    }
-//                    viewModel.searchDebounce(binding.searchEditText.text.toString())
-                    binding.nameEtContainer.clearTextButton.visibility = clearButtonVisibility(text.toString())
-                }
-            }
     }
-
-    private fun disableCreateButton(){
-        binding.createPlaylistButton.backgroundTintList = ColorStateList.valueOf(
-            binding.createPlaylistButton.resources.getColor(
-                R.color.bledniyFont,
-                binding.createPlaylistButton.context.theme
-            )
-        )
-        binding.createPlaylistButton.alpha = 0.5f
-        binding.createPlaylistButton.isEnabled = false
-    }
-    private fun enableCreateButton(){
-        binding.createPlaylistButton.backgroundTintList = ColorStateList.valueOf(
-            binding.createPlaylistButton.resources.getColor(
-                R.color.blue,
-                binding.createPlaylistButton.context.theme
-            )
-        )
-        binding.createPlaylistButton.alpha = 1f
-        binding.createPlaylistButton.isEnabled = true
-    }
-    private fun clearButtonHandle(){
-        binding.nameEtContainer.clearTextButton.apply {
-            setOnClickListener {
-                binding.nameEtContainer.nameEt.text.clear()
-                binding.nameEtContainer.nameEt.onEditorAction(EditorInfo.IME_ACTION_DONE)
-            }
+private fun setOnClickListeners(){
+    binding.nameEtContainer.clearTextButton.apply {
+        setOnClickListener {
+            viewModel.clearNameFieldText()
         }
     }
-    private fun initDescriptionEditText() {
-        binding.descriptionEtContainer.nameEt
-            .apply {
-//                setOnEditorActionListener { _, actionId, _ ->
-//                    onClickOnEnterOnVirtualKeyboard(actionId)
-//                }
-                doOnTextChanged { text, _, _, _ ->
-                    if (this.hasFocus() && text.toString().isEmpty()) {
-
-                    }
-//                    viewModel.searchDebounce(binding.searchEditText.text.toString())
-                    binding.descriptionEtContainer.clearTextButton.visibility = clearButtonVisibility(text.toString())
-                }
-            }
+    binding.descriptionEtContainer.clearTextButton.apply {
+        setOnClickListener {
+            viewModel.clearDescriptionFieldText()
+        }
     }
-    private fun clearButtonVisibility(p0: CharSequence?) =
-        if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
+}
+
 
     override fun onDestroy() {
         super.onDestroy()
