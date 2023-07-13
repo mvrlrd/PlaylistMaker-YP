@@ -49,6 +49,19 @@ sealed class PlayerScreenState {
         }
     }
 
+    class LikeButtonHandler(val track: PlayerTrack) : PlayerScreenState(){
+        override fun render(binding: ActivityPlayerBinding) {
+            val icon = if (track.isFavorite){
+                binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.red, binding.likeButton.context.theme))
+                ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_full, binding.likeButton.context.theme)
+
+            }else{
+                binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.white, binding.likeButton.context.theme))
+                ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_border_24, binding.likeButton.context.theme)
+            }
+            binding.likeButton.setImageDrawable(icon)
+        }
+    }
     class PlayButtonHandling(private val playerState: PlayerState) : PlayerScreenState() {
         override fun render(binding: ActivityPlayerBinding) {
             when (playerState) {
@@ -62,7 +75,7 @@ sealed class PlayerScreenState {
         }
     }
 
-    class Preparing: PlayerScreenState(){
+    object Preparing : PlayerScreenState() {
         override fun render(binding: ActivityPlayerBinding) {
             binding.playButton.isEnabled = true
             binding.playButton.alpha = ACTIVE_PLAY_BUTTON_ALPHA
@@ -73,7 +86,8 @@ sealed class PlayerScreenState {
             binding.clockTrack.text = progress
         }
     }
-    class PlayCompleting: PlayerScreenState(){
+
+    object PlayCompleting : PlayerScreenState() {
         override fun render(binding: ActivityPlayerBinding) {
             binding.clockTrack.text = binding.clockTrack.resources.getText(R.string.null_timer)
             binding.playButton.setImageResource(R.drawable.baseline_play_arrow_24)

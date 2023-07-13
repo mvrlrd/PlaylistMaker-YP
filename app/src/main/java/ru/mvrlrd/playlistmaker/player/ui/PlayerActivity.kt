@@ -38,6 +38,7 @@ class PlayerActivity : AppCompatActivity() {
                 }
             }
         }
+
         binding.likeButton.apply {
             setOnClickListener {
                 if(Debouncer().playClickDebounce(this, lifecycleScope)) {

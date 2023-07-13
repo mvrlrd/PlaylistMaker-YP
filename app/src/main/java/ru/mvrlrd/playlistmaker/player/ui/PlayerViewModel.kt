@@ -27,7 +27,7 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
 
     fun handleLikeButton(){
         playerTrack.isFavorite = !playerTrack.isFavorite
-        _screenState.postValue(PlayerScreenState.BeginningState(playerTrack))
+        _screenState.postValue(PlayerScreenState.LikeButtonHandler(playerTrack))
         viewModelScope.launch {
             if (!playerTrack.isFavorite){
                 playerInteractor.removeTrackFromFavorite(playerTrack.trackId)
@@ -48,14 +48,14 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
     private fun preparePlayer(playerTrack: PlayerTrack){
         playerInteractor.preparePlayer(playerTrack) {
             playerState = PREPARED
-            _screenState.value = PlayerScreenState.Preparing()
+            _screenState.value = PlayerScreenState.Preparing
         }
     }
     private fun setOnCompletionListener() {
         playerInteractor.setOnCompletionListener {
             playerState = PREPARED
             timerJob?.cancel()
-            _screenState.value = PlayerScreenState.PlayCompleting()
+            _screenState.value = PlayerScreenState.PlayCompleting
         }
     }
     private fun start() {
