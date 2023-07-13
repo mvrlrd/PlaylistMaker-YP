@@ -16,10 +16,16 @@ class AddPlaylistViewModel: ViewModel() {
         _screenState.value = AddPlaylistScreenState.ClearDescriptionFieldText
     }
 
-
-
     fun initEditTextFields(){
         _screenState.value = AddPlaylistScreenState.InitEditTextFields
+    }
+
+    fun generateImageNameForStorage(): String{
+        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+        return (1..5)
+            .map { allowedChars.random() }
+            .joinToString("")
+            .plus(".jpg")
     }
 
 }
