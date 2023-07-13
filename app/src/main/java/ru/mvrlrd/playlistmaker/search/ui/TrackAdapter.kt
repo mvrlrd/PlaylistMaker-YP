@@ -29,8 +29,6 @@ class TrackAdapter : ListAdapter<AdapterTrack, TrackAdapter.TrackViewHolder>(Tra
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val item = getItem(position)
         holder.itemView.setOnClickListener {
-            println()
-            println("onBindViewHolder    ${item.isFavorite}")
             onClickListener?.invoke(item)
         }
         holder.bind(item)

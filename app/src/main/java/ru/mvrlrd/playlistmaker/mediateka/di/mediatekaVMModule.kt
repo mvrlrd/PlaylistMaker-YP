@@ -3,6 +3,7 @@ package ru.mvrlrd.playlistmaker.mediateka.di
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import ru.mvrlrd.playlistmaker.mediateka.favorites.FavoriteAdapter
+import ru.mvrlrd.playlistmaker.mediateka.favorites.FavoritesFragment
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.FavoritesRepositoryImpl
 import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoriteInteractor
 import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoritesRepository
@@ -19,6 +20,10 @@ val mediatekaVMModule = module {
     }
     factory {
         FavoriteAdapter()
+    }
+
+    factory {
+        FavoritesFragment()
     }
 
     single<FavoriteInteractor> {

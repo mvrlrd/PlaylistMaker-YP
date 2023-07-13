@@ -15,6 +15,7 @@ import java.util.*
 sealed class PlayerScreenState {
     class BeginningState(val track: PlayerTrack): PlayerScreenState(){
         override fun render(binding: ActivityPlayerBinding) {
+            binding.playButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
             binding.trackName.text = track.trackName
             binding.singerName.text = track.artistName
             binding.durationParam.text = SimpleDateFormat(
@@ -25,16 +26,7 @@ sealed class PlayerScreenState {
             binding.yearParam.text = unparseDateToYear(track.year!!)
             binding.genreParam.text = track.genre
             binding.countryParam.text = track.country
-                val icon = if (track.isFavorite){
-                    binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.red, binding.likeButton.context.theme))
-                    ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_full, binding.likeButton.context.theme)
-
-                }else{
-                    binding.likeButton.imageTintList = ColorStateList.valueOf(binding.likeButton.resources.getColor(R.color.white, binding.likeButton.context.theme))
-                    ResourcesCompat.getDrawable(binding.likeButton.resources, R.drawable.baseline_favorite_border_24, binding.likeButton.context.theme)
-                }
-                    binding.likeButton.setImageDrawable(icon)
-
+            handleLikeButton(binding, track)
 
             Glide
                 .with(binding.albumImageView)
@@ -45,6 +37,12 @@ sealed class PlayerScreenState {
                     RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.big_radius))
                 )
                 .into(binding.albumImageView)
+        }
+    }
+
+    class LikeButtonHandler(val track: PlayerTrack) : PlayerScreenState(){
+        override fun render(binding: ActivityPlayerBinding) {
+            handleLikeButton(binding, track)
         }
     }
 
@@ -61,9 +59,10 @@ sealed class PlayerScreenState {
         }
     }
 
-    class Preparing: PlayerScreenState(){
+    object Preparing : PlayerScreenState() {
         override fun render(binding: ActivityPlayerBinding) {
             binding.playButton.isEnabled = true
+            binding.playButton.alpha = ACTIVE_PLAY_BUTTON_ALPHA
         }
     }
     class Playing(private val progress: String): PlayerScreenState(){
@@ -71,7 +70,8 @@ sealed class PlayerScreenState {
             binding.clockTrack.text = progress
         }
     }
-    class PlayCompleting: PlayerScreenState(){
+
+    object PlayCompleting : PlayerScreenState() {
         override fun render(binding: ActivityPlayerBinding) {
             binding.clockTrack.text = binding.clockTrack.resources.getText(R.string.null_timer)
             binding.playButton.setImageResource(R.drawable.baseline_play_arrow_24)
@@ -79,4 +79,39 @@ sealed class PlayerScreenState {
     }
 
     abstract fun render(binding: ActivityPlayerBinding)
+
+     fun handleLikeButton(binding: ActivityPlayerBinding, track: PlayerTrack) {
+        val icon = if (track.isFavorite) {
+            binding.likeButton.imageTintList = ColorStateList.valueOf(
+                binding.likeButton.resources.getColor(
+                    R.color.red,
+                    binding.likeButton.context.theme
+                )
+            )
+            ResourcesCompat.getDrawable(
+                binding.likeButton.resources,
+                R.drawable.baseline_favorite_full,
+                binding.likeButton.context.theme
+            )
+
+        } else {
+            binding.likeButton.imageTintList = ColorStateList.valueOf(
+                binding.likeButton.resources.getColor(
+                    R.color.white,
+                    binding.likeButton.context.theme
+                )
+            )
+            ResourcesCompat.getDrawable(
+                binding.likeButton.resources,
+                R.drawable.baseline_favorite_border_24,
+                binding.likeButton.context.theme
+            )
+        }
+        binding.likeButton.setImageDrawable(icon)
+    }
+
+    companion object{
+        private const val INACTIVE_PLAY_BUTTON_ALPHA = 0.5f
+        private const val ACTIVE_PLAY_BUTTON_ALPHA = 1f
+    }
 }

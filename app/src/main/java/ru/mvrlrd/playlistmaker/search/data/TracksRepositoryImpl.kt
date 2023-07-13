@@ -32,10 +32,6 @@ override fun searchTracks(query: String): Flow<Resource<List<AdapterTrack>>> = f
             with(response as TracksSearchResponse) {
                 val favoriteIds = favoriteDb.getDao().getFavoriteTrackIds()
                 val data = results.map { it.mapToTrack(favoriteIds.contains(it.trackId)) }
-                println("___TracksRepositoryImpl___")
-                data.filter { it.isFavorite==true }.forEach {
-                    println(it.trackName)
-                }
                 emit(Resource.Success(responseCode = response.resultCode, data = data))
             }
         }

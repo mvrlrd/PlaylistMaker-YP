@@ -12,7 +12,6 @@ import ru.mvrlrd.playlistmaker.search.data.NetworkClient
 import ru.mvrlrd.playlistmaker.search.data.network.ItunesApiService
 import ru.mvrlrd.playlistmaker.search.data.network.RetrofitNetworkClient
 import ru.mvrlrd.playlistmaker.search.data.storage.LocalStorage
-import java.util.concurrent.TimeUnit
 
 
 val searchLocalStorageDataModule = module {
@@ -42,10 +41,7 @@ fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
 }
 
 fun providesOkHttpClient(context: Context): OkHttpClient {
-//    val interceptor = NetworkConnectionInterceptor(context)
     return OkHttpClient.Builder()
-//        .addInterceptor(interceptor)
-//        .callTimeout(1000L, TimeUnit.MILLISECONDS)
         .build()
 }
 

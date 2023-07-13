@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker.database.data
 
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -18,3 +19,5 @@ data class TrackEntity(
     val previewUrl: String?,
     val date: Long
 )
+
+
