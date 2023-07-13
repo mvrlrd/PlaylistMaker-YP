@@ -1,15 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".mediateka.playlists.addplaylist.AddPlaylistFragment">
 
- <ImageView
+ <androidx.constraintlayout.widget.Guideline
+     android:id="@+id/leftBorder"
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
-     android:src="@drawable/playlist_image_placeholder"
-     android:layout_gravity="center"
+     android:orientation="vertical"
+     app:layout_constraintGuide_percent="0.06"/>
+
+ <androidx.constraintlayout.widget.Guideline
+     android:id="@+id/rightBorder"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:orientation="vertical"
+     app:layout_constraintGuide_percent="0.94"
      />
 
-</FrameLayout>
+ <com.google.android.material.appbar.MaterialToolbar
+     android:id="@+id/backButton"
+     android:layout_width="16dp"
+     android:layout_height="16dp"
+     android:layout_marginTop="20dp"
+     android:layout_marginStart="20dp"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintTop_toTopOf="parent"
+     app:navigationIcon="@drawable/ic_arrow_icon"
+     app:buttonGravity="center_vertical"
+     />
+
+ <ImageView
+     android:id="@+id/albumImageView"
+     android:layout_width="0dp"
+     android:layout_height="0dp"
+     android:scaleType="centerCrop"
+     app:layout_constraintDimensionRatio="h,1:1"
+     app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+     app:layout_constraintStart_toEndOf="@id/leftBorder"
+     app:layout_constraintTag="imageViewTag"
+     app:layout_constraintTop_toTopOf="parent"
+     android:layout_marginTop="82dp"
+     android:src="@drawable/playlist_image_placeholder"
+     android:backgroundTint="?attr/day_night_text"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
