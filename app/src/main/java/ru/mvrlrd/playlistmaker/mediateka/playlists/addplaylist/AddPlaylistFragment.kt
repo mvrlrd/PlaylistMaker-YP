@@ -12,17 +12,12 @@ import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddPlaylistFragment : Fragment() {
     private var _binding: FragmentAddPlaylistBinding? =null
     private val binding get() = _binding?: throw RuntimeException("FragmentAddPlaylistBinding == null")
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
+     private val viewModel: AddPlaylistViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
