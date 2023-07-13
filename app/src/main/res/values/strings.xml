@@ -37,7 +37,6 @@
     <string name="bad_request_code" translatable="false">"400"</string>
     <string name="success_code" translatable="false">"200"</string>
     <string name="error_code" translatable="false">"500"</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_playlist">Создать</string>
 
 </resources>

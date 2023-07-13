@@ -29,4 +29,5 @@
     <string name="new_playlist">New playlist</string>
     <string name="bad_request">"page not found"</string>
     <string name="server_error">"server error"</string>
+    <string name="create_playlist">Create</string>
 </resources>
