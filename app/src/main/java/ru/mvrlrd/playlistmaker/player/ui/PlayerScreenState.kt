@@ -28,7 +28,6 @@ sealed class PlayerScreenState {
             binding.countryParam.text = track.country
             handleLikeButton(binding, track)
 
-
             Glide
                 .with(binding.albumImageView)
                 .load(track.getCoverArtwork())
@@ -46,6 +45,7 @@ sealed class PlayerScreenState {
             handleLikeButton(binding, track)
         }
     }
+
     class PlayButtonHandling(private val playerState: PlayerState) : PlayerScreenState() {
         override fun render(binding: ActivityPlayerBinding) {
             when (playerState) {

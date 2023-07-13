@@ -25,6 +25,13 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
         setOnCompletionListener()
     }
 
+    private fun preparePlayer(playerTrack: PlayerTrack){
+        playerInteractor.preparePlayer(playerTrack) {
+            playerState = PREPARED
+            _screenState.value = PlayerScreenState.Preparing
+        }
+    }
+
     fun handleLikeButton(){
         playerTrack.isFavorite = !playerTrack.isFavorite
         _screenState.postValue(PlayerScreenState.LikeButtonHandler(playerTrack))
@@ -34,28 +41,6 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
             }else{
                 playerInteractor.addTrackToFavorite(playerTrack)
             }
-        }
-    }
-
-    private fun startTimer(){
-        timerJob = viewModelScope.launch {
-            while (playerState == PLAYING) {
-                delay(300L)
-                _screenState.postValue(PlayerScreenState.Playing(getCurrentPosition()))
-            }
-        }
-    }
-    private fun preparePlayer(playerTrack: PlayerTrack){
-        playerInteractor.preparePlayer(playerTrack) {
-            playerState = PREPARED
-            _screenState.value = PlayerScreenState.Preparing
-        }
-    }
-    private fun setOnCompletionListener() {
-        playerInteractor.setOnCompletionListener {
-            playerState = PREPARED
-            timerJob?.cancel()
-            _screenState.value = PlayerScreenState.PlayCompleting
         }
     }
     private fun start() {
@@ -71,16 +56,6 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
         _screenState.value =  PlayerScreenState.PlayButtonHandling(playerState)
     }
 
-    private fun getCurrentPosition():String{
-        return formatTime(playerInteractor.getCurrentTime())
-    }
-
-    fun onDestroy(){
-        timerJob?.cancel()
-        playerState = DEFAULT
-        playerInteractor.onDestroy()
-    }
-
     fun playbackControl() {
         when (playerState) {
             PLAYING -> {
@@ -91,6 +66,33 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
             }
             DEFAULT -> {}
         }
+    }
+
+    private fun startTimer(){
+        timerJob = viewModelScope.launch {
+            while (playerState == PLAYING) {
+                delay(300L)
+                _screenState.postValue(PlayerScreenState.Playing(getCurrentPosition()))
+            }
+        }
+    }
+
+    private fun getCurrentPosition():String{
+        return formatTime(playerInteractor.getCurrentTime())
+    }
+
+    private fun setOnCompletionListener() {
+        playerInteractor.setOnCompletionListener {
+            playerState = PREPARED
+            timerJob?.cancel()
+            _screenState.value = PlayerScreenState.PlayCompleting
+        }
+    }
+
+    fun onDestroy(){
+        timerJob?.cancel()
+        playerState = DEFAULT
+        playerInteractor.onDestroy()
     }
 }
 
