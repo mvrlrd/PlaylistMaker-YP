@@ -47,5 +47,49 @@
      android:src="@drawable/playlist_image_placeholder"
      android:backgroundTint="?attr/day_night_text"/>
 
+ <EditText
+     android:id="@+id/editText"
+     android:layout_width="match_parent"
+     android:layout_height="54dp"
+     android:layout_gravity="center"
+     android:layout_margin="16dp"
+     android:layout_marginTop="32dp"
+     android:background="@drawable/rectangle_border"
+     android:hint="Введите текст"
+     android:padding="8dp"
+     app:layout_constraintEnd_toEndOf="parent"
+     app:layout_constraintHorizontal_bias="0.625"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintTop_toBottomOf="@+id/albumImageView"
+     tools:text="Название" />
+
+ <EditText
+     android:layout_width="match_parent"
+     android:layout_height="54dp"
+     android:layout_gravity="center"
+     android:layout_margin="16dp"
+     android:layout_marginTop="16dp"
+     android:background="@drawable/rectangle_border"
+     android:hint="Введите текст"
+     android:padding="8dp"
+     app:layout_constraintEnd_toEndOf="parent"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintTop_toBottomOf="@+id/editText"
+     tools:text="Описание" />
+
+
+ <androidx.appcompat.widget.AppCompatButton
+     android:layout_width="match_parent"
+     android:layout_height="44dp"
+     android:layout_gravity="center"
+     android:layout_margin="17dp"
+     android:layout_marginBottom="32dp"
+     android:background="@drawable/rectangle"
+     android:padding="8dp"
+     android:textColor="@color/white"
+     app:layout_constraintEnd_toEndOf="parent"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintBottom_toBottomOf="parent"
+     tools:text="Создать" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
