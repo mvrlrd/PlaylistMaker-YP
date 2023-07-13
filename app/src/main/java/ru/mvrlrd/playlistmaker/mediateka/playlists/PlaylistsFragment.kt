@@ -1,13 +1,17 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.AddPlaylistFragment
 
 
 class PlaylistsFragment : Fragment() {
@@ -26,6 +30,11 @@ class PlaylistsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
+        binding.addPlaylistButton.setOnClickListener {
+            findNavController().navigate(
+                MediatekaFragmentDirections.actionMediatekaFragmentToAddPlaylistFragment()
+            )
+        }
         return binding.root
     }
 

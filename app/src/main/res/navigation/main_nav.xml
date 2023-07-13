@@ -29,11 +29,9 @@
             android:id="@+id/action_mediatekaFragment_to_playerActivity"
             app:destination="@id/playerActivity" />
         <action
-            android:id="@+id/action_mediatekaFragment_to_playlistsFragment"
-            app:destination="@id/playlistsFragment" />
-        <action
-            android:id="@+id/action_mediatekaFragment_to_favoritesFragment"
-            app:destination="@id/favoritesFragment" />
+            android:id="@+id/action_mediatekaFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment"
+            app:popUpTo="@id/mediatekaFragment" />
     </fragment>
     <activity
         android:id="@+id/playerActivity"
@@ -48,19 +46,4 @@
         android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.AddPlaylistFragment"
         android:label="fragment_add_playlist"
         tools:layout="@layout/fragment_add_playlist" />
-    <fragment
-        android:id="@+id/playlistsFragment"
-        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsFragment"
-        android:label="fragment_playlists"
-        tools:layout="@layout/fragment_playlists" >
-        <action
-            android:id="@+id/action_playlistsFragment_to_addPlaylistFragment"
-            app:destination="@id/addPlaylistFragment"
-            app:popUpTo="@id/playlistsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/favoritesFragment"
-        android:name="ru.mvrlrd.playlistmaker.mediateka.favorites.FavoritesFragment"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
 </navigation>

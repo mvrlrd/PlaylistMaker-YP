@@ -10,7 +10,7 @@
     tools:context=".mediateka.playlists.PlaylistsFragment">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButton"
+        android:id="@+id/addPlaylistButton"
         android:layout_gravity="center"
         style="@style/RefreshButtonStyle"
         android:visibility="visible"
