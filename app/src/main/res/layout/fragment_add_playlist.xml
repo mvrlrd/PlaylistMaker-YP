@@ -49,21 +49,52 @@
      android:src="@drawable/playlist_image_placeholder"
      android:backgroundTint="?attr/day_night_text"/>
 
- <EditText
-     android:id="@+id/nameEt"
+
+ <FrameLayout
+     android:id="@+id/frameLayout"
      android:layout_width="match_parent"
-     android:layout_height="54dp"
-     android:layout_gravity="center"
-     android:layout_margin="16dp"
+     android:layout_height="wrap_content"
      android:layout_marginTop="32dp"
-     android:background="@drawable/rectangle_border"
-     android:hint="Введите текст"
-     android:padding="8dp"
-     app:layout_constraintEnd_toEndOf="parent"
-     app:layout_constraintHorizontal_bias="0.625"
-     app:layout_constraintStart_toStartOf="parent"
+     android:paddingStart="@dimen/usual_padding"
+     android:paddingEnd="@dimen/usual_padding"
      app:layout_constraintTop_toBottomOf="@+id/albumImageView"
-     tools:text="Название" />
+     tools:layout_editor_absoluteX="0dp">
+
+  <EditText
+      android:id="@+id/nameEt"
+      android:layout_width="match_parent"
+      android:layout_height="54dp"
+      android:layout_gravity="center"
+      android:layout_margin="0dp"
+      android:layout_marginTop="32dp"
+      android:background="@drawable/rectangle_border"
+      android:drawablePadding="11dp"
+      android:drawableTint="?attr/search_icons_color"
+      android:hint="Введите текст"
+      android:imeOptions="actionDone"
+      android:inputType="text"
+      android:maxLines="1"
+
+      android:padding="8dp"
+      android:paddingStart="15dp"
+      android:singleLine="true"
+
+      android:textColor="?attr/button_text_color"
+      android:textColorHint="?attr/search_icons_color"
+      android:textSize="@dimen/small_text_size"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.625"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/albumImageView"
+      tools:text="Название" />
+
+  <ImageButton
+      android:id="@+id/clearTextButton"
+      style="@style/XStyle"
+      android:src="@drawable/ic_free_icon_font_cross"
+      android:visibility="visible" />
+ </FrameLayout>
+
 
  <EditText
      android:id="@+id/descriptionEt"
@@ -74,27 +105,28 @@
      android:layout_marginTop="16dp"
      android:background="@drawable/rectangle_border"
      android:hint="Введите текст"
+
      android:padding="8dp"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/nameEt"
+     app:layout_constraintTop_toBottomOf="@+id/frameLayout"
      tools:text="Описание" />
 
 
- <androidx.appcompat.widget.AppCompatButton
-     android:id="@+id/createPlaylistButton"
-     android:layout_width="match_parent"
-     android:layout_height="44dp"
-     android:layout_gravity="center"
-     android:layout_margin="17dp"
-     android:layout_marginBottom="32dp"
-     android:background="@drawable/rectangle"
-     android:padding="8dp"
-     android:textColor="@color/white"
-     app:layout_constraintEnd_toEndOf="parent"
-     app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintBottom_toBottomOf="parent"
-     android:enabled="false"
-     android:text="@string/create_playlist"/>
+ <!-- <androidx.appcompat.widget.AppCompatButton-->
+<!--     android:id="@+id/createPlaylistButton"-->
+<!--     android:layout_width="match_parent"-->
+<!--     android:layout_height="44dp"-->
+<!--     android:layout_gravity="center"-->
+<!--     android:layout_margin="17dp"-->
+<!--     android:layout_marginBottom="32dp"-->
+<!--     android:background="@drawable/rectangle"-->
+<!--     android:padding="8dp"-->
+<!--     android:textColor="@color/white"-->
+<!--     app:layout_constraintEnd_toEndOf="parent"-->
+<!--     app:layout_constraintStart_toStartOf="parent"-->
+<!--     app:layout_constraintBottom_toBottomOf="parent"-->
+<!--     android:enabled="false"-->
+<!--     android:text="@string/create_playlist"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

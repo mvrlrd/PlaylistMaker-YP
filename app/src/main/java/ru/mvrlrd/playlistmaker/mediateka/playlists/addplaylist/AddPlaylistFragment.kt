@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
@@ -28,9 +29,26 @@ class AddPlaylistFragment : Fragment() {
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
-
         return binding.root
     }
+
+//    private fun initEditText() {
+//        binding.nameEt
+//            .apply {
+////                setOnEditorActionListener { _, actionId, _ ->
+////                    onClickOnEnterOnVirtualKeyboard(actionId)
+////                }
+//                doOnTextChanged { text, _, _, _ ->
+//                    if (this.hasFocus() && text.toString().isEmpty()) {
+//
+//                    }
+//                    viewModel.searchDebounce(binding.searchEditText.text.toString())
+//                    binding.clearTextButton.visibility = clearButtonVisibility(text.toString())
+//                }
+//            }
+//    }
+    private fun clearButtonVisibility(p0: CharSequence?) =
+        if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
     override fun onDestroy() {
         super.onDestroy()

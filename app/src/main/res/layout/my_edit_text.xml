@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+        <EditText
+            android:id="@+id/nameEt"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:layout_gravity="center"
+            android:layout_margin="0dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/rectangle_border"
+            android:drawablePadding="11dp"
+            android:drawableTint="?attr/search_icons_color"
+            android:hint="Введите текст"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:paddingStart="15dp"
+            android:singleLine="true"
+            android:textColor="?attr/button_text_color"
+            android:textColorHint="?attr/search_icons_color"
+            android:textSize="@dimen/small_text_size"
+            tools:text="Название" />
+
+        <ImageButton
+            android:id="@+id/clearTextButton"
+            style="@style/XStyle"
+            android:src="@drawable/ic_free_icon_font_cross"
+            android:visibility="visible" />
+
+</FrameLayout>
