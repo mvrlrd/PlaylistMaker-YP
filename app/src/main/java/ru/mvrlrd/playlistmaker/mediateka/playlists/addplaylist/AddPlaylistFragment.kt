@@ -15,6 +15,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -74,7 +75,11 @@ class AddPlaylistFragment : Fragment() {
             }
         }
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            if (checkIfThereAreUnsavedData()){
+                showDialog()
+            }else{
+                findNavController().popBackStack()
+            }
         }
         binding.createPlaylistButton.setOnClickListener {
             val message = try {
@@ -89,6 +94,12 @@ class AddPlaylistFragment : Fragment() {
         }
     }
 
+    private fun checkIfThereAreUnsavedData() : Boolean{
+        return (_uri!=null
+            || binding.nameEtContainer.nameEt.text.toString().isNotEmpty()
+            || binding.descriptionEtContainer.nameEt.text.toString().isNotEmpty())
+    }
+
     private fun saveImageToPrivateStorage(uri: Uri) {
         val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
         if (!filePath.exists()){
@@ -101,11 +112,25 @@ class AddPlaylistFragment : Fragment() {
             .decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
-
+//TODO сделать проверку есть ли несохраненные данные по нажатию системной кнопки НАЗАД
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    private fun showDialog(){
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Завершить создание плейлиста?")
+            .setMessage("Все несохраненные данные будут потеряны")
+            .setNeutralButton("Отмена") { dialog, which ->
+
+            }
+            .setNegativeButton("Отмена") { dialog, which ->
+            }
+            .setPositiveButton("Завершить") { dialog, which -> findNavController().popBackStack()
+            }
+            .show()
     }
 
     companion object {
