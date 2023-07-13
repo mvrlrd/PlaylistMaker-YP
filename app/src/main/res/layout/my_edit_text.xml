@@ -7,7 +7,6 @@
     android:paddingEnd="16dp">
 
         <EditText
-
             android:id="@+id/nameEt"
             android:layout_width="match_parent"
             android:layout_height="54dp"
@@ -33,6 +32,6 @@
             android:id="@+id/clearTextButton"
             style="@style/XStyle"
             android:src="@drawable/ic_free_icon_font_cross"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
 </FrameLayout>
