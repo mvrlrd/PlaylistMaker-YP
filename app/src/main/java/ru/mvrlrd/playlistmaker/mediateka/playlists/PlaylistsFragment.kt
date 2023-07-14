@@ -1,10 +1,12 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists
 
 import android.os.Bundle
+import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import org.koin.android.ext.android.inject
@@ -13,6 +15,7 @@ import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
 import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
+import java.io.File
 
 
 class PlaylistsFragment : Fragment() {
@@ -54,6 +57,11 @@ class PlaylistsFragment : Fragment() {
 
     private fun initRecycler(){
         playlistAdapter.onClickListener = {}
+        playlistAdapter.showImage = {
+            val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+            val file = File(filePath, "first_cover.jpg")
+            it.setImageURI(file.toUri())
+        }
         binding.rView.apply {
             adapter = playlistAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)

@@ -118,8 +118,9 @@ class AddPlaylistFragment : Fragment() {
                     saveImageToPrivateStorage(_uri!!)
                 }
                 val name = binding.nameEtContainer.nameEt.text.toString()
-                val description = binding.descriptionEtContainer.nameEt.text.toString()?:""
-                viewModel.addPlaylist(PlaylistForAdapter( name = name, description = description, playlistImagePath = _uri.toString(), tracksQuantity = 14))
+                val description = binding.descriptionEtContainer.nameEt.text.toString()
+
+                viewModel.addPlaylist(PlaylistForAdapter( name = name, description = description, playlistImagePath = _uri.toString()))
                 findNavController().popBackStack()
                 "плейлист ${binding.nameEtContainer.nameEt.text} создан"
             } catch (e: Exception) {
@@ -143,7 +144,7 @@ class AddPlaylistFragment : Fragment() {
         if (!filePath.exists()){
             filePath.mkdirs()
         }
-        val file = File(filePath, viewModel.generateImageNameForStorage())
+        val file = File(filePath, "first_cover.jpg")
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
         BitmapFactory
