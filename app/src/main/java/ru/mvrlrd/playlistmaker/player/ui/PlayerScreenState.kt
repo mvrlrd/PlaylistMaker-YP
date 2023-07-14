@@ -7,7 +7,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.util.unparseDateToYear

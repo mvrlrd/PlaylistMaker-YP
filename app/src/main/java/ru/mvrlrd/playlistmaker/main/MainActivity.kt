@@ -13,7 +13,6 @@ import ru.mvrlrd.playlistmaker.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
      val binding get() = _binding!!
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener{_,destination,_->
             when (destination.id){
-                R.id.addPlaylistFragment -> hideBottomNav()
+                R.id.addPlaylistFragment,R.id.playerFragment -> hideBottomNav()
                 else -> showBottomNav()
             }
         }
