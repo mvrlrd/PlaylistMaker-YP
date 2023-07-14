@@ -275,7 +275,7 @@
         android:visibility="gone"/>
 
     <include
-        android:id="@+id/BS"
+        android:id="@+id/bottom_sheet_container"
         layout="@layout/bottom_sheet_layout"
         />
 
