@@ -117,7 +117,6 @@ class AddPlaylistFragment : Fragment() {
                 _uri?.let {
                     saveImageToPrivateStorage(_uri!!)
                 }
-
                 val name = binding.nameEtContainer.nameEt.text.toString()
                 val description = binding.descriptionEtContainer.nameEt.text.toString()?:""
                 viewModel.addPlaylist(AdapterPlaylist( name = name, description = description, playlistImagePath = _uri.toString()))
