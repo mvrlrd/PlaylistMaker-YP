@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
    >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,7 +82,7 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button"
+        android:id="@+id/add_to_playlist_btn"
         android:layout_width="51dp"
         android:layout_height="51dp"
         app:fabCustomSize="51dp"
@@ -104,11 +105,11 @@
         android:backgroundTint="?attr/day_night_background"
         android:src="@drawable/baseline_play_arrow_24"
         app:fabCustomSize="83dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="@+id/add_to_playlist_btn"
         app:layout_constraintEnd_toStartOf="@+id/likeButton"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        app:layout_constraintTop_toTopOf="@+id/button"
+        app:layout_constraintStart_toEndOf="@+id/add_to_playlist_btn"
+        app:layout_constraintTop_toTopOf="@+id/add_to_playlist_btn"
         app:maxImageSize="50dp"
         app:tint="?attr/day_night_text"
         app:borderWidth="0dp"
@@ -125,7 +126,7 @@
         app:maxImageSize="23dp"
         android:backgroundTint="?attr/day_night_fab"
         android:src="@drawable/baseline_favorite_border_24"
-        app:layout_constraintBottom_toBottomOf="@+id/button"
+        app:layout_constraintBottom_toBottomOf="@+id/add_to_playlist_btn"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintHorizontal_bias="0.5"
         app:borderWidth="0dp"
@@ -139,7 +140,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/add_to_playlist_btn"
         android:layout_marginTop="84dp"
         android:layout_marginStart="@dimen/usual_padding"
         style="@style/InfoTextStyle"
@@ -200,7 +201,7 @@
         android:textColor="?attr/day_night_background"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/usual_padding"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/add_to_playlist_btn" />
 
     <TextView
         android:id="@+id/albumParam"
@@ -267,4 +268,41 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.core.widget.NestedScrollView>
+    <View android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/BS"
+        layout="@layout/bottom_sheet_layout"
+        />
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!--    <LinearLayout-->
+    <!--        android:id="@+id/playlists_bottom_sheet"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:background="@drawable/rectangle"-->
+    <!--        android:backgroundTint="@color/white"-->
+    <!--        android:orientation="horizontal"-->
+    <!--        app:behavior_hideable="true"-->
+    <!--        app:behavior_peekHeight="240dp"-->
+    <!--        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">-->
+
+    <!--        -->
+    <!--        <ImageView-->
+    <!--            android:layout_width="50dp"-->
+    <!--            android:layout_height="4dp"-->
+    <!--            android:layout_marginTop="8dp"-->
+    <!--            android:layout_gravity="center_horizontal"-->
+    <!--            android:src="@drawable/rectangle" />-->
+    <!-- Вёрстка Bottom Sheet с кнопкой и списком -->
+
+<!--    </LinearLayout>-->
