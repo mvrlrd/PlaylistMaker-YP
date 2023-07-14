@@ -1,13 +1,20 @@
 package ru.mvrlrd.playlistmaker.player.data
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
 import ru.mvrlrd.playlistmaker.database.data.TrackConverter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
+import ru.mvrlrd.playlistmaker.playlistDb.data.PlaylistConverter
+import ru.mvrlrd.playlistmaker.playlistDb.data.PlaylistDb
 
 class PlayerRepositoryImpl(
     private val playerClient: PlayerClient,
     private val favoriteDb: FavoriteDb,
+    private val playlistDb: PlaylistDb,
+    private val playlistConverter: PlaylistConverter,
     private val trackConverter: TrackConverter
 ) : PlayerRepository {
     override fun preparePlayer(playerTrack: PlayerTrack, prepare: () -> Unit) {
@@ -40,5 +47,11 @@ class PlayerRepositoryImpl(
 
     override suspend fun removeFromFavorite(trackId: Int) {
         favoriteDb.getDao().deleteTrack(trackId)
+    }
+
+    override fun getAllPlaylists(): Flow<List<PlaylistForAdapter>> {
+        return playlistDb.getDao().getAllPlaylists().map { list ->
+            playlistConverter.convertEntityListToAdapterList(list)
+        }
     }
 }

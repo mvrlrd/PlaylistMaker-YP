@@ -1,5 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.domain.impl
 
+import kotlinx.coroutines.flow.Flow
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
@@ -38,4 +40,7 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         playerRepository.removeFromFavorite(trackId)
     }
 
+    override fun getAllPlaylists(): Flow<List<PlaylistForAdapter>> {
+        return playerRepository.getAllPlaylists()
+    }
 }

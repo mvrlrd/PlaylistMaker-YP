@@ -4,10 +4,12 @@ package ru.mvrlrd.playlistmaker.player.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
@@ -18,6 +20,9 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
     val screenState: LiveData<PlayerScreenState> = _screenState
     private var playerState: PlayerState = DEFAULT
     private var timerJob: Job? = null
+
+    val playlists: LiveData<List<PlaylistForAdapter>> =
+        playerInteractor.getAllPlaylists().asLiveData()
 
     init {
         _screenState.value = PlayerScreenState.BeginningState(playerTrack)

@@ -1,5 +1,8 @@
 package ru.mvrlrd.playlistmaker.player.domain
 
+import kotlinx.coroutines.flow.Flow
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+
 interface PlayerRepository {
     fun preparePlayer(playerTrack: PlayerTrack, prepare: () -> Unit)
 
@@ -17,5 +20,7 @@ interface PlayerRepository {
 
 
     suspend fun removeFromFavorite(trackId: Int)
+
+    fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
 
 }

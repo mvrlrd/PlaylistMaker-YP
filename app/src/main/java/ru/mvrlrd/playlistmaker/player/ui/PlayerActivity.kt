@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.navArgs
@@ -23,6 +24,10 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         _binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.playlists.observe(this){
+            Log.e("PlayerActivity", "${it.size}")
+        }
 
         binding.backButton.apply {
             setOnClickListener {
