@@ -1,7 +1,9 @@
 package ru.mvrlrd.playlistmaker.player.domain.impl
 
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
@@ -20,16 +22,24 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         playerRepository.onDestroy()
     }
 
-    override fun setOnCompletionListener(onComplete: () -> Unit) {
-        playerRepository.setOnCompletionListener(onComplete)
+    override fun setOnCompletionListener() {
+        playerRepository.setOnCompletionListener()
     }
 
-    override fun getCurrentTime(): Int {
+   override fun getIff():LiveData<MyMediaPlayer.PlayerState>{
+        return playerRepository.getIff()
+    }
+
+    override fun getLiveTime():LiveData<Int>{
+        return playerRepository.getLiveTime()
+    }
+
+    override fun getCurrentTime(): Flow<Int> {
         return playerRepository.getCurrentTime()
     }
 
-    override fun preparePlayer(playerTrack: PlayerTrack, prepare: () -> Unit) {
-        playerRepository.preparePlayer(playerTrack, prepare)
+    override fun preparePlayer(playerTrack: PlayerTrack) {
+        playerRepository.preparePlayer(playerTrack)
     }
 
     override suspend fun addTrackToFavorite(playerTrack: PlayerTrack) {

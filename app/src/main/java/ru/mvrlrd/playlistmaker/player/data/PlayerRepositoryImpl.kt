@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker.player.data
 
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
@@ -17,12 +18,19 @@ class PlayerRepositoryImpl(
     private val playlistConverter: PlaylistConverter,
     private val trackConverter: TrackConverter
 ) : PlayerRepository {
-    override fun preparePlayer(playerTrack: PlayerTrack, prepare: () -> Unit) {
-        playerClient.preparePlayer(playerTrack, prepare)
+    override fun preparePlayer(playerTrack: PlayerTrack) {
+        playerClient.preparePlayer(playerTrack)
     }
 
-    override fun setOnCompletionListener(onComplete: () -> Unit) {
-        playerClient.setOnCompletionListener(onComplete)
+    override fun getIff():LiveData<MyMediaPlayer.PlayerState>{
+        return playerClient.getIff()
+    }
+
+    override fun getLiveTime():LiveData<Int>{
+        return playerClient.getLiveTime()
+    }
+    override fun setOnCompletionListener() {
+        playerClient.setOnCompletionListener()
     }
 
     override fun start() {
@@ -37,7 +45,7 @@ class PlayerRepositoryImpl(
         playerClient.onDestroy()
     }
 
-    override fun getCurrentTime(): Int {
+    override fun getCurrentTime(): Flow<Int> {
         return playerClient.getCurrentTime()
     }
 

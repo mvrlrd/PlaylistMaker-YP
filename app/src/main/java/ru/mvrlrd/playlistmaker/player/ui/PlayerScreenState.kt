@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.util.unparseDateToYear
 import java.text.SimpleDateFormat
@@ -48,10 +49,10 @@ sealed class PlayerScreenState {
         }
     }
 
-    class PlayButtonHandling(private val playerState: PlayerState) : PlayerScreenState() {
+    class PlayButtonHandling(private val playerState: MyMediaPlayer.PlayerState) : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
             when (playerState) {
-                 PlayerState.PLAYING -> {
+                 MyMediaPlayer.PlayerState.PLAYING -> {
                     binding.playButton.setImageResource(R.drawable.baseline_pause_24)
                 }
                 else -> {
@@ -63,6 +64,7 @@ sealed class PlayerScreenState {
 
     object Preparing : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
+            println("_________")
             binding.playButton.isEnabled = true
             binding.playButton.alpha = ACTIVE_PLAY_BUTTON_ALPHA
         }

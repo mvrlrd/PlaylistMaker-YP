@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,32 +11,108 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.*
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
-import ru.mvrlrd.playlistmaker.player.ui.PlayerState.*
+
 
 class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor: PlayerInteractor) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
-    private var playerState: PlayerState = DEFAULT
+
+
+    val playerState = playerInteractor.getIff()
+    val time = playerInteractor.getLiveTime()
+
     private var timerJob: Job? = null
 
     val playlists: LiveData<List<PlaylistForAdapter>> =
         playerInteractor.getAllPlaylists().asLiveData()
 
     init {
-        _screenState.value = PlayerScreenState.BeginningState(playerTrack)
-        preparePlayer(playerTrack)
-        setOnCompletionListener()
+            playerInteractor.preparePlayer(playerTrack)
     }
 
-    private fun preparePlayer(playerTrack: PlayerTrack){
-        playerInteractor.preparePlayer(playerTrack) {
-            playerState = PREPARED
-            _screenState.value = PlayerScreenState.Preparing
+
+    fun render() {
+        when (playerState.value) {
+            DEFAULT -> {
+                _screenState.value = PlayerScreenState.BeginningState(playerTrack)
+            }
+            PREPARED -> {
+                _screenState.value = PlayerScreenState.Preparing
+            }
+            PLAYING -> {
+                timerJob = viewModelScope.launch() {
+                    while (playerState.value == PLAYING) {
+                        delay(300)
+                        playerInteractor.getLiveTime()
+                    }
+                }
+            }
+            PAUSED -> {
+                timerJob?.cancel()
+                _screenState.value = PlayerScreenState.PlayButtonHandling(playerState.value!!)
+            }
+            COMPLETED -> {
+                _screenState.value = PlayerScreenState.PlayCompleting
+                timerJob?.cancel()
+            }
+            else -> {}
         }
     }
+
+    fun onResume(){
+        when(playerState.value){
+            DEFAULT -> {
+//                _screenState.value = PlayerScreenState.BeginningState(playerTrack)
+//                playerInteractor.preparePlayer(playerTrack)
+            }
+            PAUSED,PLAYING, ->{
+                _screenState.value = PlayerScreenState.BeginningState(playerTrack)
+                _screenState.value = PlayerScreenState.Preparing
+            }
+            COMPLETED,PREPARED, ->{
+                _screenState.value = PlayerScreenState.BeginningState(playerTrack)
+            }
+            else ->{}
+        }
+    }
+
+    fun onStop(){
+        playerInteractor.pause()
+    }
+
+    fun renderTime(time: Int){
+        _screenState.value = PlayerScreenState.Playing(getCurrentPosition(time))
+    }
+
+    fun playbackControl() {
+        Log.e("D","${playerState.value}")
+        when (playerState.value) {
+            PLAYING -> {
+                pause()
+            }
+            PREPARED, PAUSED, COMPLETED -> {
+                start()
+            }
+            else->{}
+        }
+    }
+    private fun start() {
+        playerInteractor.start()
+        _screenState.value =  PlayerScreenState.PlayButtonHandling(playerState.value!!)
+    }
+
+    fun pause() {
+        playerInteractor.pause()
+//        timerJob?.cancel()
+
+    }
+
+
 
     fun handleLikeButton(){
         playerTrack.isFavorite = !playerTrack.isFavorite
@@ -48,62 +125,39 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
             }
         }
     }
-    private fun start() {
-        playerInteractor.start()
-        playerState = PLAYING
-        startTimer()
-        _screenState.value =  PlayerScreenState.PlayButtonHandling(playerState)
-    }
-    fun pause() {
-        playerInteractor.pause()
-        timerJob?.cancel()
-        playerState = PAUSED
-        _screenState.value =  PlayerScreenState.PlayButtonHandling(playerState)
-    }
 
-    fun playbackControl() {
-        when (playerState) {
-            PLAYING -> {
-                pause()
-            }
-            PREPARED, PAUSED -> {
-                start()
-            }
-            DEFAULT -> {}
-        }
-    }
 
-    private fun startTimer(){
-        timerJob = viewModelScope.launch {
-            while (playerState == PLAYING) {
-                delay(300L)
-                _screenState.postValue(PlayerScreenState.Playing(getCurrentPosition()))
-            }
-        }
-    }
-
-    private fun getCurrentPosition():String{
-        return formatTime(playerInteractor.getCurrentTime())
-    }
-
-    private fun setOnCompletionListener() {
-        playerInteractor.setOnCompletionListener {
-            playerState = PREPARED
-            timerJob?.cancel()
-            _screenState.value = PlayerScreenState.PlayCompleting
-        }
-    }
 
     fun onDestroy(){
-        timerJob?.cancel()
-        playerState = DEFAULT
+
+//        timerJob?.cancel()
         playerInteractor.onDestroy()
     }
+
+
+
+//    private fun startTimer(){
+//        timerJob = viewModelScope.launch {
+//            while (playerState == PLAYING) {
+//                delay(300L)
+//                _screenState.postValue(PlayerScreenState.Playing(getCurrentPosition()))
+//            }
+//        }
+//    }
+
+    private fun getCurrentPosition(_time: Int):String{
+        return formatTime(_time)
+    }
+
+//    private fun setOnCompletionListener() {
+//        playerInteractor.setOnCompletionListener {
+//            playerState = PREPARED
+//            timerJob?.cancel()
+//            _screenState.value = PlayerScreenState.PlayCompleting
+//        }
+//    }
+
+
 }
 
-enum class PlayerState {
-     DEFAULT,
-     PREPARED,
-     PLAYING,
-     PAUSED
-}
+

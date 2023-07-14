@@ -63,7 +63,7 @@ class PlayerFragment : Fragment() {
         binding.likeButton.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
-                    viewModel.handleLikeButton()
+//                    viewModel.handleLikeButton()
                 }
             }
         }
@@ -82,7 +82,7 @@ class PlayerFragment : Fragment() {
     private fun handleBackButton() {
         binding.backButton.apply {
             setOnClickListener {
-                viewModel.onDestroy()
+//                viewModel.onDestroy()
                 Log.e("AddPlaylistFragment", "${findNavController().graph}")
                 findNavController().popBackStack()
 
@@ -95,6 +95,16 @@ class PlayerFragment : Fragment() {
         viewModel.playlists.observe(this) {
             Log.e("PlayerActivity", "${it.size}")
         }
+
+        viewModel.playerState.observe(viewLifecycleOwner){
+            Log.e("live",it.name)
+            viewModel.render()
+        }
+
+        viewModel.time.observe(viewLifecycleOwner){
+            viewModel.renderTime(it)
+        }
+
         viewModel.screenState.observe(this) {
             it.render(binding)
         }
@@ -107,7 +117,22 @@ class PlayerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        viewModel.onDestroy()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.onStop()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+                viewModel.onDestroy()
     }
 
     private fun initBottomSheet(){

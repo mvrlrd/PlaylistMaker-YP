@@ -1,12 +1,14 @@
 package ru.mvrlrd.playlistmaker.player.domain
 
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 
 interface PlayerRepository {
-    fun preparePlayer(playerTrack: PlayerTrack, prepare: () -> Unit)
+    fun preparePlayer(playerTrack: PlayerTrack)
 
-    fun setOnCompletionListener(onComplete: () -> Unit)
+    fun setOnCompletionListener()
 
     fun start()
 
@@ -14,13 +16,13 @@ interface PlayerRepository {
 
     fun onDestroy()
 
-    fun getCurrentTime(): Int
+    fun getCurrentTime(): Flow<Int>
 
     suspend fun addToFavorite(playerTrack: PlayerTrack)
-
-
+     fun getLiveTime():LiveData<Int>
     suspend fun removeFromFavorite(trackId: Int)
 
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
+    fun getIff():LiveData<MyMediaPlayer.PlayerState>
 
 }
