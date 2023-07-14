@@ -22,7 +22,6 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
 
-
     val playerState = playerInteractor.getIff()
     val time = playerInteractor.getLiveTime()
 
@@ -51,14 +50,16 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
                         playerInteractor.getLiveTime()
                     }
                 }
+                _screenState.value =  PlayerScreenState.PlayButtonHandling(playerState.value!!)
             }
             PAUSED -> {
                 timerJob?.cancel()
                 _screenState.value = PlayerScreenState.PlayButtonHandling(playerState.value!!)
             }
             COMPLETED -> {
-                _screenState.value = PlayerScreenState.PlayCompleting
                 timerJob?.cancel()
+                _screenState.value = PlayerScreenState.PlayCompleting
+
             }
             else -> {}
         }
@@ -103,7 +104,6 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
     }
     private fun start() {
         playerInteractor.start()
-        _screenState.value =  PlayerScreenState.PlayButtonHandling(playerState.value!!)
     }
 
     fun pause() {
