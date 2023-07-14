@@ -83,6 +83,9 @@ class PlayerFragment : Fragment() {
         binding.backButton.apply {
             setOnClickListener {
                 viewModel.onDestroy()
+                Log.e("AddPlaylistFragment", "${findNavController().graph}")
+                findNavController().popBackStack()
+
               //FINISH
             }
         }

@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
@@ -39,15 +38,17 @@ class AddPlaylistFragment : Fragment() {
         viewModel.initEditTextFields()
         observeViewModel()
 //TODO после того как возвращаюсь на экран плеера и жму назад - падает
-        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (checkIfThereAreUnsavedData()){
-                    confirmDialog.show()
-                }else{
-                    findNavController().popBackStack()
-                }
-            }
-        })
+//        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+////                if (checkIfThereAreUnsavedData()){
+////                    confirmDialog.show()
+////                }else{
+//                    Log.e("AddPlaylistFragment","onBackPressedDispatcher")
+//                    findNavController().navigateUp()
+//                    Log.e("AddPlaylistFragment","after")
+//                }
+//            }
+//        })
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle("Завершить создание плейлиста?")
@@ -56,7 +57,9 @@ class AddPlaylistFragment : Fragment() {
             setNegativeButton("Отмена") { dialog, which ->
             }
             setPositiveButton("Завершить") { dialog, which ->
-                findNavController().popBackStack()
+                Log.e("AddPlaylistFragment", "${findNavController().graph}")
+
+                findNavController().navigateUp()
             }
         }
 
@@ -65,6 +68,11 @@ class AddPlaylistFragment : Fragment() {
         registerImagePicker()
 
         return binding.root
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.e("AddPlaylistFragment","onDetach")
     }
 
     private fun registerImagePicker() {
@@ -119,8 +127,6 @@ class AddPlaylistFragment : Fragment() {
                 }else{
                     saveImageToPrivateStorage(_uri!!,addPlaylist(true))
                 }
-
-
                 findNavController().popBackStack()
                 "плейлист ${binding.nameEtContainer.nameEt.text} создан"
             } catch (e: Exception) {

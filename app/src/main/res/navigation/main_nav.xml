@@ -28,7 +28,7 @@
         <action
             android:id="@+id/action_mediatekaFragment_to_addPlaylistFragment"
             app:destination="@id/addPlaylistFragment"
-            app:popUpTo="@id/mediatekaFragment" />
+            app:popUpTo="@id/playerFragment" />
         <action
             android:id="@+id/action_mediatekaFragment_to_playerFragment"
             app:destination="@id/playerFragment"
