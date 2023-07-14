@@ -44,8 +44,11 @@ class SearchFragment : Fragment() {
                 if (screenState is SearchScreenState.Error) {
                     showToast(screenState.code)
                 }
+            }else{
+                screenState.render(binding)
             }
         }
+
         initRecycler()
         initEditText()
         handleButtons()

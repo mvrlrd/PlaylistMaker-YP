@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -100,7 +101,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
                 if (historyTracks.isNotEmpty()) {
                     _screenState.value = SearchScreenState.ShowHistory(historyTracks)
                 } else {
-                    _screenState.value = SearchScreenState.Success(null)
+                    _screenState.value = SearchScreenState.ShowHistory(null)
                 }
             }
         }

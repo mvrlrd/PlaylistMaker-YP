@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
+import android.util.Log
 import android.view.View
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
@@ -44,24 +45,35 @@ sealed class SearchScreenState(val adapterTracks: List<AdapterTrack>? = null, va
     class Success(adapterTracks: List<AdapterTrack>?) : SearchScreenState(adapterTracks = adapterTracks) {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
-            binding.errorPlaceholder.visibility = View.GONE
             binding.clearHistoryButton.visibility = View.GONE
             binding.youSearchedTitle.visibility = View.GONE
             binding.refreshButton.visibility = View.GONE
+            if (adapterTracks.isNullOrEmpty()){
+                Log.e("Success","tracks is empty")
+                binding.errorPlaceholder.visibility = View.VISIBLE
+                binding.infoPlaceholder.placeholderImage.setImageResource(R.drawable.nothing_found)
+                binding.infoPlaceholder.placeholderMessage.text = "История пуста"
+            }else{
+                Log.e("Success","tracks is not empty")
+                binding.errorPlaceholder.visibility = View.GONE
+            }
         }
     }
 
     class ShowHistory(adapterTracks: List<AdapterTrack>?) : SearchScreenState(adapterTracks = adapterTracks) {
         override fun render(binding: FragmentSearchBinding) {
             if (adapterTracks.isNullOrEmpty()) {
+                binding.errorPlaceholder.visibility = View.VISIBLE
+                binding.infoPlaceholder.placeholderMessage.text = "История пуста"
                 binding.clearHistoryButton.visibility = View.GONE
                 binding.youSearchedTitle.visibility = View.GONE
             } else {
+                binding.errorPlaceholder.visibility = View.GONE
                 binding.clearHistoryButton.visibility = View.VISIBLE
                 binding.youSearchedTitle.visibility = View.VISIBLE
             }
             binding.progressBar.visibility = View.GONE
-            binding.errorPlaceholder.visibility = View.GONE
+
             binding.refreshButton.visibility = View.GONE
         }
     }
