@@ -38,5 +38,7 @@
     <string name="success_code" translatable="false">"200"</string>
     <string name="error_code" translatable="false">"500"</string>
     <string name="create_playlist">Создать</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

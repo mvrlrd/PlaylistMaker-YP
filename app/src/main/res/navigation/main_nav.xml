@@ -16,8 +16,8 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" >
         <action
-            android:id="@+id/action_searchFragment_to_playerActivity"
-            app:destination="@id/playerActivity"
+            android:id="@+id/action_searchFragment_to_playerFragment"
+            app:destination="@id/playerFragment"
             app:popUpTo="@id/searchFragment" />
     </fragment>
     <fragment
@@ -26,24 +26,30 @@
         android:label="fragment_mediateka"
         tools:layout="@layout/fragment_mediateka" >
         <action
-            android:id="@+id/action_mediatekaFragment_to_playerActivity"
-            app:destination="@id/playerActivity" />
-        <action
             android:id="@+id/action_mediatekaFragment_to_addPlaylistFragment"
             app:destination="@id/addPlaylistFragment"
             app:popUpTo="@id/mediatekaFragment" />
+        <action
+            android:id="@+id/action_mediatekaFragment_to_playerFragment"
+            app:destination="@id/playerFragment"
+            app:popUpTo="@id/mediatekaFragment" />
     </fragment>
-    <activity
-        android:id="@+id/playerActivity"
-        android:name="ru.mvrlrd.playlistmaker.player.ui.PlayerActivity"
-        android:label="PlayerActivity" >
-        <argument
-            android:name="track"
-            app:argType="ru.mvrlrd.playlistmaker.search.domain.AdapterTrack" />
-    </activity>
     <fragment
         android:id="@+id/addPlaylistFragment"
         android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui.AddPlaylistFragment"
         android:label="fragment_add_playlist"
         tools:layout="@layout/fragment_add_playlist" />
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="ru.mvrlrd.playlistmaker.player.ui.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player" >
+        <action
+            android:id="@+id/action_playerFragment_to_addPlaylistFragment"
+            app:destination="@id/addPlaylistFragment"
+            app:popUpTo="@id/playerFragment" />
+        <argument
+            android:name="adapterTrack"
+            app:argType="ru.mvrlrd.playlistmaker.search.domain.AdapterTrack" />
+    </fragment>
 </navigation>

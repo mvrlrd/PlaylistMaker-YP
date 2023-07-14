@@ -2,38 +2,45 @@ package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.navArgs
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.mvrlrd.playlistmaker.databinding.ActivityPlayerBinding
+import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
+import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
-class PlayerActivity : AppCompatActivity() {
-    private var _binding: ActivityPlayerBinding? = null
+
+class PlayerFragment : Fragment() {
+    private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
-    private val args by navArgs<PlayerActivityArgs>()
+
+    private val args by navArgs<PlayerFragmentArgs>()
     private val viewModel: PlayerViewModel by viewModel {
-        parametersOf(parseIntent())
+        parametersOf(parseIntent(args.adapterTrack))
     }
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = ActivityPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentPlayerBinding.inflate(layoutInflater, container, false)
         initBottomSheet()
         observeViewModel()
         handleBackButton()
         handlePlayButton()
         handleLikeButton()
         handleAddToPlaylistButton()
+        return binding.root
     }
 
     private fun handleAddToPlaylistButton() {
@@ -66,7 +73,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.backButton.apply {
             setOnClickListener {
                 viewModel.onDestroy()
-                this@PlayerActivity.finish()
+              //FINISH
             }
         }
     }
@@ -80,9 +87,18 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
 
+    private fun parseIntent(adapterTrack: AdapterTrack): PlayerTrack {
+        return adapterTrack.mapTrackToTrackForPlayer()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        viewModel.onDestroy()
+    }
 
     private fun initBottomSheet(){
-         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetContainer.bottomSheet).apply {
+        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetContainer.bottomSheet).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -101,26 +117,4 @@ class PlayerActivity : AppCompatActivity() {
             }
         })
     }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.pause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onDestroy()
-    }
-
-    private fun parseIntent(): PlayerTrack {
-        return args.track.mapTrackToTrackForPlayer()
-    }
-
-
 }
-
-
-
-
-
-

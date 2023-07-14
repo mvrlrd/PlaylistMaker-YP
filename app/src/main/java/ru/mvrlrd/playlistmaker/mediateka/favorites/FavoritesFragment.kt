@@ -2,6 +2,7 @@ package ru.mvrlrd.playlistmaker.mediateka.favorites
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
+import ru.mvrlrd.playlistmaker.search.ui.SearchFragmentDirections
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
 class FavoritesFragment : Fragment() {
@@ -41,7 +43,11 @@ class FavoritesFragment : Fragment() {
         trackAdapter.apply {
             onClickListener = { track ->
                 if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
-                    findNavController().navigate(MediatekaFragmentDirections.actionMediatekaFragmentToPlayerActivity(track.apply { isFavorite = true }))
+                    findNavController().navigate(
+                    MediatekaFragmentDirections.actionMediatekaFragmentToPlayerFragment(track.apply {
+                        isFavorite = true
+                    })
+                    )
                 }
             }
         }

@@ -75,7 +75,7 @@ class SearchFragment : Fragment() {
                 if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
                     viewModel.addToHistory(track)
                     findNavController().navigate(
-                        SearchFragmentDirections.actionSearchFragmentToPlayerActivity(track.apply {
+                        SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track.apply {
                             isFavorite = viewModel.isFavorite(this.trackId)
                         })
                     )
