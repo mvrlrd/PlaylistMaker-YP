@@ -22,7 +22,7 @@ val mediatekaVMModule = module {
         FavoritesViewModel(favoriteInteractor = get())
     }
     viewModel {
-        PlaylistsViewModel()
+        PlaylistsViewModel(interactor = get())
     }
     viewModel {
         AddPlaylistViewModel(interactor = get())
