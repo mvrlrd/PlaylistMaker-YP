@@ -1,26 +1,26 @@
 package ru.mvrlrd.playlistmaker.playlistDb.data
 
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.AdapterPlaylist
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.playlistDb.PlaylistEntity
 
 class PlaylistConverter {
-    fun mapEntityToAdapter(playlistEntity: PlaylistEntity): AdapterPlaylist{
+    fun mapEntityToAdapter(playlistEntity: PlaylistEntity): PlaylistForAdapter{
         with(playlistEntity){
-            return AdapterPlaylist(playlistId, name, description, playlistImagePath)
+            return PlaylistForAdapter(playlistId, name, description, playlistImagePath)
         }
     }
 
-    fun mapAdapterToEntity(playlist: AdapterPlaylist): PlaylistEntity{
+    fun mapAdapterToEntity(playlist: PlaylistForAdapter): PlaylistEntity{
         with(playlist){
             return PlaylistEntity(playlistId = 0, name =  name, description =  description, playlistImagePath =  playlistImagePath)
         }
     }
 
-    fun convertEntityListToAdapterList(entityList: List<PlaylistEntity>): List<AdapterPlaylist>{
+    fun convertEntityListToAdapterList(entityList: List<PlaylistEntity>): List<PlaylistForAdapter>{
         return entityList.map { mapEntityToAdapter(it) }
     }
 
-    fun convertAdapterListToEntityList(adapterList: List<AdapterPlaylist>): List<PlaylistEntity>{
+    fun convertAdapterListToEntityList(adapterList: List<PlaylistForAdapter>): List<PlaylistEntity>{
        return adapterList.map { mapAdapterToEntity(it) }
     }
 }

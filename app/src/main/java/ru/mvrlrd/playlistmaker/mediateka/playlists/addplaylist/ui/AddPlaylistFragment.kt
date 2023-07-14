@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.AdapterPlaylist
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import java.io.File
 import java.io.FileOutputStream
 
@@ -28,7 +28,7 @@ class AddPlaylistFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentAddPlaylistBinding == null")
     private val viewModel: AddPlaylistViewModel by viewModel()
     private var _uri: Uri? = null
-
+// TODO выходя из приложение  java.lang.RuntimeException: FragmentAddPlaylistBinding == null
     lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     override fun onCreateView(
@@ -119,7 +119,7 @@ class AddPlaylistFragment : Fragment() {
                 }
                 val name = binding.nameEtContainer.nameEt.text.toString()
                 val description = binding.descriptionEtContainer.nameEt.text.toString()?:""
-                viewModel.addPlaylist(AdapterPlaylist( name = name, description = description, playlistImagePath = _uri.toString()))
+                viewModel.addPlaylist(PlaylistForAdapter( name = name, description = description, playlistImagePath = _uri.toString()))
                 findNavController().popBackStack()
                 "плейлист ${binding.nameEtContainer.nameEt.text} создан"
             } catch (e: Exception) {

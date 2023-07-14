@@ -6,17 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
+import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 
 
 class PlaylistsFragment : Fragment() {
     private var _binding: FragmentPlaylistsBinding? =null
     private val binding get() = _binding!!
     private val viewModel: PlaylistsViewModel by viewModel()
-
+    private val playlistAdapter: PlaylistAdapter by inject()
     companion object {
         fun newInstance() = PlaylistsFragment()
     }
@@ -33,7 +36,20 @@ class PlaylistsFragment : Fragment() {
                 MediatekaFragmentDirections.actionMediatekaFragmentToAddPlaylistFragment()
             )
         }
+
+
+        viewModel.playlists.observe(this){
+            playlistAdapter.submitList(it)
+        }
+
         return binding.root
+    }
+
+    private fun initRecycler(){
+        binding.rView.apply {
+            adapter = playlistAdapter
+            layoutManager = GridLayoutManager(requireContext(), 2)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
