@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
@@ -28,6 +29,8 @@ class AddPlaylistFragment : Fragment() {
     private val viewModel: AddPlaylistViewModel by viewModel()
     private var _uri: Uri? = null
 
+    lateinit var confirmDialog: MaterialAlertDialogBuilder
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +38,28 @@ class AddPlaylistFragment : Fragment() {
         _binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
         viewModel.initEditTextFields()
         observeViewModel()
+
+        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (checkIfThereAreUnsavedData()){
+                    confirmDialog.show()
+                }else{
+                    findNavController().popBackStack()
+                }
+            }
+        })
+
+        confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle("Завершить создание плейлиста?")
+            setMessage("Все несохраненные данные будут потеряны")
+
+            setNegativeButton("Отмена") { dialog, which ->
+            }
+            setPositiveButton("Завершить") { dialog, which ->
+                findNavController().popBackStack()
+            }
+        }
+
         setOnClickListeners()
 
         registerImagePicker()
@@ -76,7 +101,7 @@ class AddPlaylistFragment : Fragment() {
         }
         binding.backButton.setOnClickListener {
             if (checkIfThereAreUnsavedData()){
-                showDialog()
+                confirmDialog.show()
             }else{
                 findNavController().popBackStack()
             }
@@ -117,20 +142,6 @@ class AddPlaylistFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    private fun showDialog(){
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Завершить создание плейлиста?")
-            .setMessage("Все несохраненные данные будут потеряны")
-            .setNeutralButton("Отмена") { dialog, which ->
-
-            }
-            .setNegativeButton("Отмена") { dialog, which ->
-            }
-            .setPositiveButton("Завершить") { dialog, which -> findNavController().popBackStack()
-            }
-            .show()
     }
 
     companion object {
