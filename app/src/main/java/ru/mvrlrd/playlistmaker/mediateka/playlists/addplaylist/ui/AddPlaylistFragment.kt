@@ -114,13 +114,13 @@ class AddPlaylistFragment : Fragment() {
         }
         binding.createPlaylistButton.setOnClickListener {
             val message = try {
-                _uri?.let {
-                    saveImageToPrivateStorage(_uri!!)
+                if (_uri == null){
+                    addPlaylist(false)
+                }else{
+                    saveImageToPrivateStorage(_uri!!,addPlaylist(true))
                 }
-                val name = binding.nameEtContainer.nameEt.text.toString()
-                val description = binding.descriptionEtContainer.nameEt.text.toString()
 
-                viewModel.addPlaylist(PlaylistForAdapter( name = name, description = description, playlistImagePath = _uri.toString()))
+
                 findNavController().popBackStack()
                 "плейлист ${binding.nameEtContainer.nameEt.text} создан"
             } catch (e: Exception) {
@@ -139,12 +139,32 @@ class AddPlaylistFragment : Fragment() {
             || binding.descriptionEtContainer.nameEt.text.toString().isNotEmpty())
     }
 
-    private fun saveImageToPrivateStorage(uri: Uri) {
+    private fun addPlaylist(isImageNotEmpty: Boolean): String{
+        val name = binding.nameEtContainer.nameEt.text.toString()
+        val description = binding.descriptionEtContainer.nameEt.text.toString()
+       val nameOfImage = if (isImageNotEmpty){
+           viewModel.generateImageNameForStorage()
+        }else{
+            ""
+       }
+
+        viewModel.addPlaylist(
+            PlaylistForAdapter(
+                name = name,
+                description = description,
+                playlistImagePath = nameOfImage
+            )
+        )
+        return nameOfImage
+    }
+
+    private fun saveImageToPrivateStorage(uri: Uri, nameOfImage: String) {
         val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
         if (!filePath.exists()){
             filePath.mkdirs()
         }
-        val file = File(filePath, "first_cover.jpg")
+
+        val file = File(filePath, nameOfImage)
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
         BitmapFactory

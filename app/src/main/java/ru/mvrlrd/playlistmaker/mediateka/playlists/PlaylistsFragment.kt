@@ -57,10 +57,10 @@ class PlaylistsFragment : Fragment() {
 
     private fun initRecycler(){
         playlistAdapter.onClickListener = {}
-        playlistAdapter.showImage = {
+        playlistAdapter.showImage = {view, playlistImage ->
             val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-            val file = File(filePath, "first_cover.jpg")
-            it.setImageURI(file.toUri())
+            val file = File(filePath, playlistImage)
+            view.setImageURI(file.toUri())
         }
         binding.rView.apply {
             adapter = playlistAdapter

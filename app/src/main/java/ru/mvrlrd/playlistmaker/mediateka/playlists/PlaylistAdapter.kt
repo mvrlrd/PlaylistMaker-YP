@@ -15,7 +15,7 @@ import java.io.File
 
 class PlaylistAdapter : ListAdapter<PlaylistForAdapter, PlaylistAdapter.PlaylistViewHolder>(PlaylistItemDiffCallback()) {
     var onClickListener: ((PlaylistForAdapter) -> Unit)? = null
-    var showImage: ((ImageView)->Unit)? = null
+    var showImage: ((ImageView, String)->Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         val binding = PlaylistCardItemBinding.inflate(layoutInspector, parent, false)
@@ -33,7 +33,10 @@ class PlaylistAdapter : ListAdapter<PlaylistForAdapter, PlaylistAdapter.Playlist
         holder.itemView.setOnClickListener {
             onClickListener?.invoke(item)
         }
-        showImage?.let { it(holder.albumImage) }
+        if (item.playlistImagePath.isNotEmpty()){
+            showImage?.let { it(holder.albumImage, item.playlistImagePath) }
+        }
+
         holder.bind(item)
     }
 
@@ -46,18 +49,20 @@ class PlaylistAdapter : ListAdapter<PlaylistForAdapter, PlaylistAdapter.Playlist
             binding.tvTitle.text = playlistForAdapter.name
             binding.tvTracksQuantity.text = playlistForAdapter.tracksQuantity.toString()
 
+                if (playlistForAdapter.playlistImagePath.isEmpty()){
+                    Glide
+                        .with(itemView)
+                        .load(playlistForAdapter.playlistImagePath)
+                        .placeholder(R.drawable.album_placeholder_image)
+
+//                    .transform(
+////                        CenterCrop(),
+////                        RoundedCorners(binding.ivPlaylistImage.resources.getDimensionPixelSize(R.dimen.radius))
+//                    )
+                        .into(binding.ivPlaylistImage)
+                }
 
 
-//                Glide
-//                    .with(itemView)
-//                    .load(playlistForAdapter.playlistImagePath)
-//                    .placeholder(R.drawable.album_placeholder_image)
-//
-////                    .transform(
-//////                        CenterCrop(),
-//////                        RoundedCorners(binding.ivPlaylistImage.resources.getDimensionPixelSize(R.dimen.radius))
-////                    )
-//                    .into(binding.ivPlaylistImage)
 
 
         }
