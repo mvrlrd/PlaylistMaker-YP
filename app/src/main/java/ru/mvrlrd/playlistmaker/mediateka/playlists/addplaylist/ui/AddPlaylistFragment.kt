@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist
+package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,11 +14,11 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.AdapterPlaylist
 import java.io.File
 import java.io.FileOutputStream
 
@@ -86,6 +86,12 @@ class AddPlaylistFragment : Fragment() {
         viewModel.screenState.observe(this) { screenState ->
             screenState.render(binding)
         }
+        viewModel.playlists.observe(this){
+            println("__________")
+            it.forEach { println(it) }
+            Log.d("AddPlaylistFragment","${it.size}")
+            println("__________")
+        }
     }
 
     private fun setOnClickListeners() {
@@ -108,7 +114,13 @@ class AddPlaylistFragment : Fragment() {
         }
         binding.createPlaylistButton.setOnClickListener {
             val message = try {
-                saveImageToPrivateStorage(_uri!!)
+                _uri?.let {
+                    saveImageToPrivateStorage(_uri!!)
+                }
+
+                val name = binding.nameEtContainer.nameEt.text.toString()
+                val description = binding.descriptionEtContainer.nameEt.text.toString()?:""
+                viewModel.addPlaylist(AdapterPlaylist( name = name, description = description, playlistImagePath = _uri.toString()))
                 findNavController().popBackStack()
                 "плейлист ${binding.nameEtContainer.nameEt.text} создан"
             } catch (e: Exception) {
@@ -118,6 +130,8 @@ class AddPlaylistFragment : Fragment() {
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
+
+
 
     private fun checkIfThereAreUnsavedData() : Boolean{
         return (_uri!=null

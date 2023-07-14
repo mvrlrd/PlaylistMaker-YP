@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist
+package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui
 
 import android.content.res.ColorStateList
 import android.view.View

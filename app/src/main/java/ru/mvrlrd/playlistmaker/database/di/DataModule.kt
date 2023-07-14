@@ -5,6 +5,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
 import ru.mvrlrd.playlistmaker.database.data.TrackConverter
+import ru.mvrlrd.playlistmaker.playlistDb.data.PlaylistConverter
+import ru.mvrlrd.playlistmaker.playlistDb.data.PlaylistDb
 
 val dataBaseModule = module {
     single {
@@ -15,5 +17,15 @@ val dataBaseModule = module {
 
     factory {
         TrackConverter()
+    }
+
+    single {
+        Room.databaseBuilder(androidContext(), PlaylistDb::class.java, "playlist_database.db")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    factory {
+        PlaylistConverter()
     }
 }

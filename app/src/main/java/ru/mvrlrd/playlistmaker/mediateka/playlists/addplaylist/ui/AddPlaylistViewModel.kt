@@ -1,12 +1,26 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist
+package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.AdapterPlaylist
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistInteractor
 
-class AddPlaylistViewModel: ViewModel() {
+class AddPlaylistViewModel(private val interactor: PlaylistInteractor): ViewModel() {
     private val _screenState = MutableLiveData<AddPlaylistScreenState>()
     val screenState: LiveData<AddPlaylistScreenState> = _screenState
+    val playlists: LiveData<List<AdapterPlaylist>> =
+        interactor.getAllPlaylist().asLiveData()
+    fun addPlaylist(adapterPlaylist: AdapterPlaylist){
+        viewModelScope.launch {
+            interactor.addPlaylist(adapterPlaylist)
+        }
+    }
+
+
 
     fun clearNameFieldText(){
         _screenState.value = AddPlaylistScreenState.ClearNamFieldText

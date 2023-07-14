@@ -10,7 +10,11 @@ import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoritesRepository
 import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.impl.FavoriteInteractorImpl
 import ru.mvrlrd.playlistmaker.mediateka.favorites.FavoritesViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsViewModel
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.AddPlaylistViewModel
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.data.PlaylistRepositoryImpl
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistInteractor
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistRepository
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.impl.PlaylistInteractorImpl
+import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui.AddPlaylistViewModel
 
 val mediatekaVMModule = module {
     viewModel {
@@ -20,7 +24,7 @@ val mediatekaVMModule = module {
         PlaylistsViewModel()
     }
     viewModel {
-        AddPlaylistViewModel()
+        AddPlaylistViewModel(interactor = get())
     }
     factory {
         FavoriteAdapter()
@@ -35,6 +39,13 @@ val mediatekaVMModule = module {
     }
     single<FavoritesRepository> {
         FavoritesRepositoryImpl(favoriteDb = get(), trackConverter = get())
+    }
+
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(dataBase = get(), converter = get())
+    }
+    single <PlaylistInteractor> {
+        PlaylistInteractorImpl(repository = get())
     }
 
 }

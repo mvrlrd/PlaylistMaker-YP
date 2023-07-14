@@ -43,7 +43,7 @@
     </activity>
     <fragment
         android:id="@+id/addPlaylistFragment"
-        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.AddPlaylistFragment"
+        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui.AddPlaylistFragment"
         android:label="fragment_add_playlist"
         tools:layout="@layout/fragment_add_playlist" />
 </navigation>
