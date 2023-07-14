@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,12 +41,21 @@ class PlayerFragment : Fragment() {
         handlePlayButton()
         handleLikeButton()
         handleAddToPlaylistButton()
+        handleAddToPlaylistButton1()
         return binding.root
     }
 
     private fun handleAddToPlaylistButton() {
         binding.addToPlaylistBtn.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        }
+    }
+
+    private fun handleAddToPlaylistButton1(){
+        binding.bottomSheetContainer.btAddNewPlaylist.setOnClickListener {
+            findNavController().navigate(
+                PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment()
+            )
         }
     }
 

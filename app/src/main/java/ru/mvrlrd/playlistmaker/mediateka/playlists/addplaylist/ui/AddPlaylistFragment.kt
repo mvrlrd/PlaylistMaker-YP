@@ -38,7 +38,7 @@ class AddPlaylistFragment : Fragment() {
         _binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
         viewModel.initEditTextFields()
         observeViewModel()
-
+//TODO после того как возвращаюсь на экран плеера и жму назад - падает
         requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (checkIfThereAreUnsavedData()){
@@ -175,7 +175,12 @@ class AddPlaylistFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+//        _binding = null
     }
 
     companion object {
