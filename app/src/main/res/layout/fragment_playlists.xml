@@ -8,13 +8,28 @@
     android:orientation="vertical"
     tools:context=".mediateka.playlists.PlaylistsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rView"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/addPlaylistButton"
-        tools:layout_editor_absoluteX="0dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addPlaylistButton"
+           >
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </ScrollView>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/addPlaylistButton"

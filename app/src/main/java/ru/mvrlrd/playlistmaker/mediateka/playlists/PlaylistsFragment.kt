@@ -37,15 +37,23 @@ class PlaylistsFragment : Fragment() {
             )
         }
 
+        initRecycler()
 
         viewModel.playlists.observe(this){
+            if (it.isNotEmpty()){
+                binding.placeHolder.infoPlaceHolder.visibility = View.GONE
+            }else{
+                binding.placeHolder.infoPlaceHolder.visibility = View.VISIBLE
+            }
             playlistAdapter.submitList(it)
+
         }
 
         return binding.root
     }
 
     private fun initRecycler(){
+        playlistAdapter.onClickListener = {}
         binding.rView.apply {
             adapter = playlistAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)

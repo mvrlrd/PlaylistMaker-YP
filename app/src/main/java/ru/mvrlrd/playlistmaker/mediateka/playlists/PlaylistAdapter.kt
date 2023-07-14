@@ -37,7 +37,7 @@ class PlaylistAdapter : ListAdapter<PlaylistForAdapter, PlaylistAdapter.Playlist
         fun bind(playlistForAdapter: PlaylistForAdapter) {
 
             binding.tvTitle.text = playlistForAdapter.name
-            binding.tvTracksQuantity.text = playlistForAdapter.description
+            binding.tvTracksQuantity.text = "32"
 
             Glide
                 .with(itemView)

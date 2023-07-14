@@ -119,7 +119,7 @@ class AddPlaylistFragment : Fragment() {
                 }
                 val name = binding.nameEtContainer.nameEt.text.toString()
                 val description = binding.descriptionEtContainer.nameEt.text.toString()?:""
-                viewModel.addPlaylist(PlaylistForAdapter( name = name, description = description, playlistImagePath = _uri.toString()))
+                viewModel.addPlaylist(PlaylistForAdapter( name = name, description = description, playlistImagePath = _uri.toString(), tracksQuantity = 14))
                 findNavController().popBackStack()
                 "плейлист ${binding.nameEtContainer.nameEt.text} создан"
             } catch (e: Exception) {
