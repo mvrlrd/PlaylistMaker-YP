@@ -27,10 +27,6 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         return playerRepository.getLivePlayerState()
     }
 
-    override fun getLiveTime():LiveData<Int>{
-        return playerRepository.getLiveTime()
-    }
-
     override fun getCurrentTime(): Flow<Int> {
         return playerRepository.getCurrentTime()
     }

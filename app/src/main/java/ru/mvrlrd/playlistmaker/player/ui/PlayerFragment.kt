@@ -63,7 +63,7 @@ class PlayerFragment : Fragment() {
         binding.likeButton.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
-//                    viewModel.handleLikeButton()
+                    viewModel.handleLikeButton()
                 }
             }
         }
@@ -93,16 +93,12 @@ class PlayerFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.playlists.observe(this) {
-            Log.e("PlayerActivity", "${it.size}")
+            Log.e("observeViewModel", "${it.size}")
         }
 
         viewModel.playerState.observe(viewLifecycleOwner){
-            Log.e("live",it.name)
+            Log.e("observeViewModel",it.name)
             viewModel.render()
-        }
-
-        viewModel.time.observe(viewLifecycleOwner){
-            viewModel.renderTime(it)
         }
 
         viewModel.screenState.observe(this) {

@@ -11,31 +11,26 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
     private var _playerState =  MutableLiveData<PlayerState> ()
     private val playerState : LiveData<PlayerState> =_playerState
 
-    private var _time =  MutableLiveData<Int> ()
-    private val time : LiveData<Int> =_time
 
     override fun getLivePlayerState():LiveData<PlayerState>{
         return playerState
     }
 
-    override fun getLiveTime():LiveData<Int>{
-         _time.value = mediaPlayer.currentPosition
-        return time
-    }
 
     init {
         _playerState.value = PlayerState.DEFAULT
     }
     override fun preparePlayer(playerTrack: PlayerTrack) {
         mediaPlayer.setDataSource(playerTrack.previewUrl)
+
+
+        mediaPlayer.setOnPreparedListener {
+            _playerState.value = PlayerState.PREPARED
+        }
         mediaPlayer.prepareAsync()
 
         mediaPlayer.setOnCompletionListener {
             _playerState.postValue(PlayerState.COMPLETED)
-        }
-
-        mediaPlayer.setOnPreparedListener {
-            _playerState.value = PlayerState.PREPARED
         }
     }
 

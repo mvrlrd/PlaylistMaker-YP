@@ -9,8 +9,6 @@ interface PlayerClient {
      fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>
      fun preparePlayer(playerTrack: PlayerTrack)
 
-      fun getLiveTime():LiveData<Int>
-
      fun start()
 
      fun pause()

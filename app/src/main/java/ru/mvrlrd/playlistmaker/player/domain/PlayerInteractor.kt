@@ -14,8 +14,6 @@ interface PlayerInteractor {
 
     suspend fun addTrackToFavorite(playerTrack: PlayerTrack)
 
-     fun getLiveTime():LiveData<Int>
-
     suspend fun removeTrackFromFavorite(trackId: Int)
 
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>

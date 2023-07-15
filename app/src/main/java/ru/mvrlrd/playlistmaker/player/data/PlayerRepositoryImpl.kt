@@ -26,10 +26,6 @@ class PlayerRepositoryImpl(
         return playerClient.getLivePlayerState()
     }
 
-    override fun getLiveTime():LiveData<Int>{
-        return playerClient.getLiveTime()
-    }
-
 
     override fun start() {
         playerClient.start()

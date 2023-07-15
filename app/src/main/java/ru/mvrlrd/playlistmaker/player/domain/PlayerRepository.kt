@@ -18,7 +18,6 @@ interface PlayerRepository {
     fun getCurrentTime(): Flow<Int>
 
     suspend fun addToFavorite(playerTrack: PlayerTrack)
-     fun getLiveTime():LiveData<Int>
     suspend fun removeFromFavorite(trackId: Int)
 
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
