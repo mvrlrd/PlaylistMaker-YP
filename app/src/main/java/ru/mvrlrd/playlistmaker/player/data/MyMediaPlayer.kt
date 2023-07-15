@@ -16,7 +16,6 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
         return playerState
     }
 
-
     init {
         _playerState.value = PlayerState.DEFAULT
     }
@@ -41,8 +40,9 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
 
     override fun pause() {
         if(mediaPlayer.isPlaying){
-            mediaPlayer.pause()
             _playerState.value = PlayerState.PAUSED
+            mediaPlayer.pause()
+
         }
     }
 

@@ -1,7 +1,6 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
@@ -21,14 +19,10 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor: PlayerInteractor) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
-
     val playerState = playerInteractor.getLivePlayerState()
-
     private var timerJob: Job? = null
-
     val playlists: LiveData<List<PlaylistForAdapter>> =
         playerInteractor.getAllPlaylists().asLiveData()
-
     init {
             playerInteractor.preparePlayer(playerTrack)
     }
@@ -48,8 +42,7 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
                     while (playerState.value == PLAYING) {
                         delay(300)
                          playerInteractor.getCurrentTime().collect(){
-
-                             _screenState.value = PlayerScreenState.Playing(getCurrentPosition(it))
+                             renderTime(it)
                          }
                     }
                 }
@@ -74,9 +67,20 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
 //                _screenState.value = PlayerScreenState.BeginningState(playerTrack)
 //                playerInteractor.preparePlayer(playerTrack)
             }
-            PAUSED,PLAYING, ->{
+            PAUSED -> {
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
                 _screenState.value = PlayerScreenState.Preparing
+                timerJob?.cancel()
+                timerJob =  viewModelScope.launch {
+                        playerInteractor.getCurrentTime().collect(){
+                            renderTime(it)
+                    }
+                }
+            }
+            PLAYING, ->{
+                _screenState.value = PlayerScreenState.BeginningState(playerTrack)
+                _screenState.value = PlayerScreenState.Preparing
+
             }
             COMPLETED,PREPARED, ->{
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
@@ -87,12 +91,13 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
         }
     }
 
+
     fun onStop(){
         playerInteractor.pause()
     }
 
-    fun renderTime(time: Int){
-        _screenState.value = PlayerScreenState.Playing(getCurrentPosition(time))
+    private fun renderTime(time: Int){
+        _screenState.value = PlayerScreenState.Playing(parseTime(time))
     }
 
     fun playbackControl() {
@@ -128,18 +133,14 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
         }
     }
 
-
-
     fun onDestroy(){
         timerJob?.cancel()
         playerInteractor.onDestroy()
     }
 
-    private fun getCurrentPosition(_time: Int):String{
+    private fun parseTime(_time: Int):String{
         return formatTime(_time)
     }
-
-
 }
 
 

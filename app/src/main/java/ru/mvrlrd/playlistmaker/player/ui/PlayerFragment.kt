@@ -82,22 +82,19 @@ class PlayerFragment : Fragment() {
     private fun handleBackButton() {
         binding.backButton.apply {
             setOnClickListener {
-//                viewModel.onDestroy()
                 Log.e("AddPlaylistFragment", "${findNavController().graph}")
                 findNavController().popBackStack()
-
-              //FINISH
             }
         }
     }
 
     private fun observeViewModel() {
         viewModel.playlists.observe(this) {
-            Log.e("observeViewModel", "${it.size}")
+            Log.e("PlayerFragment", "${it.size}")
         }
 
         viewModel.playerState.observe(viewLifecycleOwner){
-            Log.e("observeViewModel",it.name)
+            Log.e("PlayerFragment","player state = ${it.name}")
             viewModel.render()
         }
 
@@ -118,11 +115,13 @@ class PlayerFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        Log.e("PlayerFragment","onStop")
         viewModel.onStop()
     }
 
     override fun onResume() {
         super.onResume()
+        Log.e("PlayerFragment","onResume")
         viewModel.onResume()
     }
 
