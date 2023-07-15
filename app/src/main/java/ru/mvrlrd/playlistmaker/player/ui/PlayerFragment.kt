@@ -1,16 +1,21 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
@@ -18,11 +23,14 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
+import java.io.File
 
 
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
+
+    private val playlistAdapter: PlaylistAdapterForPlayer by inject()
 
     private val args by navArgs<PlayerFragmentArgs>()
     private val viewModel: PlayerViewModel by viewModel {
@@ -42,6 +50,8 @@ class PlayerFragment : Fragment() {
         handleLikeButton()
         handleAddToPlaylistButton()
         handleAddToPlaylistButton1()
+
+        initRecycler()
         return binding.root
     }
 
@@ -91,6 +101,7 @@ class PlayerFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.playlists.observe(this) {
             Log.d("PlayerFragment", "${it.size}")
+            playlistAdapter.submitList(it)
         }
 
         viewModel.playerState.observe(viewLifecycleOwner){
@@ -128,6 +139,19 @@ class PlayerFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
                 viewModel.onDestroy()
+    }
+
+    private fun initRecycler(){
+//        playlistAdapter.onClickListener = {}
+        playlistAdapter.showImage = {view, playlistImage ->
+            val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+            val file = File(filePath, playlistImage)
+            view.setImageURI(file.toUri())
+        }
+        binding.bottomSheetContainer.rvPlaylists .apply {
+            adapter = playlistAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+        }
     }
 
     private fun initBottomSheet(){
