@@ -9,13 +9,13 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
 class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
     private var _playerState =  MutableLiveData<PlayerState> ()
-    private val live : LiveData<PlayerState> =_playerState
+    private val playerState : LiveData<PlayerState> =_playerState
 
     private var _time =  MutableLiveData<Int> ()
-    val time : LiveData<Int> =_time
+    private val time : LiveData<Int> =_time
 
-    override fun getIff():LiveData<PlayerState>{
-        return live
+    override fun getLivePlayerState():LiveData<PlayerState>{
+        return playerState
     }
 
     override fun getLiveTime():LiveData<Int>{
@@ -29,17 +29,14 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
     override fun preparePlayer(playerTrack: PlayerTrack) {
         mediaPlayer.setDataSource(playerTrack.previewUrl)
         mediaPlayer.prepareAsync()
-        setOnCompletionListener()
-        mediaPlayer.setOnPreparedListener {
-            _playerState.value = PlayerState.PREPARED
-        }
-    }
 
-    override fun setOnCompletionListener() {
         mediaPlayer.setOnCompletionListener {
             _playerState.postValue(PlayerState.COMPLETED)
         }
 
+        mediaPlayer.setOnPreparedListener {
+            _playerState.value = PlayerState.PREPARED
+        }
     }
 
     override fun start() {

@@ -22,12 +22,9 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         playerRepository.onDestroy()
     }
 
-    override fun setOnCompletionListener() {
-        playerRepository.setOnCompletionListener()
-    }
 
-   override fun getIff():LiveData<MyMediaPlayer.PlayerState>{
-        return playerRepository.getIff()
+   override fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>{
+        return playerRepository.getLivePlayerState()
     }
 
     override fun getLiveTime():LiveData<Int>{

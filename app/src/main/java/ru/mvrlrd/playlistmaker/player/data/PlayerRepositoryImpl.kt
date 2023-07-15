@@ -22,16 +22,14 @@ class PlayerRepositoryImpl(
         playerClient.preparePlayer(playerTrack)
     }
 
-    override fun getIff():LiveData<MyMediaPlayer.PlayerState>{
-        return playerClient.getIff()
+    override fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>{
+        return playerClient.getLivePlayerState()
     }
 
     override fun getLiveTime():LiveData<Int>{
         return playerClient.getLiveTime()
     }
-    override fun setOnCompletionListener() {
-        playerClient.setOnCompletionListener()
-    }
+
 
     override fun start() {
         playerClient.start()

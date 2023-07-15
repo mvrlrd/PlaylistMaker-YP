@@ -11,7 +11,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.*
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime
@@ -22,7 +21,7 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
 
-    val playerState = playerInteractor.getIff()
+    val playerState = playerInteractor.getLivePlayerState()
     val time = playerInteractor.getLiveTime()
 
     private var timerJob: Job? = null

@@ -6,10 +6,8 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
 interface PlayerClient {
 
-     fun getIff():LiveData<MyMediaPlayer.PlayerState>
+     fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>
      fun preparePlayer(playerTrack: PlayerTrack)
-
-     fun setOnCompletionListener()
 
       fun getLiveTime():LiveData<Int>
 

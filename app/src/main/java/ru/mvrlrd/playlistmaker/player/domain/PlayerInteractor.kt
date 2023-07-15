@@ -9,7 +9,6 @@ interface PlayerInteractor {
     fun start()
     fun pause()
     fun onDestroy()
-    fun setOnCompletionListener()
     fun getCurrentTime(): Flow<Int>
     fun preparePlayer(playerTrack: PlayerTrack)
 
@@ -20,5 +19,5 @@ interface PlayerInteractor {
     suspend fun removeTrackFromFavorite(trackId: Int)
 
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
-    fun getIff():LiveData<MyMediaPlayer.PlayerState>
+    fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>
 }

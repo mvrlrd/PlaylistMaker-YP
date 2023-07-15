@@ -8,7 +8,6 @@ import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 interface PlayerRepository {
     fun preparePlayer(playerTrack: PlayerTrack)
 
-    fun setOnCompletionListener()
 
     fun start()
 
@@ -23,6 +22,6 @@ interface PlayerRepository {
     suspend fun removeFromFavorite(trackId: Int)
 
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
-    fun getIff():LiveData<MyMediaPlayer.PlayerState>
+    fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>
 
 }
