@@ -119,8 +119,6 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
         playerInteractor.pause()
     }
 
-
-
     fun handleLikeButton(){
         playerTrack.isFavorite = !playerTrack.isFavorite
         _screenState.postValue(PlayerScreenState.LikeButtonHandler(playerTrack))
