@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.db_playlist
+package ru.mvrlrd.playlistmaker.db_playlist.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,11 +12,6 @@ class PlaylistEntity(
     val playlistImagePath: String,
 )
 
-//@Entity(primaryKeys = ["playlistId", "trackId"])
-//data class PlaylistTrackCrossRef(
-//    val playlistId: Int,
-//    val trackId: Int
-//)
 
 
 

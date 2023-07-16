@@ -1,6 +1,5 @@
 package ru.mvrlrd.playlistmaker.player.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -10,11 +9,11 @@ import ru.mvrlrd.playlistmaker.database.data.TrackConverter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
-import ru.mvrlrd.playlistmaker.db_playlist.data.PlaylistConverter
-import ru.mvrlrd.playlistmaker.db_playlist.data.PlaylistDb
-import ru.mvrlrd.playlistmaker.db_playlist.data.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.db_playlist.data.entities.Song
-import ru.mvrlrd.playlistmaker.db_playlist.data.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.db_playlist.PlaylistConverter
+import ru.mvrlrd.playlistmaker.db_playlist.PlaylistDb
+import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.db_playlist.entities.Song
+import ru.mvrlrd.playlistmaker.db_playlist.relations.PlaylistWithSongs
 
 class PlayerRepositoryImpl(
     private val playerClient: PlayerClient,

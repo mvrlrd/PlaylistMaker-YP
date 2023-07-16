@@ -36,8 +36,8 @@ class RetrofitNetworkClient(
 
                 response.apply { resultCode = context.resources.getString(R.string.success_code).toInt()
                     results = results.filter { it.previewUrl != null } as ArrayList<TrackDto>
-
                 }
+
             } catch (e: Throwable) {
                 Response().apply {
                     resultCode = context.resources.getString(R.string.error_code).toInt()

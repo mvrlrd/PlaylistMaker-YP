@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.db_playlist.data.entities
+package ru.mvrlrd.playlistmaker.db_playlist.entities
 
 import androidx.room.Entity
 

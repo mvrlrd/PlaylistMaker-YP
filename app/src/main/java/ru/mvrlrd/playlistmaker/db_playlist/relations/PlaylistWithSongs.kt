@@ -1,11 +1,11 @@
-package ru.mvrlrd.playlistmaker.db_playlist.data.relations
+package ru.mvrlrd.playlistmaker.db_playlist.relations
 
 import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
-import ru.mvrlrd.playlistmaker.db_playlist.PlaylistEntity
-import ru.mvrlrd.playlistmaker.db_playlist.data.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.db_playlist.data.entities.Song
+import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistEntity
+import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.db_playlist.entities.Song
 
 data class PlaylistWithSongs(
     @Embedded val playlist: PlaylistEntity,

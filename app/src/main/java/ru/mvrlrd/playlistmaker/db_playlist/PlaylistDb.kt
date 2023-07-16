@@ -1,12 +1,12 @@
-package ru.mvrlrd.playlistmaker.db_playlist.data
+package ru.mvrlrd.playlistmaker.db_playlist
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import ru.mvrlrd.playlistmaker.db_playlist.PlaylistEntity
-import ru.mvrlrd.playlistmaker.db_playlist.data.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.db_playlist.data.entities.Song
+import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistEntity
+import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.db_playlist.entities.Song
 
 @Database(version = 2, entities = [PlaylistEntity::class, PlaylistSongCrossRef::class, Song::class])
-abstract class PlaylistDb: RoomDatabase() {
+abstract class PlaylistDb : RoomDatabase() {
     abstract fun getDao(): PlaylistDao
 }

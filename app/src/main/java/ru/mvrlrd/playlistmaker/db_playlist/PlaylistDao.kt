@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.db_playlist.data
+package ru.mvrlrd.playlistmaker.db_playlist
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,10 +6,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
-import ru.mvrlrd.playlistmaker.db_playlist.PlaylistEntity
-import ru.mvrlrd.playlistmaker.db_playlist.data.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.db_playlist.data.entities.Song
-import ru.mvrlrd.playlistmaker.db_playlist.data.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistEntity
+import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.db_playlist.entities.Song
+import ru.mvrlrd.playlistmaker.db_playlist.relations.PlaylistWithSongs
 
 @Dao
 interface PlaylistDao {
@@ -17,19 +17,19 @@ interface PlaylistDao {
     suspend fun insertPlaylist(playlistEntity: PlaylistEntity)
 
     @Query("SELECT * FROM playlist_table WHERE playlistId =:id")
-    suspend fun getPlaylist(id: Long):PlaylistEntity
+    suspend fun getPlaylist(id: Long): PlaylistEntity
 
     @Query("SELECT * FROM playlist_table")
     fun getAllPlaylists(): Flow<List<PlaylistEntity>>
 
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertTrack(song: Song):Long
+    suspend fun insertTrack(song: Song): Long
 
     @Transaction
     @Query("SELECT * FROM playlist_table")
-     fun getPlaylistsWithSongs(): Flow<List<PlaylistWithSongs>>
+    fun getPlaylistsWithSongs(): Flow<List<PlaylistWithSongs>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-     suspend fun insertPlaylistSongCrossRef(playlistSongCrossRef: PlaylistSongCrossRef):Long
+    suspend fun insertPlaylistSongCrossRef(playlistSongCrossRef: PlaylistSongCrossRef): Long
 }
