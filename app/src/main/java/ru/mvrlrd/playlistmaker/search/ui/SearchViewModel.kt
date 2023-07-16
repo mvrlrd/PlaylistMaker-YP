@@ -1,7 +1,6 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 
 class SearchViewModel(private val tracksInteractor: TracksInteractor,
@@ -55,7 +54,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
                         val trackList = resp.first
                         val code = resp.second.first
                         val errorMessage = resp.second.second
-                        handleResponse(adapterTracks = trackList, code = code, errorMessage = errorMessage)
+                        handleResponse(trackForAdapters = trackList, code = code, errorMessage = errorMessage)
                     }
             }
         }
@@ -74,10 +73,10 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
        return favIds.contains(trackId)
     }
 
-    private fun handleResponse(adapterTracks: List<AdapterTrack>?, code: Int, errorMessage: String?){
+    private fun handleResponse(trackForAdapters: List<TrackForAdapter>?, code: Int, errorMessage: String?){
         if (code == context.resources.getString(R.string.success_code).toInt()){
-            if (adapterTracks!!.isNotEmpty()){
-                _screenState.postValue(SearchScreenState.Success(adapterTracks))
+            if (trackForAdapters!!.isNotEmpty()){
+                _screenState.postValue(SearchScreenState.Success(trackForAdapters))
             }else{
                 _screenState.postValue(SearchScreenState.NothingFound())
             }
@@ -86,8 +85,8 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
         }
     }
 
-    fun addToHistory(adapterTrack: AdapterTrack) {
-        tracksInteractor.addTrackToHistory(adapterTrack)
+    fun addToHistory(trackForAdapter: TrackForAdapter) {
+        tracksInteractor.addTrackToHistory(trackForAdapter)
     }
 
     fun clearHistory() {

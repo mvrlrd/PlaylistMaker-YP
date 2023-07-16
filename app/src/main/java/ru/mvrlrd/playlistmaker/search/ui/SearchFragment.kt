@@ -1,7 +1,6 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +38,7 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.screenState.observe(this) { screenState ->
             if (viewModel.isReadyToRender(screenState, binding.searchEditText.text.toString())) {
-                trackAdapter.submitList(screenState.adapterTracks)
+                trackAdapter.submitList(screenState.trackForAdapters)
                 screenState.render(binding)
                 if (screenState is SearchScreenState.Error) {
                     showToast(screenState.code)
@@ -76,6 +75,8 @@ class SearchFragment : Fragment() {
                     viewModel.addToHistory(track)
                     findNavController().navigate(
                         SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track.apply {
+
+                            previewUrl ="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/80/53/29/80532911-161a-589c-94d8-32371b872edb/mzaf_18392915580449150243.plus.aac.p.m4a"
                             isFavorite = viewModel.isFavorite(this.trackId)
                         })
                     )

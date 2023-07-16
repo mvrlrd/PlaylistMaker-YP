@@ -49,7 +49,7 @@
             app:destination="@id/addPlaylistFragment"
             app:popUpTo="@id/playerFragment" />
         <argument
-            android:name="adapterTrack"
-            app:argType="ru.mvrlrd.playlistmaker.search.domain.AdapterTrack" />
+            android:name="track"
+            app:argType="ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter" />
     </fragment>
 </navigation>

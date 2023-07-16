@@ -13,7 +13,6 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
@@ -23,7 +22,7 @@ import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
-import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 import java.io.File
 
@@ -36,9 +35,9 @@ class PlayerFragment : Fragment() {
 
     private val args by navArgs<PlayerFragmentArgs>()
 
-
+//
     private val viewModel: PlayerViewModel by viewModel {
-        parametersOf(parseIntent(args.adapterTrack))
+        parametersOf(parseIntent(args.track))
     }
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
@@ -47,6 +46,7 @@ class PlayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerBinding.inflate(layoutInflater, container, false)
+        Log.d("PlayerFragment","${args.track}")
         initBottomSheet()
         observeViewModel()
         handleBackButton()
@@ -77,7 +77,7 @@ class PlayerFragment : Fragment() {
         binding.likeButton.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
-                    viewModel.handleLikeButton()
+//                    viewModel.handleLikeButton()
                 }
             }
         }
@@ -126,8 +126,8 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun parseIntent(adapterTrack: AdapterTrack): PlayerTrack {
-        return adapterTrack.mapTrackToTrackForPlayer()
+    private fun parseIntent(trackForAdapter: TrackForAdapter): PlayerTrack {
+        return trackForAdapter.mapTrackToTrackForPlayer()
     }
 
     override fun onDestroyView() {
@@ -156,7 +156,7 @@ class PlayerFragment : Fragment() {
     private fun initRecycler(){
         playlistAdapter.onClickListener = {
             lifecycleScope.launch {
-            viewModel.addTrackToPlaylist(trackId = parseIntent(args.adapterTrack).trackId, playlistId = it.playlistId!!)
+            viewModel.addTrackToPlaylist(trackId = parseIntent(args.track).trackId, playlistId = it.playlistId!!)
             }
         }
         playlistAdapter.showImage = {view, playlistImage ->

@@ -25,7 +25,7 @@ sealed class PlayerScreenState {
                 Locale.getDefault()
             ).format(track.trackTime?.toLong() ?: 0L)
             binding.albumParam.text = track.album
-            binding.yearParam.text = unparseDateToYear(track.year!!)
+            binding.yearParam.text = unparseDateToYear(track.year)
             binding.genreParam.text = track.genre
             binding.countryParam.text = track.country
             handleLikeButton(binding, track)

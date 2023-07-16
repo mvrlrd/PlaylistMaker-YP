@@ -4,9 +4,9 @@ import android.util.Log
 import android.view.View
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
-import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
-sealed class SearchScreenState(val adapterTracks: List<AdapterTrack>? = null, val message: String? = null) {
+sealed class SearchScreenState(val trackForAdapters: List<TrackForAdapter>? = null, val message: String? = null) {
     class Loading : SearchScreenState() {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.VISIBLE
@@ -42,13 +42,13 @@ sealed class SearchScreenState(val adapterTracks: List<AdapterTrack>? = null, va
         }
     }
 
-    class Success(adapterTracks: List<AdapterTrack>?) : SearchScreenState(adapterTracks = adapterTracks) {
+    class Success(trackForAdapters: List<TrackForAdapter>?) : SearchScreenState(trackForAdapters = trackForAdapters) {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
             binding.clearHistoryButton.visibility = View.GONE
             binding.youSearchedTitle.visibility = View.GONE
             binding.refreshButton.visibility = View.GONE
-            if (adapterTracks.isNullOrEmpty()){
+            if (trackForAdapters.isNullOrEmpty()){
                 Log.e("Success","tracks is empty")
                 binding.errorPlaceholder.visibility = View.VISIBLE
                 binding.infoPlaceholder.placeholderImage.setImageResource(R.drawable.nothing_found)
@@ -60,9 +60,9 @@ sealed class SearchScreenState(val adapterTracks: List<AdapterTrack>? = null, va
         }
     }
 
-    class ShowHistory(adapterTracks: List<AdapterTrack>?) : SearchScreenState(adapterTracks = adapterTracks) {
+    class ShowHistory(trackForAdapters: List<TrackForAdapter>?) : SearchScreenState(trackForAdapters = trackForAdapters) {
         override fun render(binding: FragmentSearchBinding) {
-            if (adapterTracks.isNullOrEmpty()) {
+            if (trackForAdapters.isNullOrEmpty()) {
                 binding.errorPlaceholder.visibility = View.VISIBLE
                 binding.infoPlaceholder.placeholderMessage.text = "История пуста"
                 binding.clearHistoryButton.visibility = View.GONE

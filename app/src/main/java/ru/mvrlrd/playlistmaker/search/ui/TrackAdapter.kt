@@ -11,11 +11,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.databinding.TrackLayoutBinding
-import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 
-class TrackAdapter : ListAdapter<AdapterTrack, TrackAdapter.TrackViewHolder>(TrackItemDiffCallback()) {
-    var onClickListener: ((AdapterTrack) -> Unit)? = null
+class TrackAdapter : ListAdapter<TrackForAdapter, TrackAdapter.TrackViewHolder>(TrackItemDiffCallback()) {
+    var onClickListener: ((TrackForAdapter) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         val binding = TrackLayoutBinding.inflate(layoutInspector, parent, false)
@@ -37,13 +37,13 @@ class TrackAdapter : ListAdapter<AdapterTrack, TrackAdapter.TrackViewHolder>(Tra
     class TrackViewHolder(private val binding: TrackLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(adapterTrack: AdapterTrack) {
-            binding.trackName.text = adapterTrack.trackName
-            binding.artistName.text = adapterTrack.artistName
-            binding.trackTime.text = adapterTrack.trackTime?.let { formatTime(it.toInt()) }
+        fun bind(trackForAdapter: TrackForAdapter) {
+            binding.trackName.text = trackForAdapter.trackName
+            binding.artistName.text = trackForAdapter.artistName
+            binding.trackTime.text = trackForAdapter.trackTime?.let { formatTime(it.toInt()) }
             Glide
                 .with(itemView)
-                .load(adapterTrack.image)
+                .load(trackForAdapter.image)
                 .placeholder(R.drawable.album_placeholder_image)
                 .transform(
                     CenterCrop(),

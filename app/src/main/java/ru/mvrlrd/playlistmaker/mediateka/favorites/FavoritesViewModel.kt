@@ -8,11 +8,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoriteInteractor
-import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 class FavoritesViewModel(private val favoriteInteractor: FavoriteInteractor) : ViewModel() {
-    private val _tracks = MutableLiveData<List<AdapterTrack>>()
-    val tracks: LiveData<List<AdapterTrack>> get() = _tracks
+    private val _tracks = MutableLiveData<List<TrackForAdapter>>()
+    val tracks: LiveData<List<TrackForAdapter>> get() = _tracks
 
     private val _screenState = MutableLiveData<FavoriteScreenState>()
     val screenState : LiveData<FavoriteScreenState> get() = _screenState
