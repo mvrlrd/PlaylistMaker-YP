@@ -100,7 +100,6 @@ class PlayerFragment : Fragment() {
             }
         }
     }
-
     private fun observeViewModel() {
 
         viewModel.isAdded.observe(this){isTrackAddadToPlaylist->
