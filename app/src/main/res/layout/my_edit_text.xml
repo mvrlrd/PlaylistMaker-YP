@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:paddingStart="16dp"
     android:paddingEnd="16dp">
 
-        <EditText
-            android:id="@+id/nameEt"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_gravity="center"
-            android:layout_margin="0dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/edit_text_selector"
-            android:drawablePadding="11dp"
-            android:drawableTint="?attr/search_icons_color"
-            android:hint="Введите текст"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColorHighlight="@color/blue"
+    <EditText
+        android:id="@+id/nameEt"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_gravity="center"
+        android:layout_margin="0dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/edit_text_selector"
+        android:drawablePadding="11dp"
+        android:drawableTint="?attr/search_icons_color"
+        android:hint="Введите текст"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:maxLines="1"
+        android:padding="8dp"
 
-            android:padding="8dp"
-            android:paddingStart="15dp"
-            android:singleLine="true"
-            android:textColor="?attr/day_night_background"
-            android:textColorHint="?attr/day_night_background"
-            android:textSize="@dimen/small_text_size"
-            tools:text="Название"
-           />
+        android:paddingStart="15dp"
+        android:singleLine="true"
+        android:textColor="?attr/day_night_background"
+        android:textColorHighlight="@color/blue"
+        android:textColorHint="?attr/day_night_background"
+        android:textSize="@dimen/small_text_size"
+        tools:text="Название" />
 
-        <ImageButton
-            android:id="@+id/clearTextButton"
-            style="@style/XStyle"
-            android:src="@drawable/ic_free_icon_font_cross"
-            android:visibility="gone" />
+    <ImageButton
+        android:id="@+id/clearTextButton"
+        style="@style/XStyle"
+        android:src="@drawable/ic_free_icon_font_cross"
+        android:visibility="gone" />
 
 </FrameLayout>

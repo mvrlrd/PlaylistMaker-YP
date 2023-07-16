@@ -3,14 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="61dp"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/albumImage"
         android:layout_width="@dimen/album_size"
         android:layout_height="@dimen/album_size"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical" />
 
     <LinearLayout
         android:layout_width="250dp"
@@ -31,41 +30,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="1dp"
-            >
+            android:paddingTop="1dp">
 
             <TextView
                 android:id="@+id/artistName"
                 style="@style/ArtistNameStyle"
-                android:layout_weight="0.7"
-                android:maxLines="1"
-                android:ellipsize="end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="0.7"
+                android:ellipsize="end"
+                android:maxLines="1"
                 tools:text="Moneto4ka" />
 
             <ImageView
+                style="@style/SeparatorStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:padding="5dp"
-                android:src="@drawable/ic_ellipse_1"
-                style="@style/SeparatorStyle"/>
+                android:src="@drawable/ic_ellipse_1" />
 
             <TextView
                 android:id="@+id/trackTime"
                 style="@style/ArtistNameStyle"
-                android:maxLines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:maxLines="1"
                 tools:text="1:05" />
-
-
         </LinearLayout>
-
-
     </LinearLayout>
 
     <ImageView
