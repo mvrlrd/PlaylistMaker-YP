@@ -7,18 +7,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
-class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
-    private var _playerState =  MutableLiveData<PlayerState> ()
-    private val playerState : LiveData<PlayerState> =_playerState
-
-
-    override fun getLivePlayerState():LiveData<PlayerState>{
+class MyMediaPlayer(private val mediaPlayer: MediaPlayer) : PlayerClient {
+    private var _playerState = MutableLiveData<PlayerState>()
+    private val playerState: LiveData<PlayerState> = _playerState
+    override fun getLivePlayerState(): LiveData<PlayerState> {
         return playerState
     }
 
     init {
         _playerState.value = PlayerState.DEFAULT
     }
+
     override fun preparePlayer(playerTrack: PlayerTrack) {
         try {
             mediaPlayer.setDataSource(playerTrack.previewUrl)
@@ -26,11 +25,10 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
                 _playerState.value = PlayerState.PREPARED
             }
             mediaPlayer.prepareAsync()
-
             mediaPlayer.setOnCompletionListener {
                 _playerState.postValue(PlayerState.COMPLETED)
             }
-        }catch (e: Exception){
+        } catch (e: Exception) {
             _playerState.value = PlayerState.ERROR
         }
     }
@@ -41,10 +39,9 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
     }
 
     override fun pause() {
-        if(mediaPlayer.isPlaying){
+        if (mediaPlayer.isPlaying) {
             _playerState.value = PlayerState.PAUSED
             mediaPlayer.pause()
-
         }
     }
 
@@ -58,6 +55,7 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
             emit(mediaPlayer.currentPosition)
         }
     }
+
     enum class PlayerState {
         DEFAULT,
         PREPARED,

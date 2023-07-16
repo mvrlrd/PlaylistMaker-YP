@@ -8,8 +8,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
-class PlayerInteractorImpl(private val playerRepository: PlayerRepository): PlayerInteractor {
-
+class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : PlayerInteractor {
     override fun start() {
         playerRepository.start()
     }
@@ -22,8 +21,7 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         playerRepository.onDestroy()
     }
 
-
-   override fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>{
+    override fun getLivePlayerState(): LiveData<MyMediaPlayer.PlayerState> {
         return playerRepository.getLivePlayerState()
     }
 
@@ -47,7 +45,10 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         return playerRepository.getAllPlaylists()
     }
 
-    override suspend fun addTrackToPlaylist(trackId: Long, playlistId: Long):Flow<Pair<String,Boolean>>  {
+    override suspend fun addTrackToPlaylist(
+        trackId: Long,
+        playlistId: Long
+    ): Flow<Pair<String, Boolean>> {
         return playerRepository.addTrackToPlaylist(trackId, playlistId)
     }
 

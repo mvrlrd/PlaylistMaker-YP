@@ -30,23 +30,18 @@ import java.io.File
 class PlayerFragment : Fragment() {
     private var _binding: FragmentPlayerBinding? = null
     private val binding get() = _binding!!
-
     private val playlistAdapter: PlaylistAdapterForPlayer by inject()
-
     private val args by navArgs<PlayerFragmentArgs>()
-
-//
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(parseIntent(args.track))
     }
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerBinding.inflate(layoutInflater, container, false)
-        Log.d("PlayerFragment","${args.track}")
+        Log.d("PlayerFragment", "${args.track}")
         initBottomSheet()
         observeViewModel()
         handleBackButton()
@@ -54,7 +49,6 @@ class PlayerFragment : Fragment() {
         handleLikeButton()
         handleAddToPlaylistButton()
         handleAddToPlaylistButton1()
-
         initRecycler()
         return binding.root
     }
@@ -65,7 +59,7 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun handleAddToPlaylistButton1(){
+    private fun handleAddToPlaylistButton1() {
         binding.bottomSheetContainer.btAddNewPlaylist.setOnClickListener {
             findNavController().navigate(
                 PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment()
@@ -100,35 +94,35 @@ class PlayerFragment : Fragment() {
             }
         }
     }
-    private fun observeViewModel() {
 
-        viewModel.isAdded.observe(this){isTrackAddadToPlaylist->
-           val message = if (isTrackAddadToPlaylist.second){
-               bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+    private fun observeViewModel() {
+        viewModel.isAdded.observe(this) { isTrackAddadToPlaylist ->
+            val message = if (isTrackAddadToPlaylist.second) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 "Добавлено в плейлист ${isTrackAddadToPlaylist.first}"
-            }else{
+            } else {
                 "Трек уже добавлен в плейлист ${isTrackAddadToPlaylist.first}"
-           }
+            }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
-
         viewModel.playlists.observe(this) {
             playlistAdapter.submitList(it)
         }
-
-        viewModel.playerState.observe(viewLifecycleOwner){
-            Log.d("PlayerFragment","player state = ${it.name}")
+        viewModel.playerState.observe(viewLifecycleOwner) {
+            Log.d("PlayerFragment", "player state = ${it.name}")
             viewModel.render()
         }
-
         viewModel.screenState.observe(this) {
-            if (it is PlayerScreenState.PlayerError){
+            if (it is PlayerScreenState.PlayerError) {
                 it.render(binding)
-                Toast.makeText(requireContext(), "Невозможно воспроизвести трек",Toast.LENGTH_SHORT).show()
-            }else{
+                Toast.makeText(
+                    requireContext(),
+                    "Невозможно воспроизвести трек",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
                 it.render(binding)
             }
-
         }
     }
 
@@ -139,48 +133,55 @@ class PlayerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("PlayerFragment","onStop")
+        Log.d("PlayerFragment", "onStop")
         viewModel.onStop()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("PlayerFragment","onResume")
+        Log.d("PlayerFragment", "onResume")
         viewModel.onResume()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-                viewModel.onDestroy()
+        viewModel.onDestroy()
     }
 
-    private fun initRecycler(){
+    private fun initRecycler() {
         playlistAdapter.onClickListener = {
             lifecycleScope.launch {
-            viewModel.addTrackToPlaylist(trackId = parseIntent(args.track).trackId, playlistId = it.playlistId!!)
+                viewModel.addTrackToPlaylist(
+                    trackId = parseIntent(args.track).trackId,
+                    playlistId = it.playlistId!!
+                )
             }
         }
-        playlistAdapter.showImage = {view, playlistImage ->
-            val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+        playlistAdapter.showImage = { view, playlistImage ->
+            val filePath = File(
+                requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                "myalbum"
+            )
             val file = File(filePath, playlistImage)
             view.setImageURI(file.toUri())
         }
-        binding.bottomSheetContainer.rvPlaylists .apply {
+        binding.bottomSheetContainer.rvPlaylists.apply {
             adapter = playlistAdapter
             layoutManager = LinearLayoutManager(requireContext())
         }
     }
 
-    private fun initBottomSheet(){
-        bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetContainer.bottomSheet).apply {
-            state = BottomSheetBehavior.STATE_HIDDEN
-        }
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+    private fun initBottomSheet() {
+        bottomSheetBehavior =
+            BottomSheetBehavior.from(binding.bottomSheetContainer.bottomSheet).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+            }
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
@@ -191,6 +192,7 @@ class PlayerFragment : Fragment() {
                     }
                 }
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 binding.overlay.alpha = slideOffset
             }

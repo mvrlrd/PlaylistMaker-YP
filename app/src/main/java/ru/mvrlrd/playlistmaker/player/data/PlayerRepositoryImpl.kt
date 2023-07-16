@@ -26,10 +26,9 @@ class PlayerRepositoryImpl(
         playerClient.preparePlayer(playerTrack)
     }
 
-    override fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>{
+    override fun getLivePlayerState(): LiveData<MyMediaPlayer.PlayerState> {
         return playerClient.getLivePlayerState()
     }
-
 
     override fun start() {
         playerClient.start()
@@ -60,35 +59,37 @@ class PlayerRepositoryImpl(
             playlistConverter.convertEntityListToAdapterList(list)
         }
     }
-//TODO надо получить плейлисты, по каждому плейлисту зайти в базу и получить список треков, и замапить плейлист под адаптер и впихнуть туда количество треков
 
-    override suspend fun addTrackToPlaylist(trackId: Long, playlistId: Long):Flow<Pair<String,Boolean>> {
+    override suspend fun addTrackToPlaylist(
+        trackId: Long,
+        playlistId: Long
+    ): Flow<Pair<String, Boolean>> {
         playlistDb.getDao().insertTrack(Song(trackId))
         val playerSongCrossRef = PlaylistSongCrossRef(songId = trackId, playlistId = playlistId)
         val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
         return flow {
-           emit(playlistName to (playlistDb.getDao().insertPlaylistSongCrossRef(playerSongCrossRef)!=-1L))
+            emit(
+                playlistName to (playlistDb.getDao()
+                    .insertPlaylistSongCrossRef(playerSongCrossRef) != -1L)
+            )
         }
     }
 
-
-
-    override  fun getAllPlaylistsWithSongs(): Flow<List<PlaylistForAdapter>> {
+    override fun getAllPlaylistsWithSongs(): Flow<List<PlaylistForAdapter>> {
         return playlistDb.getDao().getPlaylistsWithSongs().map {
             mapListDaoToListForAdapter(it)
         }
     }
 
-    private fun mapListDaoToListForAdapter(daoList: List<PlaylistWithSongs>): List<PlaylistForAdapter>{
-       return daoList.map {
+    private fun mapListDaoToListForAdapter(daoList: List<PlaylistWithSongs>): List<PlaylistForAdapter> {
+        return daoList.map {
             PlaylistForAdapter(
                 playlistId = it.playlist.playlistId,
-                name= it.playlist.name,
+                name = it.playlist.name,
                 description = it.playlist.description,
                 playlistImagePath = it.playlist.playlistImagePath,
                 tracksQuantity = it.songs.size
             )
         }
     }
-
 }

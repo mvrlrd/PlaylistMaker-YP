@@ -11,15 +11,10 @@ interface PlayerInteractor {
     fun onDestroy()
     fun getCurrentTime(): Flow<Int>
     fun preparePlayer(playerTrack: PlayerTrack)
-
     suspend fun addTrackToFavorite(playerTrack: PlayerTrack)
-
     suspend fun removeTrackFromFavorite(trackId: Long)
-
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
-    fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>
-
-    suspend fun addTrackToPlaylist(trackId: Long, playlistId: Long):Flow<Pair<String,Boolean>>
-
-    fun getAllPlaylistsWithQuantities():Flow<List<PlaylistForAdapter>>
+    fun getLivePlayerState(): LiveData<MyMediaPlayer.PlayerState>
+    suspend fun addTrackToPlaylist(trackId: Long, playlistId: Long): Flow<Pair<String, Boolean>>
+    fun getAllPlaylistsWithQuantities(): Flow<List<PlaylistForAdapter>>
 }

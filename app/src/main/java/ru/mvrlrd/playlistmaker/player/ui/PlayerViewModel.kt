@@ -16,36 +16,37 @@ import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
 
-class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor: PlayerInteractor) : ViewModel() {
+class PlayerViewModel(
+    val playerTrack: PlayerTrack,
+    private val playerInteractor: PlayerInteractor
+) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
     val playerState = playerInteractor.getLivePlayerState()
     private var timerJob: Job? = null
     val playlists: LiveData<List<PlaylistForAdapter>> =
         playerInteractor.getAllPlaylistsWithQuantities().asLiveData()
-
-
-   private val _isAdded =  MutableLiveData<Pair<String, Boolean>>()
-    val isAdded : LiveData<Pair<String, Boolean>> = _isAdded
+    private val _isAdded = MutableLiveData<Pair<String, Boolean>>()
+    val isAdded: LiveData<Pair<String, Boolean>> = _isAdded
 
     init {
-            playerInteractor.preparePlayer(playerTrack)
+        playerInteractor.preparePlayer(playerTrack)
     }
 
-     fun addTrackToPlaylist(trackId: Long, playlistId: Long) {
-         viewModelScope.launch {
-             playerInteractor.addTrackToPlaylist(trackId = trackId, playlistId = playlistId)
-                 .collect() {
-                     _isAdded.value = it
-                 }
-         }
-     }
-
+    fun addTrackToPlaylist(trackId: Long, playlistId: Long) {
+        viewModelScope.launch {
+            playerInteractor.addTrackToPlaylist(trackId = trackId, playlistId = playlistId)
+                .collect() {
+                    _isAdded.value = it
+                }
+        }
+    }
 
     fun render() {
         when (playerState.value) {
-            ERROR ->{
-            _screenState.value = PlayerScreenState.PlayerError(playerTrack)}
+            ERROR -> {
+                _screenState.value = PlayerScreenState.PlayerError(playerTrack)
+            }
             DEFAULT -> {
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
             }
@@ -53,16 +54,15 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
                 _screenState.value = PlayerScreenState.Preparing
             }
             PLAYING -> {
-
-              timerJob =  viewModelScope.launch {
+                timerJob = viewModelScope.launch {
                     while (playerState.value == PLAYING) {
                         delay(300)
-                         playerInteractor.getCurrentTime().collect(){
-                             renderTime(it)
-                         }
+                        playerInteractor.getCurrentTime().collect() {
+                            renderTime(it)
+                        }
                     }
                 }
-                _screenState.value =  PlayerScreenState.PlayButtonHandling(playerState.value!!)
+                _screenState.value = PlayerScreenState.PlayButtonHandling(playerState.value!!)
             }
             PAUSED -> {
                 timerJob?.cancel()
@@ -76,8 +76,8 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
         }
     }
 
-    fun onResume(){
-        when(playerState.value){
+    fun onResume() {
+        when (playerState.value) {
 
             DEFAULT -> {
             }
@@ -85,32 +85,32 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
                 _screenState.value = PlayerScreenState.Preparing
                 timerJob?.cancel()
-                timerJob =  viewModelScope.launch {
-                        playerInteractor.getCurrentTime().collect(){
-                            renderTime(it)
+                timerJob = viewModelScope.launch {
+                    playerInteractor.getCurrentTime().collect() {
+                        renderTime(it)
                     }
                 }
             }
-            PLAYING, ->{
+            PLAYING -> {
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
                 _screenState.value = PlayerScreenState.Preparing
 
             }
-            COMPLETED,PREPARED, ->{
+            COMPLETED, PREPARED -> {
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
                 _screenState.value = PlayerScreenState.Preparing
                 _screenState.value = PlayerScreenState.PlayCompleting
             }
-            else ->{}
+            else -> {}
         }
     }
 
 
-    fun onStop(){
+    fun onStop() {
         playerInteractor.pause()
     }
 
-    private fun renderTime(time: Int){
+    private fun renderTime(time: Int) {
         _screenState.value = PlayerScreenState.Playing(parseTime(time))
     }
 
@@ -122,9 +122,10 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
             PREPARED, PAUSED, COMPLETED -> {
                 start()
             }
-            else->{}
+            else -> {}
         }
     }
+
     private fun start() {
         playerInteractor.start()
     }
@@ -133,24 +134,24 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
         playerInteractor.pause()
     }
 
-    fun handleLikeButton(){
+    fun handleLikeButton() {
         playerTrack.isFavorite = !playerTrack.isFavorite
         _screenState.postValue(PlayerScreenState.LikeButtonHandler(playerTrack))
         viewModelScope.launch {
-            if (!playerTrack.isFavorite){
+            if (!playerTrack.isFavorite) {
                 playerInteractor.removeTrackFromFavorite(playerTrack.trackId)
-            }else{
+            } else {
                 playerInteractor.addTrackToFavorite(playerTrack)
             }
         }
     }
 
-    fun onDestroy(){
+    fun onDestroy() {
         timerJob?.cancel()
         playerInteractor.onDestroy()
     }
 
-    private fun parseTime(_time: Int):String{
+    private fun parseTime(_time: Int): String {
         return formatTime(_time)
     }
 }

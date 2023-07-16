@@ -14,9 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 sealed class PlayerScreenState {
-    class BeginningState(private val track: PlayerTrack): PlayerScreenState(){
+    class BeginningState(private val track: PlayerTrack) : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
-
             binding.playButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
             binding.trackName.text = track.trackName
             binding.singerName.text = track.artistName
@@ -29,7 +28,6 @@ sealed class PlayerScreenState {
             binding.genreParam.text = track.genre
             binding.countryParam.text = track.country
             handleLikeButton(binding, track)
-
             Glide
                 .with(binding.albumImageView)
                 .load(track.getCoverArtwork())
@@ -42,16 +40,17 @@ sealed class PlayerScreenState {
         }
     }
 
-    class LikeButtonHandler(val track: PlayerTrack) : PlayerScreenState(){
+    class LikeButtonHandler(val track: PlayerTrack) : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
             handleLikeButton(binding, track)
         }
     }
 
-    class PlayButtonHandling(private val playerState: MyMediaPlayer.PlayerState) : PlayerScreenState() {
+    class PlayButtonHandling(private val playerState: MyMediaPlayer.PlayerState) :
+        PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
             when (playerState) {
-                 MyMediaPlayer.PlayerState.PLAYING -> {
+                MyMediaPlayer.PlayerState.PLAYING -> {
                     binding.playButton.setImageResource(R.drawable.baseline_pause_24)
                 }
                 else -> {
@@ -63,13 +62,13 @@ sealed class PlayerScreenState {
 
     object Preparing : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
-            println("_________")
             binding.playButton.isEnabled = true
             binding.playButton.alpha = ACTIVE_PLAY_BUTTON_ALPHA
         }
     }
-    class Playing(private val progress: String): PlayerScreenState(){
-        override fun render( binding: FragmentPlayerBinding) {
+
+    class Playing(private val progress: String) : PlayerScreenState() {
+        override fun render(binding: FragmentPlayerBinding) {
             binding.clockTrack.text = progress
         }
     }
@@ -83,7 +82,7 @@ sealed class PlayerScreenState {
 
     abstract fun render(binding: FragmentPlayerBinding)
 
-     fun handleLikeButton(binding: FragmentPlayerBinding, track: PlayerTrack) {
+    fun handleLikeButton(binding: FragmentPlayerBinding, track: PlayerTrack) {
         val icon = if (track.isFavorite) {
             binding.likeButton.imageTintList = ColorStateList.valueOf(
                 binding.likeButton.resources.getColor(
@@ -112,11 +111,12 @@ sealed class PlayerScreenState {
         }
         binding.likeButton.setImageDrawable(icon)
     }
-    class PlayerError(private val track: PlayerTrack):PlayerScreenState(){
+
+    class PlayerError(private val track: PlayerTrack) : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
             binding.playButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
             binding.likeButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
-            binding.addToPlaylistBtn. alpha = INACTIVE_PLAY_BUTTON_ALPHA
+            binding.addToPlaylistBtn.alpha = INACTIVE_PLAY_BUTTON_ALPHA
 
             binding.playButton.isEnabled = false
             binding.likeButton.isEnabled = false
@@ -147,7 +147,7 @@ sealed class PlayerScreenState {
         }
     }
 
-    companion object{
+    companion object {
         private const val INACTIVE_PLAY_BUTTON_ALPHA = 0.5f
         private const val ACTIVE_PLAY_BUTTON_ALPHA = 1f
     }

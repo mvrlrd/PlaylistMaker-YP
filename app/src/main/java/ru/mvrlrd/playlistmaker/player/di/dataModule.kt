@@ -5,11 +5,11 @@ import org.koin.dsl.module
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.data.PlayerClient
 
-val playerDataModule = module{
-    single  <PlayerClient> {
-        MyMediaPlayer(mediaPlayer = get(), )
+val playerDataModule = module {
+    single<PlayerClient> {
+        MyMediaPlayer(mediaPlayer = get())
     }
-    single{
+    single {
         MediaPlayer()
     }
 }
