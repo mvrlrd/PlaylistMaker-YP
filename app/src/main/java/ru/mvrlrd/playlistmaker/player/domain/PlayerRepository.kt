@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
-import ru.mvrlrd.playlistmaker.playlistDb.data.relations.PlaylistWithSongs
 
 interface PlayerRepository {
     fun preparePlayer(playerTrack: PlayerTrack)

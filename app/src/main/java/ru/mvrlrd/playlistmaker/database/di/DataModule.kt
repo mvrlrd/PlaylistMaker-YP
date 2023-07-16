@@ -5,8 +5,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
 import ru.mvrlrd.playlistmaker.database.data.TrackConverter
-import ru.mvrlrd.playlistmaker.playlistDb.data.PlaylistConverter
-import ru.mvrlrd.playlistmaker.playlistDb.data.PlaylistDb
+import ru.mvrlrd.playlistmaker.db_playlist.data.PlaylistConverter
+import ru.mvrlrd.playlistmaker.db_playlist.data.PlaylistDb
 
 val dataBaseModule = module {
     single {
