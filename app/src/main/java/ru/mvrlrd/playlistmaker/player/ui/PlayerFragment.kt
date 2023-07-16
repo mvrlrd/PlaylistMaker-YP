@@ -94,7 +94,6 @@ class PlayerFragment : Fragment() {
     private fun handleBackButton() {
         binding.backButton.apply {
             setOnClickListener {
-                Log.d("AddPlaylistFragment", "${findNavController().graph}")
                 findNavController().popBackStack()
             }
         }
@@ -102,7 +101,6 @@ class PlayerFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.playlists.observe(this) {
-           it.forEach {  Log.e("PlayerFragment", "playlist: ${it.name}  tracks:${it.tracksQuantity}")}
             playlistAdapter.submitList(it)
         }
 
@@ -146,6 +144,7 @@ class PlayerFragment : Fragment() {
     private fun initRecycler(){
         playlistAdapter.onClickListener = {
             viewModel.addTrackToPlaylist(trackId = parseIntent(args.adapterTrack).trackId, playlistId = it.playlistId!!)
+
         }
         playlistAdapter.showImage = {view, playlistImage ->
             val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
