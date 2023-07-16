@@ -77,7 +77,7 @@ class PlayerFragment : Fragment() {
         binding.likeButton.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
-//                    viewModel.handleLikeButton()
+                    viewModel.handleLikeButton()
                 }
             }
         }
@@ -122,7 +122,13 @@ class PlayerFragment : Fragment() {
         }
 
         viewModel.screenState.observe(this) {
-            it.render(binding)
+            if (it is PlayerScreenState.PlayerError){
+                it.render(binding)
+                Toast.makeText(requireContext(), "Невозможно воспроизвести трек",Toast.LENGTH_SHORT).show()
+            }else{
+                it.render(binding)
+            }
+
         }
     }
 

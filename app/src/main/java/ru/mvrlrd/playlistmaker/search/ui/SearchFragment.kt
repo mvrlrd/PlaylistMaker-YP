@@ -75,8 +75,6 @@ class SearchFragment : Fragment() {
                     viewModel.addToHistory(track)
                     findNavController().navigate(
                         SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track.apply {
-
-                            previewUrl ="https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/80/53/29/80532911-161a-589c-94d8-32371b872edb/mzaf_18392915580449150243.plus.aac.p.m4a"
                             isFavorite = viewModel.isFavorite(this.trackId)
                         })
                     )

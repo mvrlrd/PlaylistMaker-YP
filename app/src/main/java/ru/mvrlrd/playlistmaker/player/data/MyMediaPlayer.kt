@@ -20,16 +20,18 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
         _playerState.value = PlayerState.DEFAULT
     }
     override fun preparePlayer(playerTrack: PlayerTrack) {
-        mediaPlayer.setDataSource(playerTrack.previewUrl)
+        try {
+            mediaPlayer.setDataSource(playerTrack.previewUrl)
+            mediaPlayer.setOnPreparedListener {
+                _playerState.value = PlayerState.PREPARED
+            }
+            mediaPlayer.prepareAsync()
 
-
-        mediaPlayer.setOnPreparedListener {
-            _playerState.value = PlayerState.PREPARED
-        }
-        mediaPlayer.prepareAsync()
-
-        mediaPlayer.setOnCompletionListener {
-            _playerState.postValue(PlayerState.COMPLETED)
+            mediaPlayer.setOnCompletionListener {
+                _playerState.postValue(PlayerState.COMPLETED)
+            }
+        }catch (e: Exception){
+            _playerState.value = PlayerState.ERROR
         }
     }
 
@@ -62,6 +64,7 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer): PlayerClient {
         PLAYING,
         PAUSED,
         COMPLETED,
+        ERROR
     }
 }
 

@@ -8,8 +8,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
@@ -46,6 +44,8 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
 
     fun render() {
         when (playerState.value) {
+            ERROR ->{
+            _screenState.value = PlayerScreenState.PlayerError(playerTrack)}
             DEFAULT -> {
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
             }
@@ -80,8 +80,6 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
         when(playerState.value){
 
             DEFAULT -> {
-//                _screenState.value = PlayerScreenState.BeginningState(playerTrack)
-//                playerInteractor.preparePlayer(playerTrack)
             }
             PAUSED -> {
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)

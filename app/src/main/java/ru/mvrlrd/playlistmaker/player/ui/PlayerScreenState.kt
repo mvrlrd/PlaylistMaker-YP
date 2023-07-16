@@ -112,6 +112,40 @@ sealed class PlayerScreenState {
         }
         binding.likeButton.setImageDrawable(icon)
     }
+    class PlayerError(private val track: PlayerTrack):PlayerScreenState(){
+        override fun render(binding: FragmentPlayerBinding) {
+            binding.playButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
+            binding.likeButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
+            binding.addToPlaylistBtn. alpha = INACTIVE_PLAY_BUTTON_ALPHA
+
+            binding.playButton.isEnabled = false
+            binding.likeButton.isEnabled = false
+            binding.addToPlaylistBtn.isEnabled = false
+
+            binding.playButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
+            binding.trackName.text = track.trackName
+            binding.singerName.text = track.artistName
+            binding.durationParam.text = SimpleDateFormat(
+                binding.durationParam.resources.getString(R.string.track_duration_time_format),
+                Locale.getDefault()
+            ).format(track.trackTime?.toLong() ?: 0L)
+            binding.albumParam.text = track.album
+            binding.yearParam.text = unparseDateToYear(track.year)
+            binding.genreParam.text = track.genre
+            binding.countryParam.text = track.country
+            handleLikeButton(binding, track)
+
+            Glide
+                .with(binding.albumImageView)
+                .load(track.getCoverArtwork())
+                .placeholder(R.drawable.album_placeholder_image)
+                .transform(
+                    CenterCrop(),
+                    RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.big_radius))
+                )
+                .into(binding.albumImageView)
+        }
+    }
 
     companion object{
         private const val INACTIVE_PLAY_BUTTON_ALPHA = 0.5f
