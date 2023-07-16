@@ -16,19 +16,14 @@ class PlaylistEntity(
     val playlistImagePath: String,
 )
 
-@Entity(primaryKeys = ["playlistId", "trackId"])
-data class PlaylistTrackCrossRef(
-    val playlistId: Int,
-    val trackId: Int
-)
+//@Entity(primaryKeys = ["playlistId", "trackId"])
+//data class PlaylistTrackCrossRef(
+//    val playlistId: Int,
+//    val trackId: Int
+//)
 
 
-data class PlaylistWithTracks(
-    @Embedded val playlist: PlaylistEntity,
-    @Relation(
-        parentColumn = "playlistId",
-        entityColumn = "trackId",
-        associateBy = Junction(PlaylistTrackCrossRef::class)
-    )
-    val tracks: List<TrackEntity>
-)
+
+
+
+

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
+import ru.mvrlrd.playlistmaker.playlistDb.data.relations.PlaylistWithSongs
 
 interface PlayerRepository {
     fun preparePlayer(playerTrack: PlayerTrack)
@@ -22,5 +23,9 @@ interface PlayerRepository {
 
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
     fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>
+
+    suspend fun addTrackToPlaylist(trackId: Int, playlistId: Int)
+
+    fun getAllPlaylistsWithSongs():Flow<List<PlaylistForAdapter>>
 
 }

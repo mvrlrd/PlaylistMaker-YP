@@ -33,6 +33,8 @@ class PlayerFragment : Fragment() {
     private val playlistAdapter: PlaylistAdapterForPlayer by inject()
 
     private val args by navArgs<PlayerFragmentArgs>()
+
+
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(parseIntent(args.adapterTrack))
     }
@@ -100,7 +102,7 @@ class PlayerFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.playlists.observe(this) {
-            Log.d("PlayerFragment", "${it.size}")
+           it.forEach {  Log.e("PlayerFragment", "playlist: ${it.name}  tracks:${it.tracksQuantity}")}
             playlistAdapter.submitList(it)
         }
 
@@ -142,7 +144,9 @@ class PlayerFragment : Fragment() {
     }
 
     private fun initRecycler(){
-//        playlistAdapter.onClickListener = {}
+        playlistAdapter.onClickListener = {
+            viewModel.addTrackToPlaylist(trackId = parseIntent(args.adapterTrack).trackId, playlistId = it.playlistId!!)
+        }
         playlistAdapter.showImage = {view, playlistImage ->
             val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
             val file = File(filePath, playlistImage)

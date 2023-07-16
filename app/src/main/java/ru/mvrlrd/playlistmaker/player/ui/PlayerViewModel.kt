@@ -22,9 +22,17 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
     val playerState = playerInteractor.getLivePlayerState()
     private var timerJob: Job? = null
     val playlists: LiveData<List<PlaylistForAdapter>> =
-        playerInteractor.getAllPlaylists().asLiveData()
+        playerInteractor.getAllPlaylistsWithQuantities().asLiveData()
+
+
     init {
             playerInteractor.preparePlayer(playerTrack)
+    }
+
+     fun addTrackToPlaylist(trackId: Int, playlistId: Int){
+        viewModelScope.launch {
+            playerInteractor.addTrackToPlaylist(trackId = trackId, playlistId = playlistId)
+        }
     }
 
 

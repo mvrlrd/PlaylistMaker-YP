@@ -15,7 +15,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistFo
 class PlaylistAdapterForPlayer : ListAdapter<PlaylistForAdapter, PlaylistAdapterForPlayer.PlaylistForPlayerViewHolder>(
     PlaylistItemDiffCallback()
 ) {
-//    var onClickListener: ((AdapterTrack) -> Unit)? = null
+    var onClickListener: ((PlaylistForAdapter) -> Unit)? = null
 var showImage: ((ImageView, String)->Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistForPlayerViewHolder {
@@ -31,7 +31,7 @@ var showImage: ((ImageView, String)->Unit)? = null
     override fun onBindViewHolder(holder: PlaylistForPlayerViewHolder, position: Int) {
         val item = getItem(position)
         holder.itemView.setOnClickListener {
-//            onClickListener?.invoke(item)
+            onClickListener?.invoke(item)
         }
 
         if (item.playlistImagePath.isNotEmpty()){

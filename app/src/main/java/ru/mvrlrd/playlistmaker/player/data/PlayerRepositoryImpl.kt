@@ -1,7 +1,9 @@
 package ru.mvrlrd.playlistmaker.player.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
 import ru.mvrlrd.playlistmaker.database.data.TrackConverter
@@ -10,6 +12,9 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.playlistDb.data.PlaylistConverter
 import ru.mvrlrd.playlistmaker.playlistDb.data.PlaylistDb
+import ru.mvrlrd.playlistmaker.playlistDb.data.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.playlistDb.data.entities.Song
+import ru.mvrlrd.playlistmaker.playlistDb.data.relations.PlaylistWithSongs
 
 class PlayerRepositoryImpl(
     private val playerClient: PlayerClient,
@@ -56,4 +61,35 @@ class PlayerRepositoryImpl(
             playlistConverter.convertEntityListToAdapterList(list)
         }
     }
+//TODO надо получить плейлисты, по каждому плейлисту зайти в базу и получить список треков, и замапить плейлист под адаптер и впихнуть туда количество треков
+
+    override suspend fun addTrackToPlaylist(trackId: Int, playlistId: Int) {
+        playlistDb.getDao().insertTrack(Song(trackId, "d","ds"))
+        val playerSongCrossRef = PlaylistSongCrossRef(songId = trackId, playlistId = playlistId)
+        playlistDb.getDao().insertPlaylistSongCrossRef(playerSongCrossRef)
+        Log.e("database", "${trackId} was added to $playlistId")
+    }
+
+
+
+    override  fun getAllPlaylistsWithSongs(): Flow<List<PlaylistForAdapter>> {
+
+
+        return playlistDb.getDao().getPlaylistsWithSongs().map {
+            mapListDaoToListForAdapter(it)
+        }
+    }
+
+    private fun mapListDaoToListForAdapter(daoList: List<PlaylistWithSongs>): List<PlaylistForAdapter>{
+       return daoList.map {
+            PlaylistForAdapter(
+                playlistId = it.playlist.playlistId,
+                name= it.playlist.name,
+                description = it.playlist.description,
+                playlistImagePath = it.playlist.playlistImagePath,
+                tracksQuantity = it.songs.size
+            )
+        }
+    }
+
 }

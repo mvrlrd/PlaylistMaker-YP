@@ -46,4 +46,12 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
     override fun getAllPlaylists(): Flow<List<PlaylistForAdapter>> {
         return playerRepository.getAllPlaylists()
     }
+
+    override suspend fun addTrackToPlaylist(trackId: Int, playlistId: Int) {
+        playerRepository.addTrackToPlaylist(trackId, playlistId)
+    }
+
+    override fun getAllPlaylistsWithQuantities(): Flow<List<PlaylistForAdapter>> {
+        return playerRepository.getAllPlaylistsWithSongs()
+    }
 }
