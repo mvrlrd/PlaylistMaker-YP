@@ -105,6 +105,7 @@ class PlayerFragment : Fragment() {
 
         viewModel.isAdded.observe(this){isTrackAddadToPlaylist->
            val message = if (isTrackAddadToPlaylist.second){
+               bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 "Добавлено в плейлист ${isTrackAddadToPlaylist.first}"
             }else{
                 "Трек уже добавлен в плейлист ${isTrackAddadToPlaylist.first}"

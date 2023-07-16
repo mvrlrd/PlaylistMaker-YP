@@ -22,22 +22,12 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
-        navController.addOnDestinationChangedListener{_,destination,_->
-            when (destination.id){
-                R.id.addPlaylistFragment,R.id.playerFragment -> hideBottomNav()
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.addPlaylistFragment, R.id.playerFragment -> hideBottomNav()
                 else -> showBottomNav()
             }
         }
-
-
-        this.onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-
-                    isEnabled = false
-                    finish()
-
-            }
-        })
     }
 
     private fun hideBottomNav(){

@@ -29,17 +29,6 @@ class PlaylistsFragment : Fragment() {
         fun newInstance() = PlaylistsFragment()
     }
 
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        val callback = object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//
-//            }
-//        }
-//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-//    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
