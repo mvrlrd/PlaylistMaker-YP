@@ -3,6 +3,7 @@ package ru.mvrlrd.playlistmaker.player.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
 import ru.mvrlrd.playlistmaker.database.data.TrackConverter
@@ -51,7 +52,7 @@ class PlayerRepositoryImpl(
         favoriteDb.getDao().insertTrack(trackConverter.mapPlayerTrackToEntity(playerTrack))
     }
 
-    override suspend fun removeFromFavorite(trackId: Int) {
+    override suspend fun removeFromFavorite(trackId: Long) {
         favoriteDb.getDao().deleteTrack(trackId)
     }
 
@@ -62,11 +63,13 @@ class PlayerRepositoryImpl(
     }
 //TODO надо получить плейлисты, по каждому плейлисту зайти в базу и получить список треков, и замапить плейлист под адаптер и впихнуть туда количество треков
 
-    override suspend fun addTrackToPlaylist(trackId: Int, playlistId: Int) {
+    override suspend fun addTrackToPlaylist(trackId: Long, playlistId: Long):Flow<Pair<String,Boolean>> {
         playlistDb.getDao().insertTrack(Song(trackId))
         val playerSongCrossRef = PlaylistSongCrossRef(songId = trackId, playlistId = playlistId)
-        playlistDb.getDao().insertPlaylistSongCrossRef(playerSongCrossRef)
-        Log.e("database", "${trackId} was added to $playlistId")
+        val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
+        return flow {
+           emit(playlistName to (playlistDb.getDao().insertPlaylistSongCrossRef(playerSongCrossRef)!=-1L))
+        }
     }
 
 

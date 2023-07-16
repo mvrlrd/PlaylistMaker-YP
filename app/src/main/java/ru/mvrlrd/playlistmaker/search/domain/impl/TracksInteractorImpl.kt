@@ -32,7 +32,7 @@ class TracksInteractorImpl(private val repository: TracksRepository): TracksInte
         return repository.getHistory()
     }
 
-    override suspend fun getFavIds(): Flow<List<Int>> {
+    override suspend fun getFavIds(): Flow<List<Long>> {
         return repository.getFavIds()
     }
 }

@@ -53,7 +53,7 @@ override fun searchTracks(query: String): Flow<Resource<List<AdapterTrack>>> = f
         emit(localStorage.getHistory())
     }
 
-    override suspend fun getFavIds(): Flow<List<Int>> {
+    override suspend fun getFavIds(): Flow<List<Long>> {
         return flow {
            emit(favoriteDb.getDao().getFavoriteTrackIds())
         }

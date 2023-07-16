@@ -23,7 +23,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
     private var searchJob: Job? = null
     private var updateFavsJob : Job? = null
 
-    private val favIds = mutableListOf<Int>()
+    private val favIds = mutableListOf<Long>()
 
     fun searchDebounce(changedText: String) {
         if (changedText.isNotEmpty()) {
@@ -70,7 +70,7 @@ class SearchViewModel(private val tracksInteractor: TracksInteractor,
         }
     }
 
-    fun isFavorite(trackId: Int) :Boolean {
+    fun isFavorite(trackId: Long) :Boolean {
        return favIds.contains(trackId)
     }
 

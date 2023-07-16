@@ -3,7 +3,7 @@ package ru.mvrlrd.playlistmaker.player.domain
 import java.io.Serializable
 
 data class PlayerTrack(
-    val trackId: Int,
+    val trackId: Long,
     val trackName: String,
     val artistName: String,
     val trackTime: String?,
@@ -25,7 +25,7 @@ data class PlayerTrack(
     }
 
     override fun hashCode(): Int {
-        return trackId
+        return trackId.toInt()
     }
 
     fun getCoverArtwork() = image.replaceAfterLast('/', "512x512bb.jpg")

@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -100,6 +102,16 @@ class PlayerFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+
+        viewModel.isAdded.observe(this){isTrackAddadToPlaylist->
+           val message = if (isTrackAddadToPlaylist.second){
+                "Добавлено в плейлист ${isTrackAddadToPlaylist.first}"
+            }else{
+                "Трек уже добавлен в плейлист ${isTrackAddadToPlaylist.first}"
+           }
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
+
         viewModel.playlists.observe(this) {
             playlistAdapter.submitList(it)
         }
@@ -143,8 +155,9 @@ class PlayerFragment : Fragment() {
 
     private fun initRecycler(){
         playlistAdapter.onClickListener = {
+            lifecycleScope.launch {
             viewModel.addTrackToPlaylist(trackId = parseIntent(args.adapterTrack).trackId, playlistId = it.playlistId!!)
-
+            }
         }
         playlistAdapter.showImage = {view, playlistImage ->
             val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")

@@ -3,7 +3,7 @@ package ru.mvrlrd.playlistmaker.search.domain
 import java.io.Serializable
 
 data class AdapterTrack(
-    val trackId: Int,
+    val trackId: Long,
     val trackName: String,
     val artistName: String,
     val trackTime: String?,
@@ -25,6 +25,6 @@ data class AdapterTrack(
     }
 
     override fun hashCode(): Int {
-        return trackId
+        return trackId.toInt()
     }
 }

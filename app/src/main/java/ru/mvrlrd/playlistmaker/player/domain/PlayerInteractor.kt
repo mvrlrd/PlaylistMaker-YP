@@ -14,12 +14,12 @@ interface PlayerInteractor {
 
     suspend fun addTrackToFavorite(playerTrack: PlayerTrack)
 
-    suspend fun removeTrackFromFavorite(trackId: Int)
+    suspend fun removeTrackFromFavorite(trackId: Long)
 
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
     fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>
 
-    suspend fun addTrackToPlaylist(trackId: Int, playlistId: Int)
+    suspend fun addTrackToPlaylist(trackId: Long, playlistId: Long):Flow<Pair<String,Boolean>>
 
-     fun getAllPlaylistsWithQuantities():Flow<List<PlaylistForAdapter>>
+    fun getAllPlaylistsWithQuantities():Flow<List<PlaylistForAdapter>>
 }

@@ -1,5 +1,7 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui
 
+import android.app.Activity
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -11,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
@@ -27,8 +30,19 @@ class AddPlaylistFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentAddPlaylistBinding == null")
     private val viewModel: AddPlaylistViewModel by viewModel()
     private var _uri: Uri? = null
-// TODO выходя из приложение  java.lang.RuntimeException: FragmentAddPlaylistBinding == null
     lateinit var confirmDialog: MaterialAlertDialogBuilder
+
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                myHandleOnBackPressed()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,18 +51,12 @@ class AddPlaylistFragment : Fragment() {
         _binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
         viewModel.initEditTextFields()
         observeViewModel()
-//TODO после того как возвращаюсь на экран плеера и жму назад - падает
-//        requireActivity().onBackPressedDispatcher.addCallback(object: OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-////                if (checkIfThereAreUnsavedData()){
-////                    confirmDialog.show()
-////                }else{
-//                    Log.e("AddPlaylistFragment","onBackPressedDispatcher")
-//                    findNavController().navigateUp()
-//                    Log.e("AddPlaylistFragment","after")
-//                }
-//            }
-//        })
+
+
+
+
+
+
 
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle("Завершить создание плейлиста?")
@@ -57,8 +65,6 @@ class AddPlaylistFragment : Fragment() {
             setNegativeButton("Отмена") { dialog, which ->
             }
             setPositiveButton("Завершить") { dialog, which ->
-                Log.e("AddPlaylistFragment", "${findNavController().graph}")
-
                 findNavController().navigateUp()
             }
         }
@@ -73,6 +79,14 @@ class AddPlaylistFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         Log.e("AddPlaylistFragment","onDetach")
+    }
+
+    private fun myHandleOnBackPressed() {
+        if (checkIfThereAreUnsavedData()){
+            confirmDialog.show()
+        }else{
+            findNavController().popBackStack()
+        }
     }
 
     private fun registerImagePicker() {
@@ -177,7 +191,6 @@ class AddPlaylistFragment : Fragment() {
             .decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
-//TODO сделать проверку есть ли несохраненные данные по нажатию системной кнопки НАЗАД
 
     override fun onDestroy() {
         super.onDestroy()
@@ -186,7 +199,8 @@ class AddPlaylistFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        _binding = null
+        _binding = null
+
     }
 
     companion object {

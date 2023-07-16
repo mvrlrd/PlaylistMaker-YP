@@ -39,7 +39,7 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         playerRepository.addToFavorite(playerTrack)
     }
 
-    override suspend fun removeTrackFromFavorite(trackId: Int) {
+    override suspend fun removeTrackFromFavorite(trackId: Long) {
         playerRepository.removeFromFavorite(trackId)
     }
 
@@ -47,8 +47,8 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         return playerRepository.getAllPlaylists()
     }
 
-    override suspend fun addTrackToPlaylist(trackId: Int, playlistId: Int) {
-        playerRepository.addTrackToPlaylist(trackId, playlistId)
+    override suspend fun addTrackToPlaylist(trackId: Long, playlistId: Long):Flow<Pair<String,Boolean>>  {
+        return playerRepository.addTrackToPlaylist(trackId, playlistId)
     }
 
     override fun getAllPlaylistsWithQuantities(): Flow<List<PlaylistForAdapter>> {

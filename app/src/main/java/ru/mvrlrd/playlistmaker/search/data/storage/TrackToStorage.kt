@@ -1,7 +1,7 @@
 package ru.mvrlrd.playlistmaker.search.data.storage
 
 data class TrackToStorage(
-    val trackId: Int,
+    val trackId: Long,
     val trackName: String,
     val artistName: String,
     val trackTime: String,

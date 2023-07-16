@@ -8,6 +8,8 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
@@ -25,15 +27,21 @@ class PlayerViewModel(val playerTrack: PlayerTrack, private val playerInteractor
         playerInteractor.getAllPlaylistsWithQuantities().asLiveData()
 
 
+   private val _isAdded =  MutableLiveData<Pair<String, Boolean>>()
+    val isAdded : LiveData<Pair<String, Boolean>> = _isAdded
+
     init {
             playerInteractor.preparePlayer(playerTrack)
     }
 
-     fun addTrackToPlaylist(trackId: Int, playlistId: Int){
-        viewModelScope.launch {
-            playerInteractor.addTrackToPlaylist(trackId = trackId, playlistId = playlistId)
-        }
-    }
+     fun addTrackToPlaylist(trackId: Long, playlistId: Long) {
+         viewModelScope.launch {
+             playerInteractor.addTrackToPlaylist(trackId = trackId, playlistId = playlistId)
+                 .collect() {
+                     _isAdded.value = it
+                 }
+         }
+     }
 
 
     fun render() {

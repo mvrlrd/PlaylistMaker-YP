@@ -18,12 +18,12 @@ interface PlayerRepository {
     fun getCurrentTime(): Flow<Int>
 
     suspend fun addToFavorite(playerTrack: PlayerTrack)
-    suspend fun removeFromFavorite(trackId: Int)
+    suspend fun removeFromFavorite(trackId: Long)
 
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
     fun getLivePlayerState():LiveData<MyMediaPlayer.PlayerState>
 
-    suspend fun addTrackToPlaylist(trackId: Int, playlistId: Int)
+     suspend fun addTrackToPlaylist(trackId: Long, playlistId: Long):Flow<Pair<String,Boolean>>
 
     fun getAllPlaylistsWithSongs():Flow<List<PlaylistForAdapter>>
 

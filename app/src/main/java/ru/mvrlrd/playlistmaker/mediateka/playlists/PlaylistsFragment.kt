@@ -1,11 +1,13 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,6 +29,15 @@ class PlaylistsFragment : Fragment() {
         fun newInstance() = PlaylistsFragment()
     }
 
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        val callback = object : OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//
+//            }
+//        }
+//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+//    }
 
 
     override fun onCreateView(
