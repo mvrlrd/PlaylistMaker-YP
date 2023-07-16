@@ -20,6 +20,6 @@ class FavoritesRepositoryImpl(
     }
 
     override suspend fun clearFavorites() {
-            favoriteDb.getDao().clearFavorites()
+        favoriteDb.getDao().clearFavorites()
     }
 }

@@ -5,6 +5,5 @@ import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 interface FavoritesRepository {
     fun getFavoriteTracks(): Flow<List<TrackForAdapter>>
-
     suspend fun clearFavorites()
 }

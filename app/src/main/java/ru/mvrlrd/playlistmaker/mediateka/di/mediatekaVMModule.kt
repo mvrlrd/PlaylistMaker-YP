@@ -36,7 +36,7 @@ val mediatekaVMModule = module {
     }
 
     single<FavoriteInteractor> {
-        FavoriteInteractorImpl(favoriteRepository = get() )
+        FavoriteInteractorImpl(favoriteRepository = get())
     }
     single<FavoritesRepository> {
         FavoritesRepositoryImpl(favoriteDb = get(), trackConverter = get())
@@ -45,7 +45,7 @@ val mediatekaVMModule = module {
     single<PlaylistRepository> {
         PlaylistRepositoryImpl(dataBase = get(), converter = get())
     }
-    single <PlaylistInteractor> {
+    single<PlaylistInteractor> {
         PlaylistInteractorImpl(repository = get())
     }
 

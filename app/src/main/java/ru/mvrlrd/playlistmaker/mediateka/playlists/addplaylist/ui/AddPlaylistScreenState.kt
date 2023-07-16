@@ -10,9 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 
-
 sealed class AddPlaylistScreenState {
-
     object ClearNamFieldText : AddPlaylistScreenState() {
         override fun render(binding: FragmentAddPlaylistBinding) {
             binding.nameEtContainer.nameEt.text.clear()
@@ -39,41 +37,28 @@ sealed class AddPlaylistScreenState {
                 binding.createPlaylistButton
             )
         }
+
         private fun initDescriptionEditText(editText: EditText, clearTextButton: ImageButton) {
             editText.apply {
-//                setOnEditorActionListener { _, actionId, _ ->
-//                    onClickOnEnterOnVirtualKeyboard(actionId)
-//                }
-                    doOnTextChanged { text, _, _, _ ->
-                        if (this.hasFocus() && text.toString().isEmpty()) {
-
-                        }
-//                    viewModel.searchDebounce(binding.searchEditText.text.toString())
-                        clearTextButton.visibility = clearButtonVisibility(text.toString())
-                    }
+                doOnTextChanged { text, _, _, _ ->
+                    clearTextButton.visibility = clearButtonVisibility(text.toString())
                 }
+            }
         }
 
         private fun initNameEditText(
             editText: EditText, clearTextButton: ImageButton, createButton: Button
         ) {
             editText.apply {
-//                setOnEditorActionListener { _, actionId, _ ->
-//                    onClickOnEnterOnVirtualKeyboard(actionId)
-//                }
-                    doOnTextChanged { text, _, _, _ ->
-                        if (this.hasFocus() && text.toString().isEmpty()) {
-
-                        }
-                        if (!text.isNullOrBlank()) {
-                            enableCreateButton(createButton)
-                        } else {
-                            disableCreateButton(createButton)
-                        }
-//                    viewModel.searchDebounce(binding.searchEditText.text.toString())
-                        clearTextButton.visibility = clearButtonVisibility(text.toString())
+                doOnTextChanged { text, _, _, _ ->
+                    if (!text.isNullOrBlank()) {
+                        enableCreateButton(createButton)
+                    } else {
+                        disableCreateButton(createButton)
                     }
+                    clearTextButton.visibility = clearButtonVisibility(text.toString())
                 }
+            }
         }
 
         private fun disableCreateButton(button: Button) {
@@ -82,7 +67,7 @@ sealed class AddPlaylistScreenState {
                     R.color.bledniyFont, button.context.theme
                 )
             )
-            button.alpha = 0.5f
+            button.alpha = HALF_TRANSPARENCY_BUTTON
             button.isEnabled = false
         }
 
@@ -92,7 +77,7 @@ sealed class AddPlaylistScreenState {
                     R.color.blue, button.context.theme
                 )
             )
-            button.alpha = 1f
+            button.alpha = NOT_TRANSPARENCY_BUTTON
             button.isEnabled = true
         }
 
@@ -104,4 +89,9 @@ sealed class AddPlaylistScreenState {
         if (p0.isNullOrEmpty()) View.GONE else View.VISIBLE
 
     abstract fun render(binding: FragmentAddPlaylistBinding)
+
+    companion object {
+        private const val HALF_TRANSPARENCY_BUTTON = 0.5f
+        private const val NOT_TRANSPARENCY_BUTTON = 1f
+    }
 }

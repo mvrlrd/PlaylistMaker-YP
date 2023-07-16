@@ -13,7 +13,8 @@ import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.ui.TrackItemDiffCallback
 
-class FavoriteAdapter: ListAdapter<TrackForAdapter, FavoriteAdapter.TrackViewHolder>(TrackItemDiffCallback()) {
+class FavoriteAdapter :
+    ListAdapter<TrackForAdapter, FavoriteAdapter.TrackViewHolder>(TrackItemDiffCallback()) {
     var onClickListener: ((TrackForAdapter) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
@@ -39,7 +40,6 @@ class FavoriteAdapter: ListAdapter<TrackForAdapter, FavoriteAdapter.TrackViewHol
         fun bind(trackForAdapter: TrackForAdapter) {
             binding.trackName.text = trackForAdapter.trackName
             binding.artistName.text = trackForAdapter.artistName
-//        artistName.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_ellipse_1, 0, 0, 0);
             binding.trackTime.text = trackForAdapter.trackTime?.let { formatTime(it.toInt()) }
             Glide
                 .with(itemView)

@@ -1,6 +1,5 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui
 
-import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -31,9 +30,6 @@ class AddPlaylistFragment : Fragment() {
     private val viewModel: AddPlaylistViewModel by viewModel()
     private var _uri: Uri? = null
     lateinit var confirmDialog: MaterialAlertDialogBuilder
-
-
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         val callback = object : OnBackPressedCallback(true) {
@@ -51,40 +47,29 @@ class AddPlaylistFragment : Fragment() {
         _binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
         viewModel.initEditTextFields()
         observeViewModel()
-
-
-
-
-
-
-
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle("Завершить создание плейлиста?")
             setMessage("Все несохраненные данные будут потеряны")
-
             setNegativeButton("Отмена") { dialog, which ->
             }
             setPositiveButton("Завершить") { dialog, which ->
                 findNavController().navigateUp()
             }
         }
-
         setOnClickListeners()
-
         registerImagePicker()
-
         return binding.root
     }
 
     override fun onDetach() {
         super.onDetach()
-        Log.e("AddPlaylistFragment","onDetach")
+        Log.e("AddPlaylistFragment", "onDetach")
     }
 
     private fun myHandleOnBackPressed() {
-        if (checkIfThereAreUnsavedData()){
+        if (checkIfThereAreUnsavedData()) {
             confirmDialog.show()
-        }else{
+        } else {
             findNavController().popBackStack()
         }
     }
@@ -108,10 +93,10 @@ class AddPlaylistFragment : Fragment() {
         viewModel.screenState.observe(this) { screenState ->
             screenState.render(binding)
         }
-        viewModel.playlists.observe(this){
+        viewModel.playlists.observe(this) {
             println("__________")
             it.forEach { println(it) }
-            Log.d("AddPlaylistFragment","${it.size}")
+            Log.d("AddPlaylistFragment", "${it.size}")
             println("__________")
         }
     }
@@ -128,18 +113,18 @@ class AddPlaylistFragment : Fragment() {
             }
         }
         binding.backButton.setOnClickListener {
-            if (checkIfThereAreUnsavedData()){
+            if (checkIfThereAreUnsavedData()) {
                 confirmDialog.show()
-            }else{
+            } else {
                 findNavController().popBackStack()
             }
         }
         binding.createPlaylistButton.setOnClickListener {
             val message = try {
-                if (_uri == null){
+                if (_uri == null) {
                     addPlaylist(false)
-                }else{
-                    saveImageToPrivateStorage(_uri!!,addPlaylist(true))
+                } else {
+                    saveImageToPrivateStorage(_uri!!, addPlaylist(true))
                 }
                 findNavController().popBackStack()
                 "плейлист ${binding.nameEtContainer.nameEt.text} создан"
@@ -152,21 +137,20 @@ class AddPlaylistFragment : Fragment() {
     }
 
 
-
-    private fun checkIfThereAreUnsavedData() : Boolean{
-        return (_uri!=null
-            || binding.nameEtContainer.nameEt.text.toString().isNotEmpty()
-            || binding.descriptionEtContainer.nameEt.text.toString().isNotEmpty())
+    private fun checkIfThereAreUnsavedData(): Boolean {
+        return (_uri != null
+                || binding.nameEtContainer.nameEt.text.toString().isNotEmpty()
+                || binding.descriptionEtContainer.nameEt.text.toString().isNotEmpty())
     }
 
-    private fun addPlaylist(isImageNotEmpty: Boolean): String{
+    private fun addPlaylist(isImageNotEmpty: Boolean): String {
         val name = binding.nameEtContainer.nameEt.text.toString()
         val description = binding.descriptionEtContainer.nameEt.text.toString()
-       val nameOfImage = if (isImageNotEmpty){
-           viewModel.generateImageNameForStorage()
-        }else{
+        val nameOfImage = if (isImageNotEmpty) {
+            viewModel.generateImageNameForStorage()
+        } else {
             ""
-       }
+        }
 
         viewModel.addPlaylist(
             PlaylistForAdapter(
@@ -179,8 +163,9 @@ class AddPlaylistFragment : Fragment() {
     }
 
     private fun saveImageToPrivateStorage(uri: Uri, nameOfImage: String) {
-        val filePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
-        if (!filePath.exists()){
+        val filePath =
+            File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+        if (!filePath.exists()) {
             filePath.mkdirs()
         }
 
@@ -192,20 +177,8 @@ class AddPlaylistFragment : Fragment() {
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            AddPlaylistFragment()
     }
 }
