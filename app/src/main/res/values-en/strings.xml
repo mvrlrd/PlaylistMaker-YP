@@ -43,4 +43,9 @@
     <string name="unsaved_data_caution">Unsaved data will be deleted</string>
     <string name="cancel">Cancel</string>
     <string name="quitting_question">finish creating a playlist?</string>
+
+    <string name="playlist_created" >"playlist %s has been created"</string>
+    <string name="track_already_added" >"Track is already in playlist %s"</string>
+    <string name="track_added_to_playlist" >"Track has been added to %s"</string>
+
 </resources>

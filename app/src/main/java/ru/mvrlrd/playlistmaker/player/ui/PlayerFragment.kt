@@ -100,9 +100,9 @@ class PlayerFragment : Fragment() {
         viewModel.isAdded.observe(this) { isTrackAddadToPlaylist ->
             val message = if (isTrackAddadToPlaylist.second) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                "Добавлено в плейлист ${isTrackAddadToPlaylist.first}"
+               this.resources.getString(R.string.track_added_to_playlist,  isTrackAddadToPlaylist.first)
             } else {
-                "Трек уже добавлен в плейлист ${isTrackAddadToPlaylist.first}"
+                this.resources.getString(R.string.track_already_added, isTrackAddadToPlaylist.first)
             }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }

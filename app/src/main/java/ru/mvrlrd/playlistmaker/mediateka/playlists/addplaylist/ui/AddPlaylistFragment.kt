@@ -128,9 +128,8 @@ class AddPlaylistFragment : Fragment() {
                     saveImageToPrivateStorage(_uri!!, addPlaylist(true))
                 }
                 findNavController().popBackStack()
-                "плейлист ${binding.nameEtContainer.nameEt.text} создан"
+                this.resources.getString(R.string.playlist_created, binding.nameEtContainer.nameEt.text)
             } catch (e: Exception) {
-                println(e)
                 "error"
             }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
