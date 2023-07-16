@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import java.io.File
 import java.io.FileOutputStream
@@ -48,11 +49,11 @@ class AddPlaylistFragment : Fragment() {
         viewModel.initEditTextFields()
         observeViewModel()
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
-            setTitle("Завершить создание плейлиста?")
-            setMessage("Все несохраненные данные будут потеряны")
-            setNegativeButton("Отмена") { dialog, which ->
+            setTitle(this@AddPlaylistFragment.resources.getText(R.string.quitting_question))
+            setMessage(this@AddPlaylistFragment.resources.getText(R.string.unsaved_data_caution))
+            setNegativeButton(this@AddPlaylistFragment.resources.getText(R.string.cancel)) { dialog, which ->
             }
-            setPositiveButton("Завершить") { dialog, which ->
+            setPositiveButton(this@AddPlaylistFragment.resources.getText(R.string.finish)) { dialog, which ->
                 findNavController().navigateUp()
             }
         }

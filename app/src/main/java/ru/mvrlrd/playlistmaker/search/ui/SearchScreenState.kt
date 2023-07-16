@@ -54,7 +54,7 @@ sealed class SearchScreenState(
             if (trackForAdapters.isNullOrEmpty()) {
                 binding.errorPlaceholder.visibility = View.VISIBLE
                 binding.infoPlaceholder.placeholderImage.setImageResource(R.drawable.nothing_found)
-                binding.infoPlaceholder.placeholderMessage.text = "История пуста"
+                binding.infoPlaceholder.placeholderMessage.text = binding.infoPlaceholder.placeholderMessage.resources.getText(R.string.history_is_empty)
             } else {
                 binding.errorPlaceholder.visibility = View.GONE
             }
@@ -66,7 +66,7 @@ sealed class SearchScreenState(
         override fun render(binding: FragmentSearchBinding) {
             if (trackForAdapters.isNullOrEmpty()) {
                 binding.errorPlaceholder.visibility = View.VISIBLE
-                binding.infoPlaceholder.placeholderMessage.text = "История пуста"
+                binding.infoPlaceholder.placeholderMessage.text = binding.infoPlaceholder.placeholderMessage.resources.getText(R.string.history_is_empty)
                 binding.clearHistoryButton.visibility = View.GONE
                 binding.youSearchedTitle.visibility = View.GONE
             } else {
