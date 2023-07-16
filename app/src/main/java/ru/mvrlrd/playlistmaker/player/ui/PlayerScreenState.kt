@@ -34,7 +34,7 @@ sealed class PlayerScreenState {
                 .placeholder(R.drawable.album_placeholder_image)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.big_radius))
+                    RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.radius_medium))
                 )
                 .into(binding.albumImageView)
         }
@@ -141,7 +141,7 @@ sealed class PlayerScreenState {
                 .placeholder(R.drawable.album_placeholder_image)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.big_radius))
+                    RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.radius_medium))
                 )
                 .into(binding.albumImageView)
         }

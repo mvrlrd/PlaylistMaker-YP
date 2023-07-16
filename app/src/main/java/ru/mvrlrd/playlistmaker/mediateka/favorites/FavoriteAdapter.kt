@@ -47,7 +47,7 @@ class FavoriteAdapter :
                 .placeholder(R.drawable.album_placeholder_image)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius))
+                    RoundedCorners(binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small))
                 )
                 .into(binding.albumImage)
         }
