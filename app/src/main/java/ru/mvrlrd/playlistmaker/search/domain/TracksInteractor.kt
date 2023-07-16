@@ -8,6 +8,6 @@ interface TracksInteractor {
     fun addTrackToHistory(trackForAdapter: TrackForAdapter)
     fun clearHistory()
     suspend fun getHistory(): Flow<List<TrackForAdapter>>
-    suspend fun getFavIds():Flow<List<Long>>
+    suspend fun getFavIds(): Flow<List<Long>>
 }
 

@@ -12,14 +12,13 @@ class LocalStorage(private val sharedPreferences: SharedPreferences) : ILocalSto
         const val MAX_SIZE_OF_HISTORY_LIST = 10
     }
 
-   override fun addToHistory(trackForAdapter: TrackForAdapter) {
+    override fun addToHistory(trackForAdapter: TrackForAdapter) {
         val searchedTracks = getHistory().map { it.mapToTrackToStorage() } as MutableList
-
-        if (searchedTracks.contains(trackForAdapter.mapToTrackToStorage())){
+        if (searchedTracks.contains(trackForAdapter.mapToTrackToStorage())) {
             searchedTracks.remove(trackForAdapter)
         }
-        searchedTracks.add(0,trackForAdapter)
-        if (searchedTracks.size> MAX_SIZE_OF_HISTORY_LIST){
+        searchedTracks.add(0, trackForAdapter)
+        if (searchedTracks.size > MAX_SIZE_OF_HISTORY_LIST) {
             searchedTracks.removeLast()
         }
         val json = Gson().toJson(searchedTracks)
@@ -28,7 +27,6 @@ class LocalStorage(private val sharedPreferences: SharedPreferences) : ILocalSto
             .putString(HISTORY_KEY, json)
             .apply()
     }
-
     override fun clearHistory() {
         sharedPreferences
             .edit()
@@ -36,9 +34,10 @@ class LocalStorage(private val sharedPreferences: SharedPreferences) : ILocalSto
             .apply()
     }
 
-    override fun getHistory(): List<TrackForAdapter>{
+    override fun getHistory(): List<TrackForAdapter> {
         val json = sharedPreferences.getString(HISTORY_KEY, null) ?: return arrayListOf()
-        val tracksToStorage = Gson().fromJson(json, Array<TrackToStorage>::class.java).toCollection(ArrayList())
+        val tracksToStorage =
+            Gson().fromJson(json, Array<TrackToStorage>::class.java).toCollection(ArrayList())
         return tracksToStorage.map { it.mapToTrack() }
     }
 }

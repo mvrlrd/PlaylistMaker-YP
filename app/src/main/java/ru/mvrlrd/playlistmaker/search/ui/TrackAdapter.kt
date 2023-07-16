@@ -14,7 +14,8 @@ import ru.mvrlrd.playlistmaker.databinding.TrackLayoutBinding
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 
-class TrackAdapter : ListAdapter<TrackForAdapter, TrackAdapter.TrackViewHolder>(TrackItemDiffCallback()) {
+class TrackAdapter :
+    ListAdapter<TrackForAdapter, TrackAdapter.TrackViewHolder>(TrackItemDiffCallback()) {
     var onClickListener: ((TrackForAdapter) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
@@ -22,8 +23,8 @@ class TrackAdapter : ListAdapter<TrackForAdapter, TrackAdapter.TrackViewHolder>(
         return TrackViewHolder(binding)
     }
 
-    fun isListEmpty(): Boolean{
-        return itemCount==0
+    fun isListEmpty(): Boolean {
+        return itemCount == 0
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {

@@ -17,14 +17,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
-//TODO сделать инфо плэйсхолдер скролабл потому что если переворачиваем экран его не видно
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
         get() = _binding ?: throw RuntimeException("FragmentSearchBinding == null")
     private val viewModel: SearchViewModel by viewModel()
     private val trackAdapter: TrackAdapter by inject()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,11 +41,10 @@ class SearchFragment : Fragment() {
                 if (screenState is SearchScreenState.Error) {
                     showToast(screenState.code)
                 }
-            }else{
+            } else {
                 screenState.render(binding)
             }
         }
-
         initRecycler()
         initEditText()
         handleButtons()
@@ -56,7 +53,7 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.updateFavIds()
-        if (binding.searchEditText.text.toString().isEmpty()){
+        if (binding.searchEditText.text.toString().isEmpty()) {
             binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
             viewModel.showHistory()
         }

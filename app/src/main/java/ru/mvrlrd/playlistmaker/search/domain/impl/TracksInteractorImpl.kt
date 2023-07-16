@@ -7,8 +7,8 @@ import ru.mvrlrd.playlistmaker.search.domain.TracksInteractor
 import ru.mvrlrd.playlistmaker.search.domain.TracksRepository
 import ru.mvrlrd.playlistmaker.search.util.Resource
 
-class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
-    override fun searchTracks(query: String) : Flow<Pair<List<TrackForAdapter>?, Pair<Int, String?>>> {
+class TracksInteractorImpl(private val repository: TracksRepository) : TracksInteractor {
+    override fun searchTracks(query: String): Flow<Pair<List<TrackForAdapter>?, Pair<Int, String?>>> {
         return repository.searchTracks(query).map { result ->
             when (result) {
                 is Resource.Success -> {
@@ -28,6 +28,7 @@ class TracksInteractorImpl(private val repository: TracksRepository): TracksInte
     override fun clearHistory() {
         repository.clearHistory()
     }
+
     override suspend fun getHistory(): Flow<List<TrackForAdapter>> {
         return repository.getHistory()
     }

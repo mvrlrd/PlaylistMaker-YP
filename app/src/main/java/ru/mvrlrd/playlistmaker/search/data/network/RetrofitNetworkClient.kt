@@ -34,7 +34,8 @@ class RetrofitNetworkClient(
             try {
                 val response = itunesService.search(dto.query)
 
-                response.apply { resultCode = context.resources.getString(R.string.success_code).toInt()
+                response.apply {
+                    resultCode = context.resources.getString(R.string.success_code).toInt()
                     results = results.filter { it.previewUrl != null } as ArrayList<TrackDto>
                 }
 
@@ -47,7 +48,7 @@ class RetrofitNetworkClient(
         }
     }
 
-    private fun isConnected(): Boolean{
+    private fun isConnected(): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities =

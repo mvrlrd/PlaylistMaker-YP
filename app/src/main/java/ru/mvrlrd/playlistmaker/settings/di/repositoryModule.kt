@@ -5,7 +5,7 @@ import ru.mvrlrd.playlistmaker.settings.data.ThemeSwitchRepositoryImpl
 import ru.mvrlrd.playlistmaker.settings.domain.ThemeSwitchRepository
 
 val settingsRepositoryModule = module {
-    single<ThemeSwitchRepository>{
+    single<ThemeSwitchRepository> {
         ThemeSwitchRepositoryImpl(themeStorage = get())
     }
 }

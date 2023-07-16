@@ -1,16 +1,17 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
-import android.util.Log
 import android.view.View
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
-sealed class SearchScreenState(val trackForAdapters: List<TrackForAdapter>? = null, val message: String? = null) {
+sealed class SearchScreenState(
+    val trackForAdapters: List<TrackForAdapter>? = null,
+) {
     class Loading : SearchScreenState() {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.VISIBLE
-            binding.errorPlaceholder.visibility= View.GONE
+            binding.errorPlaceholder.visibility = View.GONE
             binding.clearHistoryButton.visibility = View.GONE
             binding.youSearchedTitle.visibility = View.GONE
             binding.refreshButton.visibility = View.GONE
@@ -30,7 +31,8 @@ sealed class SearchScreenState(val trackForAdapters: List<TrackForAdapter>? = nu
         }
     }
 
-    class Error(val code: String, private val errorMessage: String?) : SearchScreenState(message = errorMessage) {
+    class Error(val code: String, private val errorMessage: String?) :
+        SearchScreenState() {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
             binding.errorPlaceholder.visibility = View.VISIBLE
@@ -42,25 +44,25 @@ sealed class SearchScreenState(val trackForAdapters: List<TrackForAdapter>? = nu
         }
     }
 
-    class Success(trackForAdapters: List<TrackForAdapter>?) : SearchScreenState(trackForAdapters = trackForAdapters) {
+    class Success(trackForAdapters: List<TrackForAdapter>?) :
+        SearchScreenState(trackForAdapters = trackForAdapters) {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
             binding.clearHistoryButton.visibility = View.GONE
             binding.youSearchedTitle.visibility = View.GONE
             binding.refreshButton.visibility = View.GONE
-            if (trackForAdapters.isNullOrEmpty()){
-                Log.e("Success","tracks is empty")
+            if (trackForAdapters.isNullOrEmpty()) {
                 binding.errorPlaceholder.visibility = View.VISIBLE
                 binding.infoPlaceholder.placeholderImage.setImageResource(R.drawable.nothing_found)
                 binding.infoPlaceholder.placeholderMessage.text = "История пуста"
-            }else{
-                Log.e("Success","tracks is not empty")
+            } else {
                 binding.errorPlaceholder.visibility = View.GONE
             }
         }
     }
 
-    class ShowHistory(trackForAdapters: List<TrackForAdapter>?) : SearchScreenState(trackForAdapters = trackForAdapters) {
+    class ShowHistory(trackForAdapters: List<TrackForAdapter>?) :
+        SearchScreenState(trackForAdapters = trackForAdapters) {
         override fun render(binding: FragmentSearchBinding) {
             if (trackForAdapters.isNullOrEmpty()) {
                 binding.errorPlaceholder.visibility = View.VISIBLE

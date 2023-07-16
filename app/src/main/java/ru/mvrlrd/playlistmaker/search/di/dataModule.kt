@@ -18,7 +18,12 @@ val searchLocalStorageDataModule = module {
     single<ILocalStorage> {
         LocalStorage(sharedPreferences = get())
     }
-    single<SharedPreferences> {androidContext().getSharedPreferences(LOCAL_STORAGE, Context.MODE_PRIVATE)}
+    single<SharedPreferences> {
+        androidContext().getSharedPreferences(
+            LOCAL_STORAGE,
+            Context.MODE_PRIVATE
+        )
+    }
 }
 
 val searchNetworkDataModule = module {
@@ -29,7 +34,7 @@ val searchNetworkDataModule = module {
         createApiService(retrofit = get())
     }
     single { provideRetrofit(okHttpClient = get()) }
-    factory { providesOkHttpClient(context = androidContext()) }
+    factory { providesOkHttpClient() }
 }
 
 fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
@@ -40,7 +45,7 @@ fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         .build()
 }
 
-fun providesOkHttpClient(context: Context): OkHttpClient {
+fun providesOkHttpClient(): OkHttpClient {
     return OkHttpClient.Builder()
         .build()
 }
