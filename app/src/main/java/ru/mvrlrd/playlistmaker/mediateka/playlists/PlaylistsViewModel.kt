@@ -9,5 +9,4 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistIn
 class PlaylistsViewModel(private val interactor: PlaylistInteractor) : ViewModel() {
     val playlists: LiveData<List<PlaylistForAdapter>> =
             interactor.getAllPlaylist().asLiveData()
-
 }

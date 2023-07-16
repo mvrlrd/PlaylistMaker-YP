@@ -7,7 +7,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistRe
 
 class PlaylistInteractorImpl(private val repository: PlaylistRepository): PlaylistInteractor {
     override fun getAllPlaylist(): Flow<List<PlaylistForAdapter>> {
-        return repository.getAllPlaylist()
+        return repository.getAllPlaylistsWithSongs()
     }
 
     override suspend fun addPlaylist(playlistForAdapter: PlaylistForAdapter) {

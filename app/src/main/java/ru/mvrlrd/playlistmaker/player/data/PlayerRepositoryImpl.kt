@@ -72,8 +72,6 @@ class PlayerRepositoryImpl(
 
 
     override  fun getAllPlaylistsWithSongs(): Flow<List<PlaylistForAdapter>> {
-
-
         return playlistDb.getDao().getPlaylistsWithSongs().map {
             mapListDaoToListForAdapter(it)
         }
