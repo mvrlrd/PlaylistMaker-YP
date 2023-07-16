@@ -28,7 +28,7 @@
      app:layout_constraintStart_toStartOf="parent"
      app:layout_constraintTop_toTopOf="parent"
      app:navigationIcon="@drawable/ic_arrow_icon"
-     app:title="Новый плейлист"
+     app:title="@string/new_playlist"
      app:titleCentered="false"
      app:titleTextColor="?attr/day_night_background" />
 

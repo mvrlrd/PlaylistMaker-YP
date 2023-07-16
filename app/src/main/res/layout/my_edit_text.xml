@@ -16,12 +16,10 @@
         android:background="@drawable/edit_text_selector"
         android:drawablePadding="11dp"
         android:drawableTint="?attr/search_icons_color"
-        android:hint="Введите текст"
         android:imeOptions="actionDone"
         android:inputType="text"
         android:maxLines="1"
         android:padding="8dp"
-
         android:paddingStart="15dp"
         android:singleLine="true"
         android:textColor="?attr/day_night_background"
