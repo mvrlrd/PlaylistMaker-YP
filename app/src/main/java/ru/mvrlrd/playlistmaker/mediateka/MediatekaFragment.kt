@@ -28,7 +28,7 @@ class MediatekaFragment : Fragment() {
         binding.viewPager.adapter = MediatekaViewPagerAdapter(
             childFragmentManager, lifecycle
         )
-        tabMediator = TabLayoutMediator(binding.mediatekaTab, binding.viewPager) { tab, position ->
+        tabMediator = TabLayoutMediator(binding.tabMediateka, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> tab.text = this.resources.getText(R.string.favorites)
                 1 -> tab.text = this.resources.getText(R.string.playlists)

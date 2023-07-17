@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
+
+    <style name="category_title" parent="TextAppearance.Design.Tab">
+        <item name="android:textColor">"?attr/day_night_background"</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--    tabLayout mediateka-->
+
+    <style name="TabLayoutTextStyle" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabTextColor">@color/text_color</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabIndicatorColor">@color/text_color</item>
+        <item name="tabTextAppearance">@style/TabTextStyle</item>
+    </style>
+
+    <style name="TabTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!--    tabLayout mediateka-->
+
+
+    <style name="AppTabTextAppearance" parent="Widget.MaterialComponents.TabLayout.Colored">
+        <item name="android:textSize">16sp</item>
+        <item name="tabTextColor">@color/blue</item>
+        <item name="tabSelectedTextColor">@color/blue</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="FabStyle" parent="Widget.Design.FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="backgroundTint">@color/blue</item>
+        <item name="layout_anchorGravity">end|bottom</item>
+    </style>
+
     <style name="TextStyle">
         <item name="android:textColor">?attr/button_text_color</item>
     </style>
