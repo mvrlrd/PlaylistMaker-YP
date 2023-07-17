@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
-    </style>
+<!--    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
+<!--        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>-->
+<!--    </style>-->
 
     <style name="AppTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:layout_width">match_parent</item>
@@ -44,13 +44,13 @@
         <item name="textAllCaps">true</item>
     </style>
 
-    <style name="FabStyle" parent="Widget.Design.FloatingActionButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">16dp</item>
-        <item name="backgroundTint">@color/blue</item>
-        <item name="layout_anchorGravity">end|bottom</item>
-    </style>
+<!--    <style name="FabStyle" parent="Widget.Design.FloatingActionButton">-->
+<!--        <item name="android:layout_width">wrap_content</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:layout_margin">16dp</item>-->
+<!--        <item name="backgroundTint">@color/blue</item>-->
+<!--        <item name="layout_anchorGravity">end|bottom</item>-->
+<!--    </style>-->
 
     <style name="TextStyle">
         <item name="android:textColor">?attr/button_text_color</item>
@@ -164,7 +164,7 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/text_size_xs</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">?attr/primary_text_color</item>
     </style>
 
     <style name="InfoTextStyle">
@@ -184,9 +184,19 @@
         <item name="android:layout_marginEnd">@dimen/usual_padding</item>
         <item name="android:layout_marginTop">@dimen/info_padding</item>
         <item name="android:fontFamily">"@font/ys_display_regular"</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">?attr/text_color</item>
         <item name="android:textSize">@dimen/text_size_xxs</item>
         <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="FabStyle" parent="Widget.Design.FloatingActionButton">
+        <item name="android:tint">@color/white</item>
+        <item name="android:enabled">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">@dimen/small_fab_size</item>
+        <item name="android:layout_height">@dimen/small_fab_size</item>
+        <item name="backgroundTint">@color/light_gray</item>
+        <item name="rippleColor">?attr/main_mode_color</item>
     </style>
 
     <style name="TrackNameTitle" parent="@style/PlayerTextStyle">

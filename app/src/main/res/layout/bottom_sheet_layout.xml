@@ -9,11 +9,12 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/iv_bottom_sheet_bar"
         android:layout_width="40dp"
         android:layout_height="4dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/rectangle"
+        android:background="?attr/text_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,8 +28,8 @@
         android:layout_marginEnd="16dp"
         android:gravity="center_horizontal"
         android:text="@string/add_to_playlist_title"
-        android:textColor="@android:color/black"
-        android:textSize="22sp"
+        android:textColor="?attr/text_color"
+        android:textSize="@dimen/text_size_big"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,8 +42,9 @@
         android:layout_margin="16dp"
         android:background="@drawable/rectangle"
         android:text="@string/new_playlist"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
+        android:textColor="?attr/main_mode_color"
+        android:textSize="@dimen/text_size_xxxs"
+        android:backgroundTint="?attr/text_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

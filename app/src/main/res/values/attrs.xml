@@ -25,6 +25,9 @@
         <attr name="contrary_to_primary_text_color" format="color" />
         <attr name="primary_text_color" format="color"/>
 
+<!--        player-->
+        <attr name="main_mode_color" format="color"/>
+        <attr name="text_color" format="color"/>
 
 
 

@@ -10,6 +10,7 @@
     <dimen name="radius_medium">8dp</dimen>
     <dimen name="radius_big">10dp</dimen>
 
+    <dimen name="text_size_xxxs">12sp</dimen>
     <dimen name="text_size_xxs">13sp</dimen>
     <dimen name="text_size_xs">14sp</dimen>
     <dimen name="text_size_small">16sp</dimen>
@@ -17,6 +18,9 @@
     <dimen name="text_size_big">22sp</dimen>
 
     <dimen name="back_arrow_size">16dp</dimen>
+
+    <dimen name="small_fab_size">51dp</dimen>
+    <dimen name="big_fab_size">83dp</dimen>
 
 
     <dimen name="zero_padding">0dp</dimen>
