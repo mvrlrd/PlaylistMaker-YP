@@ -9,7 +9,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="titleTextAppearance">@style/MyToolbarTitleTextAppearance</item>
-        <item name="titleTextColor">@color/black</item>
+        <item name="titleTextColor">?attr/text_color</item>
     </style>
 
     <style name="MyToolbarTitleTextAppearance" parent="@style/TextAppearance.MaterialComponents.Headline6">
@@ -189,8 +189,18 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="FabStyle2">
+        <item name="android:tint">@color/red</item>
+        <item name="android:enabled">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">@dimen/small_fab_size</item>
+        <item name="android:layout_height">@dimen/small_fab_size</item>
+        <item name="backgroundTint">@color/light_gray</item>
+        <item name="rippleColor">?attr/main_mode_color</item>
+    </style>
+
     <style name="FabStyle" parent="Widget.Design.FloatingActionButton">
-        <item name="android:tint">@color/white</item>
+        <item name="android:tint">@color/red</item>
         <item name="android:enabled">true</item>
         <item name="android:clickable">true</item>
         <item name="android:layout_width">@dimen/small_fab_size</item>

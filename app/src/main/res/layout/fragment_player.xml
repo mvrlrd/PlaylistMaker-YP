@@ -93,11 +93,11 @@
                 android:id="@+id/fab_play"
                 android:layout_width="@dimen/big_fab_size"
                 android:layout_height="@dimen/big_fab_size"
-                style="@style/FabStyle"
+                style="@style/FabStyle2"
                 android:enabled="false"
                 android:backgroundTint="?attr/text_color"
                 android:src="@drawable/baseline_play_arrow_24"
-                android:tint="@color/white"
+
                 app:borderWidth="0dp"
                 app:fabCustomSize="@dimen/big_fab_size"
                 app:layout_constraintBottom_toBottomOf="@+id/fab_open_bottom_sheet"
@@ -109,8 +109,8 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_add_to_favs"
-                style="@style/FabStyle"
                 android:src="@drawable/baseline_favorite_border_24"
+                style="@style/FabStyle"
                 app:borderWidth="0dp"
                 app:fabCustomSize="@dimen/small_fab_size"
                 app:layout_constraintBottom_toBottomOf="@+id/fab_open_bottom_sheet"
