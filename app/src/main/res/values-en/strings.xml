@@ -48,4 +48,7 @@
     <string name="track_already_added" >"Track is already in playlist %s"</string>
     <string name="track_added_to_playlist" >"Track has been added to %s"</string>
 
+    <string name="quantity_of_tracks">%s track%s</string>
+
+
 </resources>

@@ -4,7 +4,7 @@
     android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/main_mode_color"
     app:behavior_hideable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
@@ -35,16 +35,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_add_new_playlist"
-        android:layout_width="133dp"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_margin="16dp"
-        android:background="@drawable/rectangle"
         android:text="@string/new_playlist"
-        android:textColor="?attr/main_mode_color"
         android:textSize="@dimen/text_size_xxxs"
-        android:backgroundTint="?attr/text_color"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +55,7 @@
         android:id="@+id/rv_playlists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
