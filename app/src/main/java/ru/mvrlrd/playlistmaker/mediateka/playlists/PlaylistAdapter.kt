@@ -38,7 +38,7 @@ class PlaylistAdapter :
 
     class PlaylistViewHolder(private val binding: PlaylistCardItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val albumImage: ImageView = binding.ivPlaylistImage
+        val albumImage: ImageView = binding.ivPlaylistBigImage
 
         fun bind(playlistForAdapter: PlaylistForAdapter) {
             binding.tvTitle.text = playlistForAdapter.name
@@ -48,7 +48,7 @@ class PlaylistAdapter :
                     .with(itemView)
                     .load(playlistForAdapter.playlistImagePath)
                     .placeholder(R.drawable.album_placeholder_image)
-                    .into(binding.ivPlaylistImage)
+                    .into(binding.ivPlaylistBigImage)
             }
         }
     }
