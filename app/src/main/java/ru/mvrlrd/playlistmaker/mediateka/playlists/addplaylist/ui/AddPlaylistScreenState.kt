@@ -29,11 +29,11 @@ sealed class AddPlaylistScreenState {
         override fun render(binding: FragmentAddPlaylistBinding) {
             initDescriptionEditText(
                 binding.descriptionEtContainer.nameEt,
-                binding.descriptionEtContainer.clearTextButton
+                binding.descriptionEtContainer.btnClearText
             )
             initNameEditText(
                 binding.nameEtContainer.nameEt,
-                binding.nameEtContainer.clearTextButton,
+                binding.nameEtContainer.btnClearText,
                 binding.createPlaylistButton
             )
         }

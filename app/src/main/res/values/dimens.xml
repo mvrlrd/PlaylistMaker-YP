@@ -10,7 +10,9 @@
     <dimen name="radius_medium">8dp</dimen>
     <dimen name="radius_big">10dp</dimen>
 
+    <dimen name="text_size_xs">14sp</dimen>
     <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_medium">19sp</dimen>
     <dimen name="text_size_big">22sp</dimen>
 
 
@@ -29,7 +31,8 @@
 
 
 
-    <dimen name="search_height">36dp</dimen>
+    <dimen name="search_field_height">36dp</dimen>
+
     <dimen name="search_max_length">25</dimen>
     <dimen name="refresh_button_width">91dp</dimen>
     <dimen name="refresh_button_height">36dp</dimen>

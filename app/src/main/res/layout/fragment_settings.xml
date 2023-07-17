@@ -24,8 +24,8 @@
             android:layout_gravity="end|center_vertical"
             android:checked="false"
             app:showText="false"
-            app:thumbTint="@color/red"
-            app:trackTint="@color/blue" />
+            app:thumbTint="@color/light_gray"
+            app:trackTint="@color/extra_light_gray" />
     </FrameLayout>
 
     <FrameLayout

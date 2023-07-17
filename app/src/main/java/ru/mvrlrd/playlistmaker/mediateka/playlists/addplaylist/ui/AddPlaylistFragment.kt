@@ -103,12 +103,12 @@ class AddPlaylistFragment : Fragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.nameEtContainer.clearTextButton.apply {
+        binding.nameEtContainer.btnClearText.apply {
             setOnClickListener {
                 viewModel.clearNameFieldText()
             }
         }
-        binding.descriptionEtContainer.clearTextButton.apply {
+        binding.descriptionEtContainer.btnClearText.apply {
             setOnClickListener {
                 viewModel.clearDescriptionFieldText()
             }

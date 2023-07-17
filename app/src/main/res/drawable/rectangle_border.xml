@@ -5,3 +5,4 @@
         android:width="1dp" />
     <corners android:radius="@dimen/radius_medium"/>
 </shape>
+

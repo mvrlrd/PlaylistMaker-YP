@@ -11,20 +11,20 @@ sealed class SearchScreenState(
     class Loading : SearchScreenState() {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.VISIBLE
-            binding.errorPlaceholder.visibility = View.GONE
-            binding.clearHistoryButton.visibility = View.GONE
-            binding.youSearchedTitle.visibility = View.GONE
-            binding.refreshButton.visibility = View.GONE
+            binding.placeholderContainer.visibility = View.GONE
+            binding.btnClearHistory.visibility = View.GONE
+            binding.tvHistoryTitle.visibility = View.GONE
+            binding.btnRefresh.visibility = View.GONE
         }
     }
 
     class NothingFound : SearchScreenState() {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
-            binding.errorPlaceholder.visibility = View.VISIBLE
-            binding.clearHistoryButton.visibility = View.GONE
-            binding.youSearchedTitle.visibility = View.GONE
-            binding.refreshButton.visibility = View.GONE
+            binding.placeholderContainer.visibility = View.VISIBLE
+            binding.btnClearHistory.visibility = View.GONE
+            binding.tvHistoryTitle.visibility = View.GONE
+            binding.btnRefresh.visibility = View.GONE
             binding.infoPlaceholder.placeholderImage.setImageResource(R.drawable.nothing_found)
             binding.infoPlaceholder.placeholderMessage.text =
                 binding.infoPlaceholder.placeholderMessage.resources.getText(R.string.nothing_found)
@@ -35,10 +35,10 @@ sealed class SearchScreenState(
         SearchScreenState() {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
-            binding.errorPlaceholder.visibility = View.VISIBLE
-            binding.clearHistoryButton.visibility = View.GONE
-            binding.youSearchedTitle.visibility = View.GONE
-            binding.refreshButton.visibility = View.VISIBLE
+            binding.placeholderContainer.visibility = View.VISIBLE
+            binding.btnClearHistory.visibility = View.GONE
+            binding.tvHistoryTitle.visibility = View.GONE
+            binding.btnRefresh.visibility = View.VISIBLE
             binding.infoPlaceholder.placeholderImage.setImageResource(R.drawable.connection_error)
             binding.infoPlaceholder.placeholderMessage.text = errorMessage
         }
@@ -48,15 +48,15 @@ sealed class SearchScreenState(
         SearchScreenState(trackForAdapters = trackForAdapters) {
         override fun render(binding: FragmentSearchBinding) {
             binding.progressBar.visibility = View.GONE
-            binding.clearHistoryButton.visibility = View.GONE
-            binding.youSearchedTitle.visibility = View.GONE
-            binding.refreshButton.visibility = View.GONE
+            binding.btnClearHistory.visibility = View.GONE
+            binding.tvHistoryTitle.visibility = View.GONE
+            binding.btnRefresh.visibility = View.GONE
             if (trackForAdapters.isNullOrEmpty()) {
-                binding.errorPlaceholder.visibility = View.VISIBLE
+                binding.placeholderContainer.visibility = View.VISIBLE
                 binding.infoPlaceholder.placeholderImage.setImageResource(R.drawable.nothing_found)
                 binding.infoPlaceholder.placeholderMessage.text = binding.infoPlaceholder.placeholderMessage.resources.getText(R.string.history_is_empty)
             } else {
-                binding.errorPlaceholder.visibility = View.GONE
+                binding.placeholderContainer.visibility = View.GONE
             }
         }
     }
@@ -65,18 +65,18 @@ sealed class SearchScreenState(
         SearchScreenState(trackForAdapters = trackForAdapters) {
         override fun render(binding: FragmentSearchBinding) {
             if (trackForAdapters.isNullOrEmpty()) {
-                binding.errorPlaceholder.visibility = View.VISIBLE
+                binding.placeholderContainer.visibility = View.VISIBLE
                 binding.infoPlaceholder.placeholderMessage.text = binding.infoPlaceholder.placeholderMessage.resources.getText(R.string.history_is_empty)
-                binding.clearHistoryButton.visibility = View.GONE
-                binding.youSearchedTitle.visibility = View.GONE
+                binding.btnClearHistory.visibility = View.GONE
+                binding.tvHistoryTitle.visibility = View.GONE
             } else {
-                binding.errorPlaceholder.visibility = View.GONE
-                binding.clearHistoryButton.visibility = View.VISIBLE
-                binding.youSearchedTitle.visibility = View.VISIBLE
+                binding.placeholderContainer.visibility = View.GONE
+                binding.btnClearHistory.visibility = View.VISIBLE
+                binding.tvHistoryTitle.visibility = View.VISIBLE
             }
             binding.progressBar.visibility = View.GONE
 
-            binding.refreshButton.visibility = View.GONE
+            binding.btnRefresh.visibility = View.GONE
         }
     }
 

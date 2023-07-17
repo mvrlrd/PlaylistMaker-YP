@@ -16,5 +16,21 @@
         <attr name="day_night_fab" format="color" />
         <attr name="main_background" format="color" />
 
+        <attr name="icon_search_color" format="color" />
+        <attr name="search_field_color" format="color" />
+        <attr name="hint_color" format="color" />
+        <attr name="icon_x_color" format="color" />
+
+        <attr name="refresh_btn_color" format="color" />
+        <attr name="contrary_to_primary_text_color" format="color" />
+        <attr name="primary_text_color" format="color"/>
+
+
+
+
+
+
+
+
     </declare-styleable>
 </resources>

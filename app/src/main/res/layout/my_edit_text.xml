@@ -29,7 +29,7 @@
         tools:text="Название" />
 
     <ImageButton
-        android:id="@+id/clearTextButton"
+        android:id="@+id/btn_clear_text"
         style="@style/XStyle"
         android:src="@drawable/ic_free_icon_font_cross"
         android:visibility="gone" />

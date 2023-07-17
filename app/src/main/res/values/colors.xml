@@ -3,8 +3,7 @@
     <color name="background_color">#FFFFFF</color>
     <color name="button_color">#E6E8EB</color>
     <color name="button_text_color">#000000</color>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
+
     <color name="icon_color">#000000</color>
     <color name="bledniyFont">#AEAFB4</color>
     <color name="artist_name_color">#AEAFB4</color>
@@ -16,5 +15,11 @@
     <color name="blue">#3772E7</color>
     <color name="red">#F56B6C</color>
     <color name="text_color">#000000</color>
+
+    <color name="light_gray">#AEAFB4</color>
+    <color name="extra_light_gray">#E6E8EB</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="violet">#6200EE</color>
 
 </resources>

@@ -18,31 +18,31 @@
         android:paddingStart="@dimen/usual_padding"
         android:paddingEnd="@dimen/usual_padding">
 
+
         <EditText
-            android:id="@+id/searchEditText"
+            android:id="@+id/et_search_field"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/search_height"
+            android:layout_height="@dimen/search_field_height"
             android:layout_gravity="start|center_vertical"
-            android:background="@drawable/et_style"
-            android:backgroundTint="?attr/button_color"
+            android:background="@drawable/rectangle_border"
             android:drawableStart="@drawable/ic_search_icon"
+            android:drawableTint="?attr/icon_search_color"
+            android:backgroundTint="?attr/search_field_color"
+            android:textColor="@color/black"
+            android:textColorHint="?attr/hint_color"
             android:drawablePadding="11dp"
-            android:drawableTint="?attr/search_icons_color"
             android:hint="@string/search"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
             android:paddingStart="15dp"
             android:singleLine="true"
-            android:textColor="?attr/button_text_color"
-            android:textColorHint="?attr/search_icons_color"
             android:textSize="@dimen/text_size_small" />
 
         <ImageButton
-            android:id="@+id/clearTextButton"
+            android:id="@+id/btn_clear_text"
             style="@style/XStyle"
-            android:src="@drawable/ic_free_icon_font_cross"
-            android:visibility="gone" />
+            android:src="@drawable/ic_free_icon_font_cross" />
     </FrameLayout>
 
     <FrameLayout
@@ -61,11 +61,11 @@
                 android:layout_height="@dimen/progress_bar_height"
                 android:layout_gravity="center"
                 android:layout_marginTop="148dp"
-                android:indeterminateTint="@color/progress_bar_color"
+                android:indeterminateTint="@color/violet"
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/youSearchedTitle"
+                android:id="@+id/tv_history_title"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:fontFamily="@font/ys_display_medium"
@@ -73,7 +73,7 @@
                 android:text="@string/you_searched"
                 android:textAlignment="center"
                 android:textColor="?attr/day_night_background"
-                android:textSize="19sp"
+                android:textSize="@dimen/text_size_medium"
                 android:visibility="gone" />
 
             <ScrollView
@@ -86,14 +86,14 @@
                     android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/tracksRecyclerView"
+                        android:id="@+id/rv_tracks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="13dp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/clearHistoryButton"
-                        style="@style/RefreshButtonStyle"
+                        android:id="@+id/btn_clear_history"
+                        style="@style/ButtonStyle"
                         android:layout_marginBottom="50dp"
                         android:text="@string/clear_history" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -103,7 +103,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/error_placeholder"
+            android:id="@+id/placeholder_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -116,7 +116,7 @@
                 layout="@layout/info_place_holder_layout" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/refreshButton"
+                android:id="@+id/btn_refresh"
                 style="@style/RefreshButtonStyle"
                 android:text="@string/refresh" />
         </androidx.appcompat.widget.LinearLayoutCompat>
