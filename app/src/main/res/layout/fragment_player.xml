@@ -39,8 +39,8 @@
                 app:buttonGravity="center_vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:navigationIconTint="?attr/text_color"
-                app:navigationIcon="@drawable/ic_arrow_icon" />
+                app:navigationIcon="@drawable/ic_arrow_icon"
+                app:navigationIconTint="?attr/text_color" />
 
             <ImageView
                 android:id="@+id/iv_album_image"
@@ -78,6 +78,7 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_open_bottom_sheet"
+                style="@style/FabStyle"
                 android:layout_marginTop="132dp"
                 android:src="@drawable/baseline_add_to_photos_24"
                 app:borderWidth="0dp"
@@ -86,31 +87,32 @@
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="@+id/leftBorder"
                 app:layout_constraintTop_toBottomOf="@+id/iv_album_image"
-                style="@style/FabStyle"
-                app:maxImageSize="23dp" />
+                app:maxImageSize="23dp"
+                app:tint="@color/white" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_play"
+                style="@style/FabStyle"
                 android:layout_width="@dimen/big_fab_size"
                 android:layout_height="@dimen/big_fab_size"
-                style="@style/FabStyle2"
-                android:enabled="false"
                 android:backgroundTint="?attr/text_color"
+                android:enabled="false"
                 android:src="@drawable/baseline_play_arrow_24"
-
                 app:borderWidth="0dp"
+
                 app:fabCustomSize="@dimen/big_fab_size"
                 app:layout_constraintBottom_toBottomOf="@+id/fab_open_bottom_sheet"
                 app:layout_constraintEnd_toStartOf="@+id/fab_add_to_favs"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/fab_open_bottom_sheet"
                 app:layout_constraintTop_toTopOf="@+id/fab_open_bottom_sheet"
-                app:maxImageSize="50dp" />
+                app:maxImageSize="50dp"
+                app:tint="?attr/main_mode_color" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_add_to_favs"
-                android:src="@drawable/baseline_favorite_border_24"
                 style="@style/FabStyle"
+                android:src="@drawable/baseline_favorite_border_24"
                 app:borderWidth="0dp"
                 app:fabCustomSize="@dimen/small_fab_size"
                 app:layout_constraintBottom_toBottomOf="@+id/fab_open_bottom_sheet"
@@ -125,7 +127,8 @@
                 android:layout_marginTop="84dp"
                 android:text="@string/duration"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fab_open_bottom_sheet" />
+                app:layout_constraintTop_toBottomOf="@+id/fab_open_bottom_sheet"
+                app:tint="@color/white" />
 
             <TextView
                 android:id="@+id/tv_album_title"
