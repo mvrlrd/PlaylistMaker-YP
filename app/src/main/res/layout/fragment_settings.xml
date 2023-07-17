@@ -8,44 +8,36 @@
     tools:context=".settings.ui.SettingsFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/settingsToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:buttonGravity="center_vertical"
-        app:title="@string/settings"
-        app:titleTextAppearance="@style/TitleStyle">
-
-    </com.google.android.material.appbar.MaterialToolbar>
+        style="@style/AppTheme.Toolbar"
+        app:title="@string/settings" />
 
     <FrameLayout style="@style/FrameLayoutForSettingsItemStyle">
 
         <TextView
-            style="@style/SettingsItems"
+            style="@style/TextViewSettingsItems"
             android:text="@string/night_mode" />
 
         <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switchTheme"
-            style="@style/SwitchStyle"
+            android:id="@+id/sw_theme_switcher"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="end|center_vertical"
-            android:width="32dp"
-            android:height="18dp"
             android:checked="false"
-            android:fontFamily="@font/ys_display_regular"
-            app:showText="false" />
+            app:showText="false"
+            app:thumbTint="@color/red"
+            app:trackTint="@color/blue" />
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/shareContainer"
+        android:id="@+id/share_button"
         style="@style/FrameLayoutForSettingsItemStyle">
 
         <TextView
-            style="@style/SettingsItems"
+            style="@style/TextViewSettingsItems"
             android:text="@string/share" />
 
         <ImageView
-            style="@style/IconStyle"
+            style="@style/SettingsIconStyle"
             android:src="@drawable/ic_share_icon" />
     </FrameLayout>
 
@@ -54,11 +46,11 @@
         style="@style/FrameLayoutForSettingsItemStyle">
 
         <TextView
-            style="@style/SettingsItems"
+            style="@style/TextViewSettingsItems"
             android:text="@string/support" />
 
         <ImageView
-            style="@style/IconStyle"
+            style="@style/SettingsIconStyle"
             android:src="@drawable/baseline_support_agent_24" />
     </FrameLayout>
 
@@ -67,11 +59,11 @@
         style="@style/FrameLayoutForSettingsItemStyle">
 
         <TextView
-            style="@style/SettingsItems"
+            style="@style/TextViewSettingsItems"
             android:text="@string/agreement" />
 
         <ImageView
-            style="@style/IconStyle"
+            style="@style/SettingsIconStyle"
             android:src="@drawable/ic_agreement_icon" />
     </FrameLayout>
 </LinearLayout>

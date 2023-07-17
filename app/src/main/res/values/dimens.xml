@@ -10,23 +10,25 @@
     <dimen name="radius_medium">8dp</dimen>
     <dimen name="radius_big">10dp</dimen>
 
-    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_big">22sp</dimen>
 
-
-    <dimen name="font_size_main">16sp</dimen>
 
     <dimen name="zero_padding">0dp</dimen>
     <dimen name="main_padding">20dp</dimen>
-    <dimen name="medium_text_size">22sp</dimen>
-    <dimen name="small_text_size">16sp</dimen>
+
     <dimen name="icon_to_text_distance">10dp</dimen>
 
     <dimen name="usual_padding">16dp</dimen>
     <dimen name="setting_item_height">61dp</dimen>
-    <dimen name="big_text_size">40sp</dimen>
+
     <dimen name="toolbar_height">80dp</dimen>
     <dimen name="icon_layout_width">24dp</dimen>
     <dimen name="icon_layout_height">24dp</dimen>
+
+
+
+
     <dimen name="search_height">36dp</dimen>
     <dimen name="search_max_length">25</dimen>
     <dimen name="refresh_button_width">91dp</dimen>

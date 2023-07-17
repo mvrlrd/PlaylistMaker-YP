@@ -8,18 +8,14 @@
     tools:context=".mediateka.MediatekaFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/toolbar_mediateka"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="@string/mediateka"
-        app:titleTextAppearance="@style/TitleStyle">
-    </com.google.android.material.appbar.MaterialToolbar>
+        style="@style/AppTheme.Toolbar"
+        app:title="@string/mediateka" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_mediateka"
+        style="@style/TabLayoutStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/TabLayoutTextStyle"/>
+        android:layout_height="wrap_content" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -28,7 +24,7 @@
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </FrameLayout>
 </LinearLayout>
 

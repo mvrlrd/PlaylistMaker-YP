@@ -29,7 +29,7 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.switchTheme
+        binding.swThemeSwitcher
             .apply {
                 isChecked = viewModel.isDarkThemeOn()
                 setOnCheckedChangeListener { _, isChecked ->
@@ -37,7 +37,7 @@ class SettingsFragment : Fragment() {
                 }
             }
 
-        binding.shareContainer.apply {
+        binding.shareButton.apply {
             setOnClickListener {
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND

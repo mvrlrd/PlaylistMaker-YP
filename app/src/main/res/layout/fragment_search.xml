@@ -9,12 +9,8 @@
     tools:context=".search.ui.SearchFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/searchToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:buttonGravity="center_vertical"
-        app:title="@string/search"
-        app:titleTextAppearance="@style/TitleStyle" />
+        style="@style/AppTheme.Toolbar"
+        app:title="@string/search" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -40,7 +36,7 @@
             android:singleLine="true"
             android:textColor="?attr/button_text_color"
             android:textColorHint="?attr/search_icons_color"
-            android:textSize="@dimen/small_text_size" />
+            android:textSize="@dimen/text_size_small" />
 
         <ImageButton
             android:id="@+id/clearTextButton"

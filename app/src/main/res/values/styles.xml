@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-
-    <style name="category_title" parent="TextAppearance.Design.Tab">
-        <item name="android:textColor">"?attr/day_night_background"</item>
-        <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="android:textSize">16sp</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
     </style>
 
-    <!--    tabLayout mediateka-->
+    <style name="AppTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="titleTextAppearance">@style/MyToolbarTitleTextAppearance</item>
+        <item name="titleTextColor">@color/red</item>
+    </style>
 
-    <style name="TabLayoutTextStyle" parent="Widget.MaterialComponents.TabLayout">
+    <style name="MyToolbarTitleTextAppearance" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <!--    toolbar style-->
+
+
+    <!--    tabLayout mediateka-->
+    <style name="TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabTextColor">@color/text_color</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabIndicatorColor">@color/text_color</item>
@@ -19,10 +31,9 @@
 
     <style name="TabTextStyle">
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textAllCaps">false</item>
     </style>
-
     <!--    tabLayout mediateka-->
 
 
@@ -69,17 +80,18 @@
     </style>
 
     <style name="IconStyle">
-        <item name="tint">?attr/bledniy_text_color</item>
-        <item name="backgroundTint">?attr/background_color</item>
+
         <item name="android:layout_width">@dimen/icon_layout_width</item>
         <item name="android:layout_height">@dimen/icon_layout_height</item>
-        <item name="android:layout_gravity">end|center_vertical</item>
     </style>
 
-    <style name="SwitchStyle">
-        <item name="trackTint">?attr/button_color</item>
-        <item name="thumbTint">?attr/bledniy_text_color</item>
+
+    <style name="SettingsIconStyle">
+        <item name="android:layout_width">@dimen/icon_layout_width</item>
+        <item name="android:layout_height">@dimen/icon_layout_width</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
     </style>
+
 
     <style name="RefreshButtonStyle">
         <item name="android:backgroundTint">?attr/day_night_background</item>
@@ -101,14 +113,16 @@
         <item name="android:layout_marginStart">@dimen/main_padding</item>
     </style>
 
-    <style name="SettingsItems">
-        <item name="android:textColor">?attr/track_name_color</item>
+<!--    +++++-->
+    <style name="TextViewSettingsItems">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">start|center_vertical</item>
-        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:textColor">@color/track_name_color</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
+
+<!--    +++++-->
     <style name="FrameLayoutForSettingsItemStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/setting_item_height</item>
@@ -121,7 +135,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?attr/track_name_color</item>
 
