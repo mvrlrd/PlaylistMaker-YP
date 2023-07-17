@@ -129,8 +129,6 @@
             <TextView
                 android:id="@+id/tv_duration_title"
                 style="@style/InfoTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/usual_padding"
                 android:layout_marginTop="84dp"
                 android:text="@string/duration"
@@ -140,10 +138,6 @@
             <TextView
                 android:id="@+id/tv_album_title"
                 style="@style/InfoTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/usual_padding"
-                android:layout_marginTop="@dimen/info_padding"
                 android:text="@string/album"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_duration_title" />
@@ -151,10 +145,6 @@
             <TextView
                 android:id="@+id/tv_year_title"
                 style="@style/InfoTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/usual_padding"
-                android:layout_marginTop="@dimen/info_padding"
                 android:text="@string/year"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_album_title" />
@@ -162,10 +152,6 @@
             <TextView
                 android:id="@+id/tv_genre_title"
                 style="@style/InfoTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/usual_padding"
-                android:layout_marginTop="@dimen/info_padding"
                 android:text="@string/genre"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_year_title" />
@@ -175,68 +161,42 @@
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/usual_padding"
-                android:layout_marginTop="@dimen/info_padding"
                 android:text="@string/country"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_genre_title" />
 
             <TextView
                 android:id="@+id/tv_duration_param"
-                style="@style/InfoTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/ParamTextStyle"
                 android:layout_marginTop="84dp"
-                android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fab_open_bottom_sheet"
                 tools:text="5:31" />
 
             <TextView
                 android:id="@+id/tv_album_param"
-                style="@style/InfoTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/info_padding"
-                android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="@color/blue"
+                style="@style/ParamTextStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_duration_param"
                 tools:text="Россия" />
 
             <TextView
                 android:id="@+id/tv_year_param"
-                style="@style/InfoTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/info_padding"
-                android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="@color/blue"
+                style="@style/ParamTextStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_album_param"
                 tools:text="2022" />
 
             <TextView
                 android:id="@+id/tv_genre_param"
-                style="@style/InfoTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/info_padding"
-                android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="@color/black"
+                style="@style/ParamTextStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_year_param"
                 tools:text="Рок" />
 
             <TextView
                 android:id="@+id/tv_country_param"
-                style="@style/InfoTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/info_padding"
-                android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="@color/black"
+                style="@style/ParamTextStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_genre_param"
                 tools:text="Россия" />
