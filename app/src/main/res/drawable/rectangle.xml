@@ -3,3 +3,4 @@
     <solid android:color="?attr/bledniy_text_color" />
     <corners android:radius="@dimen/radius_medium" />
 </shape>
+

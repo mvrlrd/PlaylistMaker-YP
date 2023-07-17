@@ -9,6 +9,7 @@
     <dimen name="radius_small">2dp</dimen>
     <dimen name="radius_medium">8dp</dimen>
     <dimen name="radius_big">10dp</dimen>
+    <dimen name="radius_xxl">16dp</dimen>
 
     <dimen name="text_size_xxxs">12sp</dimen>
     <dimen name="text_size_xxs">13sp</dimen>

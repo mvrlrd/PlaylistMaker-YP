@@ -4,7 +4,8 @@
     android:id="@+id/bottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/main_mode_color"
+    android:background="@drawable/bottom_sheet_rectangle"
+
     app:behavior_hideable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
