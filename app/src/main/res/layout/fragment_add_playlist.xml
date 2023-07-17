@@ -33,13 +33,13 @@
      app:titleTextColor="?attr/day_night_background" />
 
  <ImageView
-     android:id="@+id/iv_album_image"
+     android:id="@+id/iv_new_playlist_image"
      android:layout_width="0dp"
      android:layout_height="0dp"
      android:layout_marginTop="82dp"
      android:backgroundTint="?attr/day_night_text"
      android:scaleType="centerCrop"
-     android:src="@drawable/playlist_image_placeholder"
+
      app:layout_constraintDimensionRatio="h,1:1"
      app:layout_constraintEnd_toStartOf="@+id/rightBorder"
      app:layout_constraintStart_toEndOf="@id/leftBorder"
@@ -54,7 +54,7 @@
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/iv_album_image">
+     app:layout_constraintTop_toBottomOf="@+id/iv_new_playlist_image">
 
   <include
       android:id="@+id/name_et_container"
@@ -76,7 +76,6 @@
       android:id="@+id/description_et_container"
       layout="@layout/my_edit_text" />
  </FrameLayout>
-
 
  <com.google.android.material.button.MaterialButton
      style="@style/ButtonStyle"

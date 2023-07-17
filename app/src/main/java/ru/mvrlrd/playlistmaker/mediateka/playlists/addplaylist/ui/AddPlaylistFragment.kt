@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
@@ -57,6 +58,15 @@ class AddPlaylistFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
+
+//        val dmyDawable = ResourcesCompat.getDrawable(
+//            resources,
+//            R.drawable.playlist_image_placeholder,
+//            requireActivity().theme
+//        )
+//        binding.ivNewPlaylistImage.setImageDrawable(dmyDawable)
+
+
         setOnClickListeners()
         registerImagePicker()
         return binding.root
@@ -79,13 +89,13 @@ class AddPlaylistFragment : Fragment() {
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    binding.ivAlbumImage.setImageURI(uri)
+                    binding.ivNewPlaylistImage.setImageURI(uri)
                     _uri = uri
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
             }
-        binding.ivAlbumImage.setOnClickListener {
+        binding.ivNewPlaylistImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
