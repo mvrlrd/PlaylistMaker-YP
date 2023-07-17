@@ -34,7 +34,7 @@ sealed class AddPlaylistScreenState {
             initNameEditText(
                 binding.nameEtContainer.nameEt,
                 binding.nameEtContainer.btnClearText,
-                binding.createPlaylistButton
+                binding.btnCreatePlaylist
             )
         }
 

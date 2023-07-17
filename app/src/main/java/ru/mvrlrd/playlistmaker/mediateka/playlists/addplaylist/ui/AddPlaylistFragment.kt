@@ -120,7 +120,7 @@ class AddPlaylistFragment : Fragment() {
                 findNavController().popBackStack()
             }
         }
-        binding.createPlaylistButton.setOnClickListener {
+        binding.btnCreatePlaylist.setOnClickListener {
             val message = try {
                 if (_uri == null) {
                     addPlaylist(false)
