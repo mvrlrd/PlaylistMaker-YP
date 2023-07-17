@@ -16,27 +16,27 @@ import java.util.*
 sealed class PlayerScreenState {
     class BeginningState(private val track: PlayerTrack) : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
-            binding.playButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
-            binding.trackName.text = track.trackName
-            binding.singerName.text = track.artistName
-            binding.durationParam.text = SimpleDateFormat(
-                binding.durationParam.resources.getString(R.string.track_duration_time_format),
+            binding.fabPlay.alpha = INACTIVE_PLAY_BUTTON_ALPHA
+            binding.tvTrackName.text = track.trackName
+            binding.tvSingerName.text = track.artistName
+            binding.tvDurationParam.text = SimpleDateFormat(
+                binding.tvDurationParam.resources.getString(R.string.track_duration_time_format),
                 Locale.getDefault()
             ).format(track.trackTime?.toLong() ?: 0L)
-            binding.albumParam.text = track.album
-            binding.yearParam.text = unparseDateToYear(track.year)
-            binding.genreParam.text = track.genre
-            binding.countryParam.text = track.country
+            binding.tvAlbumParam.text = track.album
+            binding.tvYearParam.text = unparseDateToYear(track.year)
+            binding.tvGenreParam.text = track.genre
+            binding.tvCountryParam.text = track.country
             handleLikeButton(binding, track)
             Glide
-                .with(binding.albumImageView)
+                .with(binding.ivAlbumImage)
                 .load(track.getCoverArtwork())
                 .placeholder(R.drawable.album_placeholder_image)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.radius_medium))
+                    RoundedCorners(binding.ivAlbumImage.resources.getDimensionPixelSize(R.dimen.radius_medium))
                 )
-                .into(binding.albumImageView)
+                .into(binding.ivAlbumImage)
         }
     }
 
@@ -51,10 +51,10 @@ sealed class PlayerScreenState {
         override fun render(binding: FragmentPlayerBinding) {
             when (playerState) {
                 MyMediaPlayer.PlayerState.PLAYING -> {
-                    binding.playButton.setImageResource(R.drawable.baseline_pause_24)
+                    binding.fabPlay.setImageResource(R.drawable.baseline_pause_24)
                 }
                 else -> {
-                    binding.playButton.setImageResource(R.drawable.baseline_play_arrow_24)
+                    binding.fabPlay.setImageResource(R.drawable.baseline_play_arrow_24)
                 }
             }
         }
@@ -62,21 +62,21 @@ sealed class PlayerScreenState {
 
     object Preparing : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
-            binding.playButton.isEnabled = true
-            binding.playButton.alpha = ACTIVE_PLAY_BUTTON_ALPHA
+            binding.fabPlay.isEnabled = true
+            binding.fabPlay.alpha = ACTIVE_PLAY_BUTTON_ALPHA
         }
     }
 
     class Playing(private val progress: String) : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
-            binding.clockTrack.text = progress
+            binding.tvTimer.text = progress
         }
     }
 
     object PlayCompleting : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
-            binding.clockTrack.text = binding.clockTrack.resources.getText(R.string.null_timer)
-            binding.playButton.setImageResource(R.drawable.baseline_play_arrow_24)
+            binding.tvTimer.text = binding.tvTimer.resources.getText(R.string.null_timer)
+            binding.fabPlay.setImageResource(R.drawable.baseline_play_arrow_24)
         }
     }
 
@@ -84,66 +84,66 @@ sealed class PlayerScreenState {
 
     fun handleLikeButton(binding: FragmentPlayerBinding, track: PlayerTrack) {
         val icon = if (track.isFavorite) {
-            binding.likeButton.imageTintList = ColorStateList.valueOf(
-                binding.likeButton.resources.getColor(
+            binding.fabAddToFavs.imageTintList = ColorStateList.valueOf(
+                binding.fabAddToFavs.resources.getColor(
                     R.color.red,
-                    binding.likeButton.context.theme
+                    binding.fabAddToFavs.context.theme
                 )
             )
             ResourcesCompat.getDrawable(
-                binding.likeButton.resources,
+                binding.fabAddToFavs.resources,
                 R.drawable.baseline_favorite_full,
-                binding.likeButton.context.theme
+                binding.fabAddToFavs.context.theme
             )
 
         } else {
-            binding.likeButton.imageTintList = ColorStateList.valueOf(
-                binding.likeButton.resources.getColor(
+            binding.fabAddToFavs.imageTintList = ColorStateList.valueOf(
+                binding.fabAddToFavs.resources.getColor(
                     R.color.white,
-                    binding.likeButton.context.theme
+                    binding.fabAddToFavs.context.theme
                 )
             )
             ResourcesCompat.getDrawable(
-                binding.likeButton.resources,
+                binding.fabAddToFavs.resources,
                 R.drawable.baseline_favorite_border_24,
-                binding.likeButton.context.theme
+                binding.fabAddToFavs.context.theme
             )
         }
-        binding.likeButton.setImageDrawable(icon)
+        binding.fabAddToFavs.setImageDrawable(icon)
     }
 
     class PlayerError(private val track: PlayerTrack) : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
-            binding.playButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
-            binding.likeButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
-            binding.addToPlaylistBtn.alpha = INACTIVE_PLAY_BUTTON_ALPHA
+            binding.fabPlay.alpha = INACTIVE_PLAY_BUTTON_ALPHA
+            binding.fabAddToFavs.alpha = INACTIVE_PLAY_BUTTON_ALPHA
+            binding.fabOpenBottomSheet.alpha = INACTIVE_PLAY_BUTTON_ALPHA
 
-            binding.playButton.isEnabled = false
-            binding.likeButton.isEnabled = false
-            binding.addToPlaylistBtn.isEnabled = false
+            binding.fabPlay.isEnabled = false
+            binding.fabAddToFavs.isEnabled = false
+            binding.fabOpenBottomSheet.isEnabled = false
 
-            binding.playButton.alpha = INACTIVE_PLAY_BUTTON_ALPHA
-            binding.trackName.text = track.trackName
-            binding.singerName.text = track.artistName
-            binding.durationParam.text = SimpleDateFormat(
-                binding.durationParam.resources.getString(R.string.track_duration_time_format),
+            binding.fabPlay.alpha = INACTIVE_PLAY_BUTTON_ALPHA
+            binding.tvTrackName.text = track.trackName
+            binding.tvSingerName.text = track.artistName
+            binding.tvDurationParam.text = SimpleDateFormat(
+                binding.tvDurationParam.resources.getString(R.string.track_duration_time_format),
                 Locale.getDefault()
             ).format(track.trackTime?.toLong() ?: 0L)
-            binding.albumParam.text = track.album
-            binding.yearParam.text = unparseDateToYear(track.year)
-            binding.genreParam.text = track.genre
-            binding.countryParam.text = track.country
+            binding.tvAlbumParam.text = track.album
+            binding.tvYearParam.text = unparseDateToYear(track.year)
+            binding.tvGenreParam.text = track.genre
+            binding.tvCountryParam.text = track.country
             handleLikeButton(binding, track)
 
             Glide
-                .with(binding.albumImageView)
+                .with(binding.ivAlbumImage)
                 .load(track.getCoverArtwork())
                 .placeholder(R.drawable.album_placeholder_image)
                 .transform(
                     CenterCrop(),
-                    RoundedCorners(binding.albumImageView.resources.getDimensionPixelSize(R.dimen.radius_medium))
+                    RoundedCorners(binding.ivAlbumImage.resources.getDimensionPixelSize(R.dimen.radius_medium))
                 )
-                .into(binding.albumImageView)
+                .into(binding.ivAlbumImage)
         }
     }
 

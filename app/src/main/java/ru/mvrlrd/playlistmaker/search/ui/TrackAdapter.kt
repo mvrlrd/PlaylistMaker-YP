@@ -39,7 +39,7 @@ class TrackAdapter :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(trackForAdapter: TrackForAdapter) {
-            binding.trackName.text = trackForAdapter.trackName
+            binding.tvTrackName.text = trackForAdapter.trackName
             binding.artistName.text = trackForAdapter.artistName
             binding.trackTime.text = trackForAdapter.trackTime?.let { formatTime(it.toInt()) }
             Glide

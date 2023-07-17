@@ -79,13 +79,13 @@ class AddPlaylistFragment : Fragment() {
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    binding.albumImageView.setImageURI(uri)
+                    binding.ivAlbumImage.setImageURI(uri)
                     _uri = uri
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
             }
-        binding.albumImageView.setOnClickListener {
+        binding.ivAlbumImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
@@ -113,7 +113,7 @@ class AddPlaylistFragment : Fragment() {
                 viewModel.clearDescriptionFieldText()
             }
         }
-        binding.backButton.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             if (checkIfThereAreUnsavedData()) {
                 confirmDialog.show()
             } else {

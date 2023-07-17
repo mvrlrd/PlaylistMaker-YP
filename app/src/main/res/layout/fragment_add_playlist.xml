@@ -21,7 +21,7 @@
      app:layout_constraintGuide_percent="0.94" />
 
  <com.google.android.material.appbar.MaterialToolbar
-     android:id="@+id/backButton"
+     android:id="@+id/btn_back"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
      app:buttonGravity="center_vertical"
@@ -33,7 +33,7 @@
      app:titleTextColor="?attr/day_night_background" />
 
  <ImageView
-     android:id="@+id/albumImageView"
+     android:id="@+id/iv_album_image"
      android:layout_width="0dp"
      android:layout_height="0dp"
      android:layout_marginTop="82dp"
@@ -54,7 +54,7 @@
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/albumImageView">
+     app:layout_constraintTop_toBottomOf="@+id/iv_album_image">
 
   <include
       android:id="@+id/name_et_container"

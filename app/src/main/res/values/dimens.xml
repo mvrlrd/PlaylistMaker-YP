@@ -15,6 +15,8 @@
     <dimen name="text_size_medium">19sp</dimen>
     <dimen name="text_size_big">22sp</dimen>
 
+    <dimen name="back_arrow_size">16dp</dimen>
+
 
     <dimen name="zero_padding">0dp</dimen>
     <dimen name="main_padding">20dp</dimen>

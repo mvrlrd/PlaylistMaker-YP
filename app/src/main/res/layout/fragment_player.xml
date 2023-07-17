@@ -31,9 +31,9 @@
                 app:layout_constraintGuide_percent="0.94" />
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/backButton"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/back_arrow_size"
+                android:layout_height="@dimen/back_arrow_size"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 app:buttonGravity="center_vertical"
@@ -42,11 +42,11 @@
                 app:navigationIcon="@drawable/ic_arrow_icon" />
 
             <ImageView
-                android:id="@+id/albumImageView"
+                android:id="@+id/iv_album_image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="82dp"
-                android:backgroundTint="?attr/day_night_text"
+                android:backgroundTint="@color/light_gray"
                 android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toStartOf="@+id/rightBorder"
@@ -56,38 +56,31 @@
                 app:srcCompat="@drawable/album_placeholder_image" />
 
             <TextView
-                android:id="@+id/trackName"
-                style="@style/TitleStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/tv_track_name"
+                style="@style/TrackNameTitle"
                 android:layout_marginTop="24dp"
-                android:textStyle="normal"
                 app:layout_constraintEnd_toStartOf="@+id/rightBorder"
                 app:layout_constraintStart_toEndOf="@id/leftBorder"
-                app:layout_constraintTop_toBottomOf="@+id/albumImageView"
+                app:layout_constraintTop_toBottomOf="@+id/iv_album_image"
                 tools:text="Переживу" />
 
             <TextView
-                android:id="@+id/singerName"
-                style="@style/TitleStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/tv_singer_name"
+                style="@style/PlayerTextStyle"
                 android:layout_marginTop="12dp"
-                android:textSize="14sp"
-                android:textStyle="normal"
                 app:layout_constraintEnd_toStartOf="@+id/rightBorder"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/leftBorder"
-                app:layout_constraintTop_toBottomOf="@+id/trackName"
+                app:layout_constraintTop_toBottomOf="@+id/tv_track_name"
                 tools:text="Монеточка" />
 
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/add_to_playlist_btn"
+                android:id="@+id/fab_open_bottom_sheet"
                 android:layout_width="51dp"
                 android:layout_height="51dp"
                 android:layout_marginTop="132dp"
-                android:backgroundTint="?attr/day_night_fab"
+                android:backgroundTint="@color/black"
                 android:clickable="true"
                 android:src="@drawable/baseline_add_to_photos_24"
                 app:borderWidth="0dp"
@@ -95,46 +88,46 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_constraintStart_toStartOf="@+id/leftBorder"
-                app:layout_constraintTop_toBottomOf="@+id/albumImageView"
+                app:layout_constraintTop_toBottomOf="@+id/iv_album_image"
                 app:maxImageSize="23dp"
                 app:tint="@color/white" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/playButton"
+                android:id="@+id/fab_play"
                 android:layout_width="83dp"
                 android:layout_height="83dp"
-                android:backgroundTint="?attr/day_night_background"
+                android:backgroundTint="@color/black"
                 android:clickable="true"
                 android:enabled="false"
                 android:src="@drawable/baseline_play_arrow_24"
                 app:borderWidth="0dp"
                 app:fabCustomSize="83dp"
-                app:layout_constraintBottom_toBottomOf="@+id/add_to_playlist_btn"
-                app:layout_constraintEnd_toStartOf="@+id/likeButton"
+                app:layout_constraintBottom_toBottomOf="@+id/fab_open_bottom_sheet"
+                app:layout_constraintEnd_toStartOf="@+id/fab_add_to_favs"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/add_to_playlist_btn"
-                app:layout_constraintTop_toTopOf="@+id/add_to_playlist_btn"
+                app:layout_constraintStart_toEndOf="@+id/fab_open_bottom_sheet"
+                app:layout_constraintTop_toTopOf="@+id/fab_open_bottom_sheet"
                 app:maxImageSize="50dp"
-                app:rippleColor="?attr/day_night_text"
-                app:tint="?attr/day_night_text" />
+                app:rippleColor="@color/blue"
+                app:tint="@color/blue" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/likeButton"
+                android:id="@+id/fab_add_to_favs"
                 android:layout_width="51dp"
                 android:layout_height="51dp"
-                android:backgroundTint="?attr/day_night_fab"
+                android:backgroundTint="@color/blue"
                 android:clickable="true"
                 android:src="@drawable/baseline_favorite_border_24"
                 app:borderWidth="0dp"
                 app:fabCustomSize="51dp"
-                app:layout_constraintBottom_toBottomOf="@+id/add_to_playlist_btn"
+                app:layout_constraintBottom_toBottomOf="@+id/fab_open_bottom_sheet"
                 app:layout_constraintEnd_toEndOf="@id/rightBorder"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:maxImageSize="23dp"
                 app:tint="@color/white" />
 
             <TextView
-                android:id="@+id/durationTitle"
+                android:id="@+id/tv_duration_title"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -142,10 +135,10 @@
                 android:layout_marginTop="84dp"
                 android:text="@string/duration"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_to_playlist_btn" />
+                app:layout_constraintTop_toBottomOf="@+id/fab_open_bottom_sheet" />
 
             <TextView
-                android:id="@+id/albumTitle"
+                android:id="@+id/tv_album_title"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -153,10 +146,10 @@
                 android:layout_marginTop="@dimen/info_padding"
                 android:text="@string/album"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/durationTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_duration_title" />
 
             <TextView
-                android:id="@+id/yearTitle"
+                android:id="@+id/tv_year_title"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -164,10 +157,10 @@
                 android:layout_marginTop="@dimen/info_padding"
                 android:text="@string/year"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/albumTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_album_title" />
 
             <TextView
-                android:id="@+id/genreTitle"
+                android:id="@+id/tv_genre_title"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -175,10 +168,10 @@
                 android:layout_marginTop="@dimen/info_padding"
                 android:text="@string/genre"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/yearTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_year_title" />
 
             <TextView
-                android:id="@+id/countryTitle"
+                android:id="@+id/tv_country_title"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -186,78 +179,78 @@
                 android:layout_marginTop="@dimen/info_padding"
                 android:text="@string/country"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/genreTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_genre_title" />
 
             <TextView
-                android:id="@+id/durationParam"
+                android:id="@+id/tv_duration_param"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="84dp"
                 android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="?attr/day_night_background"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_to_playlist_btn"
+                app:layout_constraintTop_toBottomOf="@+id/fab_open_bottom_sheet"
                 tools:text="5:31" />
 
             <TextView
-                android:id="@+id/albumParam"
+                android:id="@+id/tv_album_param"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/info_padding"
                 android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="?attr/day_night_background"
+                android:textColor="@color/blue"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/durationParam"
+                app:layout_constraintTop_toBottomOf="@+id/tv_duration_param"
                 tools:text="Россия" />
 
             <TextView
-                android:id="@+id/yearParam"
+                android:id="@+id/tv_year_param"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/info_padding"
                 android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="?attr/day_night_background"
+                android:textColor="@color/blue"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/albumParam"
+                app:layout_constraintTop_toBottomOf="@+id/tv_album_param"
                 tools:text="2022" />
 
             <TextView
-                android:id="@+id/genreParam"
+                android:id="@+id/tv_genre_param"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/info_padding"
                 android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="?attr/day_night_background"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/yearParam"
+                app:layout_constraintTop_toBottomOf="@+id/tv_year_param"
                 tools:text="Рок" />
 
             <TextView
-                android:id="@+id/countryParam"
+                android:id="@+id/tv_country_param"
                 style="@style/InfoTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/info_padding"
                 android:layout_marginEnd="@dimen/usual_padding"
-                android:textColor="?attr/day_night_background"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/genreParam"
+                app:layout_constraintTop_toBottomOf="@+id/tv_genre_param"
                 tools:text="Россия" />
 
             <TextView
-                android:id="@+id/clockTrack"
+                android:id="@+id/tv_timer"
                 style="@style/ClockStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="@string/_00_00"
-                app:layout_constraintEnd_toEndOf="@+id/playButton"
-                app:layout_constraintStart_toStartOf="@+id/playButton"
-                app:layout_constraintTop_toBottomOf="@+id/playButton" />
+                app:layout_constraintEnd_toEndOf="@+id/fab_play"
+                app:layout_constraintStart_toStartOf="@+id/fab_play"
+                app:layout_constraintTop_toBottomOf="@+id/fab_play" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

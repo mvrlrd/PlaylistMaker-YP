@@ -158,6 +158,19 @@
 
     </style>
 
+    <style name="PlayerTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/text_size_xs</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TrackNameTitle" parent="@style/PlayerTextStyle">
+        <item name="android:textSize">@dimen/text_size_big</item>
+    </style>
+
     <style name="MainMenuButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:textColor">?attr/button_text_color</item>
         <item name="android:backgroundTint">?attr/button_color</item>
@@ -185,7 +198,7 @@
 
     <style name="ClockStyle">
         <item name="android:fontFamily">"@font/ys_display_medium"</item>
-        <item name="android:textColor">?attr/day_night_background</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">14sp</item>
     </style>
 

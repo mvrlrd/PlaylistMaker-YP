@@ -55,7 +55,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun handleAddToPlaylistButton() {
-        binding.addToPlaylistBtn.setOnClickListener {
+        binding.fabOpenBottomSheet.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         }
     }
@@ -69,7 +69,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun handleLikeButton() {
-        binding.likeButton.apply {
+        binding.fabAddToFavs.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
                     viewModel.handleLikeButton()
@@ -79,7 +79,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun handlePlayButton() {
-        binding.playButton.apply {
+        binding.fabPlay.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
                     viewModel.playbackControl()
@@ -89,7 +89,7 @@ class PlayerFragment : Fragment() {
     }
 
     private fun handleBackButton() {
-        binding.backButton.apply {
+        binding.btnBack.apply {
             setOnClickListener {
                 findNavController().popBackStack()
             }
