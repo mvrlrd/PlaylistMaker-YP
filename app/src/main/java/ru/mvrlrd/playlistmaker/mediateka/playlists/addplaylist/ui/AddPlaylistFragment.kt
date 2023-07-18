@@ -59,12 +59,12 @@ class AddPlaylistFragment : Fragment() {
             }
         }
 
-        val dmyDawable = ResourcesCompat.getDrawable(
-            resources,
-            R.drawable.test____,
-            requireActivity().theme
-        )
-        binding.ivNewPlaylistImage.setImageDrawable(dmyDawable)
+//        val dmyDawable = ResourcesCompat.getDrawable(
+//            resources,
+//            R.drawable.test____,
+//            requireActivity().theme
+//        )
+//        binding.ivNewPlaylistImage.setImageDrawable(dmyDawable)
 
 
         setOnClickListeners()
