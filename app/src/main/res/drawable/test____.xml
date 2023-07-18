@@ -15,10 +15,7 @@
         </shape>
     </item>
 
-    <item>
-        <vector android:src="@drawable/baseline_add_photo_alternate_24">
-        </vector>
-    </item>
+    <item android:drawable="@drawable/baseline_add_photo_alternate_24"> </item>
 
 </layer-list>
 
