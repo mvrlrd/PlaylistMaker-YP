@@ -16,8 +16,8 @@
     </item>
 
     <item>
-        <bitmap android:src="@drawable/baseline_add_photo_alternate_24">
-        </bitmap>
+        <vector android:src="@drawable/baseline_add_photo_alternate_24">
+        </vector>
     </item>
 
 </layer-list>
