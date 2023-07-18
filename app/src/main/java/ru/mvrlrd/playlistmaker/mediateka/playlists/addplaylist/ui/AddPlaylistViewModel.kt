@@ -21,18 +21,9 @@ class AddPlaylistViewModel(private val interactor: PlaylistInteractor) : ViewMod
         }
     }
 
-    fun clearNameFieldText() {
-        _screenState.value = AddPlaylistScreenState.ClearNamFieldText
+    fun handleCreateButtonVisibility(text: String?){
+        _screenState.value = AddPlaylistScreenState.CreateButtonHandler(text.isNullOrEmpty())
     }
-
-    fun clearDescriptionFieldText() {
-        _screenState.value = AddPlaylistScreenState.ClearDescriptionFieldText
-    }
-
-    fun initEditTextFields() {
-        _screenState.value = AddPlaylistScreenState.InitEditTextFields
-    }
-
     fun generateImageNameForStorage(): String {
         val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
         return (1..5)

@@ -39,43 +39,67 @@
      android:layout_marginTop="82dp"
      android:backgroundTint="?attr/day_night_text"
      android:scaleType="centerCrop"
-     android:src="@drawable/test____"
+     android:src="@drawable/test_vector"
      app:layout_constraintDimensionRatio="h,1:1"
      app:layout_constraintEnd_toStartOf="@+id/rightBorder"
      app:layout_constraintStart_toEndOf="@id/leftBorder"
      app:layout_constraintTag="imageViewTag"
      app:layout_constraintTop_toTopOf="parent" />
 
- <FrameLayout
-     android:id="@+id/name_frame"
-     android:layout_width="match_parent"
+ <com.google.android.material.textfield.TextInputLayout
+     android:id="@+id/playlistNameInputLayout"
+     android:layout_width="0dp"
      android:layout_height="54dp"
      android:layout_marginTop="32dp"
+    android:paddingStart="16dp"
+     android:paddingEnd="16dp"
+     app:endIconDrawable="@drawable/ic_free_icon_font_cross"
+     app:endIconMode="clear_text"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/iv_new_playlist_image">
+     app:layout_constraintTop_toBottomOf="@+id/iv_new_playlist_image"
+     app:passwordToggleContentDescription="description"
+     app:passwordToggleTint="@color/blue"
+     >
 
-  <include
-      android:id="@+id/name_et_container"
-      layout="@layout/my_edit_text" />
+  <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/iet_playlist_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/edit_text_selector"
+      android:hint="Название"
+      android:inputType="text" />
 
- </FrameLayout>
+ </com.google.android.material.textfield.TextInputLayout>
 
- <FrameLayout
-     android:id="@+id/description_frame"
-     android:layout_width="match_parent"
+ <com.google.android.material.textfield.TextInputLayout
+     android:id="@+id/descriptionInputLayout"
+     android:layout_width="0dp"
      android:layout_height="54dp"
      android:layout_marginTop="16dp"
+     android:paddingStart="16dp"
+     android:paddingEnd="16dp"
+     app:endIconDrawable="@drawable/ic_free_icon_font_cross"
+     app:endIconMode="clear_text"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/name_frame">
+     app:layout_constraintTop_toBottomOf="@+id/playlistNameInputLayout"
+     app:passwordToggleContentDescription="description"
+     app:passwordToggleTint="@color/blue"
+     >
 
-  <include
-      android:id="@+id/description_et_container"
-      layout="@layout/my_edit_text" />
- </FrameLayout>
+  <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/iet_desctiption"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@drawable/edit_text_selector"
+      android:hint="Описание"
+      android:inputType="text" />
+
+ </com.google.android.material.textfield.TextInputLayout>
+
 
  <com.google.android.material.button.MaterialButton
      style="@style/ButtonStyle"

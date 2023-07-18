@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistCardItemBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
@@ -43,13 +44,17 @@ class PlaylistAdapter :
         fun bind(playlistForAdapter: PlaylistForAdapter) {
             binding.tvTitle.text = playlistForAdapter.name
             binding.tvTracksQuantity.text = playlistForAdapter.tracksQuantity.toString()
-            if (playlistForAdapter.playlistImagePath.isEmpty()) {
+//            if (playlistForAdapter.playlistImagePath.isEmpty()) {
+
                 Glide
                     .with(itemView)
                     .load(playlistForAdapter.playlistImagePath)
+//                    .apply(RequestOptions().override(200,100))
+                    .centerCrop()
                     .placeholder(R.drawable.album_placeholder_image)
                     .into(binding.ivPlaylistBigImage)
-            }
+//            }
         }
     }
 }
+//            TODO сделать плэйсхолдер в соответвтии с макетом

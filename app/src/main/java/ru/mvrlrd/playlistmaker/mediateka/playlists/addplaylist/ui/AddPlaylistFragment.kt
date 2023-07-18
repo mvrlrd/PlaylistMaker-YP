@@ -15,7 +15,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
@@ -47,7 +47,9 @@ class AddPlaylistFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
-        viewModel.initEditTextFields()
+        binding.ietPlaylistName.doOnTextChanged { text, _, _, _ ->
+            viewModel.handleCreateButtonVisibility(text.toString())
+        }
         observeViewModel()
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle(this@AddPlaylistFragment.resources.getText(R.string.quitting_question))
@@ -113,16 +115,7 @@ class AddPlaylistFragment : Fragment() {
     }
 
     private fun setOnClickListeners() {
-        binding.nameEtContainer.btnClearText.apply {
-            setOnClickListener {
-                viewModel.clearNameFieldText()
-            }
-        }
-        binding.descriptionEtContainer.btnClearText.apply {
-            setOnClickListener {
-                viewModel.clearDescriptionFieldText()
-            }
-        }
+
         binding.btnBack.setOnClickListener {
             if (checkIfThereAreUnsavedData()) {
                 confirmDialog.show()
@@ -138,7 +131,7 @@ class AddPlaylistFragment : Fragment() {
                     saveImageToPrivateStorage(_uri!!, addPlaylist(true))
                 }
                 findNavController().popBackStack()
-                this.resources.getString(R.string.playlist_created, binding.nameEtContainer.nameEt.text)
+                this.resources.getString(R.string.playlist_created, binding.ietPlaylistName.text)
             } catch (e: Exception) {
                 "error"
             }
@@ -149,13 +142,13 @@ class AddPlaylistFragment : Fragment() {
 
     private fun checkIfThereAreUnsavedData(): Boolean {
         return (_uri != null
-                || binding.nameEtContainer.nameEt.text.toString().isNotEmpty()
-                || binding.descriptionEtContainer.nameEt.text.toString().isNotEmpty())
+                || binding.ietPlaylistName.text.toString().isNotEmpty()
+                || binding.ietDesctiption.text.toString().isNotEmpty())
     }
 
     private fun addPlaylist(isImageNotEmpty: Boolean): String {
-        val name = binding.nameEtContainer.nameEt.text.toString()
-        val description = binding.descriptionEtContainer.nameEt.text.toString()
+        val name = binding.ietPlaylistName.text.toString()
+        val description = binding.ietDesctiption.text.toString()
         val nameOfImage = if (isImageNotEmpty) {
             viewModel.generateImageNameForStorage()
         } else {
