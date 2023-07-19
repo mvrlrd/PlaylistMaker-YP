@@ -56,7 +56,7 @@ class PlaylistsFragment : Fragment() {
                     ALBUM_NAME
                 )
                 val file = File(filePath, playlistImagePath)
-                loadPlaylistImageFromFile(imageView = view, file = file, size = 1600)
+                loadPlaylistImageFromFile(view = view, anySource = file, size = 1600)
             } catch (e: Exception) {
                 Log.e("PlaylistsFragment", e.message.toString())
             }

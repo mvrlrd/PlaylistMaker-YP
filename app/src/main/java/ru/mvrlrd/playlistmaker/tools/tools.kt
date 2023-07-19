@@ -4,7 +4,6 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
-import java.io.File
 import java.util.*
 
 fun addSuffix(count: Int): String {
@@ -30,10 +29,10 @@ fun addSuffix(count: Int): String {
     }
 }
 
-fun loadPlaylistImageFromFile(imageView: ImageView, file: File, size: Int){
+fun loadPlaylistImageFromFile(view: ImageView, anySource: Any, size: Int){
     Glide
-        .with(imageView)
-        .load(file)
+        .with(view)
+        .load(anySource)
         .centerCrop()
         .placeholder(R.drawable.album_placeholder_image)
         .apply(
@@ -42,21 +41,6 @@ fun loadPlaylistImageFromFile(imageView: ImageView, file: File, size: Int){
                 size
             )
         )
-        .into(imageView)
-}
-
-fun loadPlaylistImageFromStorage(imageView: ImageView, path: String, size: Int){
-    Glide
-        .with(imageView)
-        .load(path)
-        .centerCrop()
-        .placeholder(R.drawable.album_placeholder_image)
-        .apply(
-            RequestOptions().override(
-                size,
-                size
-            )
-        )
-        .into(imageView)
+        .into(view)
 }
 

@@ -20,7 +20,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
-import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsFragment
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
@@ -171,7 +170,7 @@ class PlayerFragment : Fragment() {
                     "myalbum"
                 )
                 val file = File(filePath, playlistImagePath)
-                loadPlaylistImageFromFile(imageView = view, file = file, size = 450)
+                loadPlaylistImageFromFile(view = view, anySource = file, size = 450)
             } catch (e: Exception) {
                 Log.e("PlayerFragment", e.message.toString())
             }

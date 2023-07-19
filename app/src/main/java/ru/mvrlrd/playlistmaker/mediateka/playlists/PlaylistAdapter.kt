@@ -11,6 +11,7 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistCardItemBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.addSuffix
+import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageFromFile
 
 class PlaylistAdapter :
     ListAdapter<PlaylistForAdapter, PlaylistAdapter.PlaylistViewHolder>(PlaylistItemDiffCallback()) {
@@ -33,32 +34,23 @@ class PlaylistAdapter :
             onClickListener?.invoke(item)
         }
         if (item.playlistImagePath.isNotEmpty()) {
-            showImage?.let { it(holder.albumImage, item.playlistImagePath) }
+            showImage?.let { it(holder.ivPlaylist, item.playlistImagePath) }
         }
         holder.bind(item)
     }
 
     class PlaylistViewHolder(private val binding: PlaylistCardItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        val albumImage: ImageView = binding.ivPlaylistBigImage
+        val ivPlaylist: ImageView = binding.ivPlaylistBigImage
 
-        fun bind(playlistForAdapter: PlaylistForAdapter) {
-            binding.tvTitle.text = playlistForAdapter.name
+        fun bind(playlist: PlaylistForAdapter) {
+            binding.tvTitle.text = playlist.name
             binding.tvTracksQuantity.text = binding.tvTracksQuantity.resources.getString(
-                R.string.quantity_of_tracks, playlistForAdapter.tracksQuantity.toString(),
-                addSuffix(playlistForAdapter.tracksQuantity)
+                R.string.quantity_of_tracks, playlist.tracksQuantity.toString(),
+                addSuffix(playlist.tracksQuantity)
             )
-            if (playlistForAdapter.playlistImagePath.isEmpty()){
-                Glide
-                    .with(albumImage)
-                    .load(R.drawable.album_placeholder_image)
-                    .apply(
-                        RequestOptions().override(
-                            1600,
-                            1600
-                        )
-                    )
-                    .into(albumImage)
+            if (playlist.playlistImagePath.isEmpty()){
+                loadPlaylistImageFromFile(view = ivPlaylist, anySource = playlist.playlistImagePath , size = 1600)
             }
         }
     }
