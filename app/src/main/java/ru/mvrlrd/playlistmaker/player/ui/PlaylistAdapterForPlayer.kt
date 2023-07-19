@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistLayoutBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistItemDiffCallback
@@ -53,7 +51,7 @@ class PlaylistAdapterForPlayer :
                 addSuffix(playlist.tracksQuantity)
             )
             if (playlist.playlistImagePath.isEmpty()){
-                loadPlaylistImageFromFile(view = ivPlaylist, anySource = playlist.playlistImagePath, size = 450)
+                loadPlaylistImageFromFile(view = ivPlaylist, anySource = playlist.playlistImagePath, size = PlayerFragment.PLAYLIST_IMAGE_SIZE)
             }
         }
     }

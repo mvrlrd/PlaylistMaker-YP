@@ -53,10 +53,10 @@ class PlaylistsFragment : Fragment() {
             try {
                 val filePath = File(
                     requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                    ALBUM_NAME
+                    resources.getString(R.string.my_album_name)
                 )
                 val file = File(filePath, playlistImagePath)
-                loadPlaylistImageFromFile(view = view, anySource = file, size = 1600)
+                loadPlaylistImageFromFile(view = view, anySource = file, size = PLAYLIST_IMAGE_SIZE)
             } catch (e: Exception) {
                 Log.e("PlaylistsFragment", e.message.toString())
             }
@@ -78,11 +78,9 @@ class PlaylistsFragment : Fragment() {
     }
 
     companion object {
+
+        const val PLAYLIST_IMAGE_SIZE = 1600
         fun newInstance() = PlaylistsFragment()
-        private const val ALBUM_NAME = "myalbum"
     }
 }
 
-//private val PLAYLIST_IMAGE_SIZE = binding.ivPlaylistBigImage.resources.getDimensionPixelSize(
-//    R.dimen.playlist_image_size
-//)

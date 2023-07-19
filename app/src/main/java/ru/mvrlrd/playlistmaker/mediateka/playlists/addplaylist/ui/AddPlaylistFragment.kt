@@ -2,7 +2,6 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -93,10 +92,6 @@ class AddPlaylistFragment : Fragment() {
         return binding.root
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        Log.e("AddPlaylistFragment", "onDetach")
-    }
 
     private fun myHandleOnBackPressed() {
         if (checkIfThereAreUnsavedData()) {
@@ -110,9 +105,7 @@ class AddPlaylistFragment : Fragment() {
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    Log.e("PhotoPicker", "bef")
                     binding.ivNewPlaylistImage.setImageURI(uri)
-                    Log.e("PhotoPicker", "after")
                     _uri = uri
                 } else {
                     Log.d("PhotoPicker", "No media selected")
@@ -126,12 +119,6 @@ class AddPlaylistFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.screenState.observe(this) { screenState ->
             screenState.render(binding)
-        }
-        viewModel.playlists.observe(this) {
-            println("_____AddPlaylistFragment_____")
-            it.forEach { println(it.playlistImagePath) }
-            Log.e("AddPlaylistFragment", "${it.size}")
-            println("_____AddPlaylistFragment_____")
         }
     }
 
@@ -154,7 +141,6 @@ class AddPlaylistFragment : Fragment() {
                 findNavController().popBackStack()
                 this.resources.getString(R.string.playlist_created, binding.ietPlaylistName.text)
             } catch (e: Exception) {
-                Log.e("AddPlaylistFragment","${e.message}")
                 "error"
             }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -189,7 +175,8 @@ class AddPlaylistFragment : Fragment() {
 
     private fun saveImageToPrivateStorage(uri: Uri, nameOfImage: String) {
         val filePath =
-            File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "myalbum")
+            File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                resources.getString(R.string.my_album_name))
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
@@ -199,11 +186,15 @@ class AddPlaylistFragment : Fragment() {
         val outputStream = FileOutputStream(file)
         BitmapFactory
             .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+            .compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, outputStream)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object{
+        private const val IMAGE_QUALITY = 30
     }
 }

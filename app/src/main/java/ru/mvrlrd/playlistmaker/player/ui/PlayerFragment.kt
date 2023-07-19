@@ -170,7 +170,7 @@ class PlayerFragment : Fragment() {
                     "myalbum"
                 )
                 val file = File(filePath, playlistImagePath)
-                loadPlaylistImageFromFile(view = view, anySource = file, size = 450)
+                loadPlaylistImageFromFile(view = view, anySource = file, size = PLAYLIST_IMAGE_SIZE)
             } catch (e: Exception) {
                 Log.e("PlayerFragment", e.message.toString())
             }
@@ -203,5 +203,8 @@ class PlayerFragment : Fragment() {
                 binding.overlay.alpha = slideOffset+1f
             }
         })
+    }
+    companion object{
+        const val PLAYLIST_IMAGE_SIZE = 450
     }
 }

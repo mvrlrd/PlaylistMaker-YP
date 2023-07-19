@@ -48,6 +48,8 @@
 
     <string name="quantity_of_tracks">%s трек%s</string>
 
+    <string name="my_album_name" translatable="false">myalbum</string>
+
 <!--    search-->
 
     <string name="history_is_empty">История пуста</string>
