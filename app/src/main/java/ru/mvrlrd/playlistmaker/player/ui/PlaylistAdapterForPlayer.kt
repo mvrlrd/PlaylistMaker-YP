@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistLayoutBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistItemDiffCallback
@@ -37,7 +38,7 @@ class PlaylistAdapterForPlayer :
             onClickListener?.invoke(item)
         }
         if (item.playlistImagePath.isNotEmpty()) {
-            showImage?.let { it(holder.playlistImage, item.playlistImagePath) }
+                showImage?.let { it(holder.playlistImage, item.playlistImagePath) }
         }
         holder.bind(item)
     }
@@ -47,18 +48,21 @@ class PlaylistAdapterForPlayer :
         val playlistImage: ImageView = binding.ivPlaylistImage
         fun bind(playlist: PlaylistForAdapter) {
             binding.tvPlaylistName.text = playlist.name
-
             binding.tvQuantityOfTracks.text = binding.tvQuantityOfTracks.resources.getString(
                 R.string.quantity_of_tracks, playlist.tracksQuantity.toString(),
                 addSuffix(playlist.tracksQuantity)
             )
-
-            if (playlist.playlistImagePath.isEmpty()) {
+            if (playlist.playlistImagePath.isEmpty()){
                 Glide
-                    .with(itemView)
-                    .load(playlist.playlistImagePath)
-                    .placeholder(R.drawable.album_placeholder_image)
-                    .into(binding.ivPlaylistImage)
+                    .with(playlistImage)
+                    .load(R.drawable.album_placeholder_image)
+                    .apply(
+                        RequestOptions().override(
+                            450,
+                            450
+                        )
+                    )
+                    .into(playlistImage)
             }
         }
     }

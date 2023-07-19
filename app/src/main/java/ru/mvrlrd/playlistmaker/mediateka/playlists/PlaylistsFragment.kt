@@ -2,23 +2,19 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists
 
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.GridLayout
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
-import ru.mvrlrd.playlistmaker.tools.GlideHelper
+import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageFromFile
 import java.io.File
 
 class PlaylistsFragment : Fragment() {
@@ -26,7 +22,6 @@ class PlaylistsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PlaylistsViewModel by viewModel()
     private val playlistAdapter: PlaylistAdapter by inject()
-    private val glideHelper: GlideHelper by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,13 +49,17 @@ class PlaylistsFragment : Fragment() {
 
     private fun initRecycler() {
         playlistAdapter.onClickListener = {}
-        playlistAdapter.showImage = { view, playlistImage ->
-            val filePath = File(
-                requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                ALBUM_NAME
-            )
-            val file = File(filePath, playlistImage)
-            glideHelper.loadImage(view,file,1600)
+        playlistAdapter.showImage = { view, playlistImagePath ->
+            try {
+                val filePath = File(
+                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                    ALBUM_NAME
+                )
+                val file = File(filePath, playlistImagePath)
+                loadPlaylistImageFromFile(imageView = view, file = file, size = 1600)
+            } catch (e: Exception) {
+                Log.e("PlaylistsFragment", e.message.toString())
+            }
         }
         binding.rView.apply {
             adapter = playlistAdapter
@@ -83,3 +82,7 @@ class PlaylistsFragment : Fragment() {
         private const val ALBUM_NAME = "myalbum"
     }
 }
+
+//private val PLAYLIST_IMAGE_SIZE = binding.ivPlaylistBigImage.resources.getDimensionPixelSize(
+//    R.dimen.playlist_image_size
+//)

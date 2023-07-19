@@ -9,13 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -23,11 +20,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
+import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsFragment
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
-import ru.mvrlrd.playlistmaker.tools.GlideHelper
+import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageFromFile
 import java.io.File
 
 
@@ -39,7 +37,7 @@ class PlayerFragment : Fragment() {
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(parseIntent(args.track))
     }
-    private val glideHelper: GlideHelper by inject()
+
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -166,15 +164,17 @@ class PlayerFragment : Fragment() {
                 )
             }
         }
-        playlistAdapter.showImage = { view, playlistImage ->
-            val filePath = File(
-                requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                "myalbum"
-            )
-            val file = File(filePath, playlistImage)
-
-            glideHelper.loadImage(view, file, 450)
-
+        playlistAdapter.showImage = { view, playlistImagePath ->
+            try {
+                val filePath = File(
+                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                    "myalbum"
+                )
+                val file = File(filePath, playlistImagePath)
+                loadPlaylistImageFromFile(imageView = view, file = file, size = 450)
+            } catch (e: Exception) {
+                Log.e("PlayerFragment", e.message.toString())
+            }
         }
         binding.bottomSheetContainer.rvPlaylists.apply {
             adapter = playlistAdapter
