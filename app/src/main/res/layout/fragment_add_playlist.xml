@@ -55,9 +55,7 @@
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/iv_new_playlist_image"
-
-     >
+     app:layout_constraintTop_toBottomOf="@+id/iv_new_playlist_image">
 
   <com.google.android.material.textfield.TextInputEditText
       android:id="@+id/iet_playlist_name"
@@ -78,8 +76,7 @@
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
      app:layout_constraintStart_toStartOf="parent"
-     app:layout_constraintTop_toBottomOf="@+id/playlistNameInputLayout"
-     >
+     app:layout_constraintTop_toBottomOf="@+id/playlistNameInputLayout">
 
   <com.google.android.material.textfield.TextInputEditText
       android:id="@+id/iet_desctiption"
