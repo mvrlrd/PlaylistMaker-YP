@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
@@ -60,18 +61,16 @@ class PlaylistsFragment : Fragment() {
             Glide
                 .with(view)
                 .load(file)
-//                .load(playlistImage)
                 .centerCrop()
                 .placeholder(R.drawable.connection_error)
-
-//                .apply(
-//                    RequestOptions().override(
-//                        PLAYLIST_IMAGE_SIZE,
-//                        PLAYLIST_IMAGE_SIZE
-//                    )
-//                )
+                .apply(
+                    RequestOptions().override(
+                        1600,
+                        1600
+                    )
+                )
                 .into(view)
-            view.setImageURI(file.toUri())
+
         }
         binding.rView.apply {
             adapter = playlistAdapter

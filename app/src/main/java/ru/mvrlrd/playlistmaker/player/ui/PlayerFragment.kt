@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -168,7 +170,18 @@ class PlayerFragment : Fragment() {
                 "myalbum"
             )
             val file = File(filePath, playlistImage)
-            view.setImageURI(file.toUri())
+            Glide
+                .with(view)
+                .load(file)
+                .centerCrop()
+                .placeholder(R.drawable.connection_error)
+                .apply(
+                    RequestOptions().override(
+                        450,
+                        450
+                    )
+                )
+                .into(view)
         }
         binding.bottomSheetContainer.rvPlaylists.apply {
             adapter = playlistAdapter
