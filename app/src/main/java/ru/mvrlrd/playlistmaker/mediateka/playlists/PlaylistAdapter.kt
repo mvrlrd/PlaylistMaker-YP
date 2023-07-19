@@ -41,6 +41,9 @@ class PlaylistAdapter :
     class PlaylistViewHolder(private val binding: PlaylistCardItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val albumImage: ImageView = binding.ivPlaylistBigImage
+        private val PLAYLIST_IMAGE_SIZE = binding.ivPlaylistBigImage.resources.getDimensionPixelSize(
+            R.dimen.playlist_image_size
+        )
 
         fun bind(playlistForAdapter: PlaylistForAdapter) {
             binding.tvTitle.text = playlistForAdapter.name
@@ -49,13 +52,18 @@ class PlaylistAdapter :
                 addSuffix(playlistForAdapter.tracksQuantity)
             )
 
-                Glide
-                    .with(itemView)
-                    .load(playlistForAdapter.playlistImagePath)
-                    .centerCrop()
-                    .placeholder(R.drawable.album_placeholder_image)
-                    .apply(RequestOptions().override(160,160))
-                    .into(binding.ivPlaylistBigImage)
+            Glide
+                .with(itemView)
+                .load(playlistForAdapter.playlistImagePath)
+                .centerCrop()
+                .placeholder(R.drawable.album_placeholder_image)
+                .apply(
+                    RequestOptions().override(
+                        PLAYLIST_IMAGE_SIZE,
+                        PLAYLIST_IMAGE_SIZE
+                    )
+                )
+                .into(binding.ivPlaylistBigImage)
         }
     }
 }

@@ -11,6 +11,7 @@
     <dimen name="radius_big">10dp</dimen>
     <dimen name="radius_xxl">16dp</dimen>
 
+    <dimen name="playlist_image_size">160dp</dimen>
 
     <dimen name="new_playlist_placeholder_image_size">100dp</dimen>
     <dimen name="create_button_margin">16dp</dimen>
