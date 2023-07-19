@@ -16,9 +16,6 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <!--    toolbar style-->
-
-
     <!--    tabLayout mediateka-->
     <style name="TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabTextColor">?attr/text_color</item>
