@@ -10,6 +10,8 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistLayoutBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistItemDiffCallback
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.tools.addSuffix
+import java.util.*
 
 
 class PlaylistAdapterForPlayer :
@@ -48,7 +50,7 @@ class PlaylistAdapterForPlayer :
 
             binding.tvQuantityOfTracks.text = binding.tvQuantityOfTracks.resources.getString(
                 R.string.quantity_of_tracks, playlist.tracksQuantity.toString(),
-                tr(playlist.tracksQuantity)
+                addSuffix(playlist.tracksQuantity)
             )
 
             if (playlist.playlistImagePath.isEmpty()) {
@@ -62,13 +64,8 @@ class PlaylistAdapterForPlayer :
     }
 }
 
-private fun tr(count: Int): String{
-   val suff = when(count){
-        1->{""}
-       2,3,4->{"а"}
-       else ->{"ов"}
-    }
-    return suff
-}
+
+
+
 
 

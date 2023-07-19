@@ -10,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistCardItemBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.tools.addSuffix
 
 class PlaylistAdapter :
     ListAdapter<PlaylistForAdapter, PlaylistAdapter.PlaylistViewHolder>(PlaylistItemDiffCallback()) {
@@ -43,18 +44,18 @@ class PlaylistAdapter :
 
         fun bind(playlistForAdapter: PlaylistForAdapter) {
             binding.tvTitle.text = playlistForAdapter.name
-            binding.tvTracksQuantity.text = playlistForAdapter.tracksQuantity.toString()
-//            if (playlistForAdapter.playlistImagePath.isEmpty()) {
+            binding.tvTracksQuantity.text = binding.tvTracksQuantity.resources.getString(
+                R.string.quantity_of_tracks, playlistForAdapter.tracksQuantity.toString(),
+                addSuffix(playlistForAdapter.tracksQuantity)
+            )
 
                 Glide
                     .with(itemView)
                     .load(playlistForAdapter.playlistImagePath)
-
                     .centerCrop()
                     .placeholder(R.drawable.album_placeholder_image)
                     .apply(RequestOptions().override(160,160))
                     .into(binding.ivPlaylistBigImage)
-//            }
         }
     }
 }
