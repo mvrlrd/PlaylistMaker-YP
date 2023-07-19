@@ -1,6 +1,8 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -15,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.core.widget.doOnTextChanged
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -49,6 +52,31 @@ class AddPlaylistFragment : Fragment() {
         _binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
         binding.ietPlaylistName.doOnTextChanged { text, _, _, _ ->
             viewModel.handleCreateButtonVisibility(text.toString())
+            if (!text.isNullOrEmpty()) {
+                binding.playlistNameInputLayout.boxStrokeColor =
+                    getColor(this.resources, R.color.blue, requireActivity().theme)
+                binding.playlistNameInputLayout.hintTextColor = ColorStateList.valueOf(
+                    getColor(
+                        this.resources,
+                        R.color.blue,
+                        requireActivity().theme
+                    )
+                )
+            }
+        }
+        binding.ietDesctiption.doOnTextChanged { text, _, _, _ ->
+            viewModel.handleCreateButtonVisibility(text.toString())
+            if (!text.isNullOrEmpty()) {
+                binding.descriptionInputLayout.boxStrokeColor =
+                    getColor(this.resources, R.color.blue, requireActivity().theme)
+                binding.descriptionInputLayout.hintTextColor = ColorStateList.valueOf(
+                    getColor(
+                        this.resources,
+                        R.color.blue,
+                        requireActivity().theme
+                    )
+                )
+            }
         }
         observeViewModel()
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
@@ -60,15 +88,6 @@ class AddPlaylistFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
-
-//        val dmyDawable = ResourcesCompat.getDrawable(
-//            resources,
-//            R.drawable.test____,
-//            requireActivity().theme
-//        )
-//        binding.ivNewPlaylistImage.setImageDrawable(dmyDawable)
-
-
         setOnClickListeners()
         registerImagePicker()
         return binding.root
