@@ -24,3 +24,4 @@ fun addSuffix(count: Int): String {
         }
     }
 }
+

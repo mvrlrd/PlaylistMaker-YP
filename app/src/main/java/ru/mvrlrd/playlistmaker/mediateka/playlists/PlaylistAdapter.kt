@@ -16,6 +16,7 @@ class PlaylistAdapter :
     ListAdapter<PlaylistForAdapter, PlaylistAdapter.PlaylistViewHolder>(PlaylistItemDiffCallback()) {
     var onClickListener: ((PlaylistForAdapter) -> Unit)? = null
     var showImage: ((ImageView, String) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         val binding = PlaylistCardItemBinding.inflate(layoutInspector, parent, false)

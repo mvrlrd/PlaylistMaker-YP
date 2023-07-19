@@ -18,6 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
+import ru.mvrlrd.playlistmaker.tools.GlideHelper
 import java.io.File
 
 class PlaylistsFragment : Fragment() {
@@ -25,6 +26,7 @@ class PlaylistsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: PlaylistsViewModel by viewModel()
     private val playlistAdapter: PlaylistAdapter by inject()
+    private val glideHelper: GlideHelper by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,19 +60,7 @@ class PlaylistsFragment : Fragment() {
                 ALBUM_NAME
             )
             val file = File(filePath, playlistImage)
-            Glide
-                .with(view)
-                .load(file)
-                .centerCrop()
-                .placeholder(R.drawable.connection_error)
-                .apply(
-                    RequestOptions().override(
-                        1600,
-                        1600
-                    )
-                )
-                .into(view)
-
+            glideHelper.loadImage(view,file,1600)
         }
         binding.rView.apply {
             adapter = playlistAdapter

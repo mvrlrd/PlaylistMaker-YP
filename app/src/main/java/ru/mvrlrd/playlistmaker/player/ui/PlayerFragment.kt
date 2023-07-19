@@ -27,6 +27,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
+import ru.mvrlrd.playlistmaker.tools.GlideHelper
 import java.io.File
 
 
@@ -38,6 +39,7 @@ class PlayerFragment : Fragment() {
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(parseIntent(args.track))
     }
+    private val glideHelper: GlideHelper by inject()
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -170,18 +172,9 @@ class PlayerFragment : Fragment() {
                 "myalbum"
             )
             val file = File(filePath, playlistImage)
-            Glide
-                .with(view)
-                .load(file)
-                .centerCrop()
-                .placeholder(R.drawable.connection_error)
-                .apply(
-                    RequestOptions().override(
-                        450,
-                        450
-                    )
-                )
-                .into(view)
+
+            glideHelper.loadImage(view, file, 450)
+
         }
         binding.bottomSheetContainer.rvPlaylists.apply {
             adapter = playlistAdapter
