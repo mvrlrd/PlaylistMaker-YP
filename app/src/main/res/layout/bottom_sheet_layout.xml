@@ -39,7 +39,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_add_new_playlist"
-        style="@style/MainButtonStyle"
+        style="@style/ButtonStyle"
         android:layout_margin="16dp"
         android:text="@string/new_playlist"
         android:visibility="visible"

@@ -28,7 +28,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/addPlaylistButton"
-        style="@style/MainButtonStyle"
+        style="@style/ButtonStyle"
         android:layout_marginTop="24dp"
         android:text="@string/new_playlist"
         android:visibility="visible"

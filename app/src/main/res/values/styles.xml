@@ -95,7 +95,7 @@
     </style>
 
 <!--dsd-->
-    <style name="MainButtonStyle">
+    <style name="ButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:backgroundTint">?attr/day_night_background</item>

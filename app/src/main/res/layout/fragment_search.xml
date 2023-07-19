@@ -93,7 +93,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_clear_history"
-                        style="@style/MainButtonStyle"
+                        style="@style/ButtonStyle"
                         android:layout_marginBottom="50dp"
                         android:text="@string/clear_history" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -117,7 +117,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_refresh"
-                style="@style/MainButtonStyle"
+                style="@style/ButtonStyle"
                 android:text="@string/refresh" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 

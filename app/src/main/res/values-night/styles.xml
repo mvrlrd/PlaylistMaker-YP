@@ -10,10 +10,11 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
         <item name="titleTextAppearance">@style/MyToolbarTitleTextAppearance</item>
         <item name="titleTextColor">?attr/text_color</item>
+        <item name="navigationIconTint">?attr/day_night_background</item>
     </style>
 
     <style name="MyToolbarTitleTextAppearance" parent="@style/TextAppearance.MaterialComponents.Headline6">
-        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:textSize">@dimen/text_size_xxl</item>
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="textAllCaps">false</item>
     </style>
@@ -94,34 +95,22 @@
     </style>
 
     <!--dsd-->
-    <style name="MainButtonStyle">
+    <style name="ButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:backgroundTint">?attr/day_night_background</item>
         <item name="android:textColor">?attr/day_night_text</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
         <item name="android:layout_marginTop">@dimen/standart_padding</item>
         <item name="android:visibility">gone</item>
         <item name="cornerRadius">54dp</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/ys_display_medium</item>
-
-    </style>
-
-
-    <!--+++++-->
-    <style name="ButtonStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:backgroundTint">?attr/refresh_btn_color</item>
-        <item name="android:textColor">?attr/contrary_to_primary_text_color</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginTop">@dimen/standart_padding</item>
-        <item name="android:visibility">gone</item>
-        <item name="cornerRadius">54dp</item>
-        <item name="android:textSize">@dimen/text_size_xs</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
 
