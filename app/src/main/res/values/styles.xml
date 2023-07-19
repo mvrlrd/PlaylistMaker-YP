@@ -203,11 +203,9 @@
         <item name="iconTint">?attr/icon_color</item>
     </style>
 
-
-
-    <style name="ClockStyle">
+    <style name="TimerStyle">
         <item name="android:fontFamily">"@font/ys_display_medium"</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">@dimen/text_size_xs</item>
     </style>
 

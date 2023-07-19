@@ -198,7 +198,7 @@
 
             <TextView
                 android:id="@+id/tv_timer"
-                style="@style/ClockStyle"
+                style="@style/TimerStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
