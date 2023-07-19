@@ -27,31 +27,19 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-
+        style="@style/PlaylistInfoStyle"
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/ys_display_regular"
-        android:lineSpacingExtra="2sp"
-        android:maxLines="2"
-        android:textColor="?attr/text_color"
-        android:textSize="16sp"
-        android:textStyle="bold"
         tools:text="Zagolovok" />
 
     <TextView
+        style="@style/PlaylistInfoStyle"
         android:id="@+id/tv_tracks_quantity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="14dp"
-        android:ellipsize="end"
-        android:fontFamily="@font/ys_display_regular"
-        android:lineSpacingExtra="2sp"
-        android:textColor="?attr/text_color"
-        android:textSize="16sp"
-        android:textStyle="normal"
         tools:text="12 треков" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
