@@ -110,7 +110,9 @@ class AddPlaylistFragment : Fragment() {
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
+                    Log.e("PhotoPicker", "bef")
                     binding.ivNewPlaylistImage.setImageURI(uri)
+                    Log.e("PhotoPicker", "after")
                     _uri = uri
                 } else {
                     Log.d("PhotoPicker", "No media selected")
@@ -126,10 +128,10 @@ class AddPlaylistFragment : Fragment() {
             screenState.render(binding)
         }
         viewModel.playlists.observe(this) {
-            println("__________")
-            it.forEach { println(it) }
-            Log.d("AddPlaylistFragment", "${it.size}")
-            println("__________")
+            println("_____AddPlaylistFragment_____")
+            it.forEach { println(it.playlistImagePath) }
+            Log.e("AddPlaylistFragment", "${it.size}")
+            println("_____AddPlaylistFragment_____")
         }
     }
 
@@ -152,6 +154,7 @@ class AddPlaylistFragment : Fragment() {
                 findNavController().popBackStack()
                 this.resources.getString(R.string.playlist_created, binding.ietPlaylistName.text)
             } catch (e: Exception) {
+                Log.e("AddPlaylistFragment","${e.message}")
                 "error"
             }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

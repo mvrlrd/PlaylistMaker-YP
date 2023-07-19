@@ -34,6 +34,7 @@
      android:layout_width="0dp"
      android:layout_height="0dp"
      android:layout_marginTop="82dp"
+     android:scaleType="centerCrop"
      android:backgroundTint="?attr/day_night_text"
      android:src="@drawable/new_playlist_placeholder"
      app:layout_constraintDimensionRatio="h,1:1"
