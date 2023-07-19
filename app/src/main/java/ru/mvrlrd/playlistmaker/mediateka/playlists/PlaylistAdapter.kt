@@ -49,12 +49,12 @@ class PlaylistAdapter :
                 Glide
                     .with(itemView)
                     .load(playlistForAdapter.playlistImagePath)
-//                    .apply(RequestOptions().override(200,100))
+
                     .centerCrop()
                     .placeholder(R.drawable.album_placeholder_image)
+                    .apply(RequestOptions().override(160,160))
                     .into(binding.ivPlaylistBigImage)
 //            }
         }
     }
 }
-//            TODO сделать плэйсхолдер в соответвтии с макетом
