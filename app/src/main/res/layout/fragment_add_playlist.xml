@@ -43,33 +43,39 @@
      app:layout_constraintTop_toTopOf="parent" />
 
  <com.google.android.material.textfield.TextInputLayout
+     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
      android:id="@+id/playlistNameInputLayout"
      android:layout_width="0dp"
      android:layout_height="54dp"
      android:layout_marginTop="32dp"
-    android:paddingStart="16dp"
+     android:paddingStart="16dp"
      android:paddingEnd="16dp"
      app:endIconDrawable="@drawable/ic_free_icon_font_cross"
      app:endIconMode="clear_text"
+     android:hint="@string/playlist_name"
+     app:boxCornerRadiusBottomEnd="@dimen/radius_big"
+     app:boxCornerRadiusBottomStart="@dimen/radius_big"
+     app:boxCornerRadiusTopEnd="@dimen/radius_big"
+     app:boxCornerRadiusTopStart="@dimen/radius_big"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
      app:layout_constraintStart_toStartOf="parent"
      app:layout_constraintTop_toBottomOf="@+id/iv_new_playlist_image"
      app:passwordToggleContentDescription="description"
      app:passwordToggleTint="@color/blue"
+     app:expandedHintEnabled="true"
      >
 
   <com.google.android.material.textfield.TextInputEditText
       android:id="@+id/iet_playlist_name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="@drawable/edit_text_selector"
-      android:hint="Название"
       android:inputType="text" />
 
  </com.google.android.material.textfield.TextInputLayout>
 
  <com.google.android.material.textfield.TextInputLayout
+     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
      android:id="@+id/descriptionInputLayout"
      android:layout_width="0dp"
      android:layout_height="54dp"
@@ -78,6 +84,12 @@
      android:paddingEnd="16dp"
      app:endIconDrawable="@drawable/ic_free_icon_font_cross"
      app:endIconMode="clear_text"
+     android:hint="@string/playlist_description"
+     app:boxCornerRadiusBottomEnd="@dimen/radius_big"
+     app:boxCornerRadiusBottomStart="@dimen/radius_big"
+     app:boxCornerRadiusTopEnd="@dimen/radius_big"
+     app:boxCornerRadiusTopStart="@dimen/radius_big"
+     app:expandedHintEnabled="true"
      app:layout_constraintEnd_toEndOf="parent"
      app:layout_constraintHorizontal_bias="0.0"
      app:layout_constraintStart_toStartOf="parent"
@@ -90,8 +102,6 @@
       android:id="@+id/iet_desctiption"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="@drawable/edit_text_selector"
-      android:hint="Описание"
       android:inputType="text" />
 
  </com.google.android.material.textfield.TextInputLayout>

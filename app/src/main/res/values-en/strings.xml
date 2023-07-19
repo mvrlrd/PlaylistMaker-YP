@@ -49,6 +49,8 @@
     <string name="track_added_to_playlist" >"Track has been added to %s"</string>
 
     <string name="quantity_of_tracks">%s track%s</string>
+    <string name="playlist_name">Name *</string>
+    <string name="playlist_description">Description</string>
 
 
 </resources>
