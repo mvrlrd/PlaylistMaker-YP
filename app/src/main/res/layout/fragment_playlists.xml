@@ -26,21 +26,15 @@
 
     </ScrollView>
 
-
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/addPlaylistButton"
-        style="@style/RefreshButtonStyle"
-        android:layout_gravity="center"
+        style="@style/MainButtonStyle"
         android:layout_marginTop="24dp"
         android:text="@string/new_playlist"
-        android:textAllCaps="false"
-        android:textColor="?attr/day_night_text"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <include
         android:id="@+id/place_holder"
         layout="@layout/info_place_holder_layout"

@@ -39,12 +39,9 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bt_add_new_playlist"
-        style="@style/ButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="36dp"
+        style="@style/MainButtonStyle"
         android:layout_margin="16dp"
         android:text="@string/new_playlist"
-        android:textSize="@dimen/text_size_xxxs"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

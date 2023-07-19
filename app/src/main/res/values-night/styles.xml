@@ -94,7 +94,7 @@
     </style>
 
     <!--dsd-->
-    <style name="RefreshButtonStyle">
+    <style name="MainButtonStyle">
         <item name="android:backgroundTint">?attr/day_night_background</item>
         <item name="android:textColor">?attr/day_night_text</item>
         <item name="android:textAllCaps">false</item>
