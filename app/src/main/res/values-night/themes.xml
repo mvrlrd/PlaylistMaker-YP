@@ -29,6 +29,7 @@
 
         <item name="main_mode_color">@color/black</item>
         <item name="text_color">@color/white</item>
+        <item name="edit_text_border_color">@color/white</item>
 
 
     </style>
