@@ -51,19 +51,21 @@ class PlaylistAdapter :
                 R.string.quantity_of_tracks, playlistForAdapter.tracksQuantity.toString(),
                 addSuffix(playlistForAdapter.tracksQuantity)
             )
-
-            Glide
-                .with(itemView)
-                .load(playlistForAdapter.playlistImagePath)
-                .centerCrop()
-                .placeholder(R.drawable.album_placeholder_image)
+            if (playlistForAdapter.playlistImagePath.isEmpty()){
+                Glide
+                    .with(itemView)
+                    .load(playlistForAdapter.playlistImagePath)
+                    .centerCrop()
+                    .placeholder(R.drawable.album_placeholder_image)
                 .apply(
                     RequestOptions().override(
                         PLAYLIST_IMAGE_SIZE,
                         PLAYLIST_IMAGE_SIZE
                     )
                 )
-                .into(binding.ivPlaylistBigImage)
+                    .into(binding.ivPlaylistBigImage)
+            }
+
         }
     }
 }
