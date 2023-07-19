@@ -7,12 +7,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     card_view:cardElevation="5dp"
-    android:padding="15dp">
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:layout_margin="0dp"
         android:elevation="10dp"
         app:cardCornerRadius="8dp"
         android:backgroundTint="?attr/main_mode_color">
@@ -40,7 +40,7 @@
         android:id="@+id/tv_tracks_quantity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="16dp"
         tools:text="12 треков" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
