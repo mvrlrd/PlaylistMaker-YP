@@ -2,17 +2,19 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists
 
 import android.os.Bundle
 import android.os.Environment
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
 import java.io.File
 
@@ -47,6 +49,9 @@ class PlaylistsFragment : Fragment() {
     }
 
     private fun initRecycler() {
+
+
+
         playlistAdapter.onClickListener = {}
         playlistAdapter.showImage = { view, playlistImage ->
             val filePath = File(
