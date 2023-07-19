@@ -15,7 +15,10 @@
         </shape>
     </item>
 
-    <item android:drawable="@drawable/baseline_add_photo_alternate_24"> </item>
+    <item android:drawable="@drawable/baseline_add_photo_alternate_24"
+        android:width="100dp"
+        android:height="100dp"
+        android:gravity="center"> </item>
 
 </layer-list>
 

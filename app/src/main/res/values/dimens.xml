@@ -11,6 +11,9 @@
     <dimen name="radius_big">10dp</dimen>
     <dimen name="radius_xxl">16dp</dimen>
 
+
+    <dimen name="create_button_margin">16dp</dimen>
+
     <dimen name="text_size_xxxs">12sp</dimen>
     <dimen name="text_size_xxs">13sp</dimen>
     <dimen name="text_size_xs">14sp</dimen>
