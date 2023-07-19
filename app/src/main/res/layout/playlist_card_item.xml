@@ -6,10 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    card_view:cardElevation="5dp">
+    card_view:cardElevation="5dp"
+    android:padding="15dp">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="160dp"
+        android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_margin="0dp"
         android:elevation="10dp"

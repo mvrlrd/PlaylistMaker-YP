@@ -49,9 +49,6 @@ class PlaylistsFragment : Fragment() {
     }
 
     private fun initRecycler() {
-
-
-
         playlistAdapter.onClickListener = {}
         playlistAdapter.showImage = { view, playlistImage ->
             val filePath = File(
