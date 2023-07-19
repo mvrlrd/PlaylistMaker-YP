@@ -11,7 +11,7 @@ class MediatekaViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lif
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
-        return 2
+        return COUNT_OF_EMBEDDED_FRAGMENTS
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -19,5 +19,8 @@ class MediatekaViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lif
             0 -> FavoritesFragment.newInstance()
             else -> PlaylistsFragment.newInstance()
         }
+    }
+    companion object{
+        private const val COUNT_OF_EMBEDDED_FRAGMENTS = 2
     }
 }

@@ -29,6 +29,9 @@ class AddPlaylistViewModel(private val interactor: PlaylistInteractor) : ViewMod
         return (1..5)
             .map { allowedChars.random() }
             .joinToString("")
-            .plus(".jpg")
+            .plus(IMAGE_TYPE)
+    }
+    companion object{
+        const val IMAGE_TYPE = ".jpg"
     }
 }
