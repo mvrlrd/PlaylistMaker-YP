@@ -21,6 +21,7 @@
     <dimen name="text_size_small">16sp</dimen>
     <dimen name="text_size_medium">19sp</dimen>
     <dimen name="text_size_big">22sp</dimen>
+    <dimen name="text_size_xxl">26sp</dimen>
 
     <dimen name="back_arrow_size">16dp</dimen>
 
