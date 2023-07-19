@@ -57,12 +57,13 @@ class PlaylistAdapter :
                     .load(playlistForAdapter.playlistImagePath)
                     .centerCrop()
                     .placeholder(R.drawable.album_placeholder_image)
-                .apply(
-                    RequestOptions().override(
-                        PLAYLIST_IMAGE_SIZE,
-                        PLAYLIST_IMAGE_SIZE
-                    )
-                )
+
+//                .apply(
+//                    RequestOptions().override(
+//                        PLAYLIST_IMAGE_SIZE,
+//                        PLAYLIST_IMAGE_SIZE
+//                    )
+//                )
                     .into(binding.ivPlaylistBigImage)
             }
 
