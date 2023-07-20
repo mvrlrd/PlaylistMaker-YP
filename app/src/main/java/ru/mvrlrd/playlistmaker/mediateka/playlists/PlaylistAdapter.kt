@@ -9,7 +9,6 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistCardItemBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsFragment.Companion.PLAYLIST_IMAGE_SIZE
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.addSuffix
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 
 class PlaylistAdapter :
@@ -49,9 +48,8 @@ class PlaylistAdapter :
 
         fun bind(playlist: PlaylistForAdapter) {
             binding.tvTitle.text = playlist.name
-            binding.tvTracksQuantity.text = binding.tvTracksQuantity.resources.getString(
-                R.string.quantity_of_tracks, playlist.tracksQuantity.toString(),
-                addSuffix(playlist.tracksQuantity)
+            binding.tvTracksQuantity.text = binding.tvTracksQuantity.resources.getQuantityString(
+                R.plurals.plural_tracks, playlist.tracksQuantity, playlist.tracksQuantity
             )
         }
     }

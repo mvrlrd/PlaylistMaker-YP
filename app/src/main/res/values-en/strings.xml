@@ -52,5 +52,10 @@
     <string name="playlist_name">Name *</string>
     <string name="playlist_description">Description</string>
 
+    <plurals name="plural_tracks">
+        <item quantity="one">%1$d track</item>
+        <item quantity="other">%1$d tracks</item>
+    </plurals>
+
 
 </resources>
