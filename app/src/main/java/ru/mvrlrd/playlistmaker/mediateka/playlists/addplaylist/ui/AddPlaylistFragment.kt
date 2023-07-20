@@ -64,7 +64,6 @@ class AddPlaylistFragment : Fragment() {
             }
         }
         binding.ietDesctiption.doOnTextChanged { text, _, _, _ ->
-            viewModel.handleCreateButtonVisibility(text.toString())
             if (!text.isNullOrEmpty()) {
                 binding.descriptionInputLayout.boxStrokeColor =
                     getColor(this.resources, R.color.blue, requireActivity().theme)
