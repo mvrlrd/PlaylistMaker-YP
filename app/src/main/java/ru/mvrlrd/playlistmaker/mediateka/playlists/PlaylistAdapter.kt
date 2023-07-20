@@ -10,7 +10,7 @@ import ru.mvrlrd.playlistmaker.databinding.PlaylistCardItemBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsFragment.Companion.PLAYLIST_IMAGE_SIZE
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.addSuffix
-import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageFromFile
+import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 
 class PlaylistAdapter :
     ListAdapter<PlaylistForAdapter, PlaylistAdapter.PlaylistViewHolder>(PlaylistItemDiffCallback()) {
@@ -35,8 +35,7 @@ class PlaylistAdapter :
         if (item.playlistImagePath.isNotEmpty()) {
             showImage?.let { it(holder.ivPlaylist, item.playlistImagePath) }
         } else {
-            loadPlaylistImageFromFile(
-                view = holder.ivPlaylist,
+            holder.ivPlaylist.loadPlaylist(
                 anySource = item.playlistImagePath,
                 size = PLAYLIST_IMAGE_SIZE
             )

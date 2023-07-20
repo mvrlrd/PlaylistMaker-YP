@@ -24,7 +24,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
-import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageFromFile
+import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import java.io.File
 
 
@@ -170,7 +170,7 @@ class PlayerFragment : Fragment() {
                     "myalbum"
                 )
                 val file = File(filePath, playlistImagePath)
-                loadPlaylistImageFromFile(view = view, anySource = file, size = PLAYLIST_IMAGE_SIZE)
+                view.loadPlaylist(anySource = file, size = PLAYLIST_IMAGE_SIZE)
             } catch (e: Exception) {
                 Log.e("PlayerFragment", e.message.toString())
             }

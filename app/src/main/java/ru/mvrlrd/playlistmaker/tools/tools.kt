@@ -45,9 +45,10 @@ private fun makeRussianSuffix(count: Int): String {
    }
 }
 
-fun loadPlaylistImageFromFile(view: ImageView, anySource: Any, size: Int){
+
+fun ImageView.loadPlaylist(anySource: Any, size: Int) {
     Glide
-        .with(view)
+        .with(this)
         .load(anySource)
         .centerCrop()
         .placeholder(R.drawable.album_placeholder_image)
@@ -57,6 +58,20 @@ fun loadPlaylistImageFromFile(view: ImageView, anySource: Any, size: Int){
                 size
             )
         )
-        .into(view)
+        .into(this)
 }
+//fun loadPlaylistImageFromFile(view: ImageView, anySource: Any, size: Int){
+//    Glide
+//        .with(view)
+//        .load(anySource)
+//        .centerCrop()
+//        .placeholder(R.drawable.album_placeholder_image)
+//        .apply(
+//            RequestOptions().override(
+//                size,
+//                size
+//            )
+//        )
+//        .into(view)
+//}
 

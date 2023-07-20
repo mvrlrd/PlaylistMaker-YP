@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
-import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageFromFile
+import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import java.io.File
 
 class PlaylistsFragment : Fragment() {
@@ -56,7 +56,7 @@ class PlaylistsFragment : Fragment() {
                     resources.getString(R.string.my_album_name)
                 )
                 val file = File(filePath, playlistImagePath)
-                loadPlaylistImageFromFile(view = view, anySource = file, size = PLAYLIST_IMAGE_SIZE)
+                view.loadPlaylist(anySource = file, size = PLAYLIST_IMAGE_SIZE)
             } catch (e: Exception) {
                 Log.e("PlaylistsFragment", e.message.toString())
             }
