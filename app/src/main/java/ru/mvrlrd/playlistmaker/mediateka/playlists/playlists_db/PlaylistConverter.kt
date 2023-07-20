@@ -1,7 +1,7 @@
-package ru.mvrlrd.playlistmaker.db_playlist
+package ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db
 
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistEntity
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.PlaylistEntity
 
 class PlaylistConverter {
     private fun mapEntityToAdapter(playlistEntity: PlaylistEntity): PlaylistForAdapter {

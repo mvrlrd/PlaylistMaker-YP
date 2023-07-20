@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import ru.mvrlrd.playlistmaker.database.data.FavoriteDb
-import ru.mvrlrd.playlistmaker.database.data.TrackConverter
+import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.FavoriteDb
+import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.TrackConverter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
-import ru.mvrlrd.playlistmaker.db_playlist.PlaylistConverter
-import ru.mvrlrd.playlistmaker.db_playlist.PlaylistDb
-import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.db_playlist.entities.Song
-import ru.mvrlrd.playlistmaker.db_playlist.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistConverter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistDb
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.Song
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.relations.PlaylistWithSongs
 
 class PlayerRepositoryImpl(
     private val playerClient: PlayerClient,

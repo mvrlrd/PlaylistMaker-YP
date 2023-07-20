@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.db_playlist.entities
+package ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

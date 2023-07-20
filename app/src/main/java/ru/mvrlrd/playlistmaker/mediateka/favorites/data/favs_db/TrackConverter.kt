@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.database.data
+package ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import java.util.Calendar

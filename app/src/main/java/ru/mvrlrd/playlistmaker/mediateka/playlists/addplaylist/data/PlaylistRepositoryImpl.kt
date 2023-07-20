@@ -4,9 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistRepository
-import ru.mvrlrd.playlistmaker.db_playlist.PlaylistConverter
-import ru.mvrlrd.playlistmaker.db_playlist.PlaylistDb
-import ru.mvrlrd.playlistmaker.db_playlist.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistConverter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistDb
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.relations.PlaylistWithSongs
 
 class PlaylistRepositoryImpl(
     private val dataBase: PlaylistDb,

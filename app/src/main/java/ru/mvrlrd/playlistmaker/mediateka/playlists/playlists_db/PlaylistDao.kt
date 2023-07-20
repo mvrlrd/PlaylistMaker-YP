@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.db_playlist
+package ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,10 +6,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
-import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistEntity
-import ru.mvrlrd.playlistmaker.db_playlist.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.db_playlist.entities.Song
-import ru.mvrlrd.playlistmaker.db_playlist.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.PlaylistEntity
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.Song
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.relations.PlaylistWithSongs
 
 @Dao
 interface PlaylistDao {
