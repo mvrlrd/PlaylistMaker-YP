@@ -34,6 +34,12 @@ class PlaylistAdapter :
         }
         if (item.playlistImagePath.isNotEmpty()) {
             showImage?.let { it(holder.ivPlaylist, item.playlistImagePath) }
+        } else {
+            loadPlaylistImageFromFile(
+                view = holder.ivPlaylist,
+                anySource = item.playlistImagePath,
+                size = PLAYLIST_IMAGE_SIZE
+            )
         }
         holder.bind(item)
     }
@@ -48,9 +54,6 @@ class PlaylistAdapter :
                 R.string.quantity_of_tracks, playlist.tracksQuantity.toString(),
                 addSuffix(playlist.tracksQuantity)
             )
-            if (playlist.playlistImagePath.isEmpty()){
-                loadPlaylistImageFromFile(view = ivPlaylist, anySource = playlist.playlistImagePath , size = PLAYLIST_IMAGE_SIZE)
-            }
         }
     }
 }
