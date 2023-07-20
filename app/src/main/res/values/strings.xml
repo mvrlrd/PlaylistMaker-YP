@@ -65,7 +65,7 @@
 
     <string name="playlist_created" >"плейлист %s создан"</string>
     <string name="track_already_added" >"Трек уже добавлен в плейлист %s"</string>
-    <string name="track_added_to_playlist" >"Добавлено в плейлист в плейлист %s"</string>
+    <string name="track_added_to_playlist" >"Добавлено в плейлист %s"</string>
     <string name="playlist_name">Название *</string>
     <string name="playlist_description">Описание</string>
 
