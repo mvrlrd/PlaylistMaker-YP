@@ -1,7 +1,7 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.ui.list_of_playlists_screen
+package ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.ui
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.domain.PlaylistForAdapter
 
 
 class PlaylistItemDiffCallback : DiffUtil.ItemCallback<PlaylistForAdapter>() {

@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.ui.add_playlist_screen
+package ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui
 
 import android.content.res.ColorStateList
 import android.widget.Button

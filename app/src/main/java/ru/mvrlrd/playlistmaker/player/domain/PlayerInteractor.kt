@@ -2,7 +2,7 @@ package ru.mvrlrd.playlistmaker.player.domain
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
-import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 
 interface PlayerInteractor {

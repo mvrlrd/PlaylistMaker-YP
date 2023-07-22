@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.ui.add_playlist_screen
+package ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -23,7 +23,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.domain.PlaylistForAdapter
 import java.io.File
 import java.io.FileOutputStream
 

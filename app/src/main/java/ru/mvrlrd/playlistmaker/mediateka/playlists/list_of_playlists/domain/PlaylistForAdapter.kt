@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.domain
+package ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.domain
 
 import java.io.Serializable
 
