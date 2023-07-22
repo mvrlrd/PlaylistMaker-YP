@@ -18,6 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.player.ui.PlayerViewModel
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
+import ru.mvrlrd.playlistmaker.tools.getCommonDurationOfTracks
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,18 +40,8 @@ class PlaylistDescriptionFragment : Fragment() {
         _binding = FragmentPlaylistDescriptionBinding.inflate(layoutInflater, container, false)
 
         loadPlaylistImage()
-        initTextViews()
 
-        viewModel.playlist.observe(this){
-            binding.tvPlaylistName.text = it.playlist.name
-            binding.tvPlaylistDescription.text = it.playlist.description
-            binding.tvPlaylistSize.text = resources.getQuantityString(
-                R.plurals.plural_tracks, it.songs.size, it.songs.size
-            )
-            binding.tvPlaylistDuration.text = resources.getQuantityString(
-                R.plurals.plural_minutes, getAllDuration(it.songs), getAllDuration(it.songs)
-            )
-        }
+        observeViewModel()
 
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
@@ -58,18 +49,18 @@ class PlaylistDescriptionFragment : Fragment() {
         return binding.root
     }
 
-
-    private fun getAllDuration(tracks: List<TrackForAdapter>):Int{
-       val duration = tracks.sumOf {
-            it.trackTime!!.toLong()
+    private fun observeViewModel() {
+        viewModel.playlist.observe(this) {
+            val duration = getCommonDurationOfTracks(it.songs)
+            binding.tvPlaylistName.text = it.playlist.name
+            binding.tvPlaylistDescription.text = it.playlist.description
+            binding.tvPlaylistSize.text = resources.getQuantityString(
+                R.plurals.plural_tracks, it.songs.size, it.songs.size
+            )
+            binding.tvPlaylistDuration.text = resources.getQuantityString(
+                R.plurals.plural_minutes, duration, duration
+            )
         }
-        val str = SimpleDateFormat("mm", Locale.getDefault()).format(duration)
-       return str.toInt()
-    }
-
-    private fun initTextViews() {
-        binding.tvPlaylistName.text = args.playlist.name
-        binding.tvPlaylistDescription.text = args.playlist.description
     }
 
     private fun loadPlaylistImage() {
@@ -78,7 +69,6 @@ class PlaylistDescriptionFragment : Fragment() {
             resources.getString(R.string.my_album_name)
         )
         val file = File(filePath, args.playlist.playlistImagePath)
-
         binding.ivPlaylistImage.loadPlaylist(file, 1600)
     }
 

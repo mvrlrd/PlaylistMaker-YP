@@ -4,8 +4,16 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
+import java.text.SimpleDateFormat
+import java.util.*
 
-
+fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>):Int{
+    val duration = tracks.sumOf {
+        it.trackTime!!.toLong()
+    }
+    return SimpleDateFormat("mm", Locale.getDefault()).format(duration).toInt()
+}
 
 fun ImageView.loadPlaylist(anySource: Any, size: Int) {
     Glide
