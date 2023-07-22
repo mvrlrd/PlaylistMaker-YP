@@ -17,6 +17,9 @@ import java.io.File
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.player.ui.PlayerViewModel
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class PlaylistDescriptionFragment : Fragment() {
@@ -39,13 +42,29 @@ class PlaylistDescriptionFragment : Fragment() {
         initTextViews()
 
         viewModel.playlist.observe(this){
-            Log.e("PlaylistDescriptionFragment", "song size = ${it.songs.size}")
+            binding.tvPlaylistName.text = it.playlist.name
+            binding.tvPlaylistDescription.text = it.playlist.description
+            binding.tvPlaylistSize.text = resources.getQuantityString(
+                R.plurals.plural_tracks, it.songs.size, it.songs.size
+            )
+            binding.tvPlaylistDuration.text = resources.getQuantityString(
+                R.plurals.plural_minutes, getAllDuration(it.songs), getAllDuration(it.songs)
+            )
         }
 
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
         return binding.root
+    }
+
+
+    private fun getAllDuration(tracks: List<TrackForAdapter>):Int{
+       val duration = tracks.sumOf {
+            it.trackTime!!.toLong()
+        }
+        val str = SimpleDateFormat("mm", Locale.getDefault()).format(duration)
+       return str.toInt()
     }
 
     private fun initTextViews() {
