@@ -4,9 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.search.util.Resource
 
 interface TracksRepository {
-    fun searchTracks(query: String): Flow<Resource<List<AdapterTrack>>>
-    fun addTrackToHistory(adapterTrack: AdapterTrack)
+    fun searchTracks(query: String): Flow<Resource<List<TrackForAdapter>>>
+    fun addTrackToHistory(trackForAdapter: TrackForAdapter)
     fun clearHistory()
-    suspend fun getHistory(): Flow<List<AdapterTrack>>
-    suspend fun getFavIds(): Flow<List<Int>>
+    suspend fun getHistory(): Flow<List<TrackForAdapter>>
+    suspend fun getFavIds(): Flow<List<Long>>
 }

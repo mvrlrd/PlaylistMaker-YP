@@ -1,9 +1,9 @@
 package ru.mvrlrd.playlistmaker.search.data
 
-import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 interface ILocalStorage {
-    fun addToHistory(adapterTrack: AdapterTrack)
+    fun addToHistory(trackForAdapter: TrackForAdapter)
     fun clearHistory()
-    fun getHistory(): List<AdapterTrack>
+    fun getHistory(): List<TrackForAdapter>
 }

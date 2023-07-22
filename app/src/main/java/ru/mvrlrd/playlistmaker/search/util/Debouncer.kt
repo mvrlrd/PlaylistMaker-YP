@@ -8,7 +8,10 @@ import kotlinx.coroutines.launch
 class Debouncer {
     private var isClickAllowed = true
 
-    fun playClickDebounce(button: FloatingActionButton? = null, scope: LifecycleCoroutineScope): Boolean {
+    fun playClickDebounce(
+        button: FloatingActionButton? = null,
+        scope: LifecycleCoroutineScope
+    ): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
@@ -21,7 +24,8 @@ class Debouncer {
         }
         return current
     }
-    companion object{
+
+    companion object {
         private const val CLICK_DEBOUNCE_DELAY = 200L
     }
 }

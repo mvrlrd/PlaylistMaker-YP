@@ -28,6 +28,7 @@ class App : Application() {
                 playerInteractorModule,
                 playerRepositoryModule,
                 playerViewModelModule,
+                playerUiModule
             )
             modules(
                 searchNetworkDataModule,

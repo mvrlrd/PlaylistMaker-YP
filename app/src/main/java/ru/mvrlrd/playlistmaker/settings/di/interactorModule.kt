@@ -5,7 +5,7 @@ import ru.mvrlrd.playlistmaker.settings.domain.ThemeSwitchInteractor
 import ru.mvrlrd.playlistmaker.settings.domain.impl.ThemeSwitchInteractorImpl
 
 val settingsInteractorModule = module {
-    single<ThemeSwitchInteractor>{
+    single<ThemeSwitchInteractor> {
         ThemeSwitchInteractorImpl(themeSwitchRepository = get())
     }
 }

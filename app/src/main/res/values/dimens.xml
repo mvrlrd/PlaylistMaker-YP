@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="progress_bar_width">44dp</dimen>
+    <dimen name="progress_bar_height">44dp</dimen>
+
+    <dimen name="image_size_small">45dp</dimen>
+    <dimen name="place_holder_icon_size">120dp</dimen>
+
+    <dimen name="radius_small">2dp</dimen>
+    <dimen name="radius_medium">8dp</dimen>
+    <dimen name="radius_big">10dp</dimen>
+    <dimen name="radius_xxl">16dp</dimen>
+
+    <dimen name="playlist_image_size">160dp</dimen>
+
+    <dimen name="new_playlist_placeholder_image_size">100dp</dimen>
+    <dimen name="create_button_margin">16dp</dimen>
+
+    <dimen name="text_size_xxxs">12sp</dimen>
+    <dimen name="text_size_xxs">13sp</dimen>
+    <dimen name="text_size_xs">14sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_medium">19sp</dimen>
+    <dimen name="text_size_big">22sp</dimen>
+    <dimen name="text_size_xxl">26sp</dimen>
+
+    <dimen name="back_arrow_size">16dp</dimen>
+
+    <dimen name="small_fab_size">51dp</dimen>
+    <dimen name="big_fab_size">83dp</dimen>
+
+
+    <dimen name="zero_padding">0dp</dimen>
     <dimen name="main_padding">20dp</dimen>
-    <dimen name="medium_text_size">22sp</dimen>
-    <dimen name="small_text_size">16sp</dimen>
+
     <dimen name="icon_to_text_distance">10dp</dimen>
-    <dimen name="corner_radius">10dp</dimen>
+
     <dimen name="usual_padding">16dp</dimen>
     <dimen name="setting_item_height">61dp</dimen>
-    <dimen name="big_text_size">40sp</dimen>
+
     <dimen name="toolbar_height">80dp</dimen>
     <dimen name="icon_layout_width">24dp</dimen>
     <dimen name="icon_layout_height">24dp</dimen>
-    <dimen name="search_height">36dp</dimen>
+
+
+
+
+    <dimen name="search_field_height">36dp</dimen>
+
     <dimen name="search_max_length">25</dimen>
     <dimen name="refresh_button_width">91dp</dimen>
     <dimen name="refresh_button_height">36dp</dimen>
-    <dimen name="radius">2dp</dimen>
-    <dimen name="big_radius">8dp</dimen>
+
     <dimen name="standart_padding">24dp</dimen>
-    <dimen name="album_size">45dp</dimen>
+
     <dimen name="info_padding">17dp</dimen>
 
 

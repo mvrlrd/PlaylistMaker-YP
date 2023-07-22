@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".player.ui.PlayerFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="50dp">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/leftBorder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.06" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rightBorder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.94" />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/btn_back"
+                android:layout_width="@dimen/back_arrow_size"
+                android:layout_height="@dimen/back_arrow_size"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                app:buttonGravity="center_vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@drawable/ic_arrow_icon"
+                app:navigationIconTint="?attr/text_color" />
+
+            <ImageView
+                android:id="@+id/iv_album_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="82dp"
+                android:backgroundTint="@color/light_gray"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="h,1:1"
+                app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintTag="imageViewTag"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/album_placeholder_image" />
+
+            <TextView
+                android:id="@+id/tv_track_name"
+                style="@style/TrackNameTitle"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintTop_toBottomOf="@+id/iv_album_image"
+                tools:text="Переживу" />
+
+            <TextView
+                android:id="@+id/tv_singer_name"
+                style="@style/PlayerTextStyle"
+                android:layout_marginTop="12dp"
+                app:layout_constraintEnd_toStartOf="@+id/rightBorder"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/leftBorder"
+                app:layout_constraintTop_toBottomOf="@+id/tv_track_name"
+                tools:text="Монеточка" />
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_open_bottom_sheet"
+                style="@style/FabStyle"
+                android:layout_marginTop="132dp"
+                android:src="@drawable/baseline_add_to_photos_24"
+                app:borderWidth="0dp"
+                app:fabCustomSize="@dimen/small_fab_size"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="@+id/leftBorder"
+                app:layout_constraintTop_toBottomOf="@+id/iv_album_image"
+                app:maxImageSize="23dp"
+                app:tint="@color/white" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_play"
+                style="@style/FabStyle"
+                android:layout_width="@dimen/big_fab_size"
+                android:layout_height="@dimen/big_fab_size"
+                android:backgroundTint="?attr/text_color"
+                android:enabled="false"
+                android:src="@drawable/baseline_play_arrow_24"
+                app:borderWidth="0dp"
+
+                app:fabCustomSize="@dimen/big_fab_size"
+                app:layout_constraintBottom_toBottomOf="@+id/fab_open_bottom_sheet"
+                app:layout_constraintEnd_toStartOf="@+id/fab_add_to_favs"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/fab_open_bottom_sheet"
+                app:layout_constraintTop_toTopOf="@+id/fab_open_bottom_sheet"
+                app:maxImageSize="50dp"
+                app:tint="?attr/main_mode_color" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_add_to_favs"
+                style="@style/FabStyle"
+                android:src="@drawable/baseline_favorite_border_24"
+                app:borderWidth="0dp"
+                app:fabCustomSize="@dimen/small_fab_size"
+                app:layout_constraintBottom_toBottomOf="@+id/fab_open_bottom_sheet"
+                app:layout_constraintEnd_toEndOf="@id/rightBorder"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:maxImageSize="23dp" />
+
+            <TextView
+                android:id="@+id/tv_duration_title"
+                style="@style/InfoTextStyle"
+                android:layout_marginStart="@dimen/usual_padding"
+                android:layout_marginTop="84dp"
+                android:text="@string/duration"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fab_open_bottom_sheet"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/tv_album_title"
+                style="@style/InfoTextStyle"
+                android:text="@string/album"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_duration_title" />
+
+            <TextView
+                android:id="@+id/tv_year_title"
+                style="@style/InfoTextStyle"
+                android:text="@string/year"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_album_title" />
+
+            <TextView
+                android:id="@+id/tv_genre_title"
+                style="@style/InfoTextStyle"
+                android:text="@string/genre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_year_title" />
+
+            <TextView
+                android:id="@+id/tv_country_title"
+                style="@style/InfoTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/country"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_genre_title" />
+
+            <TextView
+                android:id="@+id/tv_duration_param"
+                style="@style/ParamTextStyle"
+                android:layout_marginTop="84dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fab_open_bottom_sheet"
+                tools:text="5:31" />
+
+            <TextView
+                android:id="@+id/tv_album_param"
+                style="@style/ParamTextStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_duration_param"
+                tools:text="Россия" />
+
+            <TextView
+                android:id="@+id/tv_year_param"
+                style="@style/ParamTextStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_album_param"
+                tools:text="2022" />
+
+            <TextView
+                android:id="@+id/tv_genre_param"
+                style="@style/ParamTextStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_year_param"
+                tools:text="Рок" />
+
+            <TextView
+                android:id="@+id/tv_country_param"
+                style="@style/ParamTextStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_genre_param"
+                tools:text="Россия" />
+
+            <TextView
+                android:id="@+id/tv_timer"
+                style="@style/TimerStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/_00_00"
+                app:layout_constraintEnd_toEndOf="@+id/fab_play"
+                app:layout_constraintStart_toStartOf="@+id/fab_play"
+                app:layout_constraintTop_toBottomOf="@+id/fab_play" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/bottom_sheet_container"
+        layout="@layout/bottom_sheet_layout" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

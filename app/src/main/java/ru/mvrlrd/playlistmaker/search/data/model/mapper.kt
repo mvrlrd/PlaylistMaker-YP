@@ -2,15 +2,61 @@ package ru.mvrlrd.playlistmaker.search.data.model
 
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.storage.TrackToStorage
-import ru.mvrlrd.playlistmaker.search.domain.AdapterTrack
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
-fun TrackDto.mapToTrack(isFavorite:Boolean) = AdapterTrack(trackId, trackName, artistName, trackTime, image, album, year, genre, country, previewUrl, isFavorite)
+fun TrackDto.mapToTrack(isFavorite: Boolean) = TrackForAdapter(
+    trackId,
+    trackName,
+    artistName,
+    trackTime,
+    image,
+    album,
+    year,
+    genre,
+    country,
+    previewUrl,
+    isFavorite
+)
 
 
-fun TrackToStorage.mapToTrack() = AdapterTrack(trackId, trackName, artistName, trackTime, image, album, year, genre, country, previewUrl)
+fun TrackToStorage.mapToTrack() = TrackForAdapter(
+    trackId,
+    trackName,
+    artistName,
+    trackTime,
+    image,
+    album,
+    year,
+    genre,
+    country,
+    previewUrl
+)
 
 
-fun AdapterTrack.mapToTrackToStorage() = AdapterTrack(trackId, trackName, artistName, trackTime, image, album, year, genre, country, previewUrl)
+fun TrackForAdapter.mapToTrackToStorage() = TrackForAdapter(
+    trackId,
+    trackName,
+    artistName,
+    trackTime,
+    image,
+    album,
+    year,
+    genre,
+    country,
+    previewUrl
+)
 
 
-fun AdapterTrack.mapTrackToTrackForPlayer() = PlayerTrack(trackId, trackName, artistName, trackTime, image, album, year, genre, country, previewUrl, isFavorite)
+fun TrackForAdapter.mapTrackToTrackForPlayer() = PlayerTrack(
+    trackId,
+    trackName,
+    artistName,
+    trackTime,
+    image,
+    album,
+    year,
+    genre,
+    country,
+    previewUrl,
+    isFavorite
+)

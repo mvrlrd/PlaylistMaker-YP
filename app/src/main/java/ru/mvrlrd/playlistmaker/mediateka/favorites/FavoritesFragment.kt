@@ -16,7 +16,7 @@ import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
 class FavoritesFragment : Fragment() {
-    private var _binding: FragmentFavoritesBinding? =null
+    private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
     private val viewModel: FavoritesViewModel by viewModel()
     private val trackAdapter: FavoriteAdapter by inject()
@@ -41,7 +41,11 @@ class FavoritesFragment : Fragment() {
         trackAdapter.apply {
             onClickListener = { track ->
                 if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
-                    findNavController().navigate(MediatekaFragmentDirections.actionMediatekaFragmentToPlayerActivity(track.apply { isFavorite = true }))
+                    findNavController().navigate(
+                        MediatekaFragmentDirections.actionMediatekaFragmentToPlayerFragment(track.apply {
+                            isFavorite = true
+                        })
+                    )
                 }
             }
         }
@@ -51,7 +55,6 @@ class FavoritesFragment : Fragment() {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         viewModel.updateFavorites()
@@ -60,8 +63,7 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.screenState.observe(viewLifecycleOwner){
-            screenState ->
+        viewModel.screenState.observe(viewLifecycleOwner) { screenState ->
             screenState.render(binding)
         }
     }

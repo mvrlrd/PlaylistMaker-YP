@@ -29,4 +29,33 @@
     <string name="new_playlist">New playlist</string>
     <string name="bad_request">"page not found"</string>
     <string name="server_error">"server error"</string>
+    <string name="create_playlist">Create</string>
+    <string name="add_to_playlist_title">Add to playlist</string>
+
+<!--    search-->
+    <string name="history_is_empty">History is empty</string>
+
+<!--    player-->
+    <string name="impossible_to_play">Impossible to play</string>
+
+    <!--    add to playlist-->
+    <string name="finish">Submit</string>
+    <string name="unsaved_data_caution">Unsaved data will be deleted</string>
+    <string name="cancel">Cancel</string>
+    <string name="quitting_question">finish creating a playlist?</string>
+
+    <string name="playlist_created" >"playlist %s has been created"</string>
+    <string name="track_already_added" >"Track is already in playlist %s"</string>
+    <string name="track_added_to_playlist" >"Track has been added to %s"</string>
+
+    <string name="quantity_of_tracks">%s track%s</string>
+    <string name="playlist_name">Name *</string>
+    <string name="playlist_description">Description</string>
+
+    <plurals name="plural_tracks">
+        <item quantity="one">%1$d track</item>
+        <item quantity="other">%1$d tracks</item>
+    </plurals>
+
+
 </resources>

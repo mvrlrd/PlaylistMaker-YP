@@ -1,5 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
+
+    <style name="AppTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="titleTextAppearance">@style/MyToolbarTitleTextAppearance</item>
+        <item name="titleTextColor">?attr/text_color</item>
+        <item name="navigationIconTint">?attr/day_night_background</item>
+    </style>
+
+    <style name="MyToolbarTitleTextAppearance" parent="@style/TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">@dimen/text_size_xxl</item>
+        <item name="fontFamily">@font/ys_display_medium</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <!--    tabLayout mediateka-->
+    <style name="TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabTextColor">?attr/text_color</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabBackground">?attr/main_mode_color</item>
+        <item name="tabIndicatorColor">@color/text_color</item>
+        <item name="tabTextAppearance">@style/TabTextStyle</item>
+    </style>
+
+    <style name="TabTextStyle">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+
+
+
+    <style name="AddPlaylistInputEditTextStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">54dp</item>
+        <item name="endIconDrawable">@drawable/ic_free_icon_font_cross</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_big</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_big</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_big</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_big</item>
+<!--        <item name="android:textAppearance">@style/EditTextHint</item>-->
+
+
+    </style>
+
+<!--    <style name="EditTextHint" parent="TextAppearance.AppCompat">-->
+<!--        <item name="colorAccent">@android:color/white</item>-->
+<!--        <item name="android:textColorHint">@color/white</item>-->
+<!--        <item name="colorControlNormal">@color/red</item>-->
+<!--        <item name="colorControlActivated">@color/blue</item>-->
+<!--        <item name="colorControlHighlight">@color/blue</item>-->
+<!--    </style>-->
+
     <style name="TextStyle">
         <item name="android:textColor">?attr/button_text_color</item>
     </style>
@@ -20,54 +76,72 @@
     </style>
 
     <style name="XStyle">
+        <item name="android:visibility">gone</item>
         <item name="android:layout_marginEnd">12dp</item>
-        <item name="tint">?attr/search_icons_color</item>
+        <item name="tint">?attr/icon_x_color</item>
         <item name="android:layout_width">12dp</item>
         <item name="android:layout_height">12dp</item>
         <item name="android:layout_gravity">end|center_vertical</item>
     </style>
 
     <style name="IconStyle">
-        <item name="tint">?attr/bledniy_text_color</item>
-        <item name="backgroundTint">?attr/background_color</item>
+
         <item name="android:layout_width">@dimen/icon_layout_width</item>
         <item name="android:layout_height">@dimen/icon_layout_height</item>
-        <item name="android:layout_gravity">end|center_vertical</item>
     </style>
 
-    <style name="SwitchStyle">
-        <item name="trackTint">?attr/button_color</item>
-        <item name="thumbTint">?attr/bledniy_text_color</item>
+
+    <style name="SettingsIconStyle">
+        <item name="android:layout_width">@dimen/icon_layout_width</item>
+        <item name="android:layout_height">@dimen/icon_layout_width</item>
+        <item name="android:layout_gravity">center_vertical|end</item>
     </style>
 
-    <style name="RefreshButtonStyle">
+    <style name="PlaylistInfoStyle">
+        <item name="android:ellipsize">end</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/text_size_xxxs</item>
+        <item name="android:textColor">?attr/text_color</item>
+        <item name="lineSpacing">2sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+<!--dsd-->
+    <style name="ButtonStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:backgroundTint">?attr/day_night_background</item>
         <item name="android:textColor">?attr/day_night_text</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
         <item name="android:layout_marginTop">@dimen/standart_padding</item>
         <item name="android:visibility">gone</item>
         <item name="cornerRadius">54dp</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
 
     </style>
+
 
     <style name="BackButton" parent ="IconStyle">
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginStart">@dimen/main_padding</item>
     </style>
 
-    <style name="SettingsItems">
-        <item name="android:textColor">?attr/track_name_color</item>
+<!--    +++++-->
+    <style name="TextViewSettingsItems">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">start|center_vertical</item>
-        <item name="android:textSize">@dimen/small_text_size</item>
+        <item name="android:textColor">@color/track_name_color</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
     </style>
 
+
+<!--    +++++-->
     <style name="FrameLayoutForSettingsItemStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/setting_item_height</item>
@@ -80,10 +154,56 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
-        <item name="android:textSize">@dimen/medium_text_size</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?attr/track_name_color</item>
 
+    </style>
+
+    <style name="PlayerTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/text_size_xs</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">?attr/primary_text_color</item>
+    </style>
+
+    <style name="InfoTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/usual_padding</item>
+        <item name="android:layout_marginTop">@dimen/info_padding</item>
+        <item name="android:fontFamily">"@font/ys_display_regular"</item>
+        <item name="android:textColor">@color/light_gray</item>
+        <item name="android:textSize">@dimen/text_size_xxs</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ParamTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/usual_padding</item>
+        <item name="android:layout_marginTop">@dimen/info_padding</item>
+        <item name="android:fontFamily">"@font/ys_display_regular"</item>
+        <item name="android:textColor">?attr/text_color</item>
+        <item name="android:textSize">@dimen/text_size_xxs</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+
+    <style name="FabStyle" parent="Widget.Design.FloatingActionButton">
+
+        <item name="android:enabled">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_width">@dimen/small_fab_size</item>
+        <item name="android:layout_height">@dimen/small_fab_size</item>
+        <item name="backgroundTint">@color/light_gray</item>
+        <item name="rippleColor">?attr/main_mode_color</item>
+    </style>
+
+    <style name="TrackNameTitle" parent="@style/PlayerTextStyle">
+        <item name="android:textSize">@dimen/text_size_big</item>
     </style>
 
     <style name="MainMenuButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
@@ -105,16 +225,10 @@
         <item name="iconTint">?attr/icon_color</item>
     </style>
 
-<style name="InfoTextStyle">
-    <item name="android:fontFamily">"@font/ys_display_regular"</item>
-    <item name="android:textColor">@color/bledniyFont</item>
-    <item name="android:textSize">13sp</item>
-</style>
-
-    <style name="ClockStyle">
+    <style name="TimerStyle">
         <item name="android:fontFamily">"@font/ys_display_medium"</item>
-        <item name="android:textColor">?attr/day_night_background</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textSize">@dimen/text_size_xs</item>
     </style>
 
 </resources>

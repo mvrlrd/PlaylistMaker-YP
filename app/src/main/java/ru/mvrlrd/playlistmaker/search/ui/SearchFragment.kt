@@ -17,14 +17,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.databinding.FragmentSearchBinding
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
-//TODO сделать инфо плэйсхолдер скролабл потому что если переворачиваем экран его не видно
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding: FragmentSearchBinding
         get() = _binding ?: throw RuntimeException("FragmentSearchBinding == null")
     private val viewModel: SearchViewModel by viewModel()
     private val trackAdapter: TrackAdapter by inject()
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,12 +35,14 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.screenState.observe(this) { screenState ->
-            if (viewModel.isReadyToRender(screenState, binding.searchEditText.text.toString())) {
-                trackAdapter.submitList(screenState.adapterTracks)
+            if (viewModel.isReadyToRender(screenState, binding.etSearchField.text.toString())) {
+                trackAdapter.submitList(screenState.trackForAdapters)
                 screenState.render(binding)
                 if (screenState is SearchScreenState.Error) {
                     showToast(screenState.code)
                 }
+            } else {
+                screenState.render(binding)
             }
         }
         initRecycler()
@@ -53,8 +53,8 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.updateFavIds()
-        if (binding.searchEditText.text.toString().isEmpty()){
-            binding.tracksRecyclerView.itemAnimator = DefaultItemAnimator()
+        if (binding.etSearchField.text.toString().isEmpty()) {
+            binding.rvTracks.itemAnimator = DefaultItemAnimator()
             viewModel.showHistory()
         }
     }
@@ -71,7 +71,7 @@ class SearchFragment : Fragment() {
                 if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
                     viewModel.addToHistory(track)
                     findNavController().navigate(
-                        SearchFragmentDirections.actionSearchFragmentToPlayerActivity(track.apply {
+                        SearchFragmentDirections.actionSearchFragmentToPlayerFragment(track.apply {
                             isFavorite = viewModel.isFavorite(this.trackId)
                         })
                     )
@@ -79,24 +79,24 @@ class SearchFragment : Fragment() {
             }
         }
 
-        binding.tracksRecyclerView.apply {
+        binding.rvTracks.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
     }
 
     private fun initEditText() {
-        binding.searchEditText
+        binding.etSearchField
             .apply {
                 setOnEditorActionListener { _, actionId, _ ->
                     onClickOnEnterOnVirtualKeyboard(actionId)
                 }
                 doOnTextChanged { text, _, _, _ ->
-                    if (binding.searchEditText.hasFocus() && text.toString().isEmpty()) {
+                    if (binding.etSearchField.hasFocus() && text.toString().isEmpty()) {
                         viewModel.showHistory()
                     }
-                    viewModel.searchDebounce(binding.searchEditText.text.toString())
-                    binding.clearTextButton.visibility = clearButtonVisibility(text.toString())
+                    viewModel.searchDebounce(binding.etSearchField.text.toString())
+                    binding.btnClearText.visibility = clearButtonVisibility(text.toString())
                 }
             }
     }
@@ -110,31 +110,31 @@ class SearchFragment : Fragment() {
 
     private fun onClickOnEnterOnVirtualKeyboard(actionId: Int): Boolean {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
-            if (binding.searchEditText.text.toString().isNotEmpty()) {
-                viewModel.searchRequest(binding.searchEditText.text.toString())
+            if (binding.etSearchField.text.toString().isNotEmpty()) {
+                viewModel.searchRequest(binding.etSearchField.text.toString())
             }
         }
         return false
     }
 
     private fun handleButtons() {
-        binding.clearTextButton.apply {
+        binding.btnClearText.apply {
             setOnClickListener {
-                binding.searchEditText.text.clear()
-                binding.searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
-                binding.tracksRecyclerView.itemAnimator = null
+                binding.etSearchField.text.clear()
+                binding.etSearchField.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                binding.rvTracks.itemAnimator = null
                 viewModel.showHistory()
             }
         }
-        binding.clearHistoryButton.apply {
+        binding.btnClearHistory.apply {
             setOnClickListener {
                 viewModel.clearHistory()
             }
         }
-        binding.refreshButton.apply {
+        binding.btnRefresh.apply {
             setOnClickListener {
-                if (binding.searchEditText.text.toString().isNotEmpty()) {
-                    viewModel.searchRequest(binding.searchEditText.text.toString())
+                if (binding.etSearchField.text.toString().isNotEmpty()) {
+                    viewModel.searchRequest(binding.etSearchField.text.toString())
                 }
             }
         }

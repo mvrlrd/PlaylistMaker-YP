@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    card_view:cardElevation="5dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="8dp"
+        android:backgroundTint="?attr/main_mode_color">
+
+        <ImageView
+            android:id="@+id/iv_playlist_big_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?attr/main_mode_color"
+            android:scaleType="centerCrop"
+            android:src="@drawable/playlist_default_image" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        style="@style/PlaylistInfoStyle"
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        tools:text="Zagolovok" />
+
+    <TextView
+        style="@style/PlaylistInfoStyle"
+        android:id="@+id/tv_tracks_quantity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        tools:text="12 треков" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
