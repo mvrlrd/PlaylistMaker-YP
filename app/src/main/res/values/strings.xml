@@ -45,27 +45,26 @@
     <string name="add_to_playlist_title">Добавить в плейлист</string>
 
 
-
     <string name="quantity_of_tracks">%s трек%s</string>
 
     <string name="my_album_name" translatable="false">myalbum</string>
 
-<!--    search-->
+    <!--    search-->
 
     <string name="history_is_empty">История пуста</string>
 
-<!--    player-->
+    <!--    player-->
     <string name="impossible_to_play">Невозможно воспроизвести трек</string>
 
-<!--    add to playlist-->
+    <!--    add to playlist-->
     <string name="finish">Завершить</string>
     <string name="unsaved_data_caution">Все несохраненные данные будут потеряны</string>
     <string name="cancel">Отмена</string>
     <string name="quitting_question">Завершить создание плейлиста?</string>
 
-    <string name="playlist_created" >"плейлист %s создан"</string>
-    <string name="track_already_added" >"Трек уже добавлен в плейлист %s"</string>
-    <string name="track_added_to_playlist" >"Добавлено в плейлист %s"</string>
+    <string name="playlist_created">"плейлист %s создан"</string>
+    <string name="track_already_added">"Трек уже добавлен в плейлист %s"</string>
+    <string name="track_added_to_playlist">"Добавлено в плейлист %s"</string>
     <string name="playlist_name">Название *</string>
     <string name="playlist_description">Описание</string>
 
@@ -78,5 +77,7 @@
         <item quantity="many">%1$d треков</item>
         <item quantity="other">%1$d треков</item>
     </plurals>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
