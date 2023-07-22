@@ -4,4 +4,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlaylistInfoRepository {
     fun getPlaylistWithSongs(id: Long): Flow<PlaylistInfo>
+
+     fun getFavsIds():Flow<List<Long>>
 }

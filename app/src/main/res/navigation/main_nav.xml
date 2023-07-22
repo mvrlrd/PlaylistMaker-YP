@@ -64,5 +64,9 @@
         <argument
             android:name="playlist"
             app:argType="ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter" />
+        <action
+            android:id="@+id/action_playlistDescriptionFragment_to_playerFragment"
+            app:destination="@id/playerFragment"
+            app:popUpTo="@id/playlistDescriptionFragment" />
     </fragment>
 </navigation>
