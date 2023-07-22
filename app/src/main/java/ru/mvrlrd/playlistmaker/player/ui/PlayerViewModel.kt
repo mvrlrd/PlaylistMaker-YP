@@ -14,6 +14,7 @@ import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 
 class PlayerViewModel(
@@ -33,7 +34,7 @@ class PlayerViewModel(
         playerInteractor.preparePlayer(playerTrack)
     }
 
-    fun addTrackToPlaylist(trackId: Long, playlistId: Long) {
+    fun addTrackToPlaylist(trackId: TrackForAdapter, playlistId: Long) {
         viewModelScope.launch {
             playerInteractor.addTrackToPlaylist(trackId = trackId, playlistId = playlistId)
                 .collect() {

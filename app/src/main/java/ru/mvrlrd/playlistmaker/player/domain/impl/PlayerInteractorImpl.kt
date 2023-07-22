@@ -7,6 +7,7 @@ import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : PlayerInteractor {
     override fun start() {
@@ -46,7 +47,7 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
     }
 
     override suspend fun addTrackToPlaylist(
-        trackId: Long,
+        trackId: TrackForAdapter,
         playlistId: Long
     ): Flow<Pair<String, Boolean>> {
         return playerRepository.addTrackToPlaylist(trackId, playlistId)

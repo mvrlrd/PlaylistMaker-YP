@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.FavoriteDb
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.TrackConverter
+import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.TrackEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
@@ -14,6 +15,8 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistSongCrossRef
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
+import java.util.*
 
 class PlayerRepositoryImpl(
     private val playerClient: PlayerClient,
@@ -61,17 +64,23 @@ class PlayerRepositoryImpl(
     }
 
     override suspend fun addTrackToPlaylist(
-        trackId: Long,
+        trackId: TrackForAdapter,
         playlistId: Long
     ): Flow<Pair<String, Boolean>> {
-        playlistDb.getDao().insertTrack(Song(trackId))
-        val playerSongCrossRef = PlaylistSongCrossRef(songId = trackId, playlistId = playlistId)
+        playlistDb.getDao().insertTrack(mapTrackForAdapterToSong(trackId))
+        val playerSongCrossRef = PlaylistSongCrossRef(songId = trackId.trackId, playlistId = playlistId)
         val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
         return flow {
             emit(
                 playlistName to (playlistDb.getDao()
                     .insertPlaylistSongCrossRef(playerSongCrossRef) != -1L)
             )
+        }
+    }
+
+    private fun mapTrackForAdapterToSong(track : TrackForAdapter): Song{
+        return with(track){
+            Song(trackId,trackName,artistName,trackName,image,album,year,genre,country,previewUrl, date = Calendar.getInstance().timeInMillis)
         }
     }
 

@@ -2,6 +2,7 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,20 @@ import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistDescriptionBinding
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import java.io.File
 
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import ru.mvrlrd.playlistmaker.player.ui.PlayerViewModel
+
 
 class PlaylistDescriptionFragment : Fragment() {
     private var _binding: FragmentPlaylistDescriptionBinding? = null
     private val binding: FragmentPlaylistDescriptionBinding get() = _binding!!
     private val args by navArgs<PlaylistDescriptionFragmentArgs>()
 
+
+    private val viewModel: PlaylistInfoViewModel by viewModel {
+        parametersOf(args.playlist.playlistId)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +37,10 @@ class PlaylistDescriptionFragment : Fragment() {
 
         loadPlaylistImage()
         initTextViews()
+
+        viewModel.playlist.observe(this){
+            Log.e("PlaylistDescriptionFragment", "song size = ${it.songs.size}")
+        }
 
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()

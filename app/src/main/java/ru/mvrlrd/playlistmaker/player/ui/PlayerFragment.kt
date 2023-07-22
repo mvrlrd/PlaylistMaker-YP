@@ -158,7 +158,7 @@ class PlayerFragment : Fragment() {
         playlistAdapter.onClickListener = {
             lifecycleScope.launch {
                 viewModel.addTrackToPlaylist(
-                    trackId = parseIntent(args.track).trackId,
+                    trackId = args.track,
                     playlistId = it.playlistId!!
                 )
             }
