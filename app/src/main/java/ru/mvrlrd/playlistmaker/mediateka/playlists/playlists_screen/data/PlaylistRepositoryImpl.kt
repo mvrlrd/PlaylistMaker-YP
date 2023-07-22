@@ -1,12 +1,11 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.data
+package ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.domain.PlaylistRepository
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.domain.PlaylistRepository
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistConverter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
-import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
 
 class PlaylistRepositoryImpl(
     private val dataBase: PlaylistDb,

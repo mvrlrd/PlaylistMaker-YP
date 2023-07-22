@@ -1,8 +1,8 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.di
+package ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.di
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.ui.PlaylistsViewModel
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.PlaylistsViewModel
 
 val playlistsViewModelModule = module {
     viewModel {

@@ -12,11 +12,11 @@ import ru.mvrlrd.playlistmaker.mediateka.favorites.di.favoritesViewModelModule
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.di.addPlaylistRepositoryModule
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.di.addPlaylistUseCaseModule
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.di.addPlaylistViewModelModule
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.di.playlistsDataModule
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.di.playlistsInteractorModule
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.di.playlistsRepositoryModule
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.di.playlistsUiModule
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.di.playlistsViewModelModule
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.di.playlistsDataModule
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.di.playlistsInteractorModule
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.di.playlistsRepositoryModule
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.di.playlistsUiModule
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.di.playlistsViewModelModule
 import ru.mvrlrd.playlistmaker.player.di.*
 import ru.mvrlrd.playlistmaker.search.di.*
 import ru.mvrlrd.playlistmaker.settings.di.*

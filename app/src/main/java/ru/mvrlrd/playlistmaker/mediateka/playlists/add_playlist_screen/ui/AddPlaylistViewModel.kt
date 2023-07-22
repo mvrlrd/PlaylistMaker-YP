@@ -3,12 +3,10 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.domain.AddPlaylistUseCase
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.domain.PlaylistInteractor
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 
 class AddPlaylistViewModel(private val interactor: AddPlaylistUseCase) : ViewModel() {
     private val _screenState = MutableLiveData<AddPlaylistScreenState>()

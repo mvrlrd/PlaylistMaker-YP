@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.list_of_playlists.di
+package ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.di
 
 import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
