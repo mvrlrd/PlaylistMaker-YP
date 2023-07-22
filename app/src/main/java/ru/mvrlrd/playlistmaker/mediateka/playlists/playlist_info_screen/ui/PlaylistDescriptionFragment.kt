@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistDescriptionBinding
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
@@ -28,6 +30,8 @@ class PlaylistDescriptionFragment : Fragment() {
     private val binding: FragmentPlaylistDescriptionBinding get() = _binding!!
     private val args by navArgs<PlaylistDescriptionFragmentArgs>()
 
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
 
     private val viewModel: PlaylistInfoViewModel by viewModel {
         parametersOf(args.playlist.playlistId)
@@ -46,6 +50,8 @@ class PlaylistDescriptionFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        initBottomSheet()
         return binding.root
     }
 
@@ -70,6 +76,30 @@ class PlaylistDescriptionFragment : Fragment() {
         )
         val file = File(filePath, args.playlist.playlistImagePath)
         binding.ivPlaylistImage.loadPlaylist(file, 1600)
+    }
+
+    private fun initBottomSheet() {
+        bottomSheetBehavior =
+            BottomSheetBehavior.from(binding.bottomSheetContainerForPlaylist.bottomSheetForPlaylist).apply {
+                state = BottomSheetBehavior.STATE_HALF_EXPANDED
+            }
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.overlay.alpha = slideOffset+1f
+            }
+        })
     }
 
     override fun onDestroyView() {
