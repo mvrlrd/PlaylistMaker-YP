@@ -48,7 +48,11 @@ class PlaylistsFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        playlistAdapter.onClickListener = {}
+        playlistAdapter.onClickListener = {playlist ->
+            findNavController().navigate(
+           MediatekaFragmentDirections.actionMediatekaFragmentToPlaylistDescriptionFragment(playlist)
+            )
+        }
         playlistAdapter.showImage = { view, playlistImagePath ->
             try {
                 val filePath = File(
