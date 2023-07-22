@@ -5,8 +5,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.FavoriteDb
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.TrackConverter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistConverter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistDb
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistConverter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
 
 val dataBaseModule = module {
     single {

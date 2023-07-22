@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.FavoriteDb
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.TrackConverter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistConverter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistDb
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.Song
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistConverter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
 
 class PlayerRepositoryImpl(
     private val playerClient: PlayerClient,

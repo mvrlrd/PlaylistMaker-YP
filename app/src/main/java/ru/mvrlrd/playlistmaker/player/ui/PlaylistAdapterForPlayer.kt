@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistLayoutBinding
-import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistItemDiffCallback
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.ui.list_of_playlists_screen.PlaylistItemDiffCallback
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 
 

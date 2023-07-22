@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mediateka.playlists.addplaylist.ui.AddPlaylistFragment">
+    tools:context=".mediateka.playlists.ui.add_playlist_screen.AddPlaylistFragment">
 
  <androidx.constraintlayout.widget.Guideline
      android:id="@+id/leftBorder"

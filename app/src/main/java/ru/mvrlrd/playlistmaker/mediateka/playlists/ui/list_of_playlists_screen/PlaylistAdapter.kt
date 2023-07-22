@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists
+package ru.mvrlrd.playlistmaker.mediateka.playlists.ui.list_of_playlists_screen
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistCardItemBinding
-import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsFragment.Companion.PLAYLIST_IMAGE_SIZE
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.ui.list_of_playlists_screen.PlaylistsFragment.Companion.PLAYLIST_IMAGE_SIZE
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 
 class PlaylistAdapter :

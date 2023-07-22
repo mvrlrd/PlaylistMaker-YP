@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".mediateka.playlists.PlaylistsFragment">
+    tools:context=".mediateka.playlists.ui.list_of_playlists_screen.PlaylistsFragment">
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/addPlaylistFragment"
-        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui.AddPlaylistFragment"
+        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.ui.add_playlist_screen.AddPlaylistFragment"
         android:label="fragment_add_playlist"
         tools:layout="@layout/fragment_add_playlist" />
     <fragment
@@ -58,11 +58,11 @@
     </fragment>
     <fragment
         android:id="@+id/playlistDescriptionFragment"
-        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_screen.PlaylistDescriptionFragment"
+        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.ui.info_playlist_screen.PlaylistDescriptionFragment"
         android:label="fragment_playlist_description"
         tools:layout="@layout/fragment_playlist_description" >
         <argument
             android:name="playlist"
-            app:argType="ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter" />
+            app:argType="ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter" />
     </fragment>
 </navigation>

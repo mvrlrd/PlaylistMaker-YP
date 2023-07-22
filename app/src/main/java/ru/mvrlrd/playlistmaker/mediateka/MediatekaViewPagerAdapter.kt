@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import ru.mvrlrd.playlistmaker.mediateka.favorites.FavoritesFragment
-import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsFragment
+import ru.mvrlrd.playlistmaker.mediateka.playlists.ui.list_of_playlists_screen.PlaylistsFragment
 
 class MediatekaViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
     FragmentStateAdapter(fragmentManager, lifecycle) {

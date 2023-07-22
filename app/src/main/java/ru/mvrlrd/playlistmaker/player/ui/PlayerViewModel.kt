@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime

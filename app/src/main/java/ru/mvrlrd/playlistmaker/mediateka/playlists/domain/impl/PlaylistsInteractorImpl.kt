@@ -1,9 +1,9 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.impl
+package ru.mvrlrd.playlistmaker.mediateka.playlists.domain.impl
 
 import kotlinx.coroutines.flow.Flow
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistInteractor
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistRepository
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistInteractor
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistRepository
 
 class PlaylistInteractorImpl(private val repository: PlaylistRepository) : PlaylistInteractor {
     override fun getAllPlaylist(): Flow<List<PlaylistForAdapter>> {

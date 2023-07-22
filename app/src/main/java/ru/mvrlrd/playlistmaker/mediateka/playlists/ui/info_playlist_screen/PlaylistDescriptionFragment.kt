@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_screen
+package ru.mvrlrd.playlistmaker.mediateka.playlists.ui.info_playlist_screen
 
 import android.os.Bundle
 import android.os.Environment
@@ -6,12 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistDescriptionBinding
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import java.io.File
 

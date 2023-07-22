@@ -9,13 +9,13 @@ import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoriteInteractor
 import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoritesRepository
 import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.impl.FavoriteInteractorImpl
 import ru.mvrlrd.playlistmaker.mediateka.favorites.FavoritesViewModel
-import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistAdapter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistsViewModel
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.data.PlaylistRepositoryImpl
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistInteractor
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistRepository
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.impl.PlaylistInteractorImpl
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.ui.AddPlaylistViewModel
+import ru.mvrlrd.playlistmaker.mediateka.playlists.ui.list_of_playlists_screen.PlaylistAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.ui.list_of_playlists_screen.PlaylistsViewModel
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.PlaylistRepositoryImpl
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistInteractor
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistRepository
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.impl.PlaylistInteractorImpl
+import ru.mvrlrd.playlistmaker.mediateka.playlists.ui.add_playlist_screen.AddPlaylistViewModel
 
 val mediatekaVMModule = module {
     viewModel {
