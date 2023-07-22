@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen
+package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 
 import android.os.Bundle
 import android.os.Environment

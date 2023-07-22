@@ -58,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/playlistDescriptionFragment"
-        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.PlaylistDescriptionFragment"
+        android:name="ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui.PlaylistDescriptionFragment"
         android:label="fragment_playlist_description"
         tools:layout="@layout/fragment_playlist_description" >
         <argument
