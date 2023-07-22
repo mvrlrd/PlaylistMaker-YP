@@ -24,6 +24,9 @@ class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor, play
      private val _screenState  = MutableLiveData<PlaylistInfoScreenState>()
      val screenState : LiveData<PlaylistInfoScreenState>  get()= _screenState
 
+    val idssss = interactor.getFavsIds()
+
+
     init{
           viewModelScope.launch(){
                interactor.getPlaylist(playlistId).flowOn(Dispatchers.IO)

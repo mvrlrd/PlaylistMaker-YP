@@ -8,11 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistDescriptionBinding
@@ -73,6 +75,13 @@ class PlaylistDescriptionFragment : Fragment() {
                 }
             }
         }
+
+       viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.idssss.collect() {
+                Log.e("PlaylistDescriptionFragment","like changed")
+            }
+        }
+
 
         initBottomSheet()
         return binding.root

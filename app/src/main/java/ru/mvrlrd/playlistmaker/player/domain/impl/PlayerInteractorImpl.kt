@@ -56,4 +56,8 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
     override fun getAllPlaylistsWithQuantities(): Flow<List<PlaylistForAdapter>> {
         return playerRepository.getAllPlaylistsWithSongs()
     }
+
+    override fun getFavIds(): Flow<List<Long>> {
+        return playerRepository.getFavoriteIds()
+    }
 }

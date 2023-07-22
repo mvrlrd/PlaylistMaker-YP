@@ -18,4 +18,6 @@ interface PlayerInteractor {
     fun getLivePlayerState(): LiveData<MyMediaPlayer.PlayerState>
     suspend fun addTrackToPlaylist(trackId: TrackForAdapter, playlistId: Long): Flow<Pair<String, Boolean>>
     fun getAllPlaylistsWithQuantities(): Flow<List<PlaylistForAdapter>>
+
+    fun getFavIds(): Flow<List<Long>>
 }

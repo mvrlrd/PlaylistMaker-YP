@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,6 +31,12 @@ class PlayerViewModel(
     private val _isAdded = MutableLiveData<Pair<String, Boolean>>()
     val isAdded: LiveData<Pair<String, Boolean>> = _isAdded
 
+val favoriteIds = playerInteractor.getFavIds()
+
+   fun handleLike(favIds: List<Long>, trackId: Long){
+           _screenState.value = PlayerScreenState.LikeHandle(favIds.contains(trackId))
+
+   }
     init {
         playerInteractor.preparePlayer(playerTrack)
     }
@@ -137,7 +144,7 @@ class PlayerViewModel(
 
     fun handleLikeButton() {
         playerTrack.isFavorite = !playerTrack.isFavorite
-        _screenState.postValue(PlayerScreenState.LikeButtonHandler(playerTrack))
+//        _screenState.postValue(PlayerScreenState.LikeButtonHandler(playerTrack))
         viewModelScope.launch {
             if (!playerTrack.isFavorite) {
                 playerInteractor.removeTrackFromFavorite(playerTrack.trackId)

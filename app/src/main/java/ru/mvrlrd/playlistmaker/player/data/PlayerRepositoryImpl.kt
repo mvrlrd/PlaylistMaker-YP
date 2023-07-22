@@ -110,4 +110,8 @@ class PlayerRepositoryImpl(
             )
         }
     }
+
+    override fun getFavoriteIds(): Flow<List<Long>> {
+        return favoriteDb.getDao().getFavIds2()
+    }
 }

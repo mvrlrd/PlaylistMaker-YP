@@ -98,6 +98,15 @@ class PlayerFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.favoriteIds.collect() {
+                viewModel.handleLike(it, args.track.trackId)
+                Log.e("ddd","Like changed")
+            }
+        }
+
+
+
         viewModel.isAdded.observe(this) { isTrackAddadToPlaylist ->
             val message = if (isTrackAddadToPlaylist.second) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
