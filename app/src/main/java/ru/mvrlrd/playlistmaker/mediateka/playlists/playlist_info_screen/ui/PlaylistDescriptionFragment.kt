@@ -36,6 +36,7 @@ class PlaylistDescriptionFragment : Fragment() {
     private lateinit var playlistInfo: PlaylistInfo
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var additionMenuBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private val trackAdapter: TrackAdapter by inject()
 
@@ -71,6 +72,10 @@ class PlaylistDescriptionFragment : Fragment() {
             }
         }
 
+        binding.ivPlaylistMenu.setOnClickListener {
+            additionMenuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.allSongsDebugging.collect(){
                 println()
@@ -80,7 +85,7 @@ class PlaylistDescriptionFragment : Fragment() {
                 println()
             }
         }
-
+        initAdditionMenuBottomSheet()
         initRecycler()
 
         initBottomSheet()
@@ -126,6 +131,7 @@ class PlaylistDescriptionFragment : Fragment() {
                 viewModel.changeState(it)
                 trackAdapter.submitList(it.songs)
                 playlistInfo = it
+                initPlaylistInfo()
             }
         }
         viewModel.screenState.observe(this){
@@ -164,6 +170,43 @@ class PlaylistDescriptionFragment : Fragment() {
                 binding.overlay.alpha = slideOffset+1f
             }
         })
+    }
+
+    private fun initAdditionMenuBottomSheet() {
+
+        additionMenuBottomSheetBehavior =
+            BottomSheetBehavior.from(binding.bottomSheetAdditionMenuContainer.additionMenuBottomSheet)
+                .apply {
+                    state = BottomSheetBehavior.STATE_HIDDEN
+                }
+        additionMenuBottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
+                        binding.overlay.visibility = View.GONE
+                    }
+                    else -> {
+                        binding.overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                binding.overlay.alpha = slideOffset+1f
+            }
+        })
+    }
+
+    private fun initPlaylistInfo() {
+        binding.bottomSheetAdditionMenuContainer.playlistItem.tvPlaylistName.text =
+            playlistInfo.playlist.name
+        binding.bottomSheetAdditionMenuContainer.playlistItem.tvQuantityOfTracks.text =
+            resources.getQuantityString(
+                R.plurals.plural_tracks,
+                playlistInfo.songs.size,
+                playlistInfo.songs.size
+            )
     }
 
     override fun onDestroyView() {

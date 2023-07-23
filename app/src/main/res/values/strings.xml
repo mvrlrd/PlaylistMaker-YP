@@ -73,6 +73,9 @@
     <string name="track_added_to_playlist">"Добавлено в плейлист %s"</string>
     <string name="playlist_name">Название *</string>
     <string name="playlist_description">Описание</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="edit_info">Редактировать информацию</string>
+    <string name="share_playlist">Поделиться</string>
 
 
     <plurals name="plural_tracks">

@@ -58,6 +58,9 @@
     <string name="quantity_of_tracks">%s track%s</string>
     <string name="playlist_name">Name *</string>
     <string name="playlist_description">Description</string>
+    <string name="delete_playlist">Delete playlist</string>
+    <string name="edit_info">Edit information</string>
+    <string name="share_playlist">Share</string>
 
     <plurals name="plural_tracks">
         <item quantity="one">%1$d track</item>

@@ -140,5 +140,9 @@
         android:id="@+id/bottom_sheet_container_for_playlist"
         layout="@layout/playlist_info_bottom_sheet" />
 
+    <include
+        android:id="@+id/bottom_sheet_addition_menu_container"
+        layout="@layout/addition_menu_bottom_sheet" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

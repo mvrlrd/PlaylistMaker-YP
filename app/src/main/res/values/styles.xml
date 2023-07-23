@@ -31,6 +31,13 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="AdditionMenuTextStyle">
+        <item name="android:textColor">?attr/text_color</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
 
 
 
