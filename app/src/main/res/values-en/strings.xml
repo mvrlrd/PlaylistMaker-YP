@@ -32,6 +32,11 @@
     <string name="create_playlist">Create</string>
     <string name="add_to_playlist_title">Add to playlist</string>
 
+    <string name="no_answer">NO</string>
+    <string name="yes_answer">YES</string>
+
+    <string name="deleting_track_question">Do you want to delete track?</string>
+
 <!--    search-->
     <string name="history_is_empty">History is empty</string>
 

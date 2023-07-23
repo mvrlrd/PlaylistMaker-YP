@@ -77,6 +77,13 @@ class AddPlaylistFragment : Fragment() {
             }
         }
         observeViewModel()
+        initDialog()
+        setOnClickListeners()
+        registerImagePicker()
+        return binding.root
+    }
+
+    private fun initDialog() {
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle(this@AddPlaylistFragment.resources.getText(R.string.quitting_question))
             setMessage(this@AddPlaylistFragment.resources.getText(R.string.unsaved_data_caution))
@@ -86,10 +93,9 @@ class AddPlaylistFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
-        setOnClickListeners()
-        registerImagePicker()
-        return binding.root
     }
+
+    //TODO при перевороте экрана диалог не переживет этого, можно сделать fragment : DialogFragment
 
 
     private fun myHandleOnBackPressed() {

@@ -17,6 +17,7 @@ import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 class TrackAdapter :
     ListAdapter<TrackForAdapter, TrackAdapter.TrackViewHolder>(TrackItemDiffCallback()) {
     var onClickListener: ((TrackForAdapter) -> Unit)? = null
+    var onLongClickListener: ((TrackForAdapter) -> Unit)? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val layoutInspector = LayoutInflater.from(parent.context)
         val binding = TrackLayoutBinding.inflate(layoutInspector, parent, false)
@@ -31,6 +32,12 @@ class TrackAdapter :
         val item = getItem(position)
         holder.itemView.setOnClickListener {
             onClickListener?.invoke(item)
+        }
+        onLongClickListener?.let {
+            holder.itemView.setOnLongClickListener {
+                onLongClickListener?.invoke(item)
+                true
+            }
         }
         holder.bind(item)
     }

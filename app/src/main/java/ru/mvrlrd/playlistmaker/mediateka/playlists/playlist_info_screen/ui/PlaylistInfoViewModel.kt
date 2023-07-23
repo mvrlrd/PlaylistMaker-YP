@@ -15,4 +15,8 @@ class PlaylistInfoViewModel(interactor: PlaylistInfoInteractor, playlistId: Long
     fun changeState(playlistInfo: PlaylistInfo) {
         _screenState.postValue(PlaylistInfoScreenState.InitialState(playlistInfo))
     }
+
+    fun deleteTrackFromPlaylis(trackId: Long){
+
+    }
 }

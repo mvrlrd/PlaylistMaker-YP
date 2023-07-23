@@ -2,6 +2,7 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
@@ -33,6 +35,8 @@ class PlaylistDescriptionFragment : Fragment() {
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
     private val trackAdapter: TrackAdapter by inject()
+
+    lateinit var confirmDialog: MaterialAlertDialogBuilder
 
 
     private val viewModel: PlaylistInfoViewModel by viewModel {
@@ -64,6 +68,11 @@ class PlaylistDescriptionFragment : Fragment() {
                     )
                 }
             }
+            onLongClickListener = {
+                track ->
+                Log.e("onLongClickListener","hello")
+                initDialog(track.trackId).show()
+            }
         }
 
 
@@ -71,6 +80,18 @@ class PlaylistDescriptionFragment : Fragment() {
 
         initBottomSheet()
         return binding.root
+    }
+
+    private fun initDialog(trackId: Long): MaterialAlertDialogBuilder {
+        confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle(this@PlaylistDescriptionFragment.resources.getText(R.string.deleting_track_question))
+            setNegativeButton(this@PlaylistDescriptionFragment.resources.getText(R.string.no_answer)) { dialog, which ->
+            }
+            setPositiveButton(this@PlaylistDescriptionFragment.resources.getText(R.string.yes_answer)) { dialog, which ->
+                viewModel.deleteTrackFromPlaylis(trackId)
+            }
+        }
+        return confirmDialog
     }
 
     private fun observeViewModel() {
