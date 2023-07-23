@@ -130,6 +130,7 @@ class PlaylistDescriptionFragment : Fragment() {
             }
             setPositiveButton(resources.getText(R.string.delete_playlist_dialog_positive)) { dialog, which ->
                 playlistInfo.playlist.playlistId?.let { viewModel.deletePlaylist(it) }
+                Toast.makeText(requireContext(), "Плейлист ${playlistInfo.playlist.name} удален", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
         }
