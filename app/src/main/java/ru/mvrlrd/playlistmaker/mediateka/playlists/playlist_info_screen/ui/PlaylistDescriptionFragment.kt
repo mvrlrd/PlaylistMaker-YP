@@ -2,13 +2,11 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,14 +21,8 @@ import java.io.File
 
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.mvrlrd.playlistmaker.player.ui.PlayerViewModel
-import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
-import ru.mvrlrd.playlistmaker.search.ui.SearchFragmentDirections
 import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
-import ru.mvrlrd.playlistmaker.tools.getCommonDurationOfTracks
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class PlaylistDescriptionFragment : Fragment() {
@@ -68,19 +60,13 @@ class PlaylistDescriptionFragment : Fragment() {
                 if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
                     findNavController().navigate(
                         PlaylistDescriptionFragmentDirections.actionPlaylistDescriptionFragmentToPlayerFragment(
-                            track.apply {
-                                isFavorite = viewModel.isFavorite(this.trackId)
-                            })
+                            track)
                     )
                 }
             }
         }
 
-       viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.idssss.collect() {
-                Log.e("PlaylistDescriptionFragment","like changed")
-            }
-        }
+
 
 
         initBottomSheet()
@@ -88,29 +74,15 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        viewLifecycleOwner.lifecycleScope.launch{
+            viewModel.playlistInfo.collect(){
+                viewModel.changeState(it)
+                trackAdapter.submitList(it.songs)
+            }
+        }
         viewModel.screenState.observe(this){
             it.render(binding)
         }
-        viewModel.tracks.observe(this) {
-            trackAdapter.submitList(it)
-
-//            val duration = getCommonDurationOfTracks(it.songs)
-//            binding.tvPlaylistName.text = it.playlist.name
-//            binding.tvPlaylistDescription.text = it.playlist.description
-//            binding.tvPlaylistSize.text = resources.getQuantityString(
-//                R.plurals.plural_tracks, it.songs.size, it.songs.size
-//            )
-//            binding.tvPlaylistDuration.text = resources.getQuantityString(
-//                R.plurals.plural_minutes, duration, duration
-//            )
-        }
-
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.onResume()
     }
 
     private fun loadPlaylistImage() {
