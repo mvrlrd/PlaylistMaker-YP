@@ -120,8 +120,10 @@ class PlayerFragment : Fragment() {
         }
     }
     private fun observePlaylists(){
-        viewModel.playlists.observe(this) {
-            playlistAdapter.submitList(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.playlists.collect(){
+                playlistAdapter.submitList(it)
+            }
         }
     }
 

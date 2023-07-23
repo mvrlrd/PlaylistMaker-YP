@@ -32,8 +32,7 @@ class PlayerViewModel(
 
     private var timerJob: Job? = null
 
-    val playlists: LiveData<List<PlaylistForAdapter>> =
-        playerInteractor.getAllPlaylistsWithQuantities().asLiveData()
+    val playlists = playerInteractor.getAllPlaylistsWithQuantities()
 
     private val _isTrackInPlaylist = MutableLiveData<Pair<String, Boolean>>()
     val isTrackInPlaylist: LiveData<Pair<String, Boolean>> = _isTrackInPlaylist
@@ -57,21 +56,18 @@ class PlayerViewModel(
 
     fun render(plState: MyMediaPlayer.PlayerState) {
         timerJob?.cancel()
+        Log.d(TAG, "$PLAYER_STATE_MESSAGE ${plState.name}")
         when (plState) {
             ERROR -> {
-                Log.e(TAG, "$PLAYER_STATE_MESSAGE ERROR")
                 _screenState.value = PlayerScreenState.PlayerError(playerTrack)
             }
             DEFAULT -> {
-                Log.e(TAG, "$PLAYER_STATE_MESSAGE DEFAULT")
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
             }
             PREPARED -> {
-                Log.e(TAG, "$PLAYER_STATE_MESSAGE PREPARED")
                 _screenState.value = PlayerScreenState.Preparing
             }
             PLAYING -> {
-                Log.e(TAG, "$PLAYER_STATE_MESSAGE PLAYING")
                 timerJob = viewModelScope.launch {
                     while (true) {
                         delay(TIMER_REFRESH_DELAY_TIME)
@@ -84,15 +80,12 @@ class PlayerViewModel(
                 _screenState.value = PlayerScreenState.PlayButtonHandling(plState)
             }
             PAUSED -> {
-                Log.e(TAG, "$PLAYER_STATE_MESSAGE PAUSED")
                 _screenState.value = PlayerScreenState.PlayButtonHandlingSTART
             }
             COMPLETED -> {
-                Log.e(TAG, "$PLAYER_STATE_MESSAGE COMPLETED")
                 _screenState.value = PlayerScreenState.PlayCompleting
             }
             STOPPED -> {
-                Log.e(TAG, "$PLAYER_STATE_MESSAGE STOPPED")
                 timerJob = viewModelScope.launch {
                     playerInteractor.getCurrentTime().collect() {
                         renderTime(it)
