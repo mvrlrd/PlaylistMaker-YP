@@ -2,6 +2,7 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.mvrlrd.playlistmaker.player.util.formatTime
 
 @Entity(tableName = "song_table")
 data class Song(

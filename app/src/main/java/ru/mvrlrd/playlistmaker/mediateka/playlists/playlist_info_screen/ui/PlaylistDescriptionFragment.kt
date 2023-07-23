@@ -1,5 +1,8 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 
+import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -7,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -23,14 +27,18 @@ import java.io.File
 
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import ru.mvrlrd.playlistmaker.App
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
 import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
+import ru.mvrlrd.playlistmaker.settings.ui.SettingsFragment
 
 
 class PlaylistDescriptionFragment : Fragment() {
     private var _binding: FragmentPlaylistDescriptionBinding? = null
     private val binding: FragmentPlaylistDescriptionBinding get() = _binding!!
     private val args by navArgs<PlaylistDescriptionFragmentArgs>()
+    private lateinit var playlistInfo: PlaylistInfo
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
 
@@ -54,7 +62,27 @@ class PlaylistDescriptionFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             findNavController().popBackStack()
         }
+        binding.ivSharePlaylist.setOnClickListener {
+            if (trackAdapter.isListEmpty()){
+                Toast.makeText(requireActivity(), "В этом плейлисте нет списка треков, которым можно поделиться", Toast.LENGTH_SHORT ).show()
+            }else{
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, getTextForPlaylistSharing())
+                    type = INTENT_TYPE_FOR_SENDING
+                }
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
+        }
 
+        initRecycler()
+
+        initBottomSheet()
+        return binding.root
+    }
+
+    private fun initRecycler() {
         binding.bottomSheetContainerForPlaylist.rvPlaylists.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
@@ -64,22 +92,16 @@ class PlaylistDescriptionFragment : Fragment() {
                 if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
                     findNavController().navigate(
                         PlaylistDescriptionFragmentDirections.actionPlaylistDescriptionFragmentToPlayerFragment(
-                            track)
+                            track
+                        )
                     )
                 }
             }
-            onLongClickListener = {
-                track ->
-                Log.e("onLongClickListener","hello")
+            onLongClickListener = { track ->
+                Log.e("onLongClickListener", "hello")
                 initDialog(track.trackId).show()
             }
         }
-
-
-
-
-        initBottomSheet()
-        return binding.root
     }
 
     private fun initDialog(trackId: Long): MaterialAlertDialogBuilder {
@@ -99,6 +121,7 @@ class PlaylistDescriptionFragment : Fragment() {
             viewModel.playlistInfo.collect(){
                 viewModel.changeState(it)
                 trackAdapter.submitList(it.songs)
+                playlistInfo = it
             }
         }
         viewModel.screenState.observe(this){
@@ -143,4 +166,28 @@ class PlaylistDescriptionFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun getTextForPlaylistSharing():String {
+        val str = mutableListOf<String>()
+        str.add(playlistInfo.playlist.name)
+        if (playlistInfo.playlist.description.isNotBlank()) {
+            str.add(playlistInfo.playlist.description)
+        }
+        str.add(
+            this.resources.getQuantityString(
+                R.plurals.plural_tracks,
+                playlistInfo.songs.size,
+                playlistInfo.songs.size
+            )
+        )
+        for (track in playlistInfo.songs) {
+            str.add("${playlistInfo.songs.indexOf(track) + 1}. $track")
+        }
+        return str.joinToString("\n")
+    }
+
+    companion object{
+        private const val INTENT_TYPE_FOR_SENDING = "text/plain"
+    }
+
 }

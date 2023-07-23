@@ -24,6 +24,5 @@ class PlaylistInfoRepositoryImpl(
         return flow {
             emit(playlistDb.getDao().deleteTrack(trackId, playlistId))
         }
-
     }
 }

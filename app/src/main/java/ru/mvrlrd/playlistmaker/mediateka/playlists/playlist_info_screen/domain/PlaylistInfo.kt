@@ -8,3 +8,4 @@ data class PlaylistInfo(
     val playlist: PlaylistForAdapter,
     val songs: List<TrackForAdapter>
 )
+

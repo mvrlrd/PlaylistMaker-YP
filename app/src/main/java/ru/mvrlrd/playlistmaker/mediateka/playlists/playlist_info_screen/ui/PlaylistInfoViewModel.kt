@@ -1,15 +1,18 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfoInteractor
 
-class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor, playlistId: Long) :
+class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor,  playlistId: Long) :
     ViewModel() {
     private val _screenState = MutableLiveData<PlaylistInfoScreenState>()
     val screenState: LiveData<PlaylistInfoScreenState> get() = _screenState
@@ -27,3 +30,4 @@ class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor, play
         }
     }
 }
+
