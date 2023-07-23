@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfoInteractor
-import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 class PlaylistInfoViewModel(interactor: PlaylistInfoInteractor, playlistId: Long) :
     ViewModel() {

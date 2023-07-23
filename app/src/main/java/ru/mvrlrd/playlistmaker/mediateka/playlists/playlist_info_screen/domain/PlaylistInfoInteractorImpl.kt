@@ -6,8 +6,4 @@ class PlaylistInfoInteractorImpl(private val repository: PlaylistInfoRepository)
     override fun getPlaylist(id: Long): Flow<PlaylistInfo> {
         return repository.getPlaylistWithSongs(id)
     }
-
-    override fun getFavsIds(): Flow<List<Long>> {
-        return repository.getFavsIds()
-    }
 }

@@ -4,6 +4,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 class PlaylistConverter {
@@ -56,5 +57,12 @@ class PlaylistConverter {
                 isFavorite = false
             )
         }
+    }
+
+     fun mapPlaylistWithSongsToPlaylistInfo(playlist: PlaylistWithSongs): PlaylistInfo {
+        return PlaylistInfo(
+            playlist = mapEntityToAdapter(playlist.playlist),
+            songs = mapSongsToTracks(playlist.songs)
+        )
     }
 }

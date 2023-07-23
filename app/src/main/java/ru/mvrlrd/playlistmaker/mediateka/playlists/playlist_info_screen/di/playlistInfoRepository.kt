@@ -5,5 +5,5 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.data.Pla
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfoRepository
 
 val playlistInfoRepositoryModule = module {
-    factory<PlaylistInfoRepository> { PlaylistInfoRepositoryImpl(playlistDb = get(), converter = get(), favoriteDb = get()) }
+    factory<PlaylistInfoRepository> { PlaylistInfoRepositoryImpl(playlistDb = get(), converter = get()) }
 }
