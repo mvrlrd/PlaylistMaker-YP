@@ -59,17 +59,7 @@ class PlaylistDescriptionFragment : Fragment() {
             findNavController().popBackStack()
         }
         binding.ivSharePlaylist.setOnClickListener {
-            if (trackAdapter.isListEmpty()){
-                Toast.makeText(requireActivity(), resources.getText(R.string.there_is_nothing_to_share), Toast.LENGTH_SHORT ).show()
-            }else{
-                val sendIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, getTextForPlaylistSharing())
-                    type = INTENT_TYPE_FOR_SENDING
-                }
-                val shareIntent = Intent.createChooser(sendIntent, null)
-                startActivity(shareIntent)
-            }
+            sharePlaylist()
         }
 
         binding.ivPlaylistMenu.setOnClickListener {
@@ -86,10 +76,29 @@ class PlaylistDescriptionFragment : Fragment() {
             }
         }
         initAdditionMenuBottomSheet()
+
         initRecycler()
 
         initBottomSheet()
         return binding.root
+    }
+
+    private fun sharePlaylist() {
+        if (trackAdapter.isListEmpty()) {
+            Toast.makeText(
+                requireActivity(),
+                resources.getText(R.string.there_is_nothing_to_share),
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, getTextForPlaylistSharing())
+                type = INTENT_TYPE_FOR_SENDING
+            }
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
+        }
     }
 
     private fun initRecycler() {
@@ -173,6 +182,10 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     private fun initAdditionMenuBottomSheet() {
+        binding.bottomSheetAdditionMenuContainer.tvSharePlaylist.setOnClickListener {
+            sharePlaylist()
+        }
+
 
         additionMenuBottomSheetBehavior =
             BottomSheetBehavior.from(binding.bottomSheetAdditionMenuContainer.additionMenuBottomSheet)
