@@ -65,6 +65,7 @@
     <string name="quitting_question">Завершить создание плейлиста?</string>
 
     <string name="deleting_track_question">Хотите удалить трек?</string>
+    <string name="there_is_nothing_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
 
 
     <string name="playlist_created">"плейлист %s создан"</string>

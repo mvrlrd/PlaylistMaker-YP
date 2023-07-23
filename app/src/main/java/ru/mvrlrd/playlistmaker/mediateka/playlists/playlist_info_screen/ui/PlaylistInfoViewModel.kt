@@ -24,7 +24,7 @@ class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor,  pla
     fun deleteTrackFromPlaylist(trackId: Long, playlistId: Long){
         viewModelScope.launch {
             interactor.deleteTrackFromPlaylist(trackId, playlistId).collect(){
-                Log.e("PlaylistInfoViewModel", "deleted $it  items")
+                Log.d("PlaylistInfoViewModel", "deleted $it  items")
             }
         }
     }

@@ -40,6 +40,8 @@
 <!--    search-->
     <string name="history_is_empty">History is empty</string>
 
+    <string name="there_is_nothing_to_share">There is nothing to share is tis playlist</string>
+
 <!--    player-->
     <string name="impossible_to_play">Impossible to play</string>
 

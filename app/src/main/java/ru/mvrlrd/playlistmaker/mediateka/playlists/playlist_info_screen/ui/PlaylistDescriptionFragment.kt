@@ -1,11 +1,9 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 
-import android.app.Application
-import android.content.Context
+
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,21 +16,17 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistDescriptionBinding
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import java.io.File
-
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import ru.mvrlrd.playlistmaker.App
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
 import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
-import ru.mvrlrd.playlistmaker.settings.ui.SettingsFragment
 
 
 class PlaylistDescriptionFragment : Fragment() {
@@ -65,7 +59,7 @@ class PlaylistDescriptionFragment : Fragment() {
         }
         binding.ivSharePlaylist.setOnClickListener {
             if (trackAdapter.isListEmpty()){
-                Toast.makeText(requireActivity(), "В этом плейлисте нет списка треков, которым можно поделиться", Toast.LENGTH_SHORT ).show()
+                Toast.makeText(requireActivity(), resources.getText(R.string.there_is_nothing_to_share), Toast.LENGTH_SHORT ).show()
             }else{
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND
