@@ -16,15 +16,13 @@ class SearchViewModel(
     private val tracksInteractor: TracksInteractor,
     private val context: Application
 ) : AndroidViewModel(context) {
+
     private val _screenState = MutableLiveData<SearchScreenState>()
     val screenState: LiveData<SearchScreenState> = _screenState
 
     private var lastQuery: String? = null
     private var latestSearchText: String? = null
     private var searchJob: Job? = null
-    private var updateFavsJob: Job? = null
-
-    private val favIds = mutableListOf<Long>()
 
     fun searchDebounce(changedText: String) {
         if (changedText.isNotEmpty()) {
@@ -42,7 +40,6 @@ class SearchViewModel(
 
     fun onDestroy() {
         searchJob?.cancel()
-        updateFavsJob?.cancel()
     }
 
     fun searchRequest(query: String? = lastQuery) {
@@ -65,18 +62,6 @@ class SearchViewModel(
         }
     }
 
-    fun updateFavIds() {
-        updateFavsJob = viewModelScope.launch {
-            tracksInteractor.getFavIds().collect() {
-                favIds.clear()
-                favIds.addAll(it)
-            }
-        }
-    }
-
-    fun isFavorite(trackId: Long): Boolean {
-        return favIds.contains(trackId)
-    }
 
     private fun handleResponse(
         trackForAdapters: List<TrackForAdapter>?,

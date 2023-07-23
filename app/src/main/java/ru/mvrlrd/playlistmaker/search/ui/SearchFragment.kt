@@ -52,7 +52,6 @@ class SearchFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.updateFavIds()
         if (binding.etSearchField.text.toString().isEmpty()) {
             binding.rvTracks.itemAnimator = DefaultItemAnimator()
             viewModel.showHistory()
