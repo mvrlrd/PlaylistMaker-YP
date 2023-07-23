@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.FavoriteDb
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.TrackConverter
-import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.TrackEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
@@ -112,6 +111,6 @@ class PlayerRepositoryImpl(
     }
 
     override fun getFavoriteIds(): Flow<List<Long>> {
-        return favoriteDb.getDao().getFavIds2()
+        return favoriteDb.getDao().getFavIds()
     }
 }

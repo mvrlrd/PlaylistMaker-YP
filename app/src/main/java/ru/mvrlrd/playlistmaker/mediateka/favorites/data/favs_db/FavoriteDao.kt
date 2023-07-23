@@ -21,10 +21,6 @@ interface FavoriteDao {
     suspend fun clearFavorites()
 
     @Query("SELECT id FROM favorite_tracks")
-    fun getFavIds(): List<Long>
-
-    @Query("SELECT id FROM favorite_tracks")
-    fun getFavIds2(): Flow<List<Long>>
-
+    fun getFavIds(): Flow<List<Long>>
 
 }
