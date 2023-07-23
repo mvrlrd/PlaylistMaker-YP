@@ -28,7 +28,7 @@ class PlayerRepositoryImpl(
         playerClient.preparePlayer(playerTrack)
     }
 
-    override fun getLivePlayerState(): LiveData<MyMediaPlayer.PlayerState> {
+    override fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState> {
         return playerClient.getLivePlayerState()
     }
 
@@ -112,5 +112,13 @@ class PlayerRepositoryImpl(
 
     override fun getFavoriteIds(): Flow<List<Long>> {
         return favoriteDb.getDao().getFavIds()
+    }
+
+    override fun handleStartAndPause() {
+        playerClient.handleStartAndPause()
+    }
+
+    override fun stopIt() {
+        playerClient.stopIt()
     }
 }

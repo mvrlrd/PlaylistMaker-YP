@@ -47,12 +47,6 @@ sealed class PlayerScreenState {
         }
     }
 
-    class LikeButtonHandler(val track: PlayerTrack) : PlayerScreenState() {
-        override fun render(binding: FragmentPlayerBinding) {
-            handleLikeButton(binding, track)
-        }
-    }
-
     class PlayButtonHandling(private val playerState: MyMediaPlayer.PlayerState) :
         PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
@@ -64,6 +58,21 @@ sealed class PlayerScreenState {
                     binding.fabPlay.setImageResource(R.drawable.baseline_play_arrow_24)
                 }
             }
+        }
+    }
+
+    object PlayButtonHandlingSTOP :
+        PlayerScreenState() {
+        override fun render(binding: FragmentPlayerBinding) {
+
+            binding.fabPlay.setImageResource(R.drawable.baseline_pause_24)
+        }
+    }
+
+    object PlayButtonHandlingSTART :
+        PlayerScreenState() {
+        override fun render(binding: FragmentPlayerBinding) {
+            binding.fabPlay.setImageResource(R.drawable.baseline_play_arrow_24)
         }
     }
 

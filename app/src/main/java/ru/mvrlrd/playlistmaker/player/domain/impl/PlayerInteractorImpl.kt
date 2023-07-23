@@ -22,7 +22,7 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
         playerRepository.onDestroy()
     }
 
-    override fun getLivePlayerState(): LiveData<MyMediaPlayer.PlayerState> {
+    override fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState> {
         return playerRepository.getLivePlayerState()
     }
 
@@ -59,5 +59,13 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
 
     override fun getFavIds(): Flow<List<Long>> {
         return playerRepository.getFavoriteIds()
+    }
+
+    override fun handleStartAndPause() {
+        playerRepository.handleStartAndPause()
+    }
+
+    override fun stopIt() {
+        playerRepository.stopIt()
     }
 }

@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -149,10 +150,16 @@ class PlayerFragment : Fragment() {
     }
 
     private fun observePlayerState() {
-        viewModel.playerState.observe(viewLifecycleOwner) {
-            Log.d("PlayerFragment", "player state = ${it.name}")
-            viewModel.render()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.playerState.collect(){
+                Log.e("PlayerFragment", it.name)
+                viewModel.render(it)
+            }
         }
+//        viewModel.playerState.observe(viewLifecycleOwner) {
+//            Log.d("PlayerFragment", "player state = ${it.name}")
+//            viewModel.render()
+//        }
     }
 
     private fun parseIntent(trackForAdapter: TrackForAdapter): PlayerTrack {

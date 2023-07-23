@@ -15,9 +15,13 @@ interface PlayerRepository {
     suspend fun addToFavorite(playerTrack: PlayerTrack)
     suspend fun removeFromFavorite(trackId: Long)
     fun getAllPlaylists(): Flow<List<PlaylistForAdapter>>
-    fun getLivePlayerState(): LiveData<MyMediaPlayer.PlayerState>
+    fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState>
     suspend fun addTrackToPlaylist(track: TrackForAdapter, playlistId: Long): Flow<Pair<String, Boolean>>
     fun getAllPlaylistsWithSongs(): Flow<List<PlaylistForAdapter>>
 
     fun getFavoriteIds(): Flow<List<Long>>
+
+    fun handleStartAndPause()
+
+    fun stopIt()
 }

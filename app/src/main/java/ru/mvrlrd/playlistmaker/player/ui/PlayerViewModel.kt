@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime
@@ -36,10 +38,11 @@ class PlayerViewModel(
     private val _isTrackInPlaylist = MutableLiveData<Pair<String, Boolean>>()
     val isTrackInPlaylist: LiveData<Pair<String, Boolean>> = _isTrackInPlaylist
 
-   fun handleLike(favIds: List<Long>, trackId: Long){
-       playerTrack.isFavorite = favIds.contains(trackId)
-     _screenState.value = PlayerScreenState.LikeHandle(playerTrack.isFavorite)
-   }
+    fun handleLike(favIds: List<Long>, trackId: Long) {
+        playerTrack.isFavorite = favIds.contains(trackId)
+        _screenState.value = PlayerScreenState.LikeHandle(playerTrack.isFavorite)
+    }
+
     init {
         playerInteractor.preparePlayer(playerTrack)
     }
@@ -53,96 +56,62 @@ class PlayerViewModel(
         }
     }
 
-    fun render() {
-        when (playerState.value) {
+    fun render(plState: MyMediaPlayer.PlayerState) {
+        timerJob?.cancel()
+        when (plState) {
             ERROR -> {
+                Log.e(TAG, "$PLAYER_STATE_MESSAGE ERROR")
                 _screenState.value = PlayerScreenState.PlayerError(playerTrack)
             }
             DEFAULT -> {
+                Log.e(TAG, "$PLAYER_STATE_MESSAGE DEFAULT")
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
             }
             PREPARED -> {
+                Log.e(TAG, "$PLAYER_STATE_MESSAGE PREPARED")
                 _screenState.value = PlayerScreenState.Preparing
             }
             PLAYING -> {
+                Log.e(TAG, "$PLAYER_STATE_MESSAGE PLAYING")
                 timerJob = viewModelScope.launch {
-                    while (playerState.value == PLAYING) {
-                        delay(300)
+                    while (true) {
+                        delay(TIMER_REFRESH_DELAY_TIME)
                         playerInteractor.getCurrentTime().collect() {
                             renderTime(it)
                         }
                     }
                 }
-                _screenState.value = PlayerScreenState.PlayButtonHandling(playerState.value!!)
+                _screenState.value = PlayerScreenState.PlayButtonHandlingSTOP
+                _screenState.value = PlayerScreenState.PlayButtonHandling(plState)
             }
             PAUSED -> {
-                timerJob?.cancel()
-                _screenState.value = PlayerScreenState.PlayButtonHandling(playerState.value!!)
+                Log.e(TAG, "$PLAYER_STATE_MESSAGE PAUSED")
+                _screenState.value = PlayerScreenState.PlayButtonHandlingSTART
             }
             COMPLETED -> {
-                timerJob?.cancel()
+                Log.e(TAG, "$PLAYER_STATE_MESSAGE COMPLETED")
                 _screenState.value = PlayerScreenState.PlayCompleting
             }
-            else -> {}
-        }
-    }
-
-    fun onResume() {
-        when (playerState.value) {
-
-            DEFAULT -> {
-            }
-            PAUSED -> {
-                _screenState.value = PlayerScreenState.BeginningState(playerTrack)
-                _screenState.value = PlayerScreenState.Preparing
-                timerJob?.cancel()
+            STOPPED -> {
+                Log.e(TAG, "$PLAYER_STATE_MESSAGE STOPPED")
                 timerJob = viewModelScope.launch {
                     playerInteractor.getCurrentTime().collect() {
                         renderTime(it)
                     }
                 }
-            }
-            PLAYING -> {
                 _screenState.value = PlayerScreenState.BeginningState(playerTrack)
                 _screenState.value = PlayerScreenState.Preparing
-
             }
-            COMPLETED, PREPARED -> {
-                _screenState.value = PlayerScreenState.BeginningState(playerTrack)
-                _screenState.value = PlayerScreenState.Preparing
-                _screenState.value = PlayerScreenState.PlayCompleting
-            }
-            else -> {}
         }
     }
 
 
-    fun onStop() {
-        playerInteractor.pause()
-    }
-
     private fun renderTime(time: Int) {
-        _screenState.value = PlayerScreenState.Playing(parseTime(time))
+        _screenState.value = PlayerScreenState.Playing(formatTime(time))
     }
 
     fun playbackControl() {
-        when (playerState.value) {
-            PLAYING -> {
-                pause()
-            }
-            PREPARED, PAUSED, COMPLETED -> {
-                start()
-            }
-            else -> {}
-        }
-    }
-
-    private fun start() {
-        playerInteractor.start()
-    }
-
-    private fun pause() {
-        playerInteractor.pause()
+        playerInteractor.handleStartAndPause()
     }
 
     fun handleLikeButton() {
@@ -155,13 +124,22 @@ class PlayerViewModel(
         }
     }
 
+    fun onResume(){
+        playerInteractor.stopIt()
+    }
+
+    fun onStop() {
+        playerInteractor.pause()
+    }
     fun onDestroy() {
         timerJob?.cancel()
         playerInteractor.onDestroy()
     }
 
-    private fun parseTime(_time: Int): String {
-        return formatTime(_time)
+    companion object{
+        private const val TIMER_REFRESH_DELAY_TIME = 300L
+        private const val TAG = "PlayerViewModel"
+        private const val PLAYER_STATE_MESSAGE = "player state:"
     }
 }
 
