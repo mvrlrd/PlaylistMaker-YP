@@ -42,9 +42,7 @@ class FavoritesFragment : Fragment() {
             onClickListener = { track ->
                 if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
                     findNavController().navigate(
-                        MediatekaFragmentDirections.actionMediatekaFragmentToPlayerFragment(track.apply {
-                            isFavorite = true
-                        })
+                        MediatekaFragmentDirections.actionMediatekaFragmentToPlayerFragment(track)
                     )
                 }
             }

@@ -144,7 +144,7 @@ class PlayerFragment : Fragment() {
         observePlayerState()
         observePlaylists()
         observeLikeChanging()
-       observeScreenState()
+        observeScreenState()
         observeIsTrackInPlaylist()
     }
 
