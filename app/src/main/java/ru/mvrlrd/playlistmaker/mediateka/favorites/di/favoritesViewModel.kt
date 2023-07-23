@@ -6,6 +6,6 @@ import ru.mvrlrd.playlistmaker.mediateka.favorites.FavoritesViewModel
 
 val favoritesViewModelModule = module {
     viewModel {
-        FavoritesViewModel(favoriteInteractor = get())
+        FavoritesViewModel(interactor = get())
     }
 }
