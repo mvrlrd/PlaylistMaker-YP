@@ -61,6 +61,9 @@
     <string name="delete_playlist">Delete playlist</string>
     <string name="edit_info">Edit information</string>
     <string name="share_playlist">Share</string>
+    <string name="delete_playlist_dialog_title">Delete playlist</string>
+    <string name="delete_playlist_dialog_message">Do you really want to delete this playlist?</string>
+    <string name="delete_playlist_dialog_positive">Delete</string>
 
     <plurals name="plural_tracks">
         <item quantity="one">%1$d track</item>

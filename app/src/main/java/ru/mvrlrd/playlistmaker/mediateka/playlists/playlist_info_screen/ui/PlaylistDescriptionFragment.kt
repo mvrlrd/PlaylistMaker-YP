@@ -122,12 +122,26 @@ class PlaylistDescriptionFragment : Fragment() {
         }
     }
 
+    private fun initDialogDeletePlaylist(): MaterialAlertDialogBuilder {
+        confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle(resources.getText(R.string.delete_playlist_dialog_title))
+            setMessage(resources.getText(R.string.delete_playlist_dialog_message))
+            setNegativeButton(resources.getText(R.string.cancel)) { dialog, which ->
+            }
+            setPositiveButton(resources.getText(R.string.delete_playlist_dialog_positive)) { dialog, which ->
+                playlistInfo.playlist.playlistId?.let { viewModel.deletePlaylist(it) }
+                findNavController().popBackStack()
+            }
+        }
+        return confirmDialog
+    }
+
     private fun initDialog(trackId: Long): MaterialAlertDialogBuilder {
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
-            setTitle(this@PlaylistDescriptionFragment.resources.getText(R.string.deleting_track_question))
-            setNegativeButton(this@PlaylistDescriptionFragment.resources.getText(R.string.no_answer)) { dialog, which ->
+            setTitle(resources.getText(R.string.deleting_track_question))
+            setNegativeButton(resources.getText(R.string.no_answer)) { dialog, which ->
             }
-            setPositiveButton(this@PlaylistDescriptionFragment.resources.getText(R.string.yes_answer)) { dialog, which ->
+            setPositiveButton(resources.getText(R.string.yes_answer)) { dialog, which ->
                 viewModel.deleteTrackFromPlaylist(trackId, args.playlist.playlistId!!)
             }
         }
@@ -184,6 +198,9 @@ class PlaylistDescriptionFragment : Fragment() {
     private fun initAdditionMenuBottomSheet() {
         binding.bottomSheetAdditionMenuContainer.tvSharePlaylist.setOnClickListener {
             sharePlaylist()
+        }
+        binding.bottomSheetAdditionMenuContainer.tvDeletePlaylist.setOnClickListener {
+            initDialogDeletePlaylist().show()
         }
 
 
