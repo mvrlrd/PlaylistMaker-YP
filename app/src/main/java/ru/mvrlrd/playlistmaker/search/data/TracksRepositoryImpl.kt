@@ -3,7 +3,6 @@ package ru.mvrlrd.playlistmaker.search.data
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.FavoriteDb
 import ru.mvrlrd.playlistmaker.search.data.network.TracksSearchResponse
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.domain.TracksRepository
@@ -12,8 +11,7 @@ import ru.mvrlrd.playlistmaker.search.data.model.*
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
-    private val localStorage: ILocalStorage,
-    private val favoriteDb: FavoriteDb
+    private val localStorage: ILocalStorage
 ) :
     TracksRepository {
 
@@ -30,8 +28,7 @@ class TracksRepositoryImpl(
             }
             SUCCESS_CODE -> {
                 with(response as TracksSearchResponse) {
-                    val favoriteIds = favoriteDb.getDao().getFavoriteTrackIds()
-                    val data = results.map { it.mapToTrack(favoriteIds.contains(it.trackId)) }
+                    val data = results.map { it.mapDtoToTrack() }
                     emit(Resource.Success(responseCode = response.resultCode, data = data))
                 }
             }
@@ -56,12 +53,6 @@ class TracksRepositoryImpl(
 
     override suspend fun getHistory(): Flow<List<TrackForAdapter>> = flow {
         emit(localStorage.getHistory())
-    }
-
-    override suspend fun getFavIds(): Flow<List<Long>> {
-        return flow {
-            emit(favoriteDb.getDao().getFavoriteTrackIds())
-        }
     }
 
     companion object {

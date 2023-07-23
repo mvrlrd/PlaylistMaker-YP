@@ -4,7 +4,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.storage.TrackToStorage
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
-fun TrackDto.mapToTrack(isFavorite: Boolean) = TrackForAdapter(
+fun TrackDto.mapDtoToTrack() = TrackForAdapter(
     trackId,
     trackName,
     artistName,
@@ -15,11 +15,11 @@ fun TrackDto.mapToTrack(isFavorite: Boolean) = TrackForAdapter(
     genre,
     country,
     previewUrl,
-    isFavorite
+    isFavorite = false
 )
 
 
-fun TrackToStorage.mapToTrack() = TrackForAdapter(
+fun TrackToStorage.mapDtoToTrack() = TrackForAdapter(
     trackId,
     trackName,
     artistName,
