@@ -1,6 +1,5 @@
 package ru.mvrlrd.playlistmaker.player.domain.impl
 
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
@@ -10,9 +9,6 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : PlayerInteractor {
-    override fun start() {
-        playerRepository.start()
-    }
 
     override fun pause() {
         playerRepository.pause()

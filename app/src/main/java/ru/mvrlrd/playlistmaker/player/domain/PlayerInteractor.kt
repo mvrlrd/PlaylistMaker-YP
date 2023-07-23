@@ -1,13 +1,11 @@
 package ru.mvrlrd.playlistmaker.player.domain
 
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 interface PlayerInteractor {
-    fun start()
     fun pause()
     fun onDestroy()
     fun getCurrentTime(): Flow<Int>
@@ -22,6 +20,5 @@ interface PlayerInteractor {
     fun getFavIds(): Flow<List<Long>>
 
     fun handleStartAndPause()
-
     fun stopIt()
 }

@@ -1,6 +1,5 @@
 package ru.mvrlrd.playlistmaker.player.data
 
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -30,10 +29,6 @@ class PlayerRepositoryImpl(
 
     override fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState> {
         return playerClient.getLivePlayerState()
-    }
-
-    override fun start() {
-        playerClient.start()
     }
 
     override fun pause() {

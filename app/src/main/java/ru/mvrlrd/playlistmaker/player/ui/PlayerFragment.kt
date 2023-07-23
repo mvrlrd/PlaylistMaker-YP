@@ -102,7 +102,6 @@ class PlayerFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.favoriteIds.collect() {
                 viewModel.handleLike(it, args.track.trackId)
-                Log.e("PlayerFragment", "Like changed")
             }
         }
     }
@@ -152,14 +151,9 @@ class PlayerFragment : Fragment() {
     private fun observePlayerState() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.playerState.collect(){
-                Log.e("PlayerFragment", it.name)
                 viewModel.render(it)
             }
         }
-//        viewModel.playerState.observe(viewLifecycleOwner) {
-//            Log.d("PlayerFragment", "player state = ${it.name}")
-//            viewModel.render()
-//        }
     }
 
     private fun parseIntent(trackForAdapter: TrackForAdapter): PlayerTrack {
@@ -173,13 +167,11 @@ class PlayerFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        Log.d("PlayerFragment", "onStop")
         viewModel.onStop()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("PlayerFragment", "onResume")
         viewModel.onResume()
     }
 

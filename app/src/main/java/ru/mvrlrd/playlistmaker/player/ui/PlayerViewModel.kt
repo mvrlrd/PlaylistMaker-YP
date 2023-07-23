@@ -42,7 +42,6 @@ class PlayerViewModel(
         playerTrack.isFavorite = favIds.contains(trackId)
         _screenState.value = PlayerScreenState.LikeHandle(playerTrack.isFavorite)
     }
-
     init {
         playerInteractor.preparePlayer(playerTrack)
     }
