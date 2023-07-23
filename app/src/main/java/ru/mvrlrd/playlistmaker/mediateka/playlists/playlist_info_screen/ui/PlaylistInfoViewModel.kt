@@ -30,7 +30,9 @@ class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor,  pla
     }
 
     fun deletePlaylist(playlistId: Long){
-
+        viewModelScope.launch {
+            interactor.deletePlaylist(playlistId)
+        }
     }
 }
 

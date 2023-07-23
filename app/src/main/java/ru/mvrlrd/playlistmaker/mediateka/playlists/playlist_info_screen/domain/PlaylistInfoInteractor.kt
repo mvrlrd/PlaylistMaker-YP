@@ -9,4 +9,6 @@ interface PlaylistInfoInteractor {
    suspend fun deleteTrackFromPlaylist(trackId: Long, playlistId: Long):Flow<Int>
 
     fun getAllSongsForDebug(): Flow<List<Song>>
+
+    suspend fun deletePlaylist(playlistId: Long)
 }

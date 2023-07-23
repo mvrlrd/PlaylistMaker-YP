@@ -10,4 +10,6 @@ interface PlaylistInfoRepository {
 
     fun getAllSongsForDebug(): Flow<List<Song>>
 
+    suspend fun deletePlaylist(playlistId: Long)
+
 }

@@ -15,4 +15,8 @@ class PlaylistInfoInteractorImpl(private val repository: PlaylistInfoRepository)
     override fun getAllSongsForDebug(): Flow<List<Song>> {
         return repository.getAllSongsForDebug()
     }
+
+    override suspend fun deletePlaylist(playlistId: Long) {
+        repository.deletePlaylist(playlistId)
+    }
 }
