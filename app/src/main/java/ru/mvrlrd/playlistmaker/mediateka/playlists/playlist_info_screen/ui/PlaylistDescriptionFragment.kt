@@ -88,7 +88,7 @@ class PlaylistDescriptionFragment : Fragment() {
             setNegativeButton(this@PlaylistDescriptionFragment.resources.getText(R.string.no_answer)) { dialog, which ->
             }
             setPositiveButton(this@PlaylistDescriptionFragment.resources.getText(R.string.yes_answer)) { dialog, which ->
-                viewModel.deleteTrackFromPlaylis(trackId)
+                viewModel.deleteTrackFromPlaylist(trackId, args.playlist.playlistId!!)
             }
         }
         return confirmDialog

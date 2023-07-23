@@ -4,4 +4,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlaylistInfoInteractor {
     fun getPlaylist(id: Long): Flow<PlaylistInfo>
+
+    fun deleteTrackFromPlaylist(trackId: Long, playlistId: Long):Flow<Int>
 }

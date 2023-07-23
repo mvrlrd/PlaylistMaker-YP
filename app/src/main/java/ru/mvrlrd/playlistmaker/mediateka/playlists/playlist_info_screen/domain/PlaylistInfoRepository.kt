@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 interface PlaylistInfoRepository {
     fun getPlaylistWithSongs(id: Long): Flow<PlaylistInfo>
 
+    fun removeTrackFromPlaylist(trackId: Long, playlistId: Long): Flow<Int>
+
 }

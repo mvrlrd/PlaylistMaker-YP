@@ -3,7 +3,7 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "songs_table")
+@Entity(tableName = "song_table")
 data class Song(
     @PrimaryKey(autoGenerate = true)
     val songId: Long,

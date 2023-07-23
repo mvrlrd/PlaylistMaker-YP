@@ -5,6 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistSongCrossRef
@@ -33,6 +35,8 @@ interface PlaylistDao {
     @Query("SELECT * FROM playlist_table WHERE playlistId =:id")
     fun getPlaylistWithSongs(id: Long): Flow<PlaylistWithSongs>
 
+    @Query("DELETE FROM playlist_song_cross_ref_table WHERE playlistId =:playlistId AND songId =:trackId")
+    suspend fun deleteTrack(trackId: Long, playlistId: Long): Int
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPlaylistSongCrossRef(playlistSongCrossRef: PlaylistSongCrossRef): Long
 
