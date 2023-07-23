@@ -37,4 +37,8 @@ class PlaylistInfoRepositoryImpl(
     override fun getAllSongsForDebug(): Flow<List<Song>> {
         return playlistDb.getDao().getSongs()
     }
+
+    override suspend fun deletePlaylist(playlistId: Long) {
+        TODO("Not yet implemented")
+    }
 }
