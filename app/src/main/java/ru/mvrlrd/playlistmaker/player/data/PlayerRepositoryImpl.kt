@@ -63,11 +63,11 @@ class PlayerRepositoryImpl(
     }
 
     override suspend fun addTrackToPlaylist(
-        trackId: TrackForAdapter,
+        track: TrackForAdapter,
         playlistId: Long
     ): Flow<Pair<String, Boolean>> {
-        playlistDb.getDao().insertTrack(mapTrackForAdapterToSong(trackId))
-        val playerSongCrossRef = PlaylistSongCrossRef(songId = trackId.trackId, playlistId = playlistId)
+        playlistDb.getDao().insertTrack(mapTrackForAdapterToSong(track))
+        val playerSongCrossRef = PlaylistSongCrossRef(songId = track.trackId, playlistId = playlistId)
         val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
         return flow {
             emit(
