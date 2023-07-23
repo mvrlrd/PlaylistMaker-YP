@@ -18,6 +18,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
@@ -76,6 +77,16 @@ class PlaylistDescriptionFragment : Fragment() {
             }
         }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.allSongsDebugging.collect(){
+                println()
+                it.forEach {
+                    println(it)
+                }
+                println()
+            }
+        }
+
         initRecycler()
 
         initBottomSheet()
@@ -98,7 +109,6 @@ class PlaylistDescriptionFragment : Fragment() {
                 }
             }
             onLongClickListener = { track ->
-                Log.e("onLongClickListener", "hello")
                 initDialog(track.trackId).show()
             }
         }

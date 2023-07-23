@@ -12,6 +12,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Pl
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistSongCrossRef
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.SongWithPlaylists
 
 @Dao
 interface PlaylistDao {
@@ -21,6 +22,11 @@ interface PlaylistDao {
     @Query("SELECT * FROM playlist_table WHERE playlistId =:id")
     suspend fun getPlaylist(id: Long): PlaylistEntity
 
+    @Query("SELECT * FROM song_table")
+     fun getSongs(): Flow<List<Song>>
+
+    @Query("DELETE FROM song_table WHERE songId =:songId")
+    suspend fun deleteSong(songId: Long): Int
     @Query("SELECT * FROM playlist_table")
     fun getAllPlaylists(): Flow<List<PlaylistEntity>>
 
@@ -34,6 +40,10 @@ interface PlaylistDao {
     @Transaction
     @Query("SELECT * FROM playlist_table WHERE playlistId =:id")
     fun getPlaylistWithSongs(id: Long): Flow<PlaylistWithSongs>
+
+    @Transaction
+    @Query("SELECT * FROM song_table WHERE songId =:songId")
+    suspend fun getSongWithPlaylists(songId: Long): SongWithPlaylists
 
     @Query("DELETE FROM playlist_song_cross_ref_table WHERE playlistId =:playlistId AND songId =:trackId")
     suspend fun deleteTrack(trackId: Long, playlistId: Long): Int
