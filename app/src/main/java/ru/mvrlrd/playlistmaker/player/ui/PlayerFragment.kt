@@ -97,32 +97,35 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun observeViewModel() {
+    private fun observeLikeChanging(){
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.favoriteIds.collect() {
                 viewModel.handleLike(it, args.track.trackId)
-                Log.e("ddd","Like changed")
+                Log.e("PlayerFragment", "Like changed")
             }
         }
+    }
 
-
-
-        viewModel.isAdded.observe(this) { isTrackAddadToPlaylist ->
-            val message = if (isTrackAddadToPlaylist.second) {
+    private fun observeIsTrackInPlaylist(){
+        viewModel.isTrackInPlaylist.observe(this) { pair ->
+            val isTrackInPlaylist = pair.second
+            val playlistName = pair.first
+            val message = if (isTrackInPlaylist) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-               this.resources.getString(R.string.track_added_to_playlist,  isTrackAddadToPlaylist.first)
+                this.resources.getString(R.string.track_added_to_playlist, playlistName)
             } else {
-                this.resources.getString(R.string.track_already_added, isTrackAddadToPlaylist.first)
+                this.resources.getString(R.string.track_already_added, playlistName)
             }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
+    }
+    private fun observePlaylists(){
         viewModel.playlists.observe(this) {
             playlistAdapter.submitList(it)
         }
-        viewModel.playerState.observe(viewLifecycleOwner) {
-            Log.d("PlayerFragment", "player state = ${it.name}")
-            viewModel.render()
-        }
+    }
+
+    private fun observeScreenState(){
         viewModel.screenState.observe(this) {
             if (it is PlayerScreenState.PlayerError) {
                 it.render(binding)
@@ -134,6 +137,21 @@ class PlayerFragment : Fragment() {
             } else {
                 it.render(binding)
             }
+        }
+    }
+
+    private fun observeViewModel() {
+        observePlayerState()
+        observePlaylists()
+        observeLikeChanging()
+       observeScreenState()
+        observeIsTrackInPlaylist()
+    }
+
+    private fun observePlayerState() {
+        viewModel.playerState.observe(viewLifecycleOwner) {
+            Log.d("PlayerFragment", "player state = ${it.name}")
+            viewModel.render()
         }
     }
 

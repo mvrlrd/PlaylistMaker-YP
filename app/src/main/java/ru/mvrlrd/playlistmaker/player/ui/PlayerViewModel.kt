@@ -1,7 +1,6 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,18 +23,22 @@ class PlayerViewModel(
 ) : ViewModel() {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
+
+    val favoriteIds = playerInteractor.getFavIds()
+
     val playerState = playerInteractor.getLivePlayerState()
+
     private var timerJob: Job? = null
+
     val playlists: LiveData<List<PlaylistForAdapter>> =
         playerInteractor.getAllPlaylistsWithQuantities().asLiveData()
-    private val _isAdded = MutableLiveData<Pair<String, Boolean>>()
-    val isAdded: LiveData<Pair<String, Boolean>> = _isAdded
 
-val favoriteIds = playerInteractor.getFavIds()
+    private val _isTrackInPlaylist = MutableLiveData<Pair<String, Boolean>>()
+    val isTrackInPlaylist: LiveData<Pair<String, Boolean>> = _isTrackInPlaylist
 
    fun handleLike(favIds: List<Long>, trackId: Long){
-           _screenState.value = PlayerScreenState.LikeHandle(favIds.contains(trackId))
-
+       playerTrack.isFavorite = favIds.contains(trackId)
+     _screenState.value = PlayerScreenState.LikeHandle(playerTrack.isFavorite)
    }
     init {
         playerInteractor.preparePlayer(playerTrack)
@@ -45,7 +48,7 @@ val favoriteIds = playerInteractor.getFavIds()
         viewModelScope.launch {
             playerInteractor.addTrackToPlaylist(trackId = trackId, playlistId = playlistId)
                 .collect() {
-                    _isAdded.value = it
+                    _isTrackInPlaylist.value = it
                 }
         }
     }
@@ -138,15 +141,13 @@ val favoriteIds = playerInteractor.getFavIds()
         playerInteractor.start()
     }
 
-    fun pause() {
+    private fun pause() {
         playerInteractor.pause()
     }
 
     fun handleLikeButton() {
-        playerTrack.isFavorite = !playerTrack.isFavorite
-//        _screenState.postValue(PlayerScreenState.LikeButtonHandler(playerTrack))
         viewModelScope.launch {
-            if (!playerTrack.isFavorite) {
+            if (playerTrack.isFavorite) {
                 playerInteractor.removeTrackFromFavorite(playerTrack.trackId)
             } else {
                 playerInteractor.addTrackToFavorite(playerTrack)
