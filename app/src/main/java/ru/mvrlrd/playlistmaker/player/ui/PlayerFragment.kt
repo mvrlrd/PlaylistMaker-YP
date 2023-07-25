@@ -21,7 +21,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
-import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
@@ -66,9 +65,7 @@ class PlayerFragment : Fragment() {
     private fun handleAddToPlaylistButton1() {
         binding.bottomSheetContainer.btAddNewPlaylist.setOnClickListener {
             findNavController().navigate(
-                PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment(
-                    PlaylistForAdapter(3,"d","d","s",3)
-                )
+                PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment()
             )
         }
     }

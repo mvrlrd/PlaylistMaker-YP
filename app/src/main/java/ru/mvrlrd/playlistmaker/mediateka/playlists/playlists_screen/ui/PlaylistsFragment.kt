@@ -14,7 +14,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
-import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import java.io.File
 
@@ -31,9 +30,7 @@ class PlaylistsFragment : Fragment() {
         _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
         binding.addPlaylistButton.setOnClickListener {
             findNavController().navigate(
-                MediatekaFragmentDirections.actionMediatekaFragmentToAddPlaylistFragment(
-                    PlaylistForAdapter(2,"hell","ff","ds",2)
-                )
+                MediatekaFragmentDirections.actionMediatekaFragmentToAddPlaylistFragment()
             )
         }
 
