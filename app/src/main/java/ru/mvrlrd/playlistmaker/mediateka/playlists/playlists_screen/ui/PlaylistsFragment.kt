@@ -31,7 +31,7 @@ class PlaylistsFragment : Fragment() {
         _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
         binding.addPlaylistButton.setOnClickListener {
             findNavController().navigate(
-                MediatekaFragmentDirections.actionMediatekaFragmentToAddPlaylistFragment(PlaylistForAdapter(-1L,"","","",0))
+                MediatekaFragmentDirections.actionMediatekaFragmentToAddPlaylistFragment()
             )
         }
 

@@ -66,9 +66,7 @@ class PlayerFragment : Fragment() {
     private fun handleAddToPlaylistButton1() {
         binding.bottomSheetContainer.btAddNewPlaylist.setOnClickListener {
             findNavController().navigate(
-                PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment(
-                    PlaylistForAdapter(-1L,"","","")
-                )
+                PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment()
             )
         }
     }

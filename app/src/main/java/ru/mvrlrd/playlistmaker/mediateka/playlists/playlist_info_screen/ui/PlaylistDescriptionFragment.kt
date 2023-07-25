@@ -205,8 +205,9 @@ class PlaylistDescriptionFragment : Fragment() {
             initDialogDeletePlaylist().show()
         }
         binding.bottomSheetAdditionMenuContainer.tvEditInfo.setOnClickListener {
+            Log.e("initAdditionMenuBottomSheet", "${playlistInfo.playlist}")
             findNavController().navigate(
-                PlaylistDescriptionFragmentDirections.actionPlaylistDescriptionFragmentToAddPlaylistFragment(playlistInfo.playlist)
+                PlaylistDescriptionFragmentDirections.actionPlaylistDescriptionFragmentToEditPlaylistFragment(playlistInfo.playlist)
             )
 
         }
