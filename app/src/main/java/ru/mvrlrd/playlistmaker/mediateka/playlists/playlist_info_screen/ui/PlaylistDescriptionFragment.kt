@@ -53,7 +53,7 @@ class PlaylistDescriptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlaylistDescriptionBinding.inflate(layoutInflater, container, false)
-        loadPlaylistImage()
+//        loadPlaylistImage()
         observeViewModel()
 
         binding.btnBack.setOnClickListener {
@@ -157,6 +157,7 @@ class PlaylistDescriptionFragment : Fragment() {
                 trackAdapter.submitList(it.songs)
                 playlistInfo = it
                 initPlaylistInfo()
+                loadPlaylistImage(it.playlist.playlistImagePath)
             }
         }
         viewModel.screenState.observe(this){
@@ -164,12 +165,12 @@ class PlaylistDescriptionFragment : Fragment() {
         }
     }
 
-    private fun loadPlaylistImage() {
+    private fun loadPlaylistImage(playlistImagePath: String) {
         val filePath = File(
             requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             resources.getString(R.string.my_album_name)
         )
-        val file = File(filePath, args.playlist.playlistImagePath)
+        val file = File(filePath, playlistImagePath)
         binding.ivPlaylistImage.loadPlaylist(file, 1600)
     }
 
