@@ -203,7 +203,11 @@ class PlaylistDescriptionFragment : Fragment() {
         binding.bottomSheetAdditionMenuContainer.tvDeletePlaylist.setOnClickListener {
             initDialogDeletePlaylist().show()
         }
-
+        binding.bottomSheetAdditionMenuContainer.tvEditInfo.setOnClickListener {
+            findNavController().navigate(
+                PlaylistDescriptionFragmentDirections.actionPlaylistDescriptionFragmentToAddPlaylistFragment(playlistInfo.playlist)
+            )
+        }
 
         additionMenuBottomSheetBehavior =
             BottomSheetBehavior.from(binding.bottomSheetAdditionMenuContainer.additionMenuBottomSheet)
