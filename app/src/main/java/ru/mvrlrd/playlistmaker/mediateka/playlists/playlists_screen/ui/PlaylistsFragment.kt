@@ -48,6 +48,9 @@ class PlaylistsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.playlists.collect() {
                 if (it.isNotEmpty()) {
+                    it.forEach {playlist ->
+                        log(playlist.toString())
+                    }
                     binding.placeHolder.infoPlaceHolder.visibility = View.GONE
                 } else {
                     binding.placeHolder.infoPlaceHolder.visibility = View.VISIBLE

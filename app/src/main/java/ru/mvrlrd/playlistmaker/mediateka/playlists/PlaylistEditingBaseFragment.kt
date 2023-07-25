@@ -140,8 +140,10 @@ import java.io.FileOutputStream
         }
         binding.btnCreatePlaylist.setOnClickListener {
             val playlist = createPlaylist()
+            Log.e(TAG,"path = ${playlist.playlistImagePath}")
             if (_uri!= null){
                 saveImageToPrivateStorage(_uri!!, playlist.playlistImagePath)
+                Log.e(TAG,"image file saved to storage")
             }
 
             viewModel.handlePlaylist(playlist)
@@ -190,12 +192,13 @@ import java.io.FileOutputStream
                      binding.ivNewPlaylistImage.setImageURI(uri)
                      _uri = uri
                  } else {
-                     Log.d("PhotoPicker", "No media selected")
+                     Log.d(TAG, "No media selected")
                  }
              }
      }
 
     companion object{
+        const val TAG = "tag"
         private const val IMAGE_QUALITY = 30
     }
 }
