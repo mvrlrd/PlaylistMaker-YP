@@ -6,6 +6,6 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.Playlists
 
 val playlistsViewModelModule = module {
     viewModel {
-        PlaylistsViewModel(interactor = get())
+        PlaylistsViewModel(useCase = get())
     }
 }

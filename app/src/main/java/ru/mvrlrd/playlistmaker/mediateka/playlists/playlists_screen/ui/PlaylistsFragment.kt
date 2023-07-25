@@ -1,6 +1,5 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -27,28 +26,27 @@ class PlaylistsFragment : Fragment() {
     private val viewModel: PlaylistsViewModel by viewModel()
     private val playlistAdapter: PlaylistAdapter by inject()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        log("onAttach")
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
         binding.addPlaylistButton.setOnClickListener {
-            findNavController().navigate(
-                MediatekaFragmentDirections.actionMediatekaFragmentToAddPlaylistFragment()
-            )
+            navigateTaAddPlaylistFragment()
         }
-
-        log("onCreateView")
-
         initRecycler()
-        viewLifecycleOwner.lifecycleScope .launch{
-            viewModel.playlists.collect(){
-                log("playlist refreshed")
+        observePlaylistChanges()
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.placeHolder.placeholderMessage.text = this.resources.getText(R.string.no_playlists)
+    }
+
+    private fun observePlaylistChanges() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.playlists.collect() {
                 if (it.isNotEmpty()) {
                     binding.placeHolder.infoPlaceHolder.visibility = View.GONE
                 } else {
@@ -57,31 +55,18 @@ class PlaylistsFragment : Fragment() {
                 playlistAdapter.submitList(it)
             }
         }
-
-
-        return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
-        log("onResume")
+    private fun navigateTaAddPlaylistFragment() {
+        findNavController().navigate(
+            MediatekaFragmentDirections.actionMediatekaFragmentToAddPlaylistFragment()
+        )
     }
 
-    override fun onStop() {
-        super.onStop()
-        log("onStop")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        log("onPause")
-    }
 
     private fun initRecycler() {
         playlistAdapter.onClickListener = {playlist ->
-            findNavController().navigate(
-           MediatekaFragmentDirections.actionMediatekaFragmentToPlaylistDescriptionFragment(playlist)
-            )
+            navigateToPlaylistDescriptionFragment(playlist)
         }
         playlistAdapter.showImage = { view, playlistImagePath ->
             try {
@@ -97,30 +82,16 @@ class PlaylistsFragment : Fragment() {
         }
         binding.rView.apply {
             adapter = playlistAdapter
-            layoutManager = GridLayoutManager(requireContext(), 2)
+            layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        log("onViewCreated")
-        binding.placeHolder.placeholderMessage.text = this.resources.getText(R.string.no_playlists)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        log("onDestroyView")
-//        _binding = null
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        log("onDetach")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        log("onDestroy")
+    private fun navigateToPlaylistDescriptionFragment(playlist: PlaylistForAdapter) {
+        findNavController().navigate(
+            MediatekaFragmentDirections.actionMediatekaFragmentToPlaylistDescriptionFragment(
+                playlist
+            )
+        )
     }
 
     private fun log(text: String){
@@ -129,7 +100,7 @@ class PlaylistsFragment : Fragment() {
 
     companion object {
         private const val TAG = "PlaylistsFragment"
-
+        private const val SPAN_COUNT = 2
         const val PLAYLIST_IMAGE_SIZE = 1600
         fun newInstance() = PlaylistsFragment()
     }
