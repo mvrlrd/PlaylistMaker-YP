@@ -28,7 +28,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import java.io.File
 import java.io.FileOutputStream
 
- open class PlaylistEditingBaseFragment : Fragment() {
+ abstract class PlaylistEditingBaseFragment : Fragment() {
     private var _binding: FragmentAddPlaylistBinding? = null
      val binding
         get() = _binding ?: throw RuntimeException("PlaylistEditingFragment == null")
@@ -129,7 +129,6 @@ import java.io.FileOutputStream
     }
 
     private fun setOnClickListeners() {
-
         binding.btnBack.setOnClickListener {
             if (checkIfThereAreUnsavedData()) {
                 confirmDialog.show()
@@ -153,10 +152,6 @@ import java.io.FileOutputStream
         }
     }
 
-     open fun setTitles(){
-
-     }
-
 
     private fun checkIfThereAreUnsavedData(): Boolean {
         return (_uri != null
@@ -164,7 +159,7 @@ import java.io.FileOutputStream
                 || binding.ietDesctiption.text.toString().isNotEmpty())
     }
 
-    private fun addPlaylist(isImageNotEmpty: Boolean): String {
+    open fun addPlaylist(isImageNotEmpty: Boolean): String {
         val name = binding.ietPlaylistName.text.toString()
         val description = binding.ietDesctiption.text.toString()
         val nameOfImage = if (isImageNotEmpty) {

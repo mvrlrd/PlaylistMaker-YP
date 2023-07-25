@@ -1,21 +1,14 @@
-package ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist
+package ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistEditingBaseFragment
-import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui.AddPlaylistFragment
-import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui.AddPlaylistViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.EditPlaylistFragmentArgs
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.PlaylistsFragment
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import java.io.File
@@ -29,8 +22,7 @@ class EditPlaylistFragment : PlaylistEditingBaseFragment() {
         setTitles()
     }
 
-    override fun setTitles() {
-        super.setTitles()
+     private fun setTitles() {
         try {
             val filePath = File(
                 requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -47,4 +39,22 @@ class EditPlaylistFragment : PlaylistEditingBaseFragment() {
         binding.btnBack.title = "Редактировать"
     }
 
+    override fun addPlaylist(isImageNotEmpty: Boolean): String {
+            val name = binding.ietPlaylistName.text.toString()
+            val description = binding.ietDesctiption.text.toString()
+            val nameOfImage = if (isImageNotEmpty) {
+                viewModel.generateImageNameForStorage()
+            } else {
+                ""
+            }
+            viewModel.addPlaylist(
+                PlaylistForAdapter(
+                    name = name,
+                    description = description,
+                    playlistImagePath = nameOfImage
+                )
+            )
+            return nameOfImage
+
+    }
 }

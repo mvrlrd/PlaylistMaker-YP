@@ -17,7 +17,6 @@ class AddPlaylistViewModel(private val interactor: AddPlaylistUseCase) : ViewMod
             interactor.addPlaylist(playlistForAdapter)
         }
     }
-
     fun handleCreateButtonVisibility(text: String?){
         _screenState.value = AddPlaylistScreenState.CreateButtonHandler(text.isNullOrEmpty())
     }
