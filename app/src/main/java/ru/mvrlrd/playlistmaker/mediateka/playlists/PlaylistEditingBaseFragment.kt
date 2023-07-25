@@ -32,7 +32,7 @@ import java.io.FileOutputStream
     private var _binding: FragmentAddPlaylistBinding? = null
      val binding
         get() = _binding ?: throw RuntimeException("PlaylistEditingFragment == null")
-    private val viewModel: AddPlaylistViewModel by viewModel()
+    open val viewModel: HandlePlaylistBaseViewModel by viewModel()
     private var _uri: Uri? = null
     lateinit var confirmDialog: MaterialAlertDialogBuilder
     override fun onAttach(context: Context) {
@@ -168,7 +168,7 @@ import java.io.FileOutputStream
             ""
         }
 
-        viewModel.addPlaylist(
+        viewModel.handlePlaylist(
             PlaylistForAdapter(
                 name = name,
                 description = description,

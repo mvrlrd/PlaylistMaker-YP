@@ -8,14 +8,14 @@ import androidx.navigation.fragment.navArgs
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistEditingBaseFragment
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.EditPlaylistFragmentArgs
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.PlaylistsFragment
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import java.io.File
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditPlaylistFragment : PlaylistEditingBaseFragment() {
     private val args by navArgs<EditPlaylistFragmentArgs>()
-
+    override val viewModel: UpdatePlaylistViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,7 +47,7 @@ class EditPlaylistFragment : PlaylistEditingBaseFragment() {
             } else {
                 ""
             }
-            viewModel.addPlaylist(
+            viewModel.handlePlaylist(
                 PlaylistForAdapter(
                     name = name,
                     description = description,

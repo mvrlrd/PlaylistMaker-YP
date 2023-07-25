@@ -12,6 +12,9 @@ import ru.mvrlrd.playlistmaker.mediateka.favorites.di.favoritesViewModelModule
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.di.addPlaylistRepositoryModule
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.di.addPlaylistUseCaseModule
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.di.addPlaylistViewModelModule
+import ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.di.updatePlaylistRepository
+import ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.di.updatePlaylistUseCase
+import ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.di.updatePlaylistViewModelModule
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.di.playlistInfoInteractorModule
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.di.playlistInfoRepositoryModule
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.di.playlistInfoVMModule
@@ -74,6 +77,11 @@ class App : Application() {
                 playlistInfoRepositoryModule,
                 playlistInfoInteractorModule,
                 playlistInfoVMModule
+            )
+            modules(
+                updatePlaylistRepository,
+                updatePlaylistUseCase,
+                updatePlaylistViewModelModule
             )
         }
         val themeSwitcherInteractor: ThemeSwitchInteractor by inject()

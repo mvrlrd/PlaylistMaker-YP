@@ -29,12 +29,10 @@ import java.io.FileOutputStream
 
 
 open class AddPlaylistFragment : PlaylistEditingBaseFragment() {
+    override val viewModel: AddPlaylistViewModel by viewModel()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
-
-
 }
 
 
