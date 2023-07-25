@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui.AddPlaylistScreenState
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.tools.generateImageNameForStorage
 
 abstract class HandlePlaylistBaseViewModel: ViewModel() {
     private val _screenState = MutableLiveData<AddPlaylistScreenState>()
@@ -17,15 +18,9 @@ abstract class HandlePlaylistBaseViewModel: ViewModel() {
         _screenState.value = AddPlaylistScreenState.CreateButtonHandler(text.isNullOrEmpty())
     }
 
-    private fun generateImageNameForStorage(): String {
-        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-        return (1..5)
-            .map { allowedChars.random() }
-            .joinToString("")
-            .plus(IMAGE_TYPE)
-    }
 
-     fun getImagePath(isPictureChosen: Boolean): String{
+
+    open fun getImagePath(isPictureChosen: Boolean, path:String?=null): String{
         return if (isPictureChosen){
             generateImageNameForStorage()
         }else{

@@ -197,6 +197,10 @@ import java.io.FileOutputStream
              }
      }
 
+     private fun log(text:String){
+         Log.d(TAG,text)
+     }
+
     companion object{
         const val TAG = "tag"
         private const val IMAGE_QUALITY = 30

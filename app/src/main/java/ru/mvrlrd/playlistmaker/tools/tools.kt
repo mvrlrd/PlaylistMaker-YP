@@ -4,6 +4,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.mediateka.playlists.HandlePlaylistBaseViewModel
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,3 +31,13 @@ fun ImageView.loadPlaylist(anySource: Any, size: Int) {
         .into(this)
 }
 
+ fun generateImageNameForStorage(): String {
+    val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+    return (1..5)
+        .map { allowedChars.random() }
+        .joinToString("")
+        .plus(IMAGE_TYPE)
+}
+
+
+const val IMAGE_TYPE = ".jpg"

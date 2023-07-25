@@ -43,11 +43,12 @@ class EditPlaylistFragment : PlaylistEditingBaseFragment() {
     override fun createPlaylist(): PlaylistForAdapter{
         val name = binding.ietPlaylistName.text.toString()
         val description = binding.ietDesctiption.text.toString()
+
         return PlaylistForAdapter(
             playlistId = args.playlist.playlistId,
             name = name,
             description = description,
-            playlistImagePath = viewModel.getImagePath(_uri != null),
+            playlistImagePath = viewModel.getImagePath(_uri != null, args.playlist.playlistImagePath),
         )
     }
 }
