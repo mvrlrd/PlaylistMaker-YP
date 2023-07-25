@@ -140,7 +140,10 @@ import java.io.FileOutputStream
         }
         binding.btnCreatePlaylist.setOnClickListener {
             val playlist = createPlaylist()
-            playlist.playlistImagePath?.let { imagePath -> saveImageToPrivateStorage(_uri!!, imagePath) }
+            if (_uri!= null){
+                saveImageToPrivateStorage(_uri!!, playlist.playlistImagePath)
+            }
+
             viewModel.handlePlaylist(playlist)
             val text = this.resources.getString(R.string.playlist_created, playlist.name)
             Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
