@@ -18,7 +18,7 @@ class PlaylistConverter {
     fun mapAdapterToEntity(playlist: PlaylistForAdapter): PlaylistEntity {
         with(playlist) {
             return PlaylistEntity(
-                playlistId = 0,
+                playlistId = playlistId?:0,
                 name = name,
                 description = description,
                 playlistImagePath = playlistImagePath

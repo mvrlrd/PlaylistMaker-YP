@@ -42,19 +42,20 @@ class EditPlaylistFragment : PlaylistEditingBaseFragment() {
     override fun addPlaylist(isImageNotEmpty: Boolean): String {
             val name = binding.ietPlaylistName.text.toString()
             val description = binding.ietDesctiption.text.toString()
-            val nameOfImage = if (isImageNotEmpty) {
-                viewModel.generateImageNameForStorage()
-            } else {
-                ""
-            }
+//            val nameOfImage = if (isImageNotEmpty) {
+//                viewModel.generateImageNameForStorage()
+//            } else {
+//                ""
+//            }
             viewModel.handlePlaylist(
                 PlaylistForAdapter(
+                    playlistId = args.playlist.playlistId,
                     name = name,
                     description = description,
-                    playlistImagePath = nameOfImage
+                    playlistImagePath = args.playlist.playlistImagePath
                 )
             )
-            return nameOfImage
+            return ""
 
     }
 }
