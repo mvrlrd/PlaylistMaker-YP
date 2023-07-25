@@ -16,6 +16,6 @@ class PlaylistItemDiffCallback : DiffUtil.ItemCallback<PlaylistForAdapter>() {
         oldItem: PlaylistForAdapter,
         newItem: PlaylistForAdapter
     ): Boolean {
-        return ((oldItem.playlistId == newItem.playlistId) && (oldItem.tracksQuantity == newItem.tracksQuantity))
+        return ((oldItem.playlistId == newItem.playlistId) && (oldItem.hashCode() == newItem.hashCode()) )
     }
 }

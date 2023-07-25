@@ -5,7 +5,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.domain.Playl
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.domain.impl.PlaylistInteractorImpl
 
 val playlistsInteractorModule = module{
-    single<PlaylistInteractor> {
+    factory <PlaylistInteractor> {
         PlaylistInteractorImpl(repository = get())
     }
 }
