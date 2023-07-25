@@ -39,23 +39,15 @@ class EditPlaylistFragment : PlaylistEditingBaseFragment() {
         binding.btnBack.title = "Редактировать"
     }
 
-    override fun addPlaylist(isImageNotEmpty: Boolean): String {
-            val name = binding.ietPlaylistName.text.toString()
-            val description = binding.ietDesctiption.text.toString()
-//            val nameOfImage = if (isImageNotEmpty) {
-//                viewModel.generateImageNameForStorage()
-//            } else {
-//                ""
-//            }
-            viewModel.handlePlaylist(
-                PlaylistForAdapter(
-                    playlistId = args.playlist.playlistId,
-                    name = name,
-                    description = description,
-                    playlistImagePath = args.playlist.playlistImagePath
-                )
-            )
-            return ""
 
+    override fun createPlaylist(): PlaylistForAdapter{
+        val name = binding.ietPlaylistName.text.toString()
+        val description = binding.ietDesctiption.text.toString()
+        return PlaylistForAdapter(
+            playlistId = args.playlist.playlistId,
+            name = name,
+            description = description,
+            playlistImagePath = viewModel.getImagePath(_uri != null),
+        )
     }
 }

@@ -7,9 +7,24 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.domain.Ad
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 
 class AddPlaylistViewModel(private val interactor: AddPlaylistUseCase) : HandlePlaylistBaseViewModel() {
+
     override fun handlePlaylist(playlist: PlaylistForAdapter) {
         viewModelScope.launch {
             interactor.addPlaylist(playlist)
         }
+    }
+
+    override fun createPlaylist(
+        id: Long,
+        name: String,
+        description: String,
+        imageUrl: String
+    ): PlaylistForAdapter {
+        return  PlaylistForAdapter(
+            playlistId = 0,
+            name = name,
+            description = description,
+            playlistImagePath = imageUrl
+        )
     }
 }
