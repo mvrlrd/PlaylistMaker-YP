@@ -189,8 +189,9 @@ import java.io.FileOutputStream
          mediaPicker =
              registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                  if (uri != null) {
-                     binding.ivNewPlaylistImage.setImageURI(uri)
+                     Log.d(TAG, " media selected")
                      _uri = uri
+                     binding.ivNewPlaylistImage.setImageURI(uri)
                  } else {
                      Log.d(TAG, "No media selected")
                  }

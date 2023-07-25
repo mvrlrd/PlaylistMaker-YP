@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -26,8 +27,10 @@ import java.io.File
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.PlaylistsFragment
 import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
+import java.io.FileNotFoundException
 
 
 class PlaylistDescriptionFragment : Fragment() {
@@ -166,13 +169,19 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     private fun loadPlaylistImage(playlistImagePath: String) {
-        val filePath = File(
-            requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-            resources.getString(R.string.my_album_name)
-        )
-        val file = File(filePath, playlistImagePath)
-        binding.ivPlaylistImage.loadPlaylist(file, 1600)
+       val file =  try{
+                val filePath = File(
+                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                    resources.getString(R.string.my_album_name)
+                )
+                File(filePath, playlistImagePath)
+           binding.ivPlaylistImage.loadPlaylist( File(filePath, playlistImagePath), 450)
+        }catch (e: Exception) {
+            Log.e(TAG, "file not found${e.stackTrace}")
+       }
+
     }
+
 
     private fun initBottomSheet() {
         bottomSheetBehavior =
@@ -274,6 +283,7 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     companion object{
+        private const val TAG = "PlaylistDescriptionFragment"
         private const val INTENT_TYPE_FOR_SENDING = "text/plain"
     }
 

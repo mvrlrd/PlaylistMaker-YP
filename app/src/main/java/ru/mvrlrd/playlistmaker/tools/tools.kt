@@ -1,11 +1,13 @@
 package ru.mvrlrd.playlistmaker.tools
 
 import android.widget.ImageView
+import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.mediateka.playlists.HandlePlaylistBaseViewModel
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,8 +22,11 @@ fun ImageView.loadPlaylist(anySource: Any, size: Int) {
     Glide
         .with(this)
         .load(anySource)
+        .error(R.drawable.album_placeholder_image)
+        .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.baseline_pause_24, context.theme))
+//        .placeholder(R.drawable.album_placeholder_image)
+        .fitCenter()
         .centerCrop()
-        .placeholder(R.drawable.album_placeholder_image)
         .apply(
             RequestOptions().override(
                 size,
@@ -29,6 +34,7 @@ fun ImageView.loadPlaylist(anySource: Any, size: Int) {
             )
         )
         .into(this)
+
 }
 
  fun generateImageNameForStorage(): String {
