@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
@@ -160,7 +161,7 @@ class PlaylistDescriptionFragment : Fragment() {
                 trackAdapter.submitList(it.songs)
                 playlistInfo = it
                 initPlaylistInfo()
-                loadPlaylistImage(it.playlist.playlistImagePath)
+                loadPlaylistImage(view = binding.ivPlaylistImage, playlistImagePath = it.playlist.playlistImagePath)
             }
         }
         viewModel.screenState.observe(this){
@@ -168,18 +169,17 @@ class PlaylistDescriptionFragment : Fragment() {
         }
     }
 
-    private fun loadPlaylistImage(playlistImagePath: String) {
+    private fun loadPlaylistImage(view: ImageView, playlistImagePath: String) {
        val file =  try{
                 val filePath = File(
                     requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                     resources.getString(R.string.my_album_name)
                 )
                 File(filePath, playlistImagePath)
-           binding.ivPlaylistImage.loadPlaylist( File(filePath, playlistImagePath), 450)
+           view.loadPlaylist( File(filePath, playlistImagePath), 450)
         }catch (e: Exception) {
             Log.e(TAG, "file not found${e.stackTrace}")
        }
-
     }
 
 
@@ -211,6 +211,31 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     private fun initAdditionMenuBottomSheet() {
+        initAdditionBottomSheetButtons()
+        additionMenuBottomSheetBehavior =
+            BottomSheetBehavior.from(binding.bottomSheetAdditionMenuContainer.additionMenuBottomSheet)
+                .apply {
+                    state = BottomSheetBehavior.STATE_HIDDEN
+                    addBottomSheetCallback(object :
+                        BottomSheetBehavior.BottomSheetCallback() {
+                        override fun onStateChanged(bottomSheet: View, newState: Int) {
+                            when (newState) {
+                                BottomSheetBehavior.STATE_HIDDEN -> {
+                                    binding.overlay.visibility = View.GONE
+                                }
+                                else -> {
+                                    binding.overlay.visibility = View.VISIBLE
+                                }
+                            }
+                        }
+                        override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                            binding.overlay.alpha = slideOffset + 1f
+                        }
+                    })
+                }
+    }
+
+    private fun initAdditionBottomSheetButtons() {
         binding.bottomSheetAdditionMenuContainer.tvSharePlaylist.setOnClickListener {
             sharePlaylist()
         }
@@ -218,36 +243,16 @@ class PlaylistDescriptionFragment : Fragment() {
             initDialogDeletePlaylist().show()
         }
         binding.bottomSheetAdditionMenuContainer.tvEditInfo.setOnClickListener {
-            Log.e("PlaylistDescriptionFragment", "${playlistInfo.playlist}")
-            findNavController().navigate(
-                PlaylistDescriptionFragmentDirections.actionPlaylistDescriptionFragmentToEditPlaylistFragment(playlistInfo.playlist)
-            )
-
+            navigateToEditPlaylist()
         }
+    }
 
-
-        additionMenuBottomSheetBehavior =
-            BottomSheetBehavior.from(binding.bottomSheetAdditionMenuContainer.additionMenuBottomSheet)
-                .apply {
-                    state = BottomSheetBehavior.STATE_HIDDEN
-                }
-        additionMenuBottomSheetBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_HIDDEN -> {
-                        binding.overlay.visibility = View.GONE
-                    }
-                    else -> {
-                        binding.overlay.visibility = View.VISIBLE
-                    }
-                }
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                binding.overlay.alpha = slideOffset+1f
-            }
-        })
+    private fun navigateToEditPlaylist() {
+        findNavController().navigate(
+            PlaylistDescriptionFragmentDirections.actionPlaylistDescriptionFragmentToEditPlaylistFragment(
+                playlistInfo.playlist
+            )
+        )
     }
 
     private fun initPlaylistInfo() {
@@ -259,6 +264,7 @@ class PlaylistDescriptionFragment : Fragment() {
                 playlistInfo.songs.size,
                 playlistInfo.songs.size
             )
+        loadPlaylistImage(binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage, playlistInfo.playlist.playlistImagePath)
     }
 
     override fun onDestroyView() {
