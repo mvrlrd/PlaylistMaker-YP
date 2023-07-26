@@ -138,11 +138,11 @@
 
     <include
         android:id="@+id/bottom_sheet_container_for_playlist"
-        layout="@layout/playlist_info_bottom_sheet" />
+        layout="@layout/bottom_sheet_playlist_info_tracklist" />
 
     <include
         android:id="@+id/bottom_sheet_addition_menu_container"
-        layout="@layout/addition_menu_bottom_sheet" />
+        layout="@layout/bottom_sheet_playlist_info_addition_menu" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

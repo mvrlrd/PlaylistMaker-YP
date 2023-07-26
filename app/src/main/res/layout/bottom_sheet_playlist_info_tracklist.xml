@@ -11,7 +11,7 @@
 
     <include
         android:id="@+id/include2"
-        layout="@layout/bottom_sheet_bar"
+        layout="@layout/bar_for_bottom_sheet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
