@@ -30,6 +30,4 @@
         app:layout_constraintTop_toBottomOf="@+id/include2"
         tools:listitem="@layout/track_layout" />
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

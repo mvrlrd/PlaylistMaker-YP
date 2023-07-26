@@ -127,10 +127,6 @@
             app:layout_constraintStart_toEndOf="@+id/iv_share_playlist"
             app:layout_constraintTop_toTopOf="@+id/iv_share_playlist" />
 
-
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View

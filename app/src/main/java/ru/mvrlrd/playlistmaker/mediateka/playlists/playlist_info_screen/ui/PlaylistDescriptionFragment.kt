@@ -50,7 +50,6 @@ class PlaylistDescriptionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlaylistDescriptionBinding.inflate(layoutInflater, container, false)
-//        loadPlaylistImage()
         observeViewModel()
 
         binding.btnBack.setOnClickListener {

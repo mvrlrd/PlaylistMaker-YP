@@ -53,7 +53,7 @@ class PlaylistInfoRepositoryImpl(
         var countOfDeletedTracks = 0
         songs.forEach {
             val size = database.getDao().getSongWithPlaylists(it.songId).playlists.size
-            if (size == 1) {
+            if (size == MIN_COUNT_OF_PLAYLISTS_WHERE_TRACK_CAN_BE) {
                 countOfDeletedTracks += database.getDao().deleteSong(it.songId)
             }
         }
@@ -71,6 +71,7 @@ class PlaylistInfoRepositoryImpl(
         Log.e(TAG, text)
     }
     companion object{
+        private const val MIN_COUNT_OF_PLAYLISTS_WHERE_TRACK_CAN_BE = 1
         private const val TAG = "PlaylistInfoRepositoryImpl"
     }
 }
