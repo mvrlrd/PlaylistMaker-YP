@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistEntity
@@ -44,13 +43,6 @@ interface PlaylistDao {
     @Query("SELECT * FROM song_table WHERE songId =:songId")
     suspend fun getSongWithPlaylists(songId: Long): SongWithPlaylists
 
-    @Transaction
-    @Query("SELECT * FROM song_table WHERE songId =:id")
-     fun getSongWithPlaylistsNEW(id: Long): SongWithPlaylists
-
-    @Transaction
-    @Query("SELECT * FROM song_table")
-    fun getSongsWithPlaylists(): List<SongWithPlaylists>
 
     @Query("SELECT * FROM playlist_song_cross_ref_table")
     suspend fun getAllCrossRef(): List<PlaylistSongCrossRef>
