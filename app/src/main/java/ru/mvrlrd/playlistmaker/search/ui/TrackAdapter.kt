@@ -52,7 +52,7 @@ class TrackAdapter :
             binding.trackTime.text = trackForAdapter.trackTime?.let { formatTime(it.toInt()) }
             binding.albumImage.loadPlaylist(
                 trackForAdapter.image,
-                size = 450,
+                size =  binding.albumImage.resources.getInteger(R.integer.picture_small_size),
                 radius = binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small)
             )
 

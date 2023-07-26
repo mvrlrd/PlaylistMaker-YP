@@ -31,7 +31,11 @@ class PlaylistAdapter :
         holder.itemView.setOnClickListener {
             onClickListener?.invoke(item)
         }
-        holder.ivPlaylist.loadPlaylistImageNEW(item.playlistImagePath, 1600, holder.ivPlaylist.resources.getDimensionPixelSize(R.dimen.radius_medium))
+        holder.ivPlaylist.loadPlaylistImageNEW(
+            item.playlistImagePath,
+            holder.ivPlaylist.resources.getInteger(R.integer.picture_big_size),
+            holder.ivPlaylist.resources.getDimensionPixelSize(R.dimen.radius_medium)
+        )
         holder.bind(item)
     }
 

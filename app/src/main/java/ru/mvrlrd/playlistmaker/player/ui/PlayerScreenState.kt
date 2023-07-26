@@ -38,7 +38,7 @@ sealed class PlayerScreenState {
             handleLikeButton(binding, track)
             binding.ivAlbumImage.loadPlaylist(
                 track.getCoverArtwork(),
-                size = 1600,
+                size = binding.ivAlbumImage.resources.getInteger(R.integer.picture_big_size),
                 radius = binding.ivAlbumImage.resources.getDimensionPixelSize(R.dimen.radius_medium)
             )
         }

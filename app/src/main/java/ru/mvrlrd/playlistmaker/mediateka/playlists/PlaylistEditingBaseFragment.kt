@@ -188,14 +188,18 @@ import java.io.FileOutputStream
                  if (uri != null) {
                      Log.e(TAG, " media selected ${uri.path}")
                      _uri = uri
-                     binding.ivNewPlaylistImage.loadPlaylistImageNEW(uri, size = 1600, radius = resources.getDimensionPixelSize(R.dimen.radius_medium))
+                     binding.ivNewPlaylistImage.loadPlaylistImageNEW(
+                         uri,
+                         size = resources.getInteger(R.integer.picture_big_size),
+                         radius = resources.getDimensionPixelSize(R.dimen.radius_medium)
+                     )
                  } else {
                      Log.d(TAG, "No media selected")
                  }
              }
      }
 
-     private fun log(text:String){
+     private fun log(text: String) {
          Log.d(TAG,text)
      }
 

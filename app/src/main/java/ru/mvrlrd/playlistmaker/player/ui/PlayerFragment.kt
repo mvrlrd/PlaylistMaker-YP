@@ -217,7 +217,4 @@ class PlayerFragment : Fragment() {
             }
         })
     }
-    companion object{
-        const val PLAYLIST_IMAGE_SIZE = 450
-    }
 }

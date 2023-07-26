@@ -11,6 +11,10 @@
     <dimen name="radius_big">10dp</dimen>
     <dimen name="radius_xxl">16dp</dimen>
 
+
+    <integer name="picture_big_size">1600</integer>
+    <integer name="picture_small_size">450</integer>
+
     <dimen name="playlist_image_size">160dp</dimen>
 
     <dimen name="new_playlist_placeholder_image_size">100dp</dimen>

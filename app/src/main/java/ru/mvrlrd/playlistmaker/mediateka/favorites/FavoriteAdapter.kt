@@ -43,16 +43,11 @@ class FavoriteAdapter :
             binding.tvTrackName.text = trackForAdapter.trackName
             binding.artistName.text = trackForAdapter.artistName
             binding.trackTime.text = trackForAdapter.trackTime?.let { formatTime(it.toInt()) }
-             binding.albumImage.loadPlaylist(trackForAdapter.image, size= 450, radius = binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small))
-//            Glide
-//                .with(itemView)
-//                .load(trackForAdapter.image)
-//                .placeholder(R.drawable.album_placeholder_image)
-//                .transform(
-//                    CenterCrop(),
-//                    RoundedCorners(binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small))
-//                )
-//                .into(binding.albumImage)
+            binding.albumImage.loadPlaylist(
+                trackForAdapter.image,
+                size = binding.albumImage.resources.getInteger(R.integer.picture_small_size),
+                radius = binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small)
+            )
         }
     }
 }

@@ -36,8 +36,8 @@ class PlaylistAdapterForPlayer :
         }
         holder.ivPlaylist.loadPlaylistImageNEW(
             item.playlistImagePath,
-            size = PlayerFragment.PLAYLIST_IMAGE_SIZE,
-            radius = 10
+            size = holder.ivPlaylist.resources.getInteger(R.integer.picture_small_size),
+            radius = holder.ivPlaylist.resources.getDimensionPixelSize(R.dimen.radius_small)
         )
         holder.bind(item)
     }

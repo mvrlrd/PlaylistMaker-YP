@@ -146,7 +146,10 @@ class PlaylistDescriptionFragment : Fragment() {
                 viewModel.changeState(it)
                 playlistInfo = it
                 initPlaylistInfo()
-                binding.ivPlaylistImage.loadPlaylistImageNEW(it.playlist.playlistImagePath)
+                binding.ivPlaylistImage.loadPlaylistImageNEW(
+                    it.playlist.playlistImagePath,
+                    size = resources.getInteger(R.integer.picture_big_size)
+                )
                 refreshTrackListByDescDate()
             }
         }
@@ -246,7 +249,11 @@ class PlaylistDescriptionFragment : Fragment() {
                 playlistInfo.songs.size,
                 playlistInfo.songs.size
             )
-        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadPlaylistImageNEW(playlistInfo.playlist.playlistImagePath, size = 450, radius = resources.getDimensionPixelSize(R.dimen.radius_small))
+        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadPlaylistImageNEW(
+            playlistInfo.playlist.playlistImagePath,
+            size = resources.getInteger(R.integer.picture_small_size),
+            radius = resources.getDimensionPixelSize(R.dimen.radius_small)
+        )
     }
 
     override fun onDestroyView() {
