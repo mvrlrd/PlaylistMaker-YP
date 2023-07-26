@@ -15,7 +15,7 @@ fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>): Int {
     val duration = tracks.sumOf {
         it.trackTime!!.toLong()
     }
-    return SimpleDateFormat("mm", Locale.getDefault()).format(duration).toInt()
+    return SimpleDateFormat(TRACK_DURATION_FORMAT, Locale.getDefault()).format(duration).toInt()
 }
 
 private fun ImageView.loadPlaylist(anySource: Any?, size: Int) {
@@ -65,5 +65,5 @@ fun ImageView.loadPlaylistImageNEW(playlistImagePath: String, size: Int = 450) {
         .plus(IMAGE_TYPE)
 }
 
-
+private const val TRACK_DURATION_FORMAT = "mm"
 const val IMAGE_TYPE = ".jpg"
