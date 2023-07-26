@@ -31,6 +31,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.P
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.PlaylistsFragment
 import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
+import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
 import java.io.FileNotFoundException
 
 
@@ -161,27 +162,13 @@ class PlaylistDescriptionFragment : Fragment() {
                 trackAdapter.submitList(it.songs)
                 playlistInfo = it
                 initPlaylistInfo()
-                loadPlaylistImage(view = binding.ivPlaylistImage, playlistImagePath = it.playlist.playlistImagePath)
+                binding.ivPlaylistImage.loadPlaylistImageNEW(it.playlist.playlistImagePath)
             }
         }
         viewModel.screenState.observe(this){
             it.render(binding)
         }
     }
-
-    private fun loadPlaylistImage(view: ImageView, playlistImagePath: String) {
-       val file =  try{
-                val filePath = File(
-                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                    resources.getString(R.string.my_album_name)
-                )
-                File(filePath, playlistImagePath)
-           view.loadPlaylist( File(filePath, playlistImagePath), 450)
-        }catch (e: Exception) {
-            Log.e(TAG, "file not found${e.stackTrace}")
-       }
-    }
-
 
     private fun initBottomSheet() {
         bottomSheetBehavior =
@@ -264,7 +251,7 @@ class PlaylistDescriptionFragment : Fragment() {
                 playlistInfo.songs.size,
                 playlistInfo.songs.size
             )
-        loadPlaylistImage(binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage, playlistInfo.playlist.playlistImagePath)
+        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadPlaylistImageNEW(playlistInfo.playlist.playlistImagePath)
     }
 
     override fun onDestroyView() {
