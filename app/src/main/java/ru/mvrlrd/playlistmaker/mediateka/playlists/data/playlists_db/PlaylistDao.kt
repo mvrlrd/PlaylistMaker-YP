@@ -27,6 +27,9 @@ interface PlaylistDao {
     suspend fun getPlaylist(id: Long): PlaylistEntity
     @Query("SELECT * FROM song_table")
     fun getSongs(): Flow<List<Song>>
+
+    @Query("SELECT * FROM song_table WHERE songId =:id")
+    suspend fun getSong(id: Long): Song
     @Query("SELECT * FROM playlist_table")
     fun getAllPlaylists(): Flow<List<PlaylistEntity>>
     @Transaction
@@ -72,10 +75,13 @@ interface PlaylistDao {
 
 
 
+    @Transaction
+    @Query("SELECT * FROM playlist_song_cross_ref_table WHERE playlistId =:id ORDER by date DESC")
+    suspend fun getCrossRefByDesc(id: Long): List<PlaylistSongCrossRef>
 
-
-
-
+    @Transaction
+    @Query("SELECT * FROM song_table WHERE songId IN (:ids)")
+    suspend fun getSongsByDesc(ids: List<Long>): List<Song>
 
 
 

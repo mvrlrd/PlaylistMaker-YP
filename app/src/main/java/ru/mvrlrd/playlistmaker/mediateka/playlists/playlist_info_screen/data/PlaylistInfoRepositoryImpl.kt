@@ -12,6 +12,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfoRepository
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 
 class PlaylistInfoRepositoryImpl(
@@ -24,6 +25,16 @@ class PlaylistInfoRepositoryImpl(
                 converter.mapPlaylistWithSongsToPlaylistInfo(it)
             }
     }
+
+    override suspend fun getTrackListByDescDate(playlistId: Long): List<TrackForAdapter>{
+        val  crossRef = database.getDao().getCrossRefByDesc(playlistId)
+        val songsByDescDate = mutableListOf<Song>()
+        crossRef.forEach {
+            songsByDescDate.add(database.getDao().getSong(it.songId))
+        }
+        return  converter.mapSongsToTracks(songsByDescDate)
+    }
+
 
    override suspend fun removeTrackFromPlaylist(trackId: Long, playlistId: Long): Flow<Int> {
        val flowable = database.getDao().deleteTrack(trackId, playlistId)

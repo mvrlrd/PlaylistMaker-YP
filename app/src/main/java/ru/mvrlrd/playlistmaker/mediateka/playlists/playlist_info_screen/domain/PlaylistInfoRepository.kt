@@ -2,6 +2,7 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain
 
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 interface PlaylistInfoRepository {
     fun getPlaylistWithSongs(id: Long): Flow<PlaylistInfo>
@@ -11,5 +12,7 @@ interface PlaylistInfoRepository {
     fun getAllSongsForDebug(): Flow<List<Song>>
 
     suspend fun deletePlaylist(playlistId: Long)
+   suspend fun getTrackListByDescDate(playlistId: Long): List<TrackForAdapter>
+
 
 }

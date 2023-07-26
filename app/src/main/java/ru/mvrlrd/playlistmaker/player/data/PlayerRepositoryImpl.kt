@@ -62,7 +62,7 @@ class PlayerRepositoryImpl(
         playlistId: Long
     ): Flow<Pair<String, Boolean>> {
         playlistDb.getDao().insertTrack(mapTrackForAdapterToSong(track))
-        val playerSongCrossRef = PlaylistSongCrossRef(songId = track.trackId, playlistId = playlistId)
+        val playerSongCrossRef = PlaylistSongCrossRef(songId = track.trackId, playlistId = playlistId, date = Calendar.getInstance().timeInMillis)
         val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
         return flow {
             emit(

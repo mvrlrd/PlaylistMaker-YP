@@ -73,9 +73,7 @@ class PlaylistDescriptionFragment : Fragment() {
             }
         }
         initAdditionMenuBottomSheet()
-
         initRecycler()
-
         initBottomSheet()
         return binding.root
     }
@@ -150,14 +148,24 @@ class PlaylistDescriptionFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch{
             viewModel.playlistInfo.collect(){
                 viewModel.changeState(it)
-                trackAdapter.submitList(it.songs)
                 playlistInfo = it
                 initPlaylistInfo()
                 binding.ivPlaylistImage.loadPlaylistImageNEW(it.playlist.playlistImagePath)
+                refreshTrackListByDescDate()
             }
         }
         viewModel.screenState.observe(this){
             it.render(binding)
+        }
+        
+
+    }
+
+    private fun refreshTrackListByDescDate() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            playlistInfo.playlist.playlistId?.let { viewModel.getTracksByDescDate(it) }?.collect() {
+                trackAdapter.submitList(it)
+            }
         }
     }
 
