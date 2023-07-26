@@ -64,6 +64,9 @@
     <string name="yes_answer">ДА</string>
     <string name="quitting_question">Завершить создание плейлиста?</string>
 
+    <string name="edit_playlist_title">Редактировать</string>
+    <string name="edit_playlist_button">Сохранить</string>
+
     <string name="delete_playlist_dialog_title">Удалить плейлист</string>
     <string name="delete_playlist_dialog_message">Вы уверены, что хотите удалить этот плейлист?</string>
     <string name="delete_playlist_dialog_positive">Удалить</string>
