@@ -31,6 +31,8 @@
     <string name="no_playlists">Вы не создали\nни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
 
+    <string name="empty_playlist">плейлист пуст</string>
+
 
     <string name="bad_request">"страница не найдена"</string>
     <string name="server_error">"Ошибка сервера"</string>

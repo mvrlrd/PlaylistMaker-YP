@@ -162,8 +162,14 @@ class PlaylistDescriptionFragment : Fragment() {
 
     private fun refreshTrackListByDescDate() {
         viewLifecycleOwner.lifecycleScope.launch {
-            playlistInfo.playlist.playlistId?.let { viewModel.getTracksByDescDate(it) }?.collect() {
-                trackAdapter.submitList(it)
+            playlistInfo.playlist.playlistId?.let { viewModel.getTracksByDescDate(it) }?.collect() {tracklist->
+                if (tracklist.isEmpty()){
+                    binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility = View.VISIBLE
+                    binding.bottomSheetContainerForPlaylist.emptyTrackList.placeholderMessage.text = "список треков пуст"
+                }else{
+                    binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility = View.GONE
+                }
+                trackAdapter.submitList(tracklist)
             }
         }
     }
