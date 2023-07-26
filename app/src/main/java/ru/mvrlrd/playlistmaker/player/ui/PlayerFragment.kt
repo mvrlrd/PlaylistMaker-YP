@@ -14,19 +14,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
-import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
-import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import java.io.File
 
 
@@ -190,18 +187,6 @@ class PlayerFragment : Fragment() {
                     trackId = args.track,
                     playlistId = it.playlistId!!
                 )
-            }
-        }
-        playlistAdapter.showImage = { view, playlistImagePath ->
-            try {
-                val filePath = File(
-                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                    "myalbum"
-                )
-                val file = File(filePath, playlistImagePath)
-                view.loadPlaylist(anySource = file, size = PLAYLIST_IMAGE_SIZE)
-            } catch (e: Exception) {
-                Log.e("PlayerFragment", e.message.toString())
             }
         }
         binding.bottomSheetContainer.rvPlaylists.apply {

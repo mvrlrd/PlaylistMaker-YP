@@ -9,7 +9,7 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistLayoutBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.PlaylistItemDiffCallback
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.loadPlaylist
+import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
 
 
 class PlaylistAdapterForPlayer :
@@ -34,14 +34,10 @@ class PlaylistAdapterForPlayer :
         holder.itemView.setOnClickListener {
             onClickListener?.invoke(item)
         }
-        if (item.playlistImagePath.isNotEmpty()) {
-            showImage?.let { it(holder.ivPlaylist, item.playlistImagePath) }
-        } else {
-            holder.ivPlaylist.loadPlaylist(
-                anySource = item.playlistImagePath,
-                size = PlayerFragment.PLAYLIST_IMAGE_SIZE
-            )
-        }
+        holder.ivPlaylist.loadPlaylistImageNEW(
+            item.playlistImagePath,
+            size = PlayerFragment.PLAYLIST_IMAGE_SIZE
+        )
         holder.bind(item)
     }
 

@@ -6,26 +6,30 @@ import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.mediateka.playlists.HandlePlaylistBaseViewModel
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import java.io.File
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>):Int{
+fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>): Int {
     val duration = tracks.sumOf {
         it.trackTime!!.toLong()
     }
     return SimpleDateFormat("mm", Locale.getDefault()).format(duration).toInt()
 }
 
-fun ImageView.loadPlaylist(anySource: Any?, size: Int) {
+private fun ImageView.loadPlaylist(anySource: Any?, size: Int) {
     Glide
         .with(this)
         .load(anySource)
         .error(R.drawable.album_placeholder_image)
-        .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.album_placeholder_image, context.theme))
+        .placeholder(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.album_placeholder_image,
+                context.theme
+            )
+        )
         .fitCenter()
         .centerCrop()
         .apply(
@@ -37,18 +41,18 @@ fun ImageView.loadPlaylist(anySource: Any?, size: Int) {
         .into(this)
 }
 
-fun ImageView.loadPlaylistImageNEW(playlistImagePath: String) {
-    val file =  try{
+fun ImageView.loadPlaylistImageNEW(playlistImagePath: String, size: Int = 450) {
+    val file = try {
         val filePath = File(
             context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             resources.getString(R.string.my_album_name)
         )
         File(filePath, playlistImagePath)
-    }catch (e: Exception) {
+    } catch (e: Exception) {
         e.printStackTrace()
         null
     }
-    loadPlaylist( file, 450)
+    loadPlaylist(file, size)
 }
 
 

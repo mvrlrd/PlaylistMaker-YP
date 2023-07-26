@@ -17,7 +17,7 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.loadPlaylist
+import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
 import java.io.File
 
 class PlaylistsFragment : Fragment() {
@@ -70,18 +70,6 @@ class PlaylistsFragment : Fragment() {
     private fun initRecycler() {
         playlistAdapter.onClickListener = {playlist ->
             navigateToPlaylistDescriptionFragment(playlist)
-        }
-        playlistAdapter.showImage = { view, playlistImagePath ->
-            try {
-                val filePath = File(
-                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                    resources.getString(R.string.my_album_name)
-                )
-                val file = File(filePath, playlistImagePath)
-                view.loadPlaylist(anySource = file, size = PLAYLIST_IMAGE_SIZE)
-            } catch (e: Exception) {
-                log(e.message.toString())
-            }
         }
         binding.rView.apply {
             adapter = playlistAdapter
