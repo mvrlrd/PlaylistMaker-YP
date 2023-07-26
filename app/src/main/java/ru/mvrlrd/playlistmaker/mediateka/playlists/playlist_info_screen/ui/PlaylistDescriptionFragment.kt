@@ -165,7 +165,7 @@ class PlaylistDescriptionFragment : Fragment() {
         bottomSheetBehavior =
             BottomSheetBehavior.from(binding.bottomSheetContainerForPlaylist.bottomSheetForPlaylist).apply {
                 state = BottomSheetBehavior.STATE_COLLAPSED
-                peekHeight = (800).toInt()
+                peekHeight = RANDOM_KOSTYL_BOTTOM_SHEET_HEIGHT
             }
 
         bottomSheetBehavior.addBottomSheetCallback(object :
@@ -176,7 +176,7 @@ class PlaylistDescriptionFragment : Fragment() {
                         binding.overlay.visibility = View.GONE
                     }
                     else -> {
-                        binding.overlay.alpha = 0.01f
+                        binding.overlay.alpha = ALPHA_OVERLAY
                         binding.overlay.visibility = View.VISIBLE
                     }
                 }
@@ -270,6 +270,8 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     companion object{
+        private const val RANDOM_KOSTYL_BOTTOM_SHEET_HEIGHT = 800
+        private const val ALPHA_OVERLAY = 0.01f
         private const val TAG = "PlaylistDescriptionFragment"
         private const val INTENT_TYPE_FOR_SENDING = "text/plain"
     }
