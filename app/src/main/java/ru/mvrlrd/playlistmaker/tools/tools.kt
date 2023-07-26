@@ -23,8 +23,7 @@ fun ImageView.loadPlaylist(anySource: Any, size: Int) {
         .with(this)
         .load(anySource)
         .error(R.drawable.album_placeholder_image)
-        .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.baseline_pause_24, context.theme))
-//        .placeholder(R.drawable.album_placeholder_image)
+        .placeholder(ResourcesCompat.getDrawable(resources, R.drawable.album_placeholder_image, context.theme))
         .fitCenter()
         .centerCrop()
         .apply(

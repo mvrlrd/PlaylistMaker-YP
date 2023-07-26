@@ -186,23 +186,26 @@ class PlaylistDescriptionFragment : Fragment() {
     private fun initBottomSheet() {
         bottomSheetBehavior =
             BottomSheetBehavior.from(binding.bottomSheetContainerForPlaylist.bottomSheetForPlaylist).apply {
-                state = BottomSheetBehavior.STATE_HALF_EXPANDED
+                state = BottomSheetBehavior.STATE_COLLAPSED
+                peekHeight = (800).toInt()
             }
+
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_HIDDEN -> {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
                         binding.overlay.visibility = View.GONE
                     }
                     else -> {
+                        binding.overlay.alpha = 0.01f
                         binding.overlay.visibility = View.VISIBLE
                     }
                 }
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                binding.overlay.alpha = slideOffset+1f
+                binding.overlay.alpha = slideOffset
             }
         })
     }
