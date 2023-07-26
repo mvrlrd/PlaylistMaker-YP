@@ -144,9 +144,9 @@ class PlaylistDescriptionFragment : Fragment() {
     private fun initDialog(trackId: Long): MaterialAlertDialogBuilder {
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
             setTitle(resources.getText(R.string.deleting_track_question))
-            setNegativeButton(resources.getText(R.string.no_answer)) { dialog, which ->
+            setNegativeButton(resources.getText(R.string.deleting_track_negative_answer)) { dialog, which ->
             }
-            setPositiveButton(resources.getText(R.string.yes_answer)) { dialog, which ->
+            setPositiveButton(resources.getText(R.string.deleting_track_positive_answer)) { dialog, which ->
                 viewModel.deleteTrackFromPlaylist(trackId, args.playlist.playlistId!!)
             }
         }

@@ -69,7 +69,11 @@
     <string name="delete_playlist_dialog_positive">Удалить</string>
 
 
-    <string name="deleting_track_question">Хотите удалить трек?</string>
+    <string name="deleting_track_question">Вы уверены, что хотите удалить трек из плейлиста?</string>
+    <string name="deleting_track_positive_answer">Удалить</string>
+    <string name="deleting_track_negative_answer">Отмена</string>
+
+
     <string name="there_is_nothing_to_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
 
 

@@ -35,6 +35,9 @@
     <string name="no_answer">NO</string>
     <string name="yes_answer">YES</string>
 
+    <string name="deleting_track_positive_answer">Delete</string>
+    <string name="deleting_track_negative_answer">Cancel</string>
+
     <string name="deleting_track_question">Do you want to delete track?</string>
 
 <!--    search-->
