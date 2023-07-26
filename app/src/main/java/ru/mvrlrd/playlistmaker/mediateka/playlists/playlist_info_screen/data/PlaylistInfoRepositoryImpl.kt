@@ -25,14 +25,15 @@ class PlaylistInfoRepositoryImpl(
             }
     }
 
-   override suspend fun removeTrackFromPlaylist(trackId: Long, playlistId: Long): Flow<Int>{
-        val flowable =  database.getDao().deleteTrack(trackId, playlistId)
-        val songWithPlaylists = database.getDao().getSongWithPlaylists(trackId)
-        if (songWithPlaylists.playlists.isEmpty()){
-            database.getDao().deleteSong(trackId)
-        }
-        return flow { emit(flowable)}
-    }
+   override suspend fun removeTrackFromPlaylist(trackId: Long, playlistId: Long): Flow<Int> {
+       val flowable = database.getDao().deleteTrack(trackId, playlistId)
+       val songWithPlaylists = database.getDao().getSongWithPlaylists(trackId)
+       database.getDao().deleteCrossRef(playlistId = playlistId, songId = trackId)
+       if (songWithPlaylists.playlists.isEmpty()) {
+           database.getDao().deleteSong(trackId)
+       }
+       return flow { emit(flowable) }
+   }
 
     override fun getAllSongsForDebug(): Flow<List<Song>> {
         return database.getDao().getSongs()
