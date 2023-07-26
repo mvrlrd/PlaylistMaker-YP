@@ -1,9 +1,12 @@
 package ru.mvrlrd.playlistmaker.tools
 
+import android.net.Uri
 import android.os.Environment
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
@@ -18,7 +21,8 @@ fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>): Int {
     return SimpleDateFormat(TRACK_DURATION_FORMAT, Locale.getDefault()).format(duration).toInt()
 }
 
-private fun ImageView.loadPlaylist(anySource: Any?, size: Int) {
+ fun ImageView.loadPlaylist(anySource: Any?, size: Int, radius: Int) {
+     val glide =
     Glide
         .with(this)
         .load(anySource)
@@ -30,18 +34,25 @@ private fun ImageView.loadPlaylist(anySource: Any?, size: Int) {
                 context.theme
             )
         )
-        .fitCenter()
-        .centerCrop()
         .apply(
             RequestOptions().override(
                 size,
                 size
             )
         )
-        .into(this)
+            if (radius != 0){
+                glide.transform(
+                    CenterCrop(),
+                    RoundedCorners(radius)
+                )
+                    .into(this)
+            }else{
+                glide.into(this)
+            }
+
 }
 
-fun ImageView.loadPlaylistImageNEW(playlistImagePath: String, size: Int = 450) {
+fun ImageView.loadPlaylistImageNEW(playlistImagePath: String?, size: Int = 450, radius: Int = 0) {
     val file = try {
         val filePath = File(
             context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
@@ -52,7 +63,11 @@ fun ImageView.loadPlaylistImageNEW(playlistImagePath: String, size: Int = 450) {
         e.printStackTrace()
         null
     }
-    loadPlaylist(file, size)
+    loadPlaylist(file, size, radius)
+}
+
+fun ImageView.loadPlaylistImageNEW(uri: Uri?, size: Int = 450, radius: Int = 0) {
+    loadPlaylist(uri, size, radius)
 }
 
  fun generateImageNameForStorage(): String {

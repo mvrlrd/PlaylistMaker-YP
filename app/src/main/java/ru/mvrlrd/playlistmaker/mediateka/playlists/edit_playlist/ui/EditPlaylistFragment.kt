@@ -19,7 +19,7 @@ class EditPlaylistFragment : PlaylistEditingBaseFragment() {
     }
 
     private fun setTitles() {
-        binding.ivNewPlaylistImage.loadPlaylistImageNEW(args.playlist.playlistImagePath)
+        binding.ivNewPlaylistImage.loadPlaylistImageNEW(args.playlist.playlistImagePath, size = 1600, radius = resources.getDimensionPixelSize(R.dimen.radius_big))
         binding.ietPlaylistName.setText(args.playlist.name)
         binding.ietDesctiption.setText(args.playlist.description)
         binding.btnCreatePlaylist.text = resources.getText(R.string.edit_playlist_button)

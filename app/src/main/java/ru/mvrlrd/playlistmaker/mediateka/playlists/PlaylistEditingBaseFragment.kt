@@ -25,6 +25,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
 import java.io.File
 import java.io.FileOutputStream
 
@@ -101,9 +102,6 @@ import java.io.FileOutputStream
         }
     }
 
-    //TODO при перевороте экрана диалог не переживет этого, можно сделать fragment : DialogFragment
-
-
     private fun myHandleOnBackPressed() {
         if (viewModel.ifDataUnsaved(
                 binding.ietPlaylistName.text.toString(),
@@ -145,7 +143,6 @@ import java.io.FileOutputStream
                 saveImageToPrivateStorage(_uri!!, playlist.playlistImagePath)
                 Log.e(TAG,"image file saved to storage")
             }
-
             viewModel.handlePlaylist(playlist)
             val text = this.resources.getString(R.string.playlist_created, playlist.name)
             Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
@@ -189,9 +186,9 @@ import java.io.FileOutputStream
          mediaPicker =
              registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                  if (uri != null) {
-                     Log.d(TAG, " media selected")
+                     Log.e(TAG, " media selected ${uri.path}")
                      _uri = uri
-                     binding.ivNewPlaylistImage.setImageURI(uri)
+                     binding.ivNewPlaylistImage.loadPlaylistImageNEW(uri, size = 1600, radius = resources.getDimensionPixelSize(R.dimen.radius_medium))
                  } else {
                      Log.d(TAG, "No media selected")
                  }

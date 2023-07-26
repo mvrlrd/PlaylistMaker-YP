@@ -12,6 +12,8 @@ import ru.mvrlrd.playlistmaker.databinding.TrackLayoutBinding
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.ui.TrackItemDiffCallback
+import ru.mvrlrd.playlistmaker.tools.loadPlaylist
+import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
 
 class FavoriteAdapter :
     ListAdapter<TrackForAdapter, FavoriteAdapter.TrackViewHolder>(TrackItemDiffCallback()) {
@@ -41,15 +43,16 @@ class FavoriteAdapter :
             binding.tvTrackName.text = trackForAdapter.trackName
             binding.artistName.text = trackForAdapter.artistName
             binding.trackTime.text = trackForAdapter.trackTime?.let { formatTime(it.toInt()) }
-            Glide
-                .with(itemView)
-                .load(trackForAdapter.image)
-                .placeholder(R.drawable.album_placeholder_image)
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small))
-                )
-                .into(binding.albumImage)
+             binding.albumImage.loadPlaylist(trackForAdapter.image, size= 450, radius = binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small))
+//            Glide
+//                .with(itemView)
+//                .load(trackForAdapter.image)
+//                .placeholder(R.drawable.album_placeholder_image)
+//                .transform(
+//                    CenterCrop(),
+//                    RoundedCorners(binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small))
+//                )
+//                .into(binding.albumImage)
         }
     }
 }

@@ -22,6 +22,7 @@ import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistDescriptionBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
@@ -63,15 +64,6 @@ class PlaylistDescriptionFragment : Fragment() {
             additionMenuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.allSongsDebugging.collect(){
-                println()
-                it.forEach {
-                    println(it)
-                }
-                println()
-            }
-        }
         initAdditionMenuBottomSheet()
         initRecycler()
         initBottomSheet()
@@ -104,17 +96,21 @@ class PlaylistDescriptionFragment : Fragment() {
         trackAdapter.apply {
             onClickListener = { track ->
                 if (Debouncer().playClickDebounce(scope = lifecycleScope)) {
-                    findNavController().navigate(
-                        PlaylistDescriptionFragmentDirections.actionPlaylistDescriptionFragmentToPlayerFragment(
-                            track
-                        )
-                    )
+                    navigateToPlayer(track)
                 }
             }
             onLongClickListener = { track ->
                 initDialog(track.trackId).show()
             }
         }
+    }
+
+    private fun navigateToPlayer(track: TrackForAdapter) {
+        findNavController().navigate(
+            PlaylistDescriptionFragmentDirections.actionPlaylistDescriptionFragmentToPlayerFragment(
+                track
+            )
+        )
     }
 
     private fun initDialogDeletePlaylist(): MaterialAlertDialogBuilder {
@@ -250,7 +246,7 @@ class PlaylistDescriptionFragment : Fragment() {
                 playlistInfo.songs.size,
                 playlistInfo.songs.size
             )
-        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadPlaylistImageNEW(playlistInfo.playlist.playlistImagePath)
+        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadPlaylistImageNEW(playlistInfo.playlist.playlistImagePath, size = 450, radius = resources.getDimensionPixelSize(R.dimen.radius_small))
     }
 
     override fun onDestroyView() {

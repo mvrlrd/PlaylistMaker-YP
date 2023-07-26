@@ -42,7 +42,6 @@ class PlayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerBinding.inflate(layoutInflater, container, false)
-        Log.d("PlayerFragment", "${args.track}")
         initBottomSheet()
         observeViewModel()
         handleBackButton()
