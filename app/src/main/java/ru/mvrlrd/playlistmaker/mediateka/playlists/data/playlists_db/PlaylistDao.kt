@@ -18,39 +18,72 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.S
 interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlaylist(playlistEntity: PlaylistEntity)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertTrack(song: Song): Long
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertPlaylistSongCrossRef(playlistSongCrossRef: PlaylistSongCrossRef): Long
 
-    @Update
-    suspend fun updatePlaylist(playlistEntity: PlaylistEntity)
 
     @Query("SELECT * FROM playlist_table WHERE playlistId =:id")
     suspend fun getPlaylist(id: Long): PlaylistEntity
-
     @Query("SELECT * FROM song_table")
-     fun getSongs(): Flow<List<Song>>
-
-    @Query("DELETE FROM song_table WHERE songId =:songId")
-    suspend fun deleteSong(songId: Long): Int
+    fun getSongs(): Flow<List<Song>>
     @Query("SELECT * FROM playlist_table")
     fun getAllPlaylists(): Flow<List<PlaylistEntity>>
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertTrack(song: Song): Long
-
     @Transaction
     @Query("SELECT * FROM playlist_table")
     fun getPlaylistsWithSongs(): Flow<List<PlaylistWithSongs>>
-
     @Transaction
     @Query("SELECT * FROM playlist_table WHERE playlistId =:id")
     fun getPlaylistWithSongs(id: Long): Flow<PlaylistWithSongs>
 
     @Transaction
+    @Query("SELECT * FROM playlist_table WHERE playlistId =:id")
+   suspend fun getPlaylistWithSongsSuspend(id: Long): PlaylistWithSongs
+    @Transaction
     @Query("SELECT * FROM song_table WHERE songId =:songId")
     suspend fun getSongWithPlaylists(songId: Long): SongWithPlaylists
 
+    @Transaction
+    @Query("SELECT * FROM song_table WHERE songId =:id")
+     fun getSongWithPlaylistsNEW(id: Long): SongWithPlaylists
+
+    @Transaction
+    @Query("SELECT * FROM song_table")
+    fun getSongsWithPlaylists(): List<SongWithPlaylists>
+
+    @Query("SELECT * FROM playlist_song_cross_ref_table")
+    suspend fun getAllCrossRef(): List<PlaylistSongCrossRef>
+
+    @Update
+    suspend fun updatePlaylist(playlistEntity: PlaylistEntity)
+
+
+    @Query("DELETE FROM song_table WHERE songId =:songId")
+    suspend fun deleteSong(songId: Long): Int
+    @Query("DELETE FROM playlist_table WHERE playlistId =:playlistId")
+    suspend fun deletePlaylist(playlistId: Long): Int
     @Query("DELETE FROM playlist_song_cross_ref_table WHERE playlistId =:playlistId AND songId =:trackId")
     suspend fun deleteTrack(trackId: Long, playlistId: Long): Int
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertPlaylistSongCrossRef(playlistSongCrossRef: PlaylistSongCrossRef): Long
+    @Query("DELETE FROM playlist_song_cross_ref_table WHERE playlistId =:playlistId")
+    suspend fun deleteCrossRef(playlistId: Long): Int
+
+    @Query("DELETE FROM song_table")
+    suspend fun clearSongs(): Int
+    @Query("DELETE FROM playlist_song_cross_ref_table")
+    suspend fun clearCrossReffs(): Int
+    @Query("DELETE FROM playlist_table")
+    suspend fun clearPlaylists(): Int
+
+
+
+
+
+
+
+
+
+
+
 
 }
