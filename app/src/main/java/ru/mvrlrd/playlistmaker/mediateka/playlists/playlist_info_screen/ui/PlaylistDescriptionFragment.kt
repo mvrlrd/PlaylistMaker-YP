@@ -156,8 +156,6 @@ class PlaylistDescriptionFragment : Fragment() {
         viewModel.screenState.observe(this){
             it.render(binding)
         }
-        
-
     }
 
     private fun refreshTrackListByDescDate() {
@@ -165,7 +163,7 @@ class PlaylistDescriptionFragment : Fragment() {
             playlistInfo.playlist.playlistId?.let { viewModel.getTracksByDescDate(it) }?.collect() {tracklist->
                 if (tracklist.isEmpty()){
                     binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility = View.VISIBLE
-                    binding.bottomSheetContainerForPlaylist.emptyTrackList.placeholderMessage.text = "список треков пуст"
+                    binding.bottomSheetContainerForPlaylist.emptyTrackList.placeholderMessage.text = resources.getString(R.string.empty_playlist)
                 }else{
                     binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility = View.GONE
                 }
