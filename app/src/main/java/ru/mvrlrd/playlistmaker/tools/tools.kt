@@ -22,35 +22,36 @@ fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>): Int {
 }
 
  fun ImageView.loadPlaylist(anySource: Any?, size: Int, radius: Int) {
-     val glide =
-    Glide
-        .with(this)
-        .load(anySource)
-        .error(R.drawable.album_placeholder_image)
-        .placeholder(
-            ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.album_placeholder_image,
-                context.theme
-            )
-        )
-        .apply(
-            RequestOptions().override(
-                size,
-                size
-            )
-        )
-            if (radius != 0){
-                glide.transform(
-                    CenterCrop(),
-                    RoundedCorners(radius)
-                )
-                    .into(this)
-            }else{
-                glide.into(this)
-            }
+     Glide
+         .with(this)
+         .load(anySource)
+         .error(R.drawable.album_placeholder_image)
+         .placeholder(
+             ResourcesCompat.getDrawable(
+                 resources,
+                 R.drawable.album_placeholder_image,
+                 context.theme
+             )
+         )
+         .apply(
+             RequestOptions().override(
+                 size,
+                 size
+             )
+         ).apply {
+             if (radius != 0) {
+                 this
+                     .transform(
+                         CenterCrop(),
+                         RoundedCorners(radius)
+                     )
+             }
+         }
+         .into(this)
 
-}
+ }
+
+
 
 fun ImageView.loadPlaylistImageNEW(playlistImagePath: String?, size: Int = 450, radius: Int = 0) {
     val file = try {

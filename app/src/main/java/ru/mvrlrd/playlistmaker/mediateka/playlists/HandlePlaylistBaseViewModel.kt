@@ -10,15 +10,11 @@ import ru.mvrlrd.playlistmaker.tools.generateImageNameForStorage
 abstract class HandlePlaylistBaseViewModel: ViewModel() {
     private val _screenState = MutableLiveData<AddPlaylistScreenState>()
     val screenState: LiveData<AddPlaylistScreenState> = _screenState
-
-
     abstract fun handlePlaylist(playlist: PlaylistForAdapter)
 
     fun changeSubmitButtonStatus(text: String?){
         _screenState.value = AddPlaylistScreenState.CreateButtonHandler(text.isNullOrEmpty())
     }
-
-
 
     open fun getImagePath(isPictureChosen: Boolean, path:String?=null): String{
         return if (isPictureChosen){
@@ -35,7 +31,4 @@ abstract class HandlePlaylistBaseViewModel: ViewModel() {
     }
 
    abstract fun createPlaylist(id: Long, name: String, description: String, imageUrl: String): PlaylistForAdapter
-    companion object{
-        const val IMAGE_TYPE = ".jpg"
-    }
 }
