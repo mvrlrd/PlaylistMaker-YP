@@ -8,7 +8,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.tools.loadPlaylist
-import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
+
 
 class EditPlaylistFragment : PlaylistEditingBaseFragment() {
     private val args by navArgs<EditPlaylistFragmentArgs>()

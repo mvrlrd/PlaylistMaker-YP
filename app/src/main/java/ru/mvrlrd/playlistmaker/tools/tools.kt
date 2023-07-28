@@ -68,9 +68,6 @@ fun ImageView.loadPlaylistImageNEW(playlistImagePath: String?, size: Int = 450, 
     loadPlaylist(file, size, radius)
 }
 
-fun ImageView.loadPlaylistImageNEW(uri: Uri?, size: Int = 450, radius: Int = 0) {
-    loadPlaylist(uri, size, radius)
-}
 
  fun generateImageNameForStorage(): String {
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')

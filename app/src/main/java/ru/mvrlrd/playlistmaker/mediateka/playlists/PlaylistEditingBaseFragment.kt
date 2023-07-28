@@ -25,7 +25,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
+import ru.mvrlrd.playlistmaker.tools.loadPlaylist
+
 
 
  abstract class PlaylistEditingBaseFragment : Fragment() {
@@ -172,7 +173,7 @@ import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
                  if (uri != null) {
                      log(" media selected ${uri.path}")
                      _uri = uri
-                     binding.ivNewPlaylistImage.loadPlaylistImageNEW(
+                     binding.ivNewPlaylistImage.loadPlaylist(
                          uri,
                          size = resources.getInteger(R.integer.picture_big_size),
                          radius = resources.getDimensionPixelSize(R.dimen.radius_medium)

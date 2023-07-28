@@ -17,8 +17,7 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
-import java.io.File
+
 
 class PlaylistsFragment : Fragment() {
     private var _binding: FragmentPlaylistsBinding? = null

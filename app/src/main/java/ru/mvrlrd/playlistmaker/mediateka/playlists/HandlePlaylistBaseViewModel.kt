@@ -49,7 +49,5 @@ abstract class HandlePlaylistBaseViewModel(private val useCase: GetInternalFileU
                 || !description.isNullOrEmpty())
     }
 
-
-
    abstract fun createPlaylist(id: Long, name: String, description: String, imageUrl: String): PlaylistForAdapter
 }
