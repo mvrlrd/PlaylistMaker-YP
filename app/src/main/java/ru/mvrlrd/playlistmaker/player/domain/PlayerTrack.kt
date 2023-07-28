@@ -8,6 +8,7 @@ data class PlayerTrack(
     val artistName: String? = "",
     val trackTime: String? = "267286",
     val image: String? = "",
+    val image60: String? = "",
     val album: String? = "",
     val year: String? = "2010",
     val genre: String? = "",

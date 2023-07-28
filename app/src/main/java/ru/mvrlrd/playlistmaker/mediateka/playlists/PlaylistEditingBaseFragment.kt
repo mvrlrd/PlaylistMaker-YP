@@ -44,7 +44,7 @@ import java.io.FileOutputStream
                 myHandleOnBackPressed()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onCreateView(
