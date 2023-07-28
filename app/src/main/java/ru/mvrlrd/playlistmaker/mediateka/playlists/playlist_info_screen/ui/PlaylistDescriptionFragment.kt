@@ -168,6 +168,7 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     private fun initBottomSheet() {
+        binding.emptyTracksPlaceholder.visibility = View.GONE
         bottomSheetBehavior =
             BottomSheetBehavior.from(binding.bottomSheetForPlaylist ).apply {
                 state = BottomSheetBehavior.STATE_COLLAPSED

@@ -10,9 +10,9 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistConverter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
-import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistTrackCrossRef
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
-import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithTracks
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import java.util.*
 
@@ -62,12 +62,12 @@ class PlayerRepositoryImpl(
         playlistId: Long
     ): Flow<Pair<String, Boolean>> {
         playlistDb.getDao().insertTrack(mapTrackForAdapterToSong(track))
-        val playerSongCrossRef = PlaylistSongCrossRef(trackId = track.trackId, playlistId = playlistId, date = Calendar.getInstance().timeInMillis)
+        val playerSongCrossRef = PlaylistTrackCrossRef(trackId = track.trackId, playlistId = playlistId, date = Calendar.getInstance().timeInMillis)
         val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
         return flow {
             emit(
                 playlistName to (playlistDb.getDao()
-                    .insertPlaylistSongCrossRef(playerSongCrossRef) != -1L)
+                    .insertPlaylistTrackCrossRef(playerSongCrossRef) != -1L)
             )
         }
     }
@@ -88,12 +88,12 @@ class PlayerRepositoryImpl(
     }
 
     override fun getAllPlaylistsWithSongs(): Flow<List<PlaylistForAdapter>> {
-        return playlistDb.getDao().getPlaylistsWithSongs().map {
+        return playlistDb.getDao().getPlaylistsWithTracks().map {
             mapListDaoToListForAdapter(it)
         }
     }
 
-    private fun mapListDaoToListForAdapter(daoList: List<PlaylistWithSongs>): List<PlaylistForAdapter> {
+    private fun mapListDaoToListForAdapter(daoList: List<PlaylistWithTracks>): List<PlaylistForAdapter> {
         return daoList.map {
             PlaylistForAdapter(
                 playlistId = it.playlist.playlistId,

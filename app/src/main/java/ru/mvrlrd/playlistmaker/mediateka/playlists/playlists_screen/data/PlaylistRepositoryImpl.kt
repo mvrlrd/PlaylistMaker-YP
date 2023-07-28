@@ -13,7 +13,7 @@ class PlaylistRepositoryImpl(
 ) : PlaylistRepository {
 
     override fun getAllPlaylistsWithSongs(): Flow<List<PlaylistForAdapter>> {
-        return dataBase.getDao().getPlaylistsWithSongs().map {
+        return dataBase.getDao().getPlaylistsWithTracks().map {
             converter.mapListDaoToListForAdapter(it)
         }
     }

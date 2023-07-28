@@ -19,39 +19,43 @@ class PlaylistInfoRepositoryImpl(
     private val database: PlaylistDb,
     private val converter: PlaylistConverter
 ) : PlaylistInfoRepository {
-    override fun getPlaylistWithSongs(id: Long): Flow<PlaylistInfo> {
-        return database.getDao().getPlaylistWithSongs(id)
+    override fun getPlaylistInfo(id: Long): Flow<PlaylistInfo> {
+        return database.getDao().getPlaylistWithTracks(id)
             .map {
                 converter.mapPlaylistWithSongsToPlaylistInfo(it)
             }
     }
 
-    override suspend fun getTrackListByDescDate(playlistId: Long): List<TrackForAdapter>{
+    override suspend fun getTracksByDescDate(playlistId: Long): List<TrackForAdapter>{
         val  crossRef = database.getDao().getCrossRefByDesc(playlistId)
         val songsByDescDate = mutableListOf<TrackEntity>()
         crossRef.forEach {
-            songsByDescDate.add(database.getDao().getSong(it.trackId))
+            songsByDescDate.add(database.getDao().getTrack(it.trackId))
         }
         return  converter.mapEntitiesToTracks(songsByDescDate)
     }
 
 
-   override suspend fun removeTrackFromPlaylist(trackId: Long, playlistId: Long): Flow<Int> {
-       val flowable = database.getDao().deleteTrack(trackId, playlistId)
-       val songWithPlaylists = database.getDao().getSongWithPlaylists(trackId)
-       database.getDao().deleteCrossRef(playlistId = playlistId, trackId = trackId)
-       if (songWithPlaylists.playlists.isEmpty()) {
-           database.getDao().deleteSong(trackId)
-       }
+   override suspend fun deleteTrackFromPlaylist(trackId: Long, playlistId: Long): Flow<Int> {
+       val flowable = database.getDao().deleteTrackPlaylistCrossRef(trackId, playlistId)
+       checkIfTrackIsInAnotherPlaylists(trackId)
        return flow { emit(flowable) }
    }
 
-    override fun getAllSongsForDebug(): Flow<List<TrackEntity>> {
-        return database.getDao().getSongs()
+    private suspend fun checkIfTrackIsInAnotherPlaylists(trackId: Long) {
+        val trackWithPlaylists = database.getDao().getTrackWithPlaylists(trackId)
+        Log.e("PlaylistInfoRepositoryImpl", "track remains in ${trackWithPlaylists.playlists.size} of playlists")
+        if (trackWithPlaylists.playlists.isEmpty()) {
+            database.getDao().deleteTrack(trackId)
+        }
+    }
+
+    override fun getAllTacksForDebugging(): Flow<List<TrackEntity>> {
+        return database.getDao().getTracks()
     }
 
     override suspend fun deletePlaylist(playlistId: Long) {
-        val playlistWithSongs = database.getDao().getPlaylistWithSongsSuspend(playlistId)
+        val playlistWithSongs = database.getDao().getPlaylistWithTracksSuspend(playlistId)
         CoroutineScope(Dispatchers.IO).launch{
             val countOfDeletedTracks = deleteSongsOfPlaylist(playlistWithSongs.trackEntities)
             val countOfDeletedCrossRefs = database.getDao().deleteCrossRef(playlistId)
@@ -63,18 +67,18 @@ class PlaylistInfoRepositoryImpl(
     private suspend fun deleteSongsOfPlaylist(trackEntities: List<TrackEntity>): Int {
         var countOfDeletedTracks = 0
         trackEntities.forEach {
-            val size = database.getDao().getSongWithPlaylists(it.trackId).playlists.size
+            val size = database.getDao().getTrackWithPlaylists(it.trackId).playlists.size
             if (size == MIN_COUNT_OF_PLAYLISTS_WHERE_TRACK_CAN_BE) {
-                countOfDeletedTracks += database.getDao().deleteSong(it.trackId)
+                countOfDeletedTracks += database.getDao().deleteTrack(it.trackId)
             }
         }
         return countOfDeletedTracks
     }
 
     private suspend fun clearAll(){
-        val songs = database.getDao().clearSongs()
+        val songs = database.getDao().clearTracks()
         val playlists = database.getDao().clearPlaylists()
-        val crossRef = database.getDao().clearCrossReffs()
+        val crossRef = database.getDao().clearCrossRefs()
         tag("deleted:  playlists = $playlists,  songs = $songs,  crossRef = $crossRef;")
     }
 

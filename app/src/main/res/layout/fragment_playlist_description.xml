@@ -156,7 +156,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="visible"
             >
-<!--            app:behavior_peekHeight="6000dp"-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/bottomSheetForPlaylist"
                 android:layout_width="match_parent"
@@ -192,7 +191,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:paddingTop="110dp"
+                    android:paddingTop="30dp"
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -201,7 +200,7 @@
                     <include
                         android:id="@+id/empty_track_list"
                         layout="@layout/info_place_holder_layout"
-                        android:visibility="gone"/>
+                        />
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -211,8 +210,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
 

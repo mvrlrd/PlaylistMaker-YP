@@ -21,7 +21,7 @@ class PlaylistInfoViewModel(
     private val _screenState = MutableLiveData<PlaylistInfoScreenState>()
     val screenState: LiveData<PlaylistInfoScreenState> get() = _screenState
 
-    val playlistInfo = interactor.getPlaylist(playlistId)
+    val playlistInfo = interactor.getPlaylistInfo(playlistId)
 
     fun getTracksByDescDate(playlistId: Long): Flow<List<TrackForAdapter>> {
         return flow {
@@ -29,7 +29,7 @@ class PlaylistInfoViewModel(
         }
     }
 
-    val allSongsDebugging = interactor.getAllSongsForDebug()
+    val allSongsDebugging = interactor.getAllTracksForDebugging()
     fun changeState(playlistInfo: PlaylistInfo) {
         _screenState.postValue(PlaylistInfoScreenState.InitialState(playlistInfo))
     }

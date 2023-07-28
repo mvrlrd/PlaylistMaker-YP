@@ -5,9 +5,9 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Tr
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 interface PlaylistInfoInteractor {
-    fun getPlaylist(id: Long): Flow<PlaylistInfo>
+    fun getPlaylistInfo(id: Long): Flow<PlaylistInfo>
     suspend fun deleteTrackFromPlaylist(trackId: Long, playlistId: Long): Flow<Int>
-    fun getAllSongsForDebug(): Flow<List<TrackEntity>>
+    fun getAllTracksForDebugging(): Flow<List<TrackEntity>>
     suspend fun deletePlaylist(playlistId: Long)
     suspend fun getTracksByDescDate(playlistId: Long): List<TrackForAdapter>
 }

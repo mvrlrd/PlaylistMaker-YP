@@ -4,15 +4,15 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistEntity
-import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistSongCrossRef
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistTrackCrossRef
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
 
-data class PlaylistWithSongs(
+data class PlaylistWithTracks(
     @Embedded val playlist: PlaylistEntity,
     @Relation(
         parentColumn = "playlistId",
         entityColumn = "trackId",
-        associateBy = Junction(PlaylistSongCrossRef::class)
+        associateBy = Junction(PlaylistTrackCrossRef::class)
     )
     val trackEntities: List<TrackEntity>
 )

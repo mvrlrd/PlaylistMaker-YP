@@ -3,7 +3,7 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
-import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithTracks
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
@@ -29,7 +29,7 @@ class PlaylistConverter {
         return entityList.map { mapEntityToAdapter(it) }
     }
 
-     fun mapListDaoToListForAdapter(daoList: List<PlaylistWithSongs>): List<PlaylistForAdapter> {
+     fun mapListDaoToListForAdapter(daoList: List<PlaylistWithTracks>): List<PlaylistForAdapter> {
         return daoList.map {
             PlaylistForAdapter(
                 playlistId = it.playlist.playlistId,
@@ -59,7 +59,7 @@ class PlaylistConverter {
         }
     }
 
-     fun mapPlaylistWithSongsToPlaylistInfo(playlist: PlaylistWithSongs): PlaylistInfo {
+     fun mapPlaylistWithSongsToPlaylistInfo(playlist: PlaylistWithTracks): PlaylistInfo {
         return PlaylistInfo(
             playlist = mapEntityToAdapter(playlist.playlist),
             songs = mapEntitiesToTracks(playlist.trackEntities)
