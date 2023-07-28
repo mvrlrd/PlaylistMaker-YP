@@ -14,13 +14,14 @@ import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
+import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
 
 class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
     private val viewModel: FavoritesViewModel by viewModel()
-    private val trackAdapter: FavoriteAdapter by inject()
+    private val trackAdapter: TrackAdapter by inject()
 
     companion object {
         fun newInstance() = FavoritesFragment()

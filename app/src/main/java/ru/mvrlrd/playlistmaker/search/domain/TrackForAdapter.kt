@@ -32,4 +32,5 @@ data class TrackForAdapter(
     override fun toString(): String {
         return "${this.artistName} - ${this.trackName} (${formatTime(this.trackTime!!.toInt())})"
     }
+    fun getSmallArtwork() = image?.replaceAfterLast('/', "60x60bb.jpg")
 }

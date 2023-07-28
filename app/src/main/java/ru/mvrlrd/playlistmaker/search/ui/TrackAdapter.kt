@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.search.ui
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -50,8 +51,9 @@ class TrackAdapter :
             binding.tvTrackName.text = trackForAdapter.trackName
             binding.artistName.text = trackForAdapter.artistName
             binding.trackTime.text = trackForAdapter.trackTime?.let { formatTime(it.toInt()) }
+            Log.d("TrackAdapter","image for recycler = ${trackForAdapter.getSmallArtwork()}")
             binding.albumImage.loadPlaylist(
-                trackForAdapter.image,
+                trackForAdapter.getSmallArtwork(),
                 size =  binding.albumImage.resources.getInteger(R.integer.picture_small_size),
                 radius = binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small)
             )
