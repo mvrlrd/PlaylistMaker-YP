@@ -1,21 +1,17 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Environment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.FileOperatingViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui.AddPlaylistScreenState
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.generateImageNameForStorage
 import java.io.File
-import java.io.FileOutputStream
 
-abstract class HandlePlaylistBaseViewModel(private val useCase: GetInternalFileUseCase): ViewModel() {
+abstract class HandlePlaylistBaseViewModel(private val useCase: GetInternalFileUseCase): ViewModel(), FileOperatingViewModel {
     private val _screenState = MutableLiveData<AddPlaylistScreenState>()
     val screenState: LiveData<AddPlaylistScreenState> = _screenState
 
@@ -38,7 +34,7 @@ abstract class HandlePlaylistBaseViewModel(private val useCase: GetInternalFileU
         useCase.saveImageToInternalStorage(uri, imageName, albumName)
     }
 
-    fun getFile(imageName: String, albumName: String): File?{
+    override fun getFile(imageName: String, albumName: String): File?{
         return useCase.getInternalFile(imageName, albumName)
     }
 
