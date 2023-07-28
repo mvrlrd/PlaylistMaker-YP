@@ -1,11 +1,13 @@
-package ru.mvrlrd.playlistmaker
+package ru.mvrlrd.playlistmaker.mediateka.playlists
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import ru.mvrlrd.playlistmaker.mediateka.playlists.FileManipulator
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
 import java.io.File
 
-abstract class FileOperatingViewModel(private val useCase: GetInternalFileUseCase): ViewModel(), FileManipulator {
+abstract class FileOperatingViewModel(private val useCase: GetInternalFileUseCase): ViewModel(),
+    FileManipulator {
     override fun getFile(imageName: String, albumName: String): File?{
         return useCase.getInternalFile(imageName, albumName)
     }

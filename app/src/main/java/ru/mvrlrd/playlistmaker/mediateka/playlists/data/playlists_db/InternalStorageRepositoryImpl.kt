@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
-import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistEditingBaseFragment
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.InternalStorageRepository
 import java.io.File
 import java.io.FileOutputStream
@@ -24,7 +23,6 @@ class InternalStorageRepositoryImpl(private val context: Context): InternalStora
             null
         }
     }
-
     override fun saveImageToInternalStorage(uri: Uri?, imageName: String, albumName: String) {
         uri?.let {
             val filePath =
@@ -40,7 +38,7 @@ class InternalStorageRepositoryImpl(private val context: Context): InternalStora
                 .decodeStream(inputStream)
                 .compress(
                     Bitmap.CompressFormat.JPEG,
-                    30, outputStream)
+                    IMAGE_QUALITY, outputStream)
             log("image file saved to storage")
             return
         }
@@ -53,6 +51,7 @@ class InternalStorageRepositoryImpl(private val context: Context): InternalStora
 
     companion object{
         private const val TAG = "InternalStorageRepositoryImpl"
+        private const val IMAGE_QUALITY = 30
     }
 
 }

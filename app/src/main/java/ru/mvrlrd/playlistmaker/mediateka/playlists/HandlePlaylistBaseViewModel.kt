@@ -2,7 +2,6 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import ru.mvrlrd.playlistmaker.FileOperatingViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui.AddPlaylistScreenState
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
@@ -27,7 +26,6 @@ abstract class HandlePlaylistBaseViewModel(useCase: GetInternalFileUseCase): Fil
             ""
         }
     }
-
 
      fun ifDataUnsaved(name: String?, description: String?, isPictureChosen: Boolean ): Boolean {
         return ( isPictureChosen

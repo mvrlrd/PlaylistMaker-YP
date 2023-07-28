@@ -3,17 +3,15 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import ru.mvrlrd.playlistmaker.FileOperatingViewModel
+import ru.mvrlrd.playlistmaker.mediateka.playlists.FileOperatingViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfoInteractor
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
-import java.io.File
 
 class PlaylistInfoViewModel(
     private val interactor: PlaylistInfoInteractor,

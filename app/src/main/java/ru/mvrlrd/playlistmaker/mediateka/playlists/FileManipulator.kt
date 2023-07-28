@@ -1,4 +1,4 @@
-package ru.mvrlrd.playlistmaker
+package ru.mvrlrd.playlistmaker.mediateka.playlists
 
 import java.io.File
 
