@@ -19,9 +19,15 @@ fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>): Int {
 }
 
 fun ImageView.loadImage(anySource: Any?, size: Int, radius: Int) {
+
     Glide
         .with(this)
         .load(anySource)
+        .error(ResourcesCompat.getDrawable(
+            resources,
+            R.drawable.placeholder,
+            context.theme
+        ))
         .placeholder(
             ResourcesCompat.getDrawable(
                 resources,
@@ -46,6 +52,8 @@ fun ImageView.loadImage(anySource: Any?, size: Int, radius: Int) {
         }
         .into(this)
 }
+
+
 
 
  fun generateImageNameForStorage(): String {

@@ -34,14 +34,10 @@ class PlaylistDescriptionFragment : Fragment() {
     private val binding: FragmentPlaylistDescriptionBinding get() = _binding!!
     private val args by navArgs<PlaylistDescriptionFragmentArgs>()
     private lateinit var playlistInfo: PlaylistInfo
-
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var additionMenuBottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
-
     private val trackAdapter: TrackAdapter by inject()
-
     lateinit var confirmDialog: MaterialAlertDialogBuilder
-
 
     private val viewModel: PlaylistInfoViewModel by viewModel {
         parametersOf(args.playlist.playlistId)
@@ -62,7 +58,6 @@ class PlaylistDescriptionFragment : Fragment() {
         }
 
         binding.ivPlaylistMenu.setOnClickListener {
-            Log.e("initAdditionBottomSheetButtons","menu")
             additionMenuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         }
 
@@ -150,10 +145,6 @@ class PlaylistDescriptionFragment : Fragment() {
                 initAdditionMenuInformation()
                 val file = viewModel.getFile(it.playlist.playlistImagePath, resources.getString(R.string.my_album_name))
                 binding.ivPlaylistImage.loadImage(anySource = file, size = resources.getInteger(R.integer.picture_big_size), radius = 0)
-//                binding.ivPlaylistImage.loadPlaylistImageNEW(
-//                    it.playlist.playlistImagePath,
-//                    size = resources.getInteger(R.integer.picture_big_size)
-//                )
                 refreshTrackListByDescDate()
             }
         }
@@ -180,10 +171,8 @@ class PlaylistDescriptionFragment : Fragment() {
         bottomSheetBehavior =
             BottomSheetBehavior.from(binding.bottomSheetForPlaylist ).apply {
                 state = BottomSheetBehavior.STATE_COLLAPSED
-
-                Log.e("ddd", resources.displayMetrics.heightPixels.toString())
+                log("bottom sheet peekHeight  ${resources.displayMetrics.heightPixels}")
                peekHeight = resources.displayMetrics.heightPixels
-//                peekHeight = RANDOM_KOSTYL_BOTTOM_SHEET_HEIGHT
             }
 
 
@@ -200,7 +189,6 @@ class PlaylistDescriptionFragment : Fragment() {
                     }
                 }
             }
-
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 binding.overlay.alpha = slideOffset
             }
@@ -290,14 +278,16 @@ class PlaylistDescriptionFragment : Fragment() {
         for (track in playlistInfo.songs) {
             str.add("${playlistInfo.songs.indexOf(track) + 1}. $track")
         }
+
         return str.joinToString("\n")
+    }
+    private fun log(text: String){
+        Log.d(TAG, text)
     }
 
     companion object{
-        private const val RANDOM_KOSTYL_BOTTOM_SHEET_HEIGHT = 800
         private const val ALPHA_OVERLAY = 0.01f
         private const val TAG = "PlaylistDescriptionFragment"
         private const val INTENT_TYPE_FOR_SENDING = "text/plain"
     }
-
 }
