@@ -26,8 +26,7 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
-import java.io.File
-import java.io.FileOutputStream
+
 
  abstract class PlaylistEditingBaseFragment : Fragment() {
     private var _binding: FragmentAddPlaylistBinding? = null
@@ -138,11 +137,11 @@ import java.io.FileOutputStream
         }
         binding.btnCreatePlaylist.setOnClickListener {
             val playlist = createPlaylist()
-            Log.e(TAG,"path = ${playlist.playlistImagePath}")
-            _uri?.let {
-                saveImageToPrivateStorage(_uri!!, playlist.playlistImagePath)
-                Log.e(TAG,"image file saved to storage")
-            }
+            viewModel.saveImageToInternalStorage(
+                uri = _uri,
+                imageName = playlist.playlistImagePath,
+                albumName = resources.getString(R.string.my_album_name)
+            )
             viewModel.handlePlaylist(playlist)
             val text = this.resources.getString(R.string.playlist_created, playlist.name)
             Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
@@ -161,21 +160,6 @@ import java.io.FileOutputStream
          )
      }
 
-    private fun saveImageToPrivateStorage(uri: Uri, nameOfImage: String) {
-        val filePath =
-            File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                resources.getString(R.string.my_album_name))
-        if (!filePath.exists()) {
-            filePath.mkdirs()
-        }
-        val file = File(filePath, nameOfImage)
-        val inputStream = requireActivity().contentResolver.openInputStream(uri)
-        val outputStream = FileOutputStream(file)
-        BitmapFactory
-            .decodeStream(inputStream)
-            .compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, outputStream)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -186,7 +170,7 @@ import java.io.FileOutputStream
          mediaPicker =
              registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                  if (uri != null) {
-                     Log.e(TAG, " media selected ${uri.path}")
+                     log(" media selected ${uri.path}")
                      _uri = uri
                      binding.ivNewPlaylistImage.loadPlaylistImageNEW(
                          uri,
@@ -194,7 +178,7 @@ import java.io.FileOutputStream
                          radius = resources.getDimensionPixelSize(R.dimen.radius_medium)
                      )
                  } else {
-                     Log.d(TAG, "No media selected")
+                     log("No media selected")
                  }
              }
      }
@@ -204,7 +188,6 @@ import java.io.FileOutputStream
      }
 
     companion object{
-        const val TAG = "tag"
-        private const val IMAGE_QUALITY = 30
+        const val TAG = "PlaylistEditingBaseFragment"
     }
 }

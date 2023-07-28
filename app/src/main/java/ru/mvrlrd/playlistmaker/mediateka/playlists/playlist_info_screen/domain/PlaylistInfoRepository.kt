@@ -6,13 +6,9 @@ import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 interface PlaylistInfoRepository {
     fun getPlaylistWithSongs(id: Long): Flow<PlaylistInfo>
-
-   suspend fun removeTrackFromPlaylist(trackId: Long, playlistId: Long): Flow<Int>
-
+    suspend fun removeTrackFromPlaylist(trackId: Long, playlistId: Long): Flow<Int>
     fun getAllSongsForDebug(): Flow<List<TrackEntity>>
-
     suspend fun deletePlaylist(playlistId: Long)
-   suspend fun getTrackListByDescDate(playlistId: Long): List<TrackForAdapter>
-
+    suspend fun getTrackListByDescDate(playlistId: Long): List<TrackForAdapter>
 
 }

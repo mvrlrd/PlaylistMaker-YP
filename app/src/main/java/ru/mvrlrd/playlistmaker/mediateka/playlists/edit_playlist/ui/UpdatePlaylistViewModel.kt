@@ -5,11 +5,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.HandlePlaylistBaseViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistEditingBaseFragment
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCaseImpl
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.domain.UpdatePlaylistUseCase
 import ru.mvrlrd.playlistmaker.tools.generateImageNameForStorage
 
-open class UpdatePlaylistViewModel(private val updatePlaylistUseCase: UpdatePlaylistUseCase): HandlePlaylistBaseViewModel() {
+open class UpdatePlaylistViewModel(
+    private val updatePlaylistUseCase: UpdatePlaylistUseCase,
+    useCase: GetInternalFileUseCase
+) : HandlePlaylistBaseViewModel(useCase) {
 
     override fun handlePlaylist(playlist: PlaylistForAdapter) {
         viewModelScope.launch {

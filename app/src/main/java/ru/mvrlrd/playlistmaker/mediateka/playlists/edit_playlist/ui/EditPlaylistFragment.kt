@@ -7,6 +7,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistEditingBaseFragment
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
 
 class EditPlaylistFragment : PlaylistEditingBaseFragment() {
@@ -19,7 +20,9 @@ class EditPlaylistFragment : PlaylistEditingBaseFragment() {
     }
 
     private fun setTitles() {
-        binding.ivNewPlaylistImage.loadPlaylistImageNEW(args.playlist.playlistImagePath, size = 1600, radius = resources.getDimensionPixelSize(R.dimen.radius_big))
+        val file = viewModel.getFile(args.playlist.playlistImagePath, resources.getString(R.string.my_album_name))
+        binding.ivNewPlaylistImage.loadPlaylist(file, size = 1600, radius = resources.getDimensionPixelSize(R.dimen.radius_big))
+//        binding.ivNewPlaylistImage.loadPlaylistImageNEW(args.playlist.playlistImagePath, size = 1600, radius = resources.getDimensionPixelSize(R.dimen.radius_big))
         binding.ietPlaylistName.setText(args.playlist.name)
         binding.ietDesctiption.setText(args.playlist.description)
         binding.btnCreatePlaylist.text = resources.getText(R.string.edit_playlist_button)

@@ -5,5 +5,5 @@ import org.koin.dsl.module
 import ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.ui.UpdatePlaylistViewModel
 
 val updatePlaylistViewModelModule = module {
-    viewModel { UpdatePlaylistViewModel(updatePlaylistUseCase = get()) }
+    viewModel { UpdatePlaylistViewModel(updatePlaylistUseCase = get(), useCase = get()) }
 }
