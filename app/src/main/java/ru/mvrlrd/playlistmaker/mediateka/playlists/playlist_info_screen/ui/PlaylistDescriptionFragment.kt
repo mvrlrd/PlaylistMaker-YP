@@ -3,7 +3,6 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -161,23 +160,15 @@ class PlaylistDescriptionFragment : Fragment() {
 
     private fun refreshTrackListByDescDate() {
         viewLifecycleOwner.lifecycleScope.launch {
-            playlistInfo.playlist.playlistId?.let { viewModel.getTracksByDescDate(it) }
-                ?.collect() { tracklist ->
-                    if (tracklist.isEmpty()) {
-                        binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility =
-                            View.VISIBLE
-                        binding.bottomSheetContainerForPlaylist.emptyTrackList.placeholderMessage.text =
-                            resources.getString(R.string.empty_playlist)
-                    } else {
-                        binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility =
-                            View.GONE
-                    }
-                    tracklist.forEach {
-                        Log.e("refreshTrackListByDescDate", " tracks 60 ${it.image60}")
-                    }
-
-                    trackAdapter.submitList(tracklist)
+            playlistInfo.playlist.playlistId?.let { viewModel.getTracksByDescDate(it) }?.collect() {tracklist->
+                if (tracklist.isEmpty()){
+                    binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility = View.VISIBLE
+                    binding.bottomSheetContainerForPlaylist.emptyTrackList.placeholderMessage.text = resources.getString(R.string.empty_playlist)
+                }else{
+                    binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility = View.GONE
                 }
+                trackAdapter.submitList(tracklist)
+            }
         }
     }
 

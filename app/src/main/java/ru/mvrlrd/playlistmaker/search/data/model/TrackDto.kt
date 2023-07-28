@@ -10,7 +10,6 @@ data class TrackDto(
     val artistName: String? = "",
     @SerializedName("trackTimeMillis") val trackTime: String? = "",
     @SerializedName("artworkUrl100") val image: String? = "",
-    @SerializedName("artworkUrl60") val image60: String? = "",
     @SerializedName("collectionName") val album: String? = "",
     @SerializedName("releaseDate") val year: String? = "",
     @SerializedName("primaryGenreName") val genre: String? = "",

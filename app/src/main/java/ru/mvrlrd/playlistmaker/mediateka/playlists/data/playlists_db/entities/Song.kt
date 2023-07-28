@@ -12,7 +12,6 @@ data class Song(
     val artistName: String? = "",
     val trackTime: String? = "",
     val image: String? = "",
-    val image60: String? = "",
     val album: String? = "",
     val year: String? = "",
     val genre: String? = "",

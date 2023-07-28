@@ -9,7 +9,6 @@ data class TrackForAdapter(
     val artistName: String? = "",
     var trackTime: String? = "",
     val image: String? = "",
-    val image60: String? = "",
     val album: String? = "",
     var year: String? = "",
     val genre: String? = "",

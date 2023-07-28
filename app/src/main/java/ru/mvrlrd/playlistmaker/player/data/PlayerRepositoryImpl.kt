@@ -72,22 +72,18 @@ class PlayerRepositoryImpl(
         }
     }
 
-    private fun mapTrackForAdapterToSong(track: TrackForAdapter): Song {
-        return with(track) {
-            Song(
-                songId = trackId,
-                trackName = trackName,
+    private fun mapTrackForAdapterToSong(track : TrackForAdapter): Song{
+        return with(track){
+            Song(songId = trackId,
+                trackName= trackName,
                 artistName = artistName,
-                image = image,
-                image60 = image60,
+               image =  image,
                 album = album,
                 year = year,
                 trackTime = trackTime,
                 genre = genre,
                 country = country,
-                previewUrl = previewUrl,
-                date = Calendar.getInstance().timeInMillis
-            )
+                previewUrl = previewUrl, date = Calendar.getInstance().timeInMillis)
         }
     }
 
