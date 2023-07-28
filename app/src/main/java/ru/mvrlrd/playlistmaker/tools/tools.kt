@@ -37,6 +37,7 @@ fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>): Int {
                  size,
                  size
              )
+                 .centerCrop()
          ).apply {
              if (radius != 0) {
                  this
@@ -46,7 +47,7 @@ fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>): Int {
                      )
              }
          }
-         .centerCrop()
+
          .into(this)
 
  }
