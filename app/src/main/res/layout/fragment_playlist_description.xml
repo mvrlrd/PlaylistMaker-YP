@@ -38,7 +38,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:navigationIcon="@drawable/ic_arrow_icon" />
+            app:navigationIcon="@drawable/ic_arrow_icon"
+            app:navigationIconTint="@color/black"/>
 
         <TextView
             android:id="@+id/tv_playlist_name"
