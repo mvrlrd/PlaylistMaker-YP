@@ -26,7 +26,7 @@ class PlayerViewModel(
     val playerTrack: PlayerTrack,
     private val playerInteractor: PlayerInteractor,
     private val fileUseCase: GetInternalFileUseCase
-) : ViewModel(), FileOperatingViewModel {
+) : FileOperatingViewModel(fileUseCase) {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
 
@@ -130,10 +130,6 @@ class PlayerViewModel(
     fun onDestroy() {
         timerJob?.cancel()
         playerInteractor.onDestroy()
-    }
-
-    override fun getFile(imageName: String, albumName: String): File? {
-        return fileUseCase.getInternalFile(imageName, albumName)
     }
 
     companion object{

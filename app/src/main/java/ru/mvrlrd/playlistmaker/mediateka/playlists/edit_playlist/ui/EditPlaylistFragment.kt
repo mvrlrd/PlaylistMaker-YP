@@ -22,7 +22,6 @@ class EditPlaylistFragment : PlaylistEditingBaseFragment() {
     private fun setTitles() {
         val file = viewModel.getFile(args.playlist.playlistImagePath, resources.getString(R.string.my_album_name))
         binding.ivNewPlaylistImage.loadImage(file, size = 1600, radius = resources.getDimensionPixelSize(R.dimen.radius_big))
-//        binding.ivNewPlaylistImage.loadPlaylistImageNEW(args.playlist.playlistImagePath, size = 1600, radius = resources.getDimensionPixelSize(R.dimen.radius_big))
         binding.ietPlaylistName.setText(args.playlist.name)
         binding.ietDesctiption.setText(args.playlist.description)
         binding.btnCreatePlaylist.text = resources.getText(R.string.edit_playlist_button)

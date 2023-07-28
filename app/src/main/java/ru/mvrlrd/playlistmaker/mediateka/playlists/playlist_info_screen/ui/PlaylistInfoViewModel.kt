@@ -15,15 +15,18 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.P
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import java.io.File
 
-class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor, private val fileUseCase: GetInternalFileUseCase, playlistId: Long) :
-    ViewModel(), FileOperatingViewModel {
+class PlaylistInfoViewModel(
+    private val interactor: PlaylistInfoInteractor,
+    fileUseCase: GetInternalFileUseCase,
+    playlistId: Long
+) : FileOperatingViewModel(fileUseCase) {
     private val _screenState = MutableLiveData<PlaylistInfoScreenState>()
     val screenState: LiveData<PlaylistInfoScreenState> get() = _screenState
 
     val playlistInfo = interactor.getPlaylist(playlistId)
 
-     fun getTracksByDescDate(playlistId: Long): Flow<List<TrackForAdapter>> {
-       return flow {
+    fun getTracksByDescDate(playlistId: Long): Flow<List<TrackForAdapter>> {
+        return flow {
             emit(interactor.getTracksByDescDate(playlistId))
         }
     }
@@ -40,11 +43,6 @@ class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor, priv
                 Log.d("PlaylistInfoViewModel", "deleted $it  items")
             }
         }
-    }
-
-
-    override fun getFile(imageName: String, albumName: String): File? {
-        return fileUseCase.getInternalFile(imageName, albumName)
     }
 
     fun deletePlaylist(playlistId: Long){

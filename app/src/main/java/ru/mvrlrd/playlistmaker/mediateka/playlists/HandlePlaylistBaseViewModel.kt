@@ -1,17 +1,15 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import ru.mvrlrd.playlistmaker.FileOperatingViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui.AddPlaylistScreenState
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.generateImageNameForStorage
-import java.io.File
 
-abstract class HandlePlaylistBaseViewModel(private val useCase: GetInternalFileUseCase): ViewModel(), FileOperatingViewModel {
+
+abstract class HandlePlaylistBaseViewModel(useCase: GetInternalFileUseCase): FileOperatingViewModel(useCase) {
     private val _screenState = MutableLiveData<AddPlaylistScreenState>()
     val screenState: LiveData<AddPlaylistScreenState> = _screenState
 
@@ -28,14 +26,6 @@ abstract class HandlePlaylistBaseViewModel(private val useCase: GetInternalFileU
         }else{
             ""
         }
-    }
-
-    fun saveImageToInternalStorage(uri: Uri?, imageName: String, albumName: String){
-        useCase.saveImageToInternalStorage(uri, imageName, albumName)
-    }
-
-    override fun getFile(imageName: String, albumName: String): File?{
-        return useCase.getInternalFile(imageName, albumName)
     }
 
 
