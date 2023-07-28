@@ -8,12 +8,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import ru.mvrlrd.playlistmaker.FileOperatingViewModel
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfoInteractor
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
+import java.io.File
 
-class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor,  playlistId: Long) :
-    ViewModel() {
+class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor, private val fileUseCase: GetInternalFileUseCase, playlistId: Long) :
+    ViewModel(), FileOperatingViewModel {
     private val _screenState = MutableLiveData<PlaylistInfoScreenState>()
     val screenState: LiveData<PlaylistInfoScreenState> get() = _screenState
 
@@ -37,6 +40,11 @@ class PlaylistInfoViewModel(private val interactor: PlaylistInfoInteractor,  pla
                 Log.d("PlaylistInfoViewModel", "deleted $it  items")
             }
         }
+    }
+
+
+    override fun getFile(imageName: String, albumName: String): File? {
+        return fileUseCase.getInternalFile(imageName, albumName)
     }
 
     fun deletePlaylist(playlistId: Long){

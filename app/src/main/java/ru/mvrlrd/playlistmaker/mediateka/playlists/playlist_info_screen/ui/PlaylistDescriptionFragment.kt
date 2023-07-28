@@ -26,7 +26,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.P
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
-import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
+import ru.mvrlrd.playlistmaker.tools.loadPlaylist
 
 
 class PlaylistDescriptionFragment : Fragment() {
@@ -147,11 +147,13 @@ class PlaylistDescriptionFragment : Fragment() {
             viewModel.playlistInfo.collect(){
                 viewModel.changeState(it)
                 playlistInfo = it
-                initPlaylistInfo()
-                binding.ivPlaylistImage.loadPlaylistImageNEW(
-                    it.playlist.playlistImagePath,
-                    size = resources.getInteger(R.integer.picture_big_size)
-                )
+                initAdditionMenuInformation()
+                val file = viewModel.getFile(it.playlist.playlistImagePath, resources.getString(R.string.my_album_name))
+                binding.ivPlaylistImage.loadPlaylist(anySource = file, size = resources.getInteger(R.integer.picture_big_size), radius = 0)
+//                binding.ivPlaylistImage.loadPlaylistImageNEW(
+//                    it.playlist.playlistImagePath,
+//                    size = resources.getInteger(R.integer.picture_big_size)
+//                )
                 refreshTrackListByDescDate()
             }
         }
@@ -250,7 +252,7 @@ class PlaylistDescriptionFragment : Fragment() {
         )
     }
 
-    private fun initPlaylistInfo() {
+    private fun initAdditionMenuInformation() {
         binding.bottomSheetAdditionMenuContainer.playlistItem.tvPlaylistName.text =
             playlistInfo.playlist.name
         binding.bottomSheetAdditionMenuContainer.playlistItem.tvQuantityOfTracks.text =
@@ -259,8 +261,9 @@ class PlaylistDescriptionFragment : Fragment() {
                 playlistInfo.songs.size,
                 playlistInfo.songs.size
             )
-        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadPlaylistImageNEW(
-            playlistInfo.playlist.playlistImagePath,
+        val file = viewModel.getFile(playlistInfo.playlist.playlistImagePath,resources.getString(R.string.my_album_name))
+        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadPlaylist(
+            file,
             size = resources.getInteger(R.integer.picture_small_size),
             radius = resources.getDimensionPixelSize(R.dimen.radius_small)
         )

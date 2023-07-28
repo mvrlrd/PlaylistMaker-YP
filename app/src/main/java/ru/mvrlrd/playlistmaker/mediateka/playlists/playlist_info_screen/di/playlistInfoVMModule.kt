@@ -8,6 +8,6 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui.Playl
 
 val playlistInfoVMModule = module {
     viewModel<PlaylistInfoViewModel>{   (playerId: Long)->
-        PlaylistInfoViewModel(interactor = get(), playlistId = playerId)
+        PlaylistInfoViewModel(interactor = get(), playlistId = playerId, fileUseCase = get())
     }
 }
