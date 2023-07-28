@@ -25,11 +25,10 @@ fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>): Int {
      Glide
          .with(this)
          .load(anySource)
-         .error(R.drawable.album_placeholder_image)
          .placeholder(
              ResourcesCompat.getDrawable(
                  resources,
-                 R.drawable.album_placeholder_image,
+                 R.drawable.placeholder,
                  context.theme
              )
          )
@@ -47,6 +46,7 @@ fun getCommonDurationOfTracks(tracks: List<TrackForAdapter>): Int {
                      )
              }
          }
+         .centerCrop()
          .into(this)
 
  }
