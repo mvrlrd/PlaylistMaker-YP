@@ -139,7 +139,7 @@ import java.io.FileOutputStream
         binding.btnCreatePlaylist.setOnClickListener {
             val playlist = createPlaylist()
             Log.e(TAG,"path = ${playlist.playlistImagePath}")
-            if (_uri!= null){
+            _uri?.let {
                 saveImageToPrivateStorage(_uri!!, playlist.playlistImagePath)
                 Log.e(TAG,"image file saved to storage")
             }
