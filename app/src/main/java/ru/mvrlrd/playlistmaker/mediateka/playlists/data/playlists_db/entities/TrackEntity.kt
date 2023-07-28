@@ -2,12 +2,11 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.mvrlrd.playlistmaker.player.util.formatTime
 
-@Entity(tableName = "song_table")
-data class Song(
+@Entity(tableName = "track_table")
+data class TrackEntity(
     @PrimaryKey(autoGenerate = true)
-    val songId: Long,
+    val trackId: Long,
     val trackName: String? = "",
     val artistName: String? = "",
     val trackTime: String? = "",

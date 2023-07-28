@@ -9,7 +9,7 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.SongWithPlaylists
 
@@ -18,18 +18,18 @@ interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlaylist(playlistEntity: PlaylistEntity)
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertTrack(song: Song): Long
+    suspend fun insertTrack(trackEntity: TrackEntity): Long
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertPlaylistSongCrossRef(playlistSongCrossRef: PlaylistSongCrossRef): Long
 
 
     @Query("SELECT * FROM playlist_table WHERE playlistId =:id")
     suspend fun getPlaylist(id: Long): PlaylistEntity
-    @Query("SELECT * FROM song_table")
-    fun getSongs(): Flow<List<Song>>
+    @Query("SELECT * FROM track_table")
+    fun getSongs(): Flow<List<TrackEntity>>
 
-    @Query("SELECT * FROM song_table WHERE songId =:id")
-    suspend fun getSong(id: Long): Song
+    @Query("SELECT * FROM track_table WHERE trackId =:id")
+    suspend fun getSong(id: Long): TrackEntity
     @Query("SELECT * FROM playlist_table")
     fun getAllPlaylists(): Flow<List<PlaylistEntity>>
     @Transaction
@@ -43,8 +43,8 @@ interface PlaylistDao {
     @Query("SELECT * FROM playlist_table WHERE playlistId =:id")
    suspend fun getPlaylistWithSongsSuspend(id: Long): PlaylistWithSongs
     @Transaction
-    @Query("SELECT * FROM song_table WHERE songId =:songId")
-    suspend fun getSongWithPlaylists(songId: Long): SongWithPlaylists
+    @Query("SELECT * FROM track_table WHERE trackId =:trackId")
+    suspend fun getSongWithPlaylists(trackId: Long): SongWithPlaylists
 
 
     @Query("SELECT * FROM playlist_song_cross_ref_table")
@@ -53,18 +53,18 @@ interface PlaylistDao {
     suspend fun updatePlaylist(playlistEntity: PlaylistEntity)
 
 
-    @Query("DELETE FROM song_table WHERE songId =:songId")
-    suspend fun deleteSong(songId: Long): Int
+    @Query("DELETE FROM track_table WHERE trackId =:trackId")
+    suspend fun deleteSong(trackId: Long): Int
     @Query("DELETE FROM playlist_table WHERE playlistId =:playlistId")
     suspend fun deletePlaylist(playlistId: Long): Int
-    @Query("DELETE FROM playlist_song_cross_ref_table WHERE playlistId =:playlistId AND songId =:trackId")
+    @Query("DELETE FROM playlist_song_cross_ref_table WHERE playlistId =:playlistId AND trackId =:trackId")
     suspend fun deleteTrack(trackId: Long, playlistId: Long): Int
     @Query("DELETE FROM playlist_song_cross_ref_table WHERE playlistId =:playlistId")
     suspend fun deleteCrossRef(playlistId: Long): Int
-    @Query("DELETE FROM playlist_song_cross_ref_table WHERE playlistId =:playlistId AND songId =:songId")
-    suspend fun deleteCrossRef(playlistId: Long, songId:Long): Int
+    @Query("DELETE FROM playlist_song_cross_ref_table WHERE playlistId =:playlistId AND trackId =:trackId")
+    suspend fun deleteCrossRef(playlistId: Long, trackId:Long): Int
 
-    @Query("DELETE FROM song_table")
+    @Query("DELETE FROM track_table")
     suspend fun clearSongs(): Int
     @Query("DELETE FROM playlist_song_cross_ref_table")
     suspend fun clearCrossReffs(): Int
@@ -80,8 +80,8 @@ interface PlaylistDao {
     suspend fun getCrossRefByDesc(id: Long): List<PlaylistSongCrossRef>
 
     @Transaction
-    @Query("SELECT * FROM song_table WHERE songId IN (:ids)")
-    suspend fun getSongsByDesc(ids: List<Long>): List<Song>
+    @Query("SELECT * FROM track_table WHERE trackId IN (:ids)")
+    suspend fun getSongsByDesc(ids: List<Long>): List<TrackEntity>
 
 
 

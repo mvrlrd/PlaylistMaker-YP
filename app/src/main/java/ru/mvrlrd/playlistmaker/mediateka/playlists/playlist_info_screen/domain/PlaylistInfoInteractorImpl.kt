@@ -1,7 +1,7 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain
 
 import kotlinx.coroutines.flow.Flow
-import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 class PlaylistInfoInteractorImpl(private val repository: PlaylistInfoRepository) : PlaylistInfoInteractor{
@@ -13,7 +13,7 @@ class PlaylistInfoInteractorImpl(private val repository: PlaylistInfoRepository)
         return repository.removeTrackFromPlaylist(trackId, playlistId)
     }
 
-    override fun getAllSongsForDebug(): Flow<List<Song>> {
+    override fun getAllSongsForDebug(): Flow<List<TrackEntity>> {
         return repository.getAllSongsForDebug()
     }
 

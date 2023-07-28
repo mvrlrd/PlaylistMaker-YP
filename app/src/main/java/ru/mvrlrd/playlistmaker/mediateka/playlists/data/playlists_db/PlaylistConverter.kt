@@ -2,10 +2,9 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db
 
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistEntity
-import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.PlaylistInfo
-import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 class PlaylistConverter {
@@ -37,15 +36,15 @@ class PlaylistConverter {
                 name = it.playlist.name,
                 description = it.playlist.description,
                 playlistImagePath = it.playlist.playlistImagePath,
-                tracksQuantity = it.songs.size
+                tracksQuantity = it.trackEntities.size
             )
         }
     }
 
-     fun mapSongsToTracks(songs: List<Song>): List<TrackForAdapter>{
-        return songs.map {
+     fun mapEntitiesToTracks(trackEntities: List<TrackEntity>): List<TrackForAdapter>{
+        return trackEntities.map {
             TrackForAdapter(
-                trackId = it.songId,
+                trackId = it.trackId,
                 trackName = it.trackName,
                 artistName = it.artistName,
                 trackTime = it.trackTime,
@@ -63,7 +62,7 @@ class PlaylistConverter {
      fun mapPlaylistWithSongsToPlaylistInfo(playlist: PlaylistWithSongs): PlaylistInfo {
         return PlaylistInfo(
             playlist = mapEntityToAdapter(playlist.playlist),
-            songs = mapSongsToTracks(playlist.songs)
+            songs = mapEntitiesToTracks(playlist.trackEntities)
         )
     }
 

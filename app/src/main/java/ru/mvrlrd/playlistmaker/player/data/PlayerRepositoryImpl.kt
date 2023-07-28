@@ -11,7 +11,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistConverter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Song
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithSongs
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import java.util.*
@@ -62,7 +62,7 @@ class PlayerRepositoryImpl(
         playlistId: Long
     ): Flow<Pair<String, Boolean>> {
         playlistDb.getDao().insertTrack(mapTrackForAdapterToSong(track))
-        val playerSongCrossRef = PlaylistSongCrossRef(songId = track.trackId, playlistId = playlistId, date = Calendar.getInstance().timeInMillis)
+        val playerSongCrossRef = PlaylistSongCrossRef(trackId = track.trackId, playlistId = playlistId, date = Calendar.getInstance().timeInMillis)
         val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
         return flow {
             emit(
@@ -72,9 +72,9 @@ class PlayerRepositoryImpl(
         }
     }
 
-    private fun mapTrackForAdapterToSong(track : TrackForAdapter): Song{
+    private fun mapTrackForAdapterToSong(track : TrackForAdapter): TrackEntity{
         return with(track){
-            Song(songId = trackId,
+            TrackEntity(trackId = trackId,
                 trackName= trackName,
                 artistName = artistName,
                image =  image,
@@ -100,7 +100,7 @@ class PlayerRepositoryImpl(
                 name = it.playlist.name,
                 description = it.playlist.description,
                 playlistImagePath = it.playlist.playlistImagePath,
-                tracksQuantity = it.songs.size
+                tracksQuantity = it.trackEntities.size
             )
         }
     }
