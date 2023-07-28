@@ -6,7 +6,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.Pl
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistTrackCrossRef
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
 
-@Database(version = 3, entities = [PlaylistEntity::class, PlaylistTrackCrossRef::class, TrackEntity::class])
+@Database(version = 5, entities = [PlaylistEntity::class, PlaylistTrackCrossRef::class, TrackEntity::class])
 abstract class PlaylistDb : RoomDatabase() {
     abstract fun getDao(): PlaylistDao
 }
