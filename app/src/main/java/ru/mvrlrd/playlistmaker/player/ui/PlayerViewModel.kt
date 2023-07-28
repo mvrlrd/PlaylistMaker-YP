@@ -10,6 +10,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.mvrlrd.playlistmaker.FileOperatingViewModel
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
@@ -17,12 +19,14 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
+import java.io.File
 
 
 class PlayerViewModel(
     val playerTrack: PlayerTrack,
-    private val playerInteractor: PlayerInteractor
-) : ViewModel() {
+    private val playerInteractor: PlayerInteractor,
+    private val fileUseCase: GetInternalFileUseCase
+) : ViewModel(), FileOperatingViewModel {
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
 
@@ -126,6 +130,10 @@ class PlayerViewModel(
     fun onDestroy() {
         timerJob?.cancel()
         playerInteractor.onDestroy()
+    }
+
+    override fun getFile(imageName: String, albumName: String): File? {
+        return fileUseCase.getInternalFile(imageName, albumName)
     }
 
     companion object{

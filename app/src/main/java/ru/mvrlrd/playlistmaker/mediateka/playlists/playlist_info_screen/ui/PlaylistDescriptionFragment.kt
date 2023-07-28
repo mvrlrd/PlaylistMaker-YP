@@ -26,7 +26,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.domain.P
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.ui.TrackAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
-import ru.mvrlrd.playlistmaker.tools.loadPlaylist
+import ru.mvrlrd.playlistmaker.tools.loadImage
 
 
 class PlaylistDescriptionFragment : Fragment() {
@@ -149,7 +149,7 @@ class PlaylistDescriptionFragment : Fragment() {
                 playlistInfo = it
                 initAdditionMenuInformation()
                 val file = viewModel.getFile(it.playlist.playlistImagePath, resources.getString(R.string.my_album_name))
-                binding.ivPlaylistImage.loadPlaylist(anySource = file, size = resources.getInteger(R.integer.picture_big_size), radius = 0)
+                binding.ivPlaylistImage.loadImage(anySource = file, size = resources.getInteger(R.integer.picture_big_size), radius = 0)
 //                binding.ivPlaylistImage.loadPlaylistImageNEW(
 //                    it.playlist.playlistImagePath,
 //                    size = resources.getInteger(R.integer.picture_big_size)
@@ -262,7 +262,7 @@ class PlaylistDescriptionFragment : Fragment() {
                 playlistInfo.songs.size
             )
         val file = viewModel.getFile(playlistInfo.playlist.playlistImagePath,resources.getString(R.string.my_album_name))
-        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadPlaylist(
+        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadImage(
             file,
             size = resources.getInteger(R.integer.picture_small_size),
             radius = resources.getDimensionPixelSize(R.dimen.radius_small)

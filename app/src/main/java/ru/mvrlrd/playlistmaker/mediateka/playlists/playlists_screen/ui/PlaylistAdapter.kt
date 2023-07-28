@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistCardItemBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.loadPlaylistImageNEW
+
 
 
 class PlaylistAdapter :
@@ -31,11 +31,9 @@ class PlaylistAdapter :
         holder.itemView.setOnClickListener {
             onClickListener?.invoke(item)
         }
-        holder.ivPlaylist.loadPlaylistImageNEW(
-            item.playlistImagePath,
-            holder.ivPlaylist.resources.getInteger(R.integer.picture_big_size),
-            holder.ivPlaylist.resources.getDimensionPixelSize(R.dimen.radius_medium)
-        )
+
+        showImage?.invoke(holder.ivPlaylist, item.playlistImagePath)
+
         holder.bind(item)
     }
 

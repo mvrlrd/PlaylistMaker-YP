@@ -1,11 +1,11 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui
 
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,6 +17,7 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlaylistsBinding
 import ru.mvrlrd.playlistmaker.mediateka.MediatekaFragmentDirections
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.tools.loadImage
 
 
 class PlaylistsFragment : Fragment() {
@@ -67,9 +68,20 @@ class PlaylistsFragment : Fragment() {
 
 
     private fun initRecycler() {
-        playlistAdapter.onClickListener = {playlist ->
-            navigateToPlaylistDescriptionFragment(playlist)
+        playlistAdapter.apply {
+            onClickListener = { playlist ->
+                navigateToPlaylistDescriptionFragment(playlist)
+            }
+            showImage = { view: ImageView, path: String ->
+                val file = viewModel.getFile(path, resources.getString(R.string.my_album_name))
+                view.loadImage(
+                    file,
+                    size = resources.getInteger(R.integer.picture_big_size),
+                    radius = resources.getDimensionPixelSize(R.dimen.radius_medium)
+                )
+            }
         }
+
         binding.rView.apply {
             adapter = playlistAdapter
             layoutManager = GridLayoutManager(requireContext(), SPAN_COUNT)

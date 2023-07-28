@@ -6,14 +6,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.databinding.TrackLayoutBinding
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
-import ru.mvrlrd.playlistmaker.tools.loadPlaylist
+import ru.mvrlrd.playlistmaker.tools.loadImage
 
 
 class TrackAdapter :
@@ -52,7 +49,7 @@ class TrackAdapter :
             binding.artistName.text = trackForAdapter.artistName
             binding.trackTime.text = trackForAdapter.trackTime?.let { formatTime(it.toInt()) }
             Log.d("TrackAdapter","image for recycler = ${trackForAdapter.getSmallArtwork()}")
-            binding.albumImage.loadPlaylist(
+            binding.albumImage.loadImage(
                 trackForAdapter.getSmallArtwork(),
                 size =  binding.albumImage.resources.getInteger(R.integer.picture_small_size),
                 radius = binding.albumImage.resources.getDimensionPixelSize(R.dimen.radius_small)

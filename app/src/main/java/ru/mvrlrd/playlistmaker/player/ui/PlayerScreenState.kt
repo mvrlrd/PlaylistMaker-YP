@@ -10,7 +10,7 @@ import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.util.unparseDateToYear
-import ru.mvrlrd.playlistmaker.tools.loadPlaylist
+import ru.mvrlrd.playlistmaker.tools.loadImage
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +36,7 @@ sealed class PlayerScreenState {
             binding.tvGenreParam.text = track.genre
             binding.tvCountryParam.text = track.country
             handleLikeButton(binding, track)
-            binding.ivAlbumImage.loadPlaylist(
+            binding.ivAlbumImage.loadImage(
                 track.getCoverArtwork(),
                 size = binding.ivAlbumImage.resources.getInteger(R.integer.picture_big_size),
                 radius = binding.ivAlbumImage.resources.getDimensionPixelSize(R.dimen.radius_medium)

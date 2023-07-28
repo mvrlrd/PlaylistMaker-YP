@@ -2,11 +2,8 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.loadPlaylist
+import ru.mvrlrd.playlistmaker.tools.loadImage
 
 
 
@@ -173,7 +170,7 @@ import ru.mvrlrd.playlistmaker.tools.loadPlaylist
                  if (uri != null) {
                      log(" media selected ${uri.path}")
                      _uri = uri
-                     binding.ivNewPlaylistImage.loadPlaylist(
+                     binding.ivNewPlaylistImage.loadImage(
                          uri,
                          size = resources.getInteger(R.integer.picture_big_size),
                          radius = resources.getDimensionPixelSize(R.dimen.radius_medium)

@@ -1,12 +1,11 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +23,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
-import java.io.File
+import ru.mvrlrd.playlistmaker.tools.loadImage
 
 
 class PlayerFragment : Fragment() {
@@ -180,11 +179,21 @@ class PlayerFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        playlistAdapter.onClickListener = {
-            lifecycleScope.launch {
-                viewModel.addTrackToPlaylist(
-                    trackId = args.track,
-                    playlistId = it.playlistId!!
+        playlistAdapter.apply {
+            onClickListener = {
+                lifecycleScope.launch {
+                    viewModel.addTrackToPlaylist(
+                        trackId = args.track,
+                        playlistId = it.playlistId!!
+                    )
+                }
+            }
+            showImage = { view: ImageView, path: String ->
+                val file = viewModel.getFile(path, resources.getString(R.string.my_album_name))
+                view.loadImage(
+                    file,
+                    size = resources.getInteger(R.integer.picture_small_size),
+                    radius = resources.getDimensionPixelSize(R.dimen.radius_small)
                 )
             }
         }
