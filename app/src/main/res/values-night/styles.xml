@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+
     <style name="AddPlaylistInputEditTextStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-    <item name="android:layout_width">0dp</item>
-    <item name="android:layout_height">54dp</item>
-    <item name="endIconDrawable">@drawable/ic_free_icon_font_cross</item>
-    <item name="endIconMode">clear_text</item>
-    <item name="boxCornerRadiusBottomEnd">@dimen/radius_big</item>
-    <item name="boxCornerRadiusBottomStart">@dimen/radius_big</item>
-    <item name="boxCornerRadiusTopEnd">@dimen/radius_big</item>
-    <item name="boxCornerRadiusTopStart">@dimen/radius_big</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">54dp</item>
+        <item name="endIconDrawable">@drawable/ic_free_icon_font_cross</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="endIconTint">@color/blue</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_big</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_big</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_big</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_big</item>
     </style>
 
 </resources>
