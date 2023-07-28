@@ -10,6 +10,7 @@
         android:src="@drawable/playlist_default_image"
         android:layout_width="@dimen/image_size_small"
         android:layout_height="@dimen/image_size_small"
+
         android:layout_gravity="center_vertical" />
 
     <LinearLayout

@@ -127,22 +127,106 @@
             app:layout_constraintStart_toEndOf="@+id/iv_share_playlist"
             app:layout_constraintTop_toTopOf="@+id/iv_share_playlist" />
 
+        <View
+            android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CC000000"
+            android:visibility="gone" />
+        <View
+            android:id="@+id/view_for_bottom_sheet_tracks_barrier"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            app:layout_constraintTop_toBottomOf="@id/iv_playlist_menu"
+
+            />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_fo_bottom_sheet_tracks"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            app:barrierDirection="bottom"
+            android:orientation="horizontal"
+            app:constraint_referenced_ids="view_for_bottom_sheet_tracks_barrier" />
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/barrier_fo_bottom_sheet_tracks"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
+            >
+<!--            app:behavior_peekHeight="6000dp"-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottomSheetForPlaylist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bottom_sheet_rectangle"
+                app:behavior_hideable="false"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+                <include
+                    android:id="@+id/include2"
+                    layout="@layout/bar_for_bottom_sheet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_playlists2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginTop="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/include2"
+                    tools:listitem="@layout/track_layout" />
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/empty_tracks_placeholder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:paddingTop="110dp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <include
+                        android:id="@+id/empty_track_list"
+                        layout="@layout/info_place_holder_layout"
+                        android:visibility="gone"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View
-        android:id="@+id/overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#CC000000"
-        android:visibility="gone" />
 
-    <include
-        android:id="@+id/bottom_sheet_container_for_playlist"
-        layout="@layout/bottom_sheet_playlist_info_tracklist" />
+
+
+
+<!--    <include-->
+<!--        android:id="@+id/bottom_sheet_container_for_playlist"-->
+<!--        layout="@layout/bottom_sheet_playlist_info_tracklist"-->
+<!--        app:behavior_peekHeight="20dp"/>-->
 
     <include
         android:id="@+id/bottom_sheet_addition_menu_container"
-        layout="@layout/bottom_sheet_playlist_info_addition_menu" />
+        layout="@layout/bottom_sheet_playlist_info_addition_menu"
+        android:visibility="visible"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -3,6 +3,7 @@ package ru.mvrlrd.playlistmaker.mediateka.playlists.playlist_info_screen.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -61,6 +62,7 @@ class PlaylistDescriptionFragment : Fragment() {
         }
 
         binding.ivPlaylistMenu.setOnClickListener {
+            Log.e("initAdditionBottomSheetButtons","menu")
             additionMenuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         }
 
@@ -89,7 +91,7 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        binding.bottomSheetContainerForPlaylist.rvPlaylists.apply {
+        binding.rvPlaylists2.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }
@@ -162,10 +164,10 @@ class PlaylistDescriptionFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             playlistInfo.playlist.playlistId?.let { viewModel.getTracksByDescDate(it) }?.collect() {tracklist->
                 if (tracklist.isEmpty()){
-                    binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility = View.VISIBLE
-                    binding.bottomSheetContainerForPlaylist.emptyTrackList.placeholderMessage.text = resources.getString(R.string.empty_playlist)
+                    binding.emptyTracksPlaceholder.visibility = View.VISIBLE
+                    binding.emptyTrackList.placeholderMessage.text = resources.getString(R.string.empty_playlist)
                 }else{
-                    binding.bottomSheetContainerForPlaylist.emptyTracksPlaceholder.visibility = View.GONE
+                    binding.emptyTracksPlaceholder.visibility = View.GONE
                 }
                 trackAdapter.submitList(tracklist)
             }
@@ -174,10 +176,14 @@ class PlaylistDescriptionFragment : Fragment() {
 
     private fun initBottomSheet() {
         bottomSheetBehavior =
-            BottomSheetBehavior.from(binding.bottomSheetContainerForPlaylist.bottomSheetForPlaylist).apply {
+            BottomSheetBehavior.from(binding.bottomSheetForPlaylist ).apply {
                 state = BottomSheetBehavior.STATE_COLLAPSED
-                peekHeight = RANDOM_KOSTYL_BOTTOM_SHEET_HEIGHT
+
+                Log.e("ddd", resources.displayMetrics.heightPixels.toString())
+               peekHeight = resources.displayMetrics.heightPixels
+//                peekHeight = RANDOM_KOSTYL_BOTTOM_SHEET_HEIGHT
             }
+
 
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
