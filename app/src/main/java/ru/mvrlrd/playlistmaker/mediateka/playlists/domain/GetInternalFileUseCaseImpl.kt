@@ -1,6 +1,5 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.domain
 
-import android.net.Uri
 import java.io.File
 
 class GetInternalFileUseCaseImpl(private val repository: InternalStorageRepository): GetInternalFileUseCase {
@@ -8,7 +7,7 @@ class GetInternalFileUseCaseImpl(private val repository: InternalStorageReposito
         return repository.getFile(imageName, albumName)
     }
 
-    override fun saveImageToInternalStorage(uri: Uri?, imageName: String, albumName: String) {
-        repository.saveImageToInternalStorage(uri, imageName, albumName)
+    override fun getFileWhereToSavePicture(imageName: String, albumName: String): File {
+        return repository.getFileWhereToSavePicture(imageName, albumName)
     }
 }

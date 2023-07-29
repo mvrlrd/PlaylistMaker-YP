@@ -23,10 +23,10 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.tools.loadImage
+import ru.mvrlrd.playlistmaker.tools.saveImageToInternalStorage
 
 
-
- abstract class PlaylistEditingBaseFragment : Fragment() {
+abstract class PlaylistEditingBaseFragment : Fragment() {
     private var _binding: FragmentAddPlaylistBinding? = null
      val binding
         get() = _binding ?: throw RuntimeException("PlaylistEditingBaseFragment == null")
@@ -135,11 +135,9 @@ import ru.mvrlrd.playlistmaker.tools.loadImage
         }
         binding.btnCreatePlaylist.setOnClickListener {
             val playlist = createPlaylist()
-            viewModel.saveImageToInternalStorage(
-                uri = _uri,
-                imageName = playlist.playlistImagePath,
-                albumName = resources.getString(R.string.my_album_name)
-            )
+            val fileToSave = viewModel.getFileToSaveImage( imageName = playlist.playlistImagePath,
+                albumName = resources.getString(R.string.my_album_name))
+            _uri?.saveImageToInternalStorage(imageView = binding.ivNewPlaylistImage, fileToSave = fileToSave)
             viewModel.handlePlaylist(playlist)
             val text = this.resources.getString(R.string.playlist_created, playlist.name)
             Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
