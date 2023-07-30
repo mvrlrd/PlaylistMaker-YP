@@ -19,6 +19,7 @@ class InternalStorageRepositoryImpl(private val context: Context): InternalStora
             null
         }
     }
+
    override fun getFileWhereToSavePicture(imageName: String, albumName: String): File {
         val filePath =
             File(

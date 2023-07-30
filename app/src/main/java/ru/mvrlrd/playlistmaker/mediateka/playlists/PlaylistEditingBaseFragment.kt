@@ -49,9 +49,14 @@ abstract class PlaylistEditingBaseFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddPlaylistBinding.inflate(inflater, container, false)
+
+        binding.descriptionInputLayout.defaultHintTextColor = resources.getColorStateList(R.color.input_edit_text_selector, requireActivity().theme)
+        binding.playlistNameInputLayout.defaultHintTextColor = resources.getColorStateList(R.color.input_edit_text_selector, requireActivity().theme)
         binding.ietPlaylistName.doOnTextChanged { text, _, _, _ ->
             viewModel.changeSubmitButtonStatus(text.toString())
+
             if (!text.isNullOrEmpty()) {
+
                 binding.playlistNameInputLayout.boxStrokeColor =
                     ResourcesCompat.getColor(this.resources, R.color.blue, requireActivity().theme)
                 binding.playlistNameInputLayout.hintTextColor = ColorStateList.valueOf(
@@ -65,6 +70,7 @@ abstract class PlaylistEditingBaseFragment : Fragment() {
         }
         binding.ietDesctiption.doOnTextChanged { text, _, _, _ ->
             if (!text.isNullOrEmpty()) {
+
                 binding.descriptionInputLayout.boxStrokeColor =
                     ResourcesCompat.getColor(this.resources, R.color.blue, requireActivity().theme)
                 binding.descriptionInputLayout.hintTextColor = ColorStateList.valueOf(
@@ -76,6 +82,9 @@ abstract class PlaylistEditingBaseFragment : Fragment() {
                 )
             }
         }
+
+
+
         observeViewModel()
         initDialog()
         setOnClickListeners()
@@ -86,6 +95,8 @@ abstract class PlaylistEditingBaseFragment : Fragment() {
         }
         return binding.root
     }
+
+
 
     private fun initDialog() {
         confirmDialog = MaterialAlertDialogBuilder(requireContext()).apply {
