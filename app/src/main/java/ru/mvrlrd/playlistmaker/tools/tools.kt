@@ -69,7 +69,11 @@ fun Uri.saveImageToInternalStorage(imageView: ImageView, fileToSave: File) {
             Bitmap.CompressFormat.JPEG,
             IMAGE_QUALITY, outputStream
         )
-    Log.d(TAG, "image file saved to storage")
+    Log.d(TAG, "image file saved to storage ${fileToSave.toURI()}")
+}
+
+fun String.addImageType(): String{
+    return "$this.jpg"
 }
 
 

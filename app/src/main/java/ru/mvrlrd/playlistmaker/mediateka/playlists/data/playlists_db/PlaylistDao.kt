@@ -1,10 +1,5 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Transaction
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistEntity
@@ -51,6 +46,14 @@ interface PlaylistDao {
     suspend fun getAllCrossRef(): List<PlaylistTrackCrossRef>
     @Update
     suspend fun updatePlaylist(playlistEntity: PlaylistEntity)
+
+
+
+
+    @Query("UPDATE playlist_table SET name = :newName WHERE playlistId =:id")
+    suspend fun updatePlaylistName(id: Long, newName: String)
+
+
 
 
     @Query("DELETE FROM track_table WHERE trackId =:trackId")

@@ -19,13 +19,13 @@ abstract class HandlePlaylistBaseViewModel(useCase: GetInternalFileUseCase): Fil
         _screenState.value = AddPlaylistScreenState.CreateButtonHandler(text.isNullOrEmpty())
     }
 
-    open fun getImagePath(isPictureChosen: Boolean, path:String?=null): String{
-        return if (isPictureChosen){
-            generateImageNameForStorage()
-        }else{
-            ""
-        }
-    }
+//    open fun getImagePath(isPictureChosen: Boolean, path:String?=null): String{
+//        return if (isPictureChosen){
+//            generateImageNameForStorage()
+//        }else{
+//            ""
+//        }
+//    }
 
      fun ifDataUnsaved(name: String?, description: String?, isPictureChosen: Boolean ): Boolean {
         return ( isPictureChosen

@@ -22,6 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.tools.addImageType
 import ru.mvrlrd.playlistmaker.tools.loadImage
 import ru.mvrlrd.playlistmaker.tools.saveImageToInternalStorage
 
@@ -145,7 +146,7 @@ abstract class PlaylistEditingBaseFragment : Fragment() {
             }
         }
         binding.btnCreatePlaylist.setOnClickListener {
-            val playlist = createPlaylist()
+            val playlist = createPlaylist(fetchPlaylistId())
             val fileToSave = viewModel.getFileToSaveImage( imageName = playlist.playlistImagePath,
                 albumName = resources.getString(R.string.my_album_name))
             _uri?.saveImageToInternalStorage(imageView = binding.ivNewPlaylistImage, fileToSave = fileToSave)
@@ -156,14 +157,19 @@ abstract class PlaylistEditingBaseFragment : Fragment() {
         }
     }
 
-     open fun createPlaylist(): PlaylistForAdapter{
+    open fun fetchPlaylistId():Long?{
+        return null
+    }
+
+     open fun createPlaylist(playlistId: Long?): PlaylistForAdapter{
          val name = binding.ietPlaylistName.text.toString()
          val description = binding.ietDesctiption.text.toString()
+         log("last path segment   ${_uri!!.lastPathSegment?.replace(":","")?.addImageType()}")
          return PlaylistForAdapter(
-             playlistId = null,
+             playlistId = playlistId,
              name = name,
              description = description,
-             playlistImagePath = viewModel.getImagePath(_uri != null),
+             playlistImagePath = _uri!!.lastPathSegment?.replace(":","")?.addImageType() ?: "image".addImageType()
          )
      }
 

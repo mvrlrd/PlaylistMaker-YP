@@ -6,10 +6,8 @@ import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.HandlePlaylistBaseViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistEditingBaseFragment
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
-import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCaseImpl
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.domain.UpdatePlaylistUseCase
-import ru.mvrlrd.playlistmaker.tools.generateImageNameForStorage
 
 open class UpdatePlaylistViewModel(
     private val updatePlaylistUseCase: UpdatePlaylistUseCase,
@@ -35,13 +33,5 @@ open class UpdatePlaylistViewModel(
             description = description,
             playlistImagePath = imageUrl
         )
-    }
-
-    override fun getImagePath(isPictureChosen: Boolean, path: String?): String {
-        return if (isPictureChosen){
-            generateImageNameForStorage()
-        }else{
-            path?:""
-        }
     }
 }
