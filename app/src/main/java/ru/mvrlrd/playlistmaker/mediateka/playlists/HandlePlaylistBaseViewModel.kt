@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import ru.mvrlrd.playlistmaker.mediateka.playlists.add_playlist_screen.ui.AddPlaylistScreenState
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.generateImageNameForStorage
 
 
 abstract class HandlePlaylistBaseViewModel(useCase: GetInternalFileUseCase): FileOperatingViewModel(useCase) {
@@ -18,14 +17,6 @@ abstract class HandlePlaylistBaseViewModel(useCase: GetInternalFileUseCase): Fil
     fun changeSubmitButtonStatus(text: String?){
         _screenState.value = AddPlaylistScreenState.CreateButtonHandler(text.isNullOrEmpty())
     }
-
-//    open fun getImagePath(isPictureChosen: Boolean, path:String?=null): String{
-//        return if (isPictureChosen){
-//            generateImageNameForStorage()
-//        }else{
-//            ""
-//        }
-//    }
 
      fun ifDataUnsaved(name: String?, description: String?, isPictureChosen: Boolean ): Boolean {
         return ( isPictureChosen

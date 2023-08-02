@@ -3,7 +3,6 @@ package ru.mvrlrd.playlistmaker.tools
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
@@ -72,8 +71,9 @@ fun Uri.saveImageToInternalStorage(imageView: ImageView, fileToSave: File) {
     Log.d(TAG, "image file saved to storage ${fileToSave.toURI()}")
 }
 
-fun String.addImageType(): String{
-    return "$this.jpg"
+fun String.formatUriToImageName(): String{
+    val str = this.replace(":","")
+    return "$str.jpg"
 }
 
 

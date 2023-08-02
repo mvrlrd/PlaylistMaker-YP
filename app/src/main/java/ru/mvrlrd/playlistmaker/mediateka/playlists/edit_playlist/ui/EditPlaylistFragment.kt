@@ -1,14 +1,11 @@
 package ru.mvrlrd.playlistmaker.mediateka.playlists.edit_playlist.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.navArgs
 import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistEditingBaseFragment
-import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.tools.addImageType
 import ru.mvrlrd.playlistmaker.tools.loadImage
 
 

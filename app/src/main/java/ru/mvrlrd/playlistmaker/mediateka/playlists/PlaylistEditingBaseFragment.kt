@@ -22,7 +22,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentAddPlaylistBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.addImageType
+import ru.mvrlrd.playlistmaker.tools.formatUriToImageName
 import ru.mvrlrd.playlistmaker.tools.loadImage
 import ru.mvrlrd.playlistmaker.tools.saveImageToInternalStorage
 
@@ -83,8 +83,6 @@ abstract class PlaylistEditingBaseFragment : Fragment() {
                 )
             }
         }
-
-
 
         observeViewModel()
         initDialog()
@@ -164,12 +162,12 @@ abstract class PlaylistEditingBaseFragment : Fragment() {
      open fun createPlaylist(playlistId: Long?): PlaylistForAdapter{
          val name = binding.ietPlaylistName.text.toString()
          val description = binding.ietDesctiption.text.toString()
-         log("last path segment   ${_uri!!.lastPathSegment?.replace(":","")?.addImageType()}")
+         log("last path segment   ${_uri!!.lastPathSegment?.formatUriToImageName()}")
          return PlaylistForAdapter(
              playlistId = playlistId,
              name = name,
              description = description,
-             playlistImagePath = _uri!!.lastPathSegment?.replace(":","")?.addImageType() ?: "image".addImageType()
+             playlistImagePath = _uri!!.lastPathSegment?.formatUriToImageName() ?: "image".formatUriToImageName()
          )
      }
 
