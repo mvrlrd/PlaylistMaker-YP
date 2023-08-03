@@ -32,8 +32,20 @@
     <string name="create_playlist">Create</string>
     <string name="add_to_playlist_title">Add to playlist</string>
 
+    <string name="empty_playlist">playlist is empty</string>
+
+    <string name="no_answer">NO</string>
+    <string name="yes_answer">YES</string>
+
+    <string name="deleting_track_positive_answer">Delete</string>
+    <string name="deleting_track_negative_answer">Cancel</string>
+
+    <string name="deleting_track_question">Do you want to delete track?</string>
+
 <!--    search-->
     <string name="history_is_empty">History is empty</string>
+
+    <string name="there_is_nothing_to_share">There is nothing to share is tis playlist</string>
 
 <!--    player-->
     <string name="impossible_to_play">Impossible to play</string>
@@ -51,10 +63,24 @@
     <string name="quantity_of_tracks">%s track%s</string>
     <string name="playlist_name">Name *</string>
     <string name="playlist_description">Description</string>
+    <string name="delete_playlist">Delete playlist</string>
+    <string name="edit_info">Edit information</string>
+    <string name="share_playlist">Share</string>
+    <string name="delete_playlist_dialog_title">Delete playlist</string>
+    <string name="delete_playlist_dialog_message">Do you really want to delete this playlist?</string>
+    <string name="delete_playlist_dialog_positive">Delete</string>
+
+    <string name="edit_playlist_title">Edit</string>
+    <string name="edit_playlist_button">Save</string>
 
     <plurals name="plural_tracks">
         <item quantity="one">%1$d track</item>
         <item quantity="other">%1$d tracks</item>
+    </plurals>
+
+    <plurals name="plural_minutes">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="other">%1$d minutes</item>
     </plurals>
 
 

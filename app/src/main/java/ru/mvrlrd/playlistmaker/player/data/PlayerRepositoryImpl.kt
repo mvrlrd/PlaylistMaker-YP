@@ -1,19 +1,20 @@
 package ru.mvrlrd.playlistmaker.player.data
 
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.FavoriteDb
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.TrackConverter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistConverter
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.PlaylistDb
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.PlaylistSongCrossRef
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.entities.Song
-import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_db.relations.PlaylistWithSongs
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistConverter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistTrackCrossRef
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
+import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithTracks
+import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
+import java.util.*
 
 class PlayerRepositoryImpl(
     private val playerClient: PlayerClient,
@@ -26,12 +27,8 @@ class PlayerRepositoryImpl(
         playerClient.preparePlayer(playerTrack)
     }
 
-    override fun getLivePlayerState(): LiveData<MyMediaPlayer.PlayerState> {
+    override fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState> {
         return playerClient.getLivePlayerState()
-    }
-
-    override fun start() {
-        playerClient.start()
     }
 
     override fun pause() {
@@ -61,35 +58,62 @@ class PlayerRepositoryImpl(
     }
 
     override suspend fun addTrackToPlaylist(
-        trackId: Long,
+        track: TrackForAdapter,
         playlistId: Long
     ): Flow<Pair<String, Boolean>> {
-        playlistDb.getDao().insertTrack(Song(trackId))
-        val playerSongCrossRef = PlaylistSongCrossRef(songId = trackId, playlistId = playlistId)
+        playlistDb.getDao().insertTrack(mapTrackForAdapterToSong(track))
+        val playerSongCrossRef = PlaylistTrackCrossRef(trackId = track.trackId, playlistId = playlistId, date = Calendar.getInstance().timeInMillis)
         val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
         return flow {
             emit(
                 playlistName to (playlistDb.getDao()
-                    .insertPlaylistSongCrossRef(playerSongCrossRef) != -1L)
+                    .insertPlaylistTrackCrossRef(playerSongCrossRef) != -1L)
             )
         }
     }
 
+    private fun mapTrackForAdapterToSong(track : TrackForAdapter): TrackEntity{
+        return with(track){
+            TrackEntity(trackId = trackId,
+                trackName= trackName,
+                artistName = artistName,
+               image =  image,
+                album = album,
+                year = year,
+                trackTime = trackTime,
+                genre = genre,
+                country = country,
+                previewUrl = previewUrl, date = Calendar.getInstance().timeInMillis)
+        }
+    }
+
     override fun getAllPlaylistsWithSongs(): Flow<List<PlaylistForAdapter>> {
-        return playlistDb.getDao().getPlaylistsWithSongs().map {
+        return playlistDb.getDao().getPlaylistsWithTracks().map {
             mapListDaoToListForAdapter(it)
         }
     }
 
-    private fun mapListDaoToListForAdapter(daoList: List<PlaylistWithSongs>): List<PlaylistForAdapter> {
+    private fun mapListDaoToListForAdapter(daoList: List<PlaylistWithTracks>): List<PlaylistForAdapter> {
         return daoList.map {
             PlaylistForAdapter(
                 playlistId = it.playlist.playlistId,
                 name = it.playlist.name,
                 description = it.playlist.description,
                 playlistImagePath = it.playlist.playlistImagePath,
-                tracksQuantity = it.songs.size
+                tracksQuantity = it.trackEntities.size
             )
         }
+    }
+
+    override fun getFavoriteIds(): Flow<List<Long>> {
+        return favoriteDb.getDao().getFavIds()
+    }
+
+    override fun handleStartAndPause() {
+        playerClient.handleStartAndPause()
+    }
+
+    override fun stopIt() {
+        playerClient.stopIt()
     }
 }

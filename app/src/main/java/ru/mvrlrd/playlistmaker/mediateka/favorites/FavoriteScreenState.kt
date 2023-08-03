@@ -5,10 +5,6 @@ import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentFavoritesBinding
 
 sealed class FavoriteScreenState {
-    object Loading : FavoriteScreenState() {
-        override fun render(binding: FragmentFavoritesBinding) {
-        }
-    }
 
     object Empty : FavoriteScreenState() {
         override fun render(binding: FragmentFavoritesBinding) {

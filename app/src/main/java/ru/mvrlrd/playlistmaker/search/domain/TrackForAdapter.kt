@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker.search.domain
 
+import ru.mvrlrd.playlistmaker.player.util.formatTime
 import java.io.Serializable
 
 data class TrackForAdapter(
@@ -27,4 +28,9 @@ data class TrackForAdapter(
     override fun hashCode(): Int {
         return trackId.toInt()
     }
+
+    override fun toString(): String {
+        return "${this.artistName} - ${this.trackName} (${formatTime(this.trackTime!!.toInt())})"
+    }
+    fun getSmallArtwork() = image?.replaceAfterLast('/', "60x60bb.jpg")
 }

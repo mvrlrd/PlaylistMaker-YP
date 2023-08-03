@@ -6,6 +6,6 @@ import ru.mvrlrd.playlistmaker.search.domain.TracksRepository
 
 val searchRepositoryModule = module {
     single<TracksRepository> {
-        TracksRepositoryImpl(networkClient = get(), localStorage = get(), favoriteDb = get())
+        TracksRepositoryImpl(networkClient = get(), localStorage = get())
     }
 }

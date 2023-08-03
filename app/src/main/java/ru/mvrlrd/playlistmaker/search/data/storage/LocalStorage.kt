@@ -38,6 +38,6 @@ class LocalStorage(private val sharedPreferences: SharedPreferences) : ILocalSto
         val json = sharedPreferences.getString(HISTORY_KEY, null) ?: return arrayListOf()
         val tracksToStorage =
             Gson().fromJson(json, Array<TrackToStorage>::class.java).toCollection(ArrayList())
-        return tracksToStorage.map { it.mapToTrack() }
+        return tracksToStorage.map { it.mapDtoToTrack() }
     }
 }

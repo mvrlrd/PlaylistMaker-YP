@@ -6,11 +6,7 @@ import ru.mvrlrd.playlistmaker.mediateka.favorites.domain.FavoritesRepository
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 class FavoriteInteractorImpl(val favoriteRepository: FavoritesRepository) : FavoriteInteractor {
-    override suspend fun getFavoriteTracks(): Flow<List<TrackForAdapter>> {
+    override fun getFavoriteTracks(): Flow<List<TrackForAdapter>> {
         return favoriteRepository.getFavoriteTracks()
-    }
-
-    override suspend fun clearFavorites() {
-        favoriteRepository.clearFavorites()
     }
 }

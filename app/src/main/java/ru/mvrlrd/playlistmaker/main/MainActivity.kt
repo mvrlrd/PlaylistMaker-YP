@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.addPlaylistFragment, R.id.playerFragment -> hideBottomNav()
+                R.id.addPlaylistFragment, R.id.playerFragment, R.id.playlistDescriptionFragment, R.id.editPlaylistFragment -> hideBottomNav()
                 else -> showBottomNav()
             }
         }

@@ -1,12 +1,11 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
@@ -24,8 +23,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import ru.mvrlrd.playlistmaker.search.util.Debouncer
-import ru.mvrlrd.playlistmaker.tools.loadPlaylist
-import java.io.File
+import ru.mvrlrd.playlistmaker.tools.loadImage
 
 
 class PlayerFragment : Fragment() {
@@ -43,7 +41,6 @@ class PlayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerBinding.inflate(layoutInflater, container, false)
-        Log.d("PlayerFragment", "${args.track}")
         initBottomSheet()
         observeViewModel()
         handleBackButton()
@@ -97,23 +94,36 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun observeViewModel() {
-        viewModel.isAdded.observe(this) { isTrackAddadToPlaylist ->
-            val message = if (isTrackAddadToPlaylist.second) {
+    private fun observeLikeChanging(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.favoriteIds.collect() {
+                viewModel.handleLike(it, args.track.trackId)
+            }
+        }
+    }
+
+    private fun observeIsTrackInPlaylist(){
+        viewModel.isTrackInPlaylist.observe(this) { pair ->
+            val isTrackInPlaylist = pair.second
+            val playlistName = pair.first
+            val message = if (isTrackInPlaylist) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-               this.resources.getString(R.string.track_added_to_playlist,  isTrackAddadToPlaylist.first)
+                this.resources.getString(R.string.track_added_to_playlist, playlistName)
             } else {
-                this.resources.getString(R.string.track_already_added, isTrackAddadToPlaylist.first)
+                this.resources.getString(R.string.track_already_added, playlistName)
             }
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
-        viewModel.playlists.observe(this) {
-            playlistAdapter.submitList(it)
+    }
+    private fun observePlaylists(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.playlists.collect(){
+                playlistAdapter.submitList(it)
+            }
         }
-        viewModel.playerState.observe(viewLifecycleOwner) {
-            Log.d("PlayerFragment", "player state = ${it.name}")
-            viewModel.render()
-        }
+    }
+
+    private fun observeScreenState(){
         viewModel.screenState.observe(this) {
             if (it is PlayerScreenState.PlayerError) {
                 it.render(binding)
@@ -124,6 +134,22 @@ class PlayerFragment : Fragment() {
                 ).show()
             } else {
                 it.render(binding)
+            }
+        }
+    }
+
+    private fun observeViewModel() {
+        observePlayerState()
+        observePlaylists()
+        observeLikeChanging()
+        observeScreenState()
+        observeIsTrackInPlaylist()
+    }
+
+    private fun observePlayerState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.playerState.collect(){
+                viewModel.render(it)
             }
         }
     }
@@ -139,13 +165,11 @@ class PlayerFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        Log.d("PlayerFragment", "onStop")
         viewModel.onStop()
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("PlayerFragment", "onResume")
         viewModel.onResume()
     }
 
@@ -155,24 +179,22 @@ class PlayerFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        playlistAdapter.onClickListener = {
-            lifecycleScope.launch {
-                viewModel.addTrackToPlaylist(
-                    trackId = parseIntent(args.track).trackId,
-                    playlistId = it.playlistId!!
-                )
+        playlistAdapter.apply {
+            onClickListener = {
+                lifecycleScope.launch {
+                    viewModel.addTrackToPlaylist(
+                        trackId = args.track,
+                        playlistId = it.playlistId!!
+                    )
+                }
             }
-        }
-        playlistAdapter.showImage = { view, playlistImagePath ->
-            try {
-                val filePath = File(
-                    requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                    "myalbum"
+            showImage = { view: ImageView, path: String ->
+                val file = viewModel.getFile(path, resources.getString(R.string.my_album_name))
+                view.loadImage(
+                    file,
+                    size = resources.getInteger(R.integer.picture_small_size),
+                    radius = resources.getDimensionPixelSize(R.dimen.radius_small)
                 )
-                val file = File(filePath, playlistImagePath)
-                view.loadPlaylist(anySource = file, size = PLAYLIST_IMAGE_SIZE)
-            } catch (e: Exception) {
-                Log.e("PlayerFragment", e.message.toString())
             }
         }
         binding.bottomSheetContainer.rvPlaylists.apply {
@@ -203,8 +225,5 @@ class PlayerFragment : Fragment() {
                 binding.overlay.alpha = slideOffset+1f
             }
         })
-    }
-    companion object{
-        const val PLAYLIST_IMAGE_SIZE = 450
     }
 }

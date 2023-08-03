@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.PlaylistLayoutBinding
-import ru.mvrlrd.playlistmaker.mediateka.playlists.PlaylistItemDiffCallback
-import ru.mvrlrd.playlistmaker.mediateka.playlists.addplaylist.domain.PlaylistForAdapter
-import ru.mvrlrd.playlistmaker.tools.loadPlaylist
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.PlaylistItemDiffCallback
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+
 
 
 class PlaylistAdapterForPlayer :
@@ -34,14 +34,8 @@ class PlaylistAdapterForPlayer :
         holder.itemView.setOnClickListener {
             onClickListener?.invoke(item)
         }
-        if (item.playlistImagePath.isNotEmpty()) {
-            showImage?.let { it(holder.ivPlaylist, item.playlistImagePath) }
-        } else {
-            holder.ivPlaylist.loadPlaylist(
-                anySource = item.playlistImagePath,
-                size = PlayerFragment.PLAYLIST_IMAGE_SIZE
-            )
-        }
+        showImage?.invoke(holder.ivPlaylist, item.playlistImagePath)
+
         holder.bind(item)
     }
 

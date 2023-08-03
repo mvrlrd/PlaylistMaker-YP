@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_bottom_sheet_bar"
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        android:src="@drawable/rectangle"
+        android:background="?attr/text_color"
+        android:layout_marginTop="8dp"
+        />
+
+</FrameLayout>
