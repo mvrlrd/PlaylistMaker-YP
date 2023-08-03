@@ -41,15 +41,19 @@ class PlayerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlayerBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initBottomSheet()
         observeViewModel()
         handleBackButton()
         handlePlayButton()
         handleLikeButton()
         handleAddToPlaylistButton()
-        handleAddToPlaylistButton1()
+        setOnClickToNavigateAddingPlaylistFragment()
         initRecycler()
-        return binding.root
     }
 
     private fun handleAddToPlaylistButton() {
@@ -58,7 +62,7 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun handleAddToPlaylistButton1() {
+    private fun setOnClickToNavigateAddingPlaylistFragment() {
         binding.bottomSheetContainer.btAddNewPlaylist.setOnClickListener {
             findNavController().navigate(
                 PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment()
