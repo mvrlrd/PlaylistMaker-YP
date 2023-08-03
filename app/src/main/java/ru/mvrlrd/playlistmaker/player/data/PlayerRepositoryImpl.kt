@@ -13,6 +13,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistTrackCrossRef
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithTracks
+import ru.mvrlrd.playlistmaker.player.domain.AddingTrackToPlaylistResult
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import java.util.*
 
@@ -51,6 +52,8 @@ class PlayerRepositoryImpl(
         favoriteDb.getDao().deleteTrack(trackId)
     }
 
+
+
     override fun getAllPlaylists(): Flow<List<PlaylistForAdapter>> {
         return playlistDb.getDao().getAllPlaylists().map { list ->
             playlistConverter.convertEntityListToAdapterList(list)
@@ -59,15 +62,15 @@ class PlayerRepositoryImpl(
 
     override suspend fun addTrackToPlaylist(
         track: TrackForAdapter,
-        playlistId: Long
-    ): Flow<Pair<String, Boolean>> {
+        playlist: PlaylistForAdapter
+    ): Flow<AddingTrackToPlaylistResult> {
         playlistDb.getDao().insertTrack(mapTrackForAdapterToSong(track))
-        val playerSongCrossRef = PlaylistTrackCrossRef(trackId = track.trackId, playlistId = playlistId, date = Calendar.getInstance().timeInMillis)
-        val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
+        val playerSongCrossRef = PlaylistTrackCrossRef(trackId = track.trackId, playlistId = playlist.playlistId!!, date = Calendar.getInstance().timeInMillis)
+
         return flow {
             emit(
-                playlistName to (playlistDb.getDao()
-                    .insertPlaylistTrackCrossRef(playerSongCrossRef) != -1L)
+                AddingTrackToPlaylistResult(playlistName = playlist.name, wasAdded = (playlistDb.getDao()
+                    .insertPlaylistTrackCrossRef(playerSongCrossRef) != -1L))
             )
         }
     }

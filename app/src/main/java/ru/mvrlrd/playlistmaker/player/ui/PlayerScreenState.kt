@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
+import ru.mvrlrd.playlistmaker.player.domain.AddingTrackToPlaylistResult
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.util.unparseDateToYear
 import ru.mvrlrd.playlistmaker.tools.loadImage
@@ -16,8 +17,10 @@ import java.util.*
 
 sealed class PlayerScreenState {
 
-    class LikeHandle(private val isFavorite: Boolean): PlayerScreenState(){
+
+    class HandleLikeButton(private val isFavorite: Boolean): PlayerScreenState(){
         override fun render(binding: FragmentPlayerBinding) {
+            binding.fabAddToFavs.isEnabled = true
             handleLikeButton2(binding, isFavorite)
         }
     }
@@ -187,6 +190,17 @@ sealed class PlayerScreenState {
                     RoundedCorners(binding.ivAlbumImage.resources.getDimensionPixelSize(R.dimen.radius_medium))
                 )
                 .into(binding.ivAlbumImage)
+        }
+    }
+
+    object BlockLikeButton: PlayerScreenState(){
+        override fun render(binding: FragmentPlayerBinding) {
+            binding.fabAddToFavs.isEnabled = false
+        }
+    }
+    object EnableLikeButton: PlayerScreenState(){
+        override fun render(binding: FragmentPlayerBinding) {
+            binding.fabAddToFavs.isEnabled = true
         }
     }
 

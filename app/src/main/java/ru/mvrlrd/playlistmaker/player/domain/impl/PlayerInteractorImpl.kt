@@ -3,6 +3,7 @@ package ru.mvrlrd.playlistmaker.player.domain.impl
 import kotlinx.coroutines.flow.Flow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
+import ru.mvrlrd.playlistmaker.player.domain.AddingTrackToPlaylistResult
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
@@ -44,9 +45,9 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
 
     override suspend fun addTrackToPlaylist(
         trackId: TrackForAdapter,
-        playlistId: Long
-    ): Flow<Pair<String, Boolean>> {
-        return playerRepository.addTrackToPlaylist(trackId, playlistId)
+        playlist: PlaylistForAdapter
+    ): Flow<AddingTrackToPlaylistResult> {
+        return playerRepository.addTrackToPlaylist(trackId, playlist)
     }
 
     override fun getAllPlaylistsWithQuantities(): Flow<List<PlaylistForAdapter>> {

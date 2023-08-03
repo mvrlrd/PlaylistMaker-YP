@@ -98,18 +98,10 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun observeLikeChanging(){
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.favoriteIds.collect() {
-                viewModel.handleLike(it, args.track.trackId)
-            }
-        }
-    }
-
     private fun observeIsTrackInPlaylist(){
-        viewModel.isTrackInPlaylist.observe(this) { pair ->
-            val isTrackInPlaylist = pair.second
-            val playlistName = pair.first
+        viewModel.isTrackInPlaylist.observe(this) { result ->
+            val isTrackInPlaylist = result.wasAdded
+            val playlistName = result.playlistName
             val message = if (isTrackInPlaylist) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 this.resources.getString(R.string.track_added_to_playlist, playlistName)
@@ -145,7 +137,6 @@ class PlayerFragment : Fragment() {
     private fun observeViewModel() {
         observePlayerState()
         observePlaylists()
-        observeLikeChanging()
         observeScreenState()
         observeIsTrackInPlaylist()
     }
@@ -185,12 +176,10 @@ class PlayerFragment : Fragment() {
     private fun initRecycler() {
         playlistAdapter.apply {
             onClickListener = {
-                lifecycleScope.launch {
                     viewModel.addTrackToPlaylist(
-                        trackId = args.track,
-                        playlistId = it.playlistId!!
+                        track = args.track,
+                        playlist = it
                     )
-                }
             }
             showImage = { view: ImageView, path: String ->
                 val file = viewModel.getFile(path, resources.getString(R.string.my_album_name))
