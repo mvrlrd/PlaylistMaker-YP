@@ -99,7 +99,6 @@
                 android:enabled="false"
                 android:src="@drawable/baseline_play_arrow_24"
                 app:borderWidth="0dp"
-
                 app:fabCustomSize="@dimen/big_fab_size"
                 app:layout_constraintBottom_toBottomOf="@+id/fab_open_bottom_sheet"
                 app:layout_constraintEnd_toStartOf="@+id/fab_add_to_favs"

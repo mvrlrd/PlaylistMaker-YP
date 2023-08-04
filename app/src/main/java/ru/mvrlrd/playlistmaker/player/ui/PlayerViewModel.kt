@@ -9,7 +9,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.FileOperatingViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
@@ -18,8 +17,8 @@ import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
 import ru.mvrlrd.playlistmaker.player.domain.AddingTrackToPlaylistResult
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
-import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
+import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 
@@ -49,9 +48,6 @@ class PlayerViewModel(
 
     private fun loadLike(){
         interactor.getFavIds()
-            .onStart {
-                _screenState.postValue(PlayerScreenState.BlockLikeButton)
-            }
             .onEach {
                 track.isFavorite = it.contains(track.trackId)
                 _screenState.value = PlayerScreenState.HandleLikeButton(track.isFavorite)
@@ -59,7 +55,7 @@ class PlayerViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun handleLikeButton() {
+    fun addOrRemoveFromFavorites() {
         viewModelScope.launch {
             if (track.isFavorite) {
                 interactor.removeTrackFromFavorite(track.trackId)
@@ -69,64 +65,62 @@ class PlayerViewModel(
         }
     }
 
-    fun addTrackToPlaylist(track: TrackForAdapter, playlist: PlaylistForAdapter) {
-
-        viewModelScope.launch {
-            interactor.addTrackToPlaylist(trackId = track, playlist = playlist)
-                .collect() {
-                    _isTrackInPlaylist.postValue(it)
-                }
-        }
-    }
 
 
 
-    fun render(plState: MyMediaPlayer.PlayerState) {
+
+    fun render(playerState: MyMediaPlayer.PlayerState) {
         timerJob?.cancel()
-        Log.d(TAG, "$PLAYER_STATE_MESSAGE ${plState.name}")
-        when (plState) {
+        Log.d(TAG, "$PLAYER_STATE_MESSAGE ${playerState.name}")
+        when (playerState) {
             ERROR -> {
-                _screenState.value = PlayerScreenState.PlayerError(track)
+//                _screenState.value = PlayerScreenState.PlayerError(track)
             }
             DEFAULT -> {
-                _screenState.value = PlayerScreenState.BeginningState(track)
+                _screenState.value = PlayerScreenState.LoadTrackInfo(track)
+                _screenState.value = PlayerScreenState.BeginningScreenState
+
+//                _screenState.value = PlayerScreenState.BeginningState(track)
             }
             PREPARED -> {
-                _screenState.value = PlayerScreenState.Preparing
+                _screenState.value = PlayerScreenState.EnablePlayButton
+//                _screenState.value = PlayerScreenState.Preparing
             }
             PLAYING -> {
+                _screenState.value = PlayerScreenState.StartPlaying
                 timerJob = viewModelScope.launch {
                     while (true) {
                         delay(TIMER_REFRESH_DELAY_TIME)
                         interactor.getCurrentTime().collect() {
-                            renderTime(it)
+                            _screenState.value = PlayerScreenState.RenderTrackTimer(formatTime(it))
                         }
                     }
                 }
-                _screenState.value = PlayerScreenState.PlayButtonHandlingSTOP
-                _screenState.value = PlayerScreenState.PlayButtonHandling(plState)
+//                _screenState.value = PlayerScreenState.PlayButtonHandlingSTOP
+//                _screenState.value = PlayerScreenState.PlayButtonHandling(plState)
             }
             PAUSED -> {
-                _screenState.value = PlayerScreenState.PlayButtonHandlingSTART
+                _screenState.value = PlayerScreenState.StopPlaying
+//                _screenState.value = PlayerScreenState.PlayButtonHandlingSTART
             }
             COMPLETED -> {
-                _screenState.value = PlayerScreenState.PlayCompleting
+//                _screenState.value = PlayerScreenState.PlayCompleting
             }
             STOPPED -> {
                 timerJob = viewModelScope.launch {
                     interactor.getCurrentTime().collect() {
-                        renderTime(it)
+//                        renderTime(it)
                     }
                 }
-                _screenState.value = PlayerScreenState.BeginningState(track)
-                _screenState.value = PlayerScreenState.Preparing
+//                _screenState.value = PlayerScreenState.BeginningState(track)
+//                _screenState.value = PlayerScreenState.Preparing
             }
         }
     }
 
 
     private fun renderTime(time: Int) {
-        _screenState.value = PlayerScreenState.Playing(formatTime(time))
+//        _screenState.value = PlayerScreenState.Playing(formatTime(time))
     }
 
     fun playbackControl() {
@@ -136,15 +130,25 @@ class PlayerViewModel(
 
 
     fun onResume(){
-        interactor.stopIt()
+//        interactor.stopIt()
     }
 
     fun onStop() {
-        interactor.pause()
+//        interactor.stopIt()
+//        interactor.pause()
     }
     fun onDestroy() {
         timerJob?.cancel()
         interactor.onDestroy()
+    }
+
+    fun addTrackToPlaylist(track: TrackForAdapter, playlist: PlaylistForAdapter) {
+        viewModelScope.launch {
+            interactor.addTrackToPlaylist(trackId = track, playlist = playlist)
+                .collect() {
+                    _isTrackInPlaylist.postValue(it)
+                }
+        }
     }
 
     companion object{

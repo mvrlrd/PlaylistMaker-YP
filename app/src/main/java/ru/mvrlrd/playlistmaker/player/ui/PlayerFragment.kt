@@ -76,7 +76,7 @@ class PlayerFragment : Fragment() {
         binding.fabAddToFavs.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
-                    viewModel.handleLikeButton()
+                    viewModel.addOrRemoveFromFavorites()
                 }
             }
         }
@@ -147,6 +147,7 @@ class PlayerFragment : Fragment() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED){
             viewModel.playerState.collect(){
+//                Log.d(TAG, "observePlayerState: observing  ${it.name}")
                     viewModel.render(it)
                 }
             }
@@ -169,7 +170,7 @@ class PlayerFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.onResume()
+//        viewModel.onResume()
     }
 
     override fun onDestroy() {
@@ -222,5 +223,9 @@ class PlayerFragment : Fragment() {
                 binding.overlay.alpha = slideOffset+1f
             }
         })
+    }
+
+    companion object{
+        private const val TAG = "PlayerFragment"
     }
 }
