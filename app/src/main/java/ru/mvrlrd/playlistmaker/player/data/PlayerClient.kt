@@ -2,10 +2,11 @@ package ru.mvrlrd.playlistmaker.player.data
 
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
 interface PlayerClient {
-    fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState>
+    fun getLivePlayerState(): StateFlow<MyMediaPlayer.PlayerState>
     fun preparePlayer(playerTrack: PlayerTrack)
     fun start()
     fun pause()

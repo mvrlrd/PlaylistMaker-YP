@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -142,9 +144,11 @@ class PlayerFragment : Fragment() {
     }
 
     private fun observePlayerState() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED){
             viewModel.playerState.collect(){
-                viewModel.render(it)
+                    viewModel.render(it)
+                }
             }
         }
     }

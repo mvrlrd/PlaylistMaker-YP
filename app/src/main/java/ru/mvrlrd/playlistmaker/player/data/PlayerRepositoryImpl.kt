@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.data
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.FavoriteDb
@@ -24,11 +25,11 @@ class PlayerRepositoryImpl(
     private val playlistConverter: PlaylistConverter,
     private val trackConverter: TrackConverter
 ) : PlayerRepository {
-    override fun preparePlayer(playerTrack: PlayerTrack) {
+    override  fun preparePlayer(playerTrack: PlayerTrack) {
         playerClient.preparePlayer(playerTrack)
     }
 
-    override fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState> {
+    override fun getLivePlayerState(): StateFlow<MyMediaPlayer.PlayerState> {
         return playerClient.getLivePlayerState()
     }
 

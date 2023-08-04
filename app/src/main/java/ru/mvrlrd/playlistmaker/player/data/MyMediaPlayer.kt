@@ -4,22 +4,23 @@ import android.media.MediaPlayer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
 class MyMediaPlayer(private val mediaPlayer: MediaPlayer) : PlayerClient {
-
      private val _playerState = MutableStateFlow(PlayerState.DEFAULT)
-        val playerState: StateFlow<PlayerState> get() = _playerState
-    override fun getLivePlayerState(): Flow<PlayerState> {
-        return playerState
+
+    override fun getLivePlayerState(): StateFlow<PlayerState> {
+        return _playerState.asStateFlow()
     }
 
-    override fun preparePlayer(playerTrack: PlayerTrack) {
+    override  fun preparePlayer(playerTrack: PlayerTrack) {
         try {
             mediaPlayer.setDataSource(playerTrack.previewUrl)
             mediaPlayer.setOnPreparedListener {
                 _playerState.value =  PlayerState.PREPARED
+
             }
             mediaPlayer.prepareAsync()
             mediaPlayer.setOnCompletionListener {
@@ -36,7 +37,7 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer) : PlayerClient {
     }
 
     override fun handleStartAndPause() {
-        when (playerState.value) {
+        when (_playerState.value) {
             PlayerState.PLAYING -> {
                 pause()
             }

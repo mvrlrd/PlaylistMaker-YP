@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.domain.impl
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.domain.AddingTrackToPlaylistResult
@@ -19,7 +20,7 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
         playerRepository.onDestroy()
     }
 
-    override fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState> {
+    override fun getLivePlayerState(): StateFlow<MyMediaPlayer.PlayerState> {
         return playerRepository.getLivePlayerState()
     }
 

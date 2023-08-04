@@ -32,16 +32,15 @@ class PlayerViewModel(
     private val _screenState = MutableLiveData<PlayerScreenState>()
     val screenState: LiveData<PlayerScreenState> = _screenState
 
-
     val playerState = interactor.getLivePlayerState()
-
-    private var timerJob: Job? = null
 
     val playlists = interactor.getAllPlaylistsWithQuantities()
 
     private val _isTrackInPlaylist = MutableLiveData<AddingTrackToPlaylistResult>()
     val isTrackInPlaylist: LiveData<AddingTrackToPlaylistResult> = _isTrackInPlaylist
 
+
+    private var timerJob: Job? = null
 
     init {
         loadLike()
