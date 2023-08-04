@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -56,6 +57,13 @@ class PlayerFragment : Fragment() {
         handleAddToPlaylistButton()
         setOnClickToNavigateAddingPlaylistFragment()
         initRecycler()
+        
+        
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.mergedStates.collect(){
+                Log.e(TAG, "onViewCreated: ${it}", )
+            }
+        }
     }
 
     private fun handleAddToPlaylistButton() {
@@ -106,7 +114,7 @@ class PlayerFragment : Fragment() {
     private fun observeScreenState(){
       viewLifecycleOwner.lifecycleScope .launch {
           repeatOnLifecycle(Lifecycle.State.RESUMED) {
-              viewModel.screenState.collect() {
+              viewModel.mergedStates.collect() {
                   when (it){
                       is PlayerScreenState.PlayerError -> {
                           it.render(binding)

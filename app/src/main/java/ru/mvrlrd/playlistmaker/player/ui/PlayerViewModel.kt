@@ -8,14 +8,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.FileOperatingViewModel
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
@@ -35,50 +31,30 @@ class PlayerViewModel(
 ) : FileOperatingViewModel(fileHandler) {
 
     private val _screenState = MutableSharedFlow<PlayerScreenState>(10)
-    val screenState = _screenState.asSharedFlow()
+
+
+    private val playlistsFlow = interactor.getAllPlaylistsWithQuantities()
+        .map { PlayerScreenState.UpdatePlaylistList(it)  }
+    private val likesFlow = interactor.getFavIds()
+        .map {
+            track.isFavorite = it.contains(track.trackId)
+            PlayerScreenState.HandleLikeButton(track.isFavorite)
+        }
+
+    private val _mergedStates = _screenState.mergeWith(playlistsFlow, likesFlow)
+    val mergedStates = _mergedStates
 
     private var timerJob: Job? = null
 
     init {
         interactor.preparePlayer(track)
-        loadLike()
         observePlayerState()
-        loadPlaylists()
     }
-
-    private fun loadPlaylists(){
-        interactor.getAllPlaylistsWithQuantities()
-            .filter { it.isNotEmpty() }
-            .onEach { println(it) }
-            .map { PlayerScreenState.UpdatePlaylistList(it) }
-            .onEach {
-               _screenState.emit(it)
-            }
-            .onCompletion {
-                _screenState.tryEmit(PlayerScreenState.EnableAddToPlaylistBtn)
-            }
-            .launchIn(viewModelScope)
-    }
-
 
     private fun observePlayerState() {
         interactor.getLivePlayerState()
             .onEach {
                 render(it)
-            }
-            .launchIn(viewModelScope)
-    }
-    private fun loadLike(){
-        interactor.getFavIds()
-            .map {
-                track.isFavorite = it.contains(track.trackId)
-                PlayerScreenState.HandleLikeButton(track.isFavorite)
-            }
-            .onEach {
-                _screenState.emit(it)
-            }
-            .onCompletion {
-                _screenState.tryEmit(PlayerScreenState.EnableLikeButton)
             }
             .launchIn(viewModelScope)
     }
@@ -156,8 +132,8 @@ class PlayerViewModel(
         interactor.onDestroy()
     }
 
-    private fun Flow<PlayerScreenState>.mergeWith(another: Flow<PlayerScreenState>): Flow<PlayerScreenState>{
-        return merge(this, another)
+    private fun Flow<PlayerScreenState>.mergeWith(another: Flow<PlayerScreenState>, another2 : Flow<PlayerScreenState>): Flow<PlayerScreenState>{
+        return merge(this, another, another2)
     }
 
     fun addTrackToPlaylist(_track: TrackForAdapter, playlist: PlaylistForAdapter) {
