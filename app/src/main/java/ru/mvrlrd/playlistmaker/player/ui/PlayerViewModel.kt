@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -28,10 +30,8 @@ class PlayerViewModel(
     fileHandler: GetInternalFileUseCase
 ) : FileOperatingViewModel(fileHandler) {
 
-    private val _screenState = MutableLiveData<PlayerScreenState>()
-    val screenState: LiveData<PlayerScreenState> = _screenState
-
-    val playerState = interactor.getLivePlayerState()
+    private val _screenState = MutableStateFlow<PlayerScreenState>(PlayerScreenState.BeginningScreenState(track))
+    val screenState = _screenState.asStateFlow()
 
     val playlists = interactor.getAllPlaylistsWithQuantities()
 
@@ -44,13 +44,24 @@ class PlayerViewModel(
     init {
         loadLike()
         interactor.preparePlayer(track)
+        observePlayerState()
     }
 
+
+
+    private fun observePlayerState() {
+        interactor.getLivePlayerState()
+            .onEach {
+                println(it.name)
+                render(it)
+            }
+            .launchIn(viewModelScope)
+    }
     private fun loadLike(){
         interactor.getFavIds()
             .onEach {
                 track.isFavorite = it.contains(track.trackId)
-                _screenState.value = PlayerScreenState.HandleLikeButton(track.isFavorite)
+                _screenState.emit(PlayerScreenState.HandleLikeButton(track))
             }
             .launchIn(viewModelScope)
     }
@@ -74,43 +85,38 @@ class PlayerViewModel(
         Log.d(TAG, "$PLAYER_STATE_MESSAGE ${playerState.name}")
         when (playerState) {
             ERROR -> {
-                _screenState.value = PlayerScreenState.PlayerError
+//                _screenState.value = PlayerScreenState.PlayerError
             }
             DEFAULT -> {
-                _screenState.value = PlayerScreenState.LoadTrackInfo(track)
-                _screenState.value = PlayerScreenState.BeginningScreenState
+
             }
             PREPARED -> {
-                _screenState.value = PlayerScreenState.EnablePlayButton
+                _screenState.value = PlayerScreenState.EnablePlayButton(track)
             }
             PLAYING -> {
-                _screenState.value = PlayerScreenState.StartPlaying
+                _screenState.value = PlayerScreenState.StartPlaying(track)
                 timerJob = viewModelScope.launch {
                     while (true) {
                         delay(TIMER_REFRESH_DELAY_TIME)
                         interactor.getCurrentTime().collect() {
-                            _screenState.value = PlayerScreenState.RenderTrackTimer(formatTime(it))
+                            _screenState.value = (PlayerScreenState.RenderTrackTimer(formatTime(it), track))
                         }
                     }
                 }
             }
             PAUSED -> {
-                _screenState.value = PlayerScreenState.StopPlaying
+                _screenState.value = (PlayerScreenState.StopPlaying(track))
             }
             COMPLETED -> {
-                _screenState.value = PlayerScreenState.PlayCompleting
+//                _screenState.value = PlayerScreenState.PlayCompleting
             }
             STOPPED -> {
                 timerJob = viewModelScope.launch {
                     interactor.getCurrentTime().collect() {
-                        _screenState.value = PlayerScreenState.RenderTrackTimer(formatTime(it))
+//                        _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it), track))
                     }
                 }
-                _screenState.value = PlayerScreenState.LoadTrackInfo(track)
-                _screenState.value = PlayerScreenState.BeginningScreenState
-                _screenState.value = PlayerScreenState.HandleLikeButton(track.isFavorite)
-                _screenState.value = PlayerScreenState.EnablePlayButton
-
+                _screenState.value = (PlayerScreenState.LoadAfterBackgrounded(track))
             }
         }
     }

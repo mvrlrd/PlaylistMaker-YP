@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +16,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.getScopeName
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
@@ -123,17 +128,22 @@ class PlayerFragment : Fragment() {
     }
 
     private fun observeScreenState(){
-        viewModel.screenState.observe(this) {
-            if (it is PlayerScreenState.PlayerError) {
-                it.render(binding)
-                Toast.makeText(
-                    requireContext(),
-                    this.resources.getText(R.string.impossible_to_play),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                it.render(binding)
-            }
+      viewLifecycleOwner.lifecycleScope .launch {
+          repeatOnLifecycle(Lifecycle.State.RESUMED) {
+              viewModel.screenState.collect() {
+                  if (it is PlayerScreenState.PlayerError) {
+                      it.render(binding)
+                      Toast.makeText(
+                          requireContext(),
+                          resources.getText(R.string.impossible_to_play),
+                          Toast.LENGTH_SHORT
+                      ).show()
+                  } else {
+                      Log.i(TAG, "observeScreenState444: ${it}")
+                      it.render(binding)
+                  }
+              }
+          }
         }
     }
 
@@ -145,14 +155,14 @@ class PlayerFragment : Fragment() {
     }
 
     private fun observePlayerState() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.RESUMED){
-            viewModel.playerState.collect(){
-//                Log.d(TAG, "observePlayerState: observing  ${it.name}")
-                    viewModel.render(it)
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.RESUMED){
+//            viewModel.playerState.collect(){
+////                Log.d(TAG, "observePlayerState: observing  ${it.name}")
+//                    viewModel.render(it)
+//                }
+//            }
+//        }
     }
 
     private fun parseIntent(trackForAdapter: TrackForAdapter): PlayerTrack {
@@ -167,11 +177,12 @@ class PlayerFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         viewModel.onStop()
+
     }
 
     override fun onResume() {
         super.onResume()
-//        viewModel.onResume()
+
     }
 
     override fun onDestroy() {

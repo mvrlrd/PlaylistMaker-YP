@@ -5,7 +5,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.impl.PlayerInteractorImpl
 
 val playerInteractorModule = module {
-    factory<PlayerInteractor> {
+    single <PlayerInteractor> {
         PlayerInteractorImpl(playerRepository = get())
     }
 }
