@@ -74,17 +74,14 @@ class PlayerViewModel(
         Log.d(TAG, "$PLAYER_STATE_MESSAGE ${playerState.name}")
         when (playerState) {
             ERROR -> {
-//                _screenState.value = PlayerScreenState.PlayerError(track)
+                _screenState.value = PlayerScreenState.PlayerError
             }
             DEFAULT -> {
                 _screenState.value = PlayerScreenState.LoadTrackInfo(track)
                 _screenState.value = PlayerScreenState.BeginningScreenState
-
-//                _screenState.value = PlayerScreenState.BeginningState(track)
             }
             PREPARED -> {
                 _screenState.value = PlayerScreenState.EnablePlayButton
-//                _screenState.value = PlayerScreenState.Preparing
             }
             PLAYING -> {
                 _screenState.value = PlayerScreenState.StartPlaying
@@ -96,47 +93,43 @@ class PlayerViewModel(
                         }
                     }
                 }
-//                _screenState.value = PlayerScreenState.PlayButtonHandlingSTOP
-//                _screenState.value = PlayerScreenState.PlayButtonHandling(plState)
             }
             PAUSED -> {
                 _screenState.value = PlayerScreenState.StopPlaying
-//                _screenState.value = PlayerScreenState.PlayButtonHandlingSTART
             }
             COMPLETED -> {
-//                _screenState.value = PlayerScreenState.PlayCompleting
+                _screenState.value = PlayerScreenState.PlayCompleting
             }
             STOPPED -> {
                 timerJob = viewModelScope.launch {
                     interactor.getCurrentTime().collect() {
-//                        renderTime(it)
+                        _screenState.value = PlayerScreenState.RenderTrackTimer(formatTime(it))
                     }
                 }
-//                _screenState.value = PlayerScreenState.BeginningState(track)
-//                _screenState.value = PlayerScreenState.Preparing
+                _screenState.value = PlayerScreenState.LoadTrackInfo(track)
+                _screenState.value = PlayerScreenState.BeginningScreenState
+                _screenState.value = PlayerScreenState.HandleLikeButton(track.isFavorite)
+                _screenState.value = PlayerScreenState.EnablePlayButton
+
             }
         }
     }
 
-
-    private fun renderTime(time: Int) {
-//        _screenState.value = PlayerScreenState.Playing(formatTime(time))
-    }
 
     fun playbackControl() {
         interactor.handleStartAndPause()
     }
 
 
-
-    fun onResume(){
-//        interactor.stopIt()
-    }
-
     fun onStop() {
-//        interactor.stopIt()
-//        interactor.pause()
+        interactor.pause()
     }
+
+    fun putItOnBackground(){
+        interactor.stopIt()
+    }
+
+
     fun onDestroy() {
         timerJob?.cancel()
         interactor.onDestroy()

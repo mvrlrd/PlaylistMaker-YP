@@ -66,6 +66,7 @@ class PlayerFragment : Fragment() {
 
     private fun setOnClickToNavigateAddingPlaylistFragment() {
         binding.bottomSheetContainer.btAddNewPlaylist.setOnClickListener {
+            viewModel.putItOnBackground()
             findNavController().navigate(
                 PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment()
             )

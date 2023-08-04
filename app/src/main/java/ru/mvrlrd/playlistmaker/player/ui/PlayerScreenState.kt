@@ -23,7 +23,7 @@ sealed class PlayerScreenState {
             binding.fabPlay.alpha = INACTIVE_PLAY_BUTTON_ALPHA
             binding.fabAddToFavs.isEnabled = false
             binding.fabAddToFavs.alpha = INACTIVE_PLAY_BUTTON_ALPHA
-            binding.fabOpenBottomSheet.isEnabled = false
+            binding.fabOpenBottomSheet.isEnabled = true
             binding.fabOpenBottomSheet.alpha = INACTIVE_PLAY_BUTTON_ALPHA
         }
     }
@@ -63,6 +63,36 @@ sealed class PlayerScreenState {
             binding.fabAddToFavs.alpha = ACTIVE_PLAY_BUTTON_ALPHA
             changeLikeButtonAppearance(binding, isFavorite)
         }
+
+        private fun changeLikeButtonAppearance(binding: FragmentPlayerBinding, isFavorite: Boolean) {
+            val icon = if (isFavorite) {
+                binding.fabAddToFavs.imageTintList = ColorStateList.valueOf(
+                    binding.fabAddToFavs.resources.getColor(
+                        R.color.red,
+                        binding.fabAddToFavs.context.theme
+                    )
+                )
+                ResourcesCompat.getDrawable(
+                    binding.fabAddToFavs.resources,
+                    R.drawable.baseline_favorite_full,
+                    binding.fabAddToFavs.context.theme
+                )
+
+            } else {
+                binding.fabAddToFavs.imageTintList = ColorStateList.valueOf(
+                    binding.fabAddToFavs.resources.getColor(
+                        R.color.white,
+                        binding.fabAddToFavs.context.theme
+                    )
+                )
+                ResourcesCompat.getDrawable(
+                    binding.fabAddToFavs.resources,
+                    R.drawable.baseline_favorite_border_24,
+                    binding.fabAddToFavs.context.theme
+                )
+            }
+            binding.fabAddToFavs.setImageDrawable(icon)
+        }
     }
 
     object StopPlaying :
@@ -81,63 +111,6 @@ sealed class PlayerScreenState {
 
 
 
-    class BeginningState(private val track: PlayerTrack) : PlayerScreenState() {
-        override fun render(binding: FragmentPlayerBinding) {
-            binding.fabPlay.alpha = INACTIVE_PLAY_BUTTON_ALPHA
-            binding.tvTrackName.text = track.trackName
-            binding.tvSingerName.text = track.artistName
-            binding.tvDurationParam.text = SimpleDateFormat(
-                binding.tvDurationParam.resources.getString(R.string.track_duration_time_format),
-                Locale.getDefault()
-            ).format(track.trackTime?.toLong() ?: 0L)
-            binding.tvAlbumParam.text = track.album
-            binding.tvYearParam.text = unparseDateToYear(track.year)
-            binding.tvGenreParam.text = track.genre
-            binding.tvCountryParam.text = track.country
-//            handleLikeButton(binding, track)
-            binding.ivAlbumImage.loadImage(
-                track.getCoverArtwork(),
-                size = binding.ivAlbumImage.resources.getInteger(R.integer.picture_big_size),
-                radius = binding.ivAlbumImage.resources.getDimensionPixelSize(R.dimen.radius_medium)
-            )
-        }
-    }
-
-    class PlayButtonHandling(private val playerState: MyMediaPlayer.PlayerState) :
-        PlayerScreenState() {
-        override fun render(binding: FragmentPlayerBinding) {
-            when (playerState) {
-                MyMediaPlayer.PlayerState.PLAYING -> {
-                    binding.fabPlay.setImageResource(R.drawable.baseline_pause_24)
-                }
-                else -> {
-                    binding.fabPlay.setImageResource(R.drawable.baseline_play_arrow_24)
-                }
-            }
-        }
-    }
-
-    object PlayButtonHandlingSTOP :
-        PlayerScreenState() {
-        override fun render(binding: FragmentPlayerBinding) {
-
-            binding.fabPlay.setImageResource(R.drawable.baseline_pause_24)
-        }
-    }
-
-    object PlayButtonHandlingSTART :
-        PlayerScreenState() {
-        override fun render(binding: FragmentPlayerBinding) {
-            binding.fabPlay.setImageResource(R.drawable.baseline_play_arrow_24)
-        }
-    }
-
-    object Preparing : PlayerScreenState() {
-        override fun render(binding: FragmentPlayerBinding) {
-            binding.fabPlay.isEnabled = true
-            binding.fabPlay.alpha = ACTIVE_PLAY_BUTTON_ALPHA
-        }
-    }
 
     class RenderTrackTimer(private val progress: String) : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
@@ -154,67 +127,9 @@ sealed class PlayerScreenState {
 
     abstract fun render(binding: FragmentPlayerBinding)
 
-    fun changeLikeButtonAppearance(binding: FragmentPlayerBinding, isFavorite: Boolean) {
-        val icon = if (isFavorite) {
-            binding.fabAddToFavs.imageTintList = ColorStateList.valueOf(
-                binding.fabAddToFavs.resources.getColor(
-                    R.color.red,
-                    binding.fabAddToFavs.context.theme
-                )
-            )
-            ResourcesCompat.getDrawable(
-                binding.fabAddToFavs.resources,
-                R.drawable.baseline_favorite_full,
-                binding.fabAddToFavs.context.theme
-            )
 
-        } else {
-            binding.fabAddToFavs.imageTintList = ColorStateList.valueOf(
-                binding.fabAddToFavs.resources.getColor(
-                    R.color.white,
-                    binding.fabAddToFavs.context.theme
-                )
-            )
-            ResourcesCompat.getDrawable(
-                binding.fabAddToFavs.resources,
-                R.drawable.baseline_favorite_border_24,
-                binding.fabAddToFavs.context.theme
-            )
-        }
-        binding.fabAddToFavs.setImageDrawable(icon)
-    }
 
-//    fun handleLikeButton(binding: FragmentPlayerBinding, track: PlayerTrack) {
-//        val icon = if (track.isFavorite) {
-//            binding.fabAddToFavs.imageTintList = ColorStateList.valueOf(
-//                binding.fabAddToFavs.resources.getColor(
-//                    R.color.red,
-//                    binding.fabAddToFavs.context.theme
-//                )
-//            )
-//            ResourcesCompat.getDrawable(
-//                binding.fabAddToFavs.resources,
-//                R.drawable.baseline_favorite_full,
-//                binding.fabAddToFavs.context.theme
-//            )
-//
-//        } else {
-//            binding.fabAddToFavs.imageTintList = ColorStateList.valueOf(
-//                binding.fabAddToFavs.resources.getColor(
-//                    R.color.white,
-//                    binding.fabAddToFavs.context.theme
-//                )
-//            )
-//            ResourcesCompat.getDrawable(
-//                binding.fabAddToFavs.resources,
-//                R.drawable.baseline_favorite_border_24,
-//                binding.fabAddToFavs.context.theme
-//            )
-//        }
-//        binding.fabAddToFavs.setImageDrawable(icon)
-//    }
-
-    class PlayerError(private val track: PlayerTrack) : PlayerScreenState() {
+    object PlayerError : PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
             binding.fabPlay.alpha = INACTIVE_PLAY_BUTTON_ALPHA
             binding.fabAddToFavs.alpha = INACTIVE_PLAY_BUTTON_ALPHA
@@ -224,41 +139,9 @@ sealed class PlayerScreenState {
             binding.fabAddToFavs.isEnabled = false
             binding.fabOpenBottomSheet.isEnabled = false
 
-            binding.fabPlay.alpha = INACTIVE_PLAY_BUTTON_ALPHA
-            binding.tvTrackName.text = track.trackName
-            binding.tvSingerName.text = track.artistName
-            binding.tvDurationParam.text = SimpleDateFormat(
-                binding.tvDurationParam.resources.getString(R.string.track_duration_time_format),
-                Locale.getDefault()
-            ).format(track.trackTime?.toLong() ?: 0L)
-            binding.tvAlbumParam.text = track.album
-            binding.tvYearParam.text = unparseDateToYear(track.year)
-            binding.tvGenreParam.text = track.genre
-            binding.tvCountryParam.text = track.country
-//            handleLikeButton(binding, track)
-
-            Glide
-                .with(binding.ivAlbumImage)
-                .load(track.getCoverArtwork())
-                .placeholder(R.drawable.album_placeholder_image)
-                .transform(
-                    CenterCrop(),
-                    RoundedCorners(binding.ivAlbumImage.resources.getDimensionPixelSize(R.dimen.radius_medium))
-                )
-                .into(binding.ivAlbumImage)
         }
     }
 
-    object BlockLikeButton: PlayerScreenState(){
-        override fun render(binding: FragmentPlayerBinding) {
-            binding.fabAddToFavs.isEnabled = false
-        }
-    }
-    object EnableLikeButton: PlayerScreenState(){
-        override fun render(binding: FragmentPlayerBinding) {
-            binding.fabAddToFavs.isEnabled = true
-        }
-    }
 
     companion object {
         private const val INACTIVE_PLAY_BUTTON_ALPHA = 0.5f
