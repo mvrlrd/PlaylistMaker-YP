@@ -125,8 +125,10 @@ class PlayerFragment : Fragment() {
                           it.update(playlistAdapter)
                       }
                       is PlayerScreenState.AddTrackToPlaylist -> {
-                          bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                          it.makeToast(requireContext())
+                          if ( it.makeToast(requireContext())){
+                              bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                          }
+
                       }
                       else -> {
                           it.render(binding)

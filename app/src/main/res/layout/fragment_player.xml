@@ -79,6 +79,7 @@
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_open_bottom_sheet"
                 style="@style/FabStyle"
+                android:enabled="true"
                 android:layout_marginTop="132dp"
                 android:src="@drawable/baseline_add_to_photos_24"
                 app:borderWidth="0dp"
