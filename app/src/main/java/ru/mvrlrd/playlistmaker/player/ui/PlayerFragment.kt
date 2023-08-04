@@ -1,7 +1,6 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.component.getScopeName
 import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
@@ -54,7 +49,7 @@ class PlayerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBottomSheet()
-        observeViewModel()
+        observeScreenState()
         handleBackButton()
         handlePlayButton()
         handleLikeButton()
@@ -128,22 +123,14 @@ class PlayerFragment : Fragment() {
                           if ( it.makeToast(requireContext())){
                               bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                           }
-
                       }
                       else -> {
                           it.render(binding)
                       }
                   }
-
-
-
               }
           }
         }
-    }
-
-    private fun observeViewModel() {
-        observeScreenState()
     }
 
 
@@ -159,12 +146,9 @@ class PlayerFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         viewModel.onStop()
-
     }
-
     override fun onResume() {
         super.onResume()
-
     }
 
     override fun onDestroy() {

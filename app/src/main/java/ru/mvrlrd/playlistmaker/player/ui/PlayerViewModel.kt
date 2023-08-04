@@ -46,16 +46,11 @@ class PlayerViewModel(
         loadPlaylists()
     }
 
-
     private fun loadPlaylists(){
         interactor.getAllPlaylistsWithQuantities()
-            .onStart {
-
-            }
             .filter { it.isNotEmpty() }
             .onEach { println(it) }
             .map { PlayerScreenState.UpdatePlaylistList(it) }
-//            .mergeWith(_screenState)
             .onEach {
                _screenState.emit(it)
             }
@@ -75,9 +70,7 @@ class PlayerViewModel(
     }
     private fun loadLike(){
         interactor.getFavIds()
-            .onStart {
-
-            }.map {
+            .map {
                 track.isFavorite = it.contains(track.trackId)
                 PlayerScreenState.HandleLikeButton(track.isFavorite)
             }
@@ -146,11 +139,9 @@ class PlayerViewModel(
         }
     }
 
-
     fun playbackControl() {
         interactor.handleStartAndPause()
     }
-
 
     fun onStop() {
         interactor.pause()
@@ -159,7 +150,6 @@ class PlayerViewModel(
     fun putItOnBackground(){
         interactor.stopIt()
     }
-
 
     fun onDestroy() {
         timerJob?.cancel()
