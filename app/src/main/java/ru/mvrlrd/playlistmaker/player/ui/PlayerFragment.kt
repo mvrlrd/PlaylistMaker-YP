@@ -106,26 +106,7 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    private fun observeIsTrackInPlaylist(){
-        viewModel.isTrackInPlaylist.observe(this) { result ->
-            val isTrackInPlaylist = result.wasAdded
-            val playlistName = result.playlistName
-            val message = if (isTrackInPlaylist) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                this.resources.getString(R.string.track_added_to_playlist, playlistName)
-            } else {
-                this.resources.getString(R.string.track_already_added, playlistName)
-            }
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-        }
-    }
-    private fun observePlaylists(){
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            viewModel.playlists.collect(){
-//                playlistAdapter.submitList(it)
-//            }
-//        }
-    }
+
 
     private fun observeScreenState(){
       viewLifecycleOwner.lifecycleScope .launch {
@@ -139,11 +120,17 @@ class PlayerFragment : Fragment() {
                           Toast.LENGTH_SHORT
                       ).show()
                   } else if (it is PlayerScreenState.UpdatePlaylistList) {
-                      Log.i(TAG, "playlist ____ : ${it}")
+                      Log.e(TAG, "playlist ____ : ${it}")
                       it.update(adapter = playlistAdapter)
                       it.render(binding)
-                  }else{
-                      Log.i(TAG, "observeScreenState444: ${it}")
+                  }
+                  else if
+                      (it is PlayerScreenState.AddTrackToPlaylist){
+                          it.makeToast(requireContext(),bottomSheetBehavior)
+                  }
+
+                  else{
+                      Log.e(TAG, "observeScreenState444: ${it}")
                       it.render(binding)
                   }
               }
@@ -152,22 +139,9 @@ class PlayerFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        observePlayerState()
-        observePlaylists()
         observeScreenState()
-        observeIsTrackInPlaylist()
     }
 
-    private fun observePlayerState() {
-//        lifecycleScope.launch {
-//            repeatOnLifecycle(Lifecycle.State.RESUMED){
-//            viewModel.playerState.collect(){
-////                Log.d(TAG, "observePlayerState: observing  ${it.name}")
-//                    viewModel.render(it)
-//                }
-//            }
-//        }
-    }
 
     private fun parseIntent(trackForAdapter: TrackForAdapter): PlayerTrack {
         return trackForAdapter.mapTrackToTrackForPlayer()
@@ -198,7 +172,7 @@ class PlayerFragment : Fragment() {
         playlistAdapter.apply {
             onClickListener = {
                     viewModel.addTrackToPlaylist(
-                        track = args.track,
+                        _track =  args.track,
                         playlist = it
                     )
             }

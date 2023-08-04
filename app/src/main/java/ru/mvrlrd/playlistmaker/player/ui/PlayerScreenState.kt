@@ -1,11 +1,17 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
+import android.content.Context
 import android.content.res.ColorStateList
+import android.util.Log
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.PlaylistAdapter
+import ru.mvrlrd.playlistmaker.player.domain.AddingTrackToPlaylistResult
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.util.unparseDateToYear
 import ru.mvrlrd.playlistmaker.tools.loadImage
@@ -149,13 +155,26 @@ sealed class PlayerScreenState(private val track: PlayerTrack) {
             binding.fabPlay.setImageResource(R.drawable.baseline_play_arrow_24)
         }
     }
+    class AddTrackToPlaylist(private val result: AddingTrackToPlaylistResult , track: PlayerTrack): PlayerScreenState(track){
+        override fun render(binding: FragmentPlayerBinding) {
+
+        }
+
+        fun makeToast(context: Context, bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>){
+            val isTrackInPlaylist = result.wasAdded
+            val playlistName = result.playlistName
+            val message = if (isTrackInPlaylist) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                context.resources.getString(R.string.track_added_to_playlist, playlistName)
+            } else {
+                context.resources.getString(R.string.track_already_added, playlistName)
+            }
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     class UpdatePlaylistList(private val playlists: List<PlaylistForAdapter>, track: PlayerTrack): PlayerScreenState(track){
         override fun render(binding: FragmentPlayerBinding) {
-            loadTrackInfo(binding)
-            enablePlayButton(binding)
-            changeLikeButtonAppearance(binding)
-
         }
 
         fun update(adapter: PlaylistAdapterForPlayer){

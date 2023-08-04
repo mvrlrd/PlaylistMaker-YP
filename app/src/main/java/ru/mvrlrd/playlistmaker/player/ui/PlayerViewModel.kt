@@ -2,14 +2,15 @@ package ru.mvrlrd.playlistmaker.player.ui
 
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.mvrlrd.playlistmaker.mediateka.playlists.FileOperatingViewModel
@@ -17,7 +18,6 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.GetInternalFileUseCase
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer.PlayerState.*
-import ru.mvrlrd.playlistmaker.player.domain.AddingTrackToPlaylistResult
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.util.formatTime
@@ -30,28 +30,26 @@ class PlayerViewModel(
     fileHandler: GetInternalFileUseCase
 ) : FileOperatingViewModel(fileHandler) {
 
-    private val _screenState = MutableStateFlow<PlayerScreenState>(PlayerScreenState.BeginningScreenState(track))
-    val screenState = _screenState.asStateFlow()
-
-
-    private val _isTrackInPlaylist = MutableLiveData<AddingTrackToPlaylistResult>()
-    val isTrackInPlaylist: LiveData<AddingTrackToPlaylistResult> = _isTrackInPlaylist
-
+    private val _screenState = MutableSharedFlow<PlayerScreenState>(5)
+    val screenState = _screenState.asSharedFlow()
 
     private var timerJob: Job? = null
 
     init {
-        loadLike()
         interactor.preparePlayer(track)
+        loadLike()
         observePlayerState()
-        observePlaylists()
+        loadPlaylists()
     }
 
 
-    private fun observePlaylists(){
+    private fun loadPlaylists(){
         interactor.getAllPlaylistsWithQuantities()
+            .filter { it.isNotEmpty() }
+            .onEach { println(it) }
+            .map { PlayerScreenState.UpdatePlaylistList(it, track) }
             .onEach {
-                _screenState.value = PlayerScreenState.UpdatePlaylistList(it, track)
+               _screenState.emit(it)
             }
             .launchIn(viewModelScope)
     }
@@ -74,7 +72,7 @@ class PlayerViewModel(
     }
 
     fun addOrRemoveFromFavorites() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             if (track.isFavorite) {
                 interactor.removeTrackFromFavorite(track.trackId)
             } else {
@@ -82,10 +80,6 @@ class PlayerViewModel(
             }
         }
     }
-
-
-
-
 
     fun render(playerState: MyMediaPlayer.PlayerState) {
         timerJob?.cancel()
@@ -95,24 +89,24 @@ class PlayerViewModel(
 //                _screenState.value = PlayerScreenState.PlayerError
             }
             DEFAULT -> {
-
+                _screenState.tryEmit(PlayerScreenState.BeginningScreenState(track))
             }
             PREPARED -> {
-                _screenState.value = PlayerScreenState.EnablePlayButton(track)
+                _screenState.tryEmit(PlayerScreenState.EnablePlayButton(track))
             }
             PLAYING -> {
-                _screenState.value = PlayerScreenState.StartPlaying(track)
+                _screenState.tryEmit(PlayerScreenState.StartPlaying(track))
                 timerJob = viewModelScope.launch {
                     while (true) {
                         delay(TIMER_REFRESH_DELAY_TIME)
                         interactor.getCurrentTime().collect() {
-                            _screenState.value = (PlayerScreenState.RenderTrackTimer(formatTime(it), track))
+                            _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it), track))
                         }
                     }
                 }
             }
             PAUSED -> {
-                _screenState.value = (PlayerScreenState.StopPlaying(track))
+                _screenState.tryEmit(PlayerScreenState.StopPlaying(track))
             }
             COMPLETED -> {
 //                _screenState.value = PlayerScreenState.PlayCompleting
@@ -123,7 +117,7 @@ class PlayerViewModel(
 //                        _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it), track))
                     }
                 }
-                _screenState.value = (PlayerScreenState.LoadAfterBackgrounded(track))
+                _screenState.tryEmit(PlayerScreenState.LoadAfterBackgrounded(track))
             }
         }
     }
@@ -148,11 +142,11 @@ class PlayerViewModel(
         interactor.onDestroy()
     }
 
-    fun addTrackToPlaylist(track: TrackForAdapter, playlist: PlaylistForAdapter) {
-        viewModelScope.launch {
-            interactor.addTrackToPlaylist(trackId = track, playlist = playlist)
+    fun addTrackToPlaylist(_track: TrackForAdapter, playlist: PlaylistForAdapter) {
+        viewModelScope.launch(Dispatchers.IO) {
+            interactor.addTrackToPlaylist(trackId = _track, playlist = playlist)
                 .collect() {
-                    _isTrackInPlaylist.postValue(it)
+                    _screenState.emit(PlayerScreenState.AddTrackToPlaylist(track = track, result = it))
                 }
         }
     }
