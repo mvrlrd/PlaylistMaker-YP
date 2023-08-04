@@ -2,12 +2,10 @@ package ru.mvrlrd.playlistmaker.player.ui
 
 import android.content.res.ColorStateList
 import androidx.core.content.res.ResourcesCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
-import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
+import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
+import ru.mvrlrd.playlistmaker.mediateka.playlists.playlists_screen.ui.PlaylistAdapter
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.util.unparseDateToYear
 import ru.mvrlrd.playlistmaker.tools.loadImage
@@ -96,6 +94,12 @@ sealed class PlayerScreenState(private val track: PlayerTrack) {
 
     }
 
+    class LoadPlaylists(playlists: List<PlaylistForAdapter>, track: PlayerTrack): PlayerScreenState(track){
+        override fun render(binding: FragmentPlayerBinding) {
+
+        }
+    }
+
 
     class EnablePlayButton(track: PlayerTrack) : PlayerScreenState(track) {
         override fun render(binding: FragmentPlayerBinding) {
@@ -146,7 +150,21 @@ sealed class PlayerScreenState(private val track: PlayerTrack) {
         }
     }
 
+    class UpdatePlaylistList(private val playlists: List<PlaylistForAdapter>, track: PlayerTrack): PlayerScreenState(track){
+        override fun render(binding: FragmentPlayerBinding) {
+            loadTrackInfo(binding)
+            enablePlayButton(binding)
+            changeLikeButtonAppearance(binding)
+
+        }
+
+        fun update(adapter: PlaylistAdapterForPlayer){
+            adapter.submitList(playlists)
+        }
+    }
+
     abstract fun render(binding: FragmentPlayerBinding)
+
 
 
 

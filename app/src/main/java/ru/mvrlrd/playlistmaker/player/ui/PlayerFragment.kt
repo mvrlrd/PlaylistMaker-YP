@@ -120,11 +120,11 @@ class PlayerFragment : Fragment() {
         }
     }
     private fun observePlaylists(){
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.playlists.collect(){
-                playlistAdapter.submitList(it)
-            }
-        }
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            viewModel.playlists.collect(){
+//                playlistAdapter.submitList(it)
+//            }
+//        }
     }
 
     private fun observeScreenState(){
@@ -138,7 +138,11 @@ class PlayerFragment : Fragment() {
                           resources.getText(R.string.impossible_to_play),
                           Toast.LENGTH_SHORT
                       ).show()
-                  } else {
+                  } else if (it is PlayerScreenState.UpdatePlaylistList) {
+                      Log.i(TAG, "playlist ____ : ${it}")
+                      it.update(adapter = playlistAdapter)
+                      it.render(binding)
+                  }else{
                       Log.i(TAG, "observeScreenState444: ${it}")
                       it.render(binding)
                   }

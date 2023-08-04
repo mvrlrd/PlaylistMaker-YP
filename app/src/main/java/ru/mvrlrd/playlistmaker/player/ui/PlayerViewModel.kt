@@ -33,7 +33,6 @@ class PlayerViewModel(
     private val _screenState = MutableStateFlow<PlayerScreenState>(PlayerScreenState.BeginningScreenState(track))
     val screenState = _screenState.asStateFlow()
 
-    val playlists = interactor.getAllPlaylistsWithQuantities()
 
     private val _isTrackInPlaylist = MutableLiveData<AddingTrackToPlaylistResult>()
     val isTrackInPlaylist: LiveData<AddingTrackToPlaylistResult> = _isTrackInPlaylist
@@ -45,14 +44,22 @@ class PlayerViewModel(
         loadLike()
         interactor.preparePlayer(track)
         observePlayerState()
+        observePlaylists()
     }
 
+
+    private fun observePlaylists(){
+        interactor.getAllPlaylistsWithQuantities()
+            .onEach {
+                _screenState.value = PlayerScreenState.UpdatePlaylistList(it, track)
+            }
+            .launchIn(viewModelScope)
+    }
 
 
     private fun observePlayerState() {
         interactor.getLivePlayerState()
             .onEach {
-                println(it.name)
                 render(it)
             }
             .launchIn(viewModelScope)
