@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -57,13 +58,6 @@ class PlayerFragment : Fragment() {
         handleAddToPlaylistButton()
         setOnClickToNavigateAddingPlaylistFragment()
         initRecycler()
-        
-        
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.mergedStates.collect(){
-                Log.e(TAG, "onViewCreated: ${it}", )
-            }
-        }
     }
 
     private fun handleAddToPlaylistButton() {
@@ -115,6 +109,7 @@ class PlayerFragment : Fragment() {
       viewLifecycleOwner.lifecycleScope .launch {
           repeatOnLifecycle(Lifecycle.State.RESUMED) {
               viewModel.mergedStates.collect() {
+                  Log.i(TAG, "observeScreenState: $it")
                   when (it){
                       is PlayerScreenState.PlayerError -> {
                           it.render(binding)
