@@ -20,7 +20,6 @@ import java.util.*
 
 sealed class PlayerScreenState(private val track: PlayerTrack) {
 
-
     fun changeLikeButtonAppearance(binding: FragmentPlayerBinding) {
         val icon = if (track.isFavorite) {
             binding.fabAddToFavs.imageTintList = ColorStateList.valueOf(
@@ -160,11 +159,11 @@ sealed class PlayerScreenState(private val track: PlayerTrack) {
 
         }
 
-        fun makeToast(context: Context, bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>){
+        fun makeToast(context: Context){
             val isTrackInPlaylist = result.wasAdded
             val playlistName = result.playlistName
             val message = if (isTrackInPlaylist) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
                 context.resources.getString(R.string.track_added_to_playlist, playlistName)
             } else {
                 context.resources.getString(R.string.track_already_added, playlistName)

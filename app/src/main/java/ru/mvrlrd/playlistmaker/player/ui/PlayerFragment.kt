@@ -112,27 +112,29 @@ class PlayerFragment : Fragment() {
       viewLifecycleOwner.lifecycleScope .launch {
           repeatOnLifecycle(Lifecycle.State.RESUMED) {
               viewModel.screenState.collect() {
-                  if (it is PlayerScreenState.PlayerError) {
-                      it.render(binding)
-                      Toast.makeText(
-                          requireContext(),
-                          resources.getText(R.string.impossible_to_play),
-                          Toast.LENGTH_SHORT
-                      ).show()
-                  } else if (it is PlayerScreenState.UpdatePlaylistList) {
-                      Log.e(TAG, "playlist ____ : ${it}")
-                      it.update(adapter = playlistAdapter)
-                      it.render(binding)
-                  }
-                  else if
-                      (it is PlayerScreenState.AddTrackToPlaylist){
-                          it.makeToast(requireContext(),bottomSheetBehavior)
+                  when (it){
+                      is PlayerScreenState.PlayerError -> {
+                          it.render(binding)
+                          Toast.makeText(
+                              requireContext(),
+                              resources.getText(R.string.impossible_to_play),
+                              Toast.LENGTH_SHORT
+                          ).show()
+                      }
+                      is PlayerScreenState.UpdatePlaylistList ->{
+                          it.update(playlistAdapter)
+                      }
+                      is PlayerScreenState.AddTrackToPlaylist -> {
+                          bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                          it.makeToast(requireContext())
+                      }
+                      else -> {
+                          it.render(binding)
+                      }
                   }
 
-                  else{
-                      Log.e(TAG, "observeScreenState444: ${it}")
-                      it.render(binding)
-                  }
+
+
               }
           }
         }
