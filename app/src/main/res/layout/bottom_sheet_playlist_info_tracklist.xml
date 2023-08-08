@@ -10,7 +10,7 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <include
-        android:id="@+id/include2"
+        android:id="@+id/container_for_b_s_bar"
         layout="@layout/bar_for_bottom_sheet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include2"
+        app:layout_constraintTop_toBottomOf="@+id/container_for_b_s_bar"
         tools:listitem="@layout/track_layout" />
 
     <androidx.appcompat.widget.LinearLayoutCompat

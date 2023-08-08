@@ -87,7 +87,7 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        binding.rvPlaylists2.apply {
+        binding.rvTrackList.apply {
             adapter = trackAdapter
             layoutManager = LinearLayoutManager(this.context)
         }

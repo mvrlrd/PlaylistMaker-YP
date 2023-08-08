@@ -136,9 +136,7 @@
             android:id="@+id/view_for_bottom_sheet_tracks_barrier"
             android:layout_width="match_parent"
             android:layout_height="24dp"
-            app:layout_constraintTop_toBottomOf="@id/iv_playlist_menu"
-
-            />
+            app:layout_constraintTop_toBottomOf="@id/iv_playlist_menu"/>
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier_fo_bottom_sheet_tracks"
@@ -148,7 +146,6 @@
             app:barrierDirection="bottom"
             android:orientation="horizontal"
             app:constraint_referenced_ids="view_for_bottom_sheet_tracks_barrier" />
-
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -167,7 +164,7 @@
                 app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
                 <include
-                    android:id="@+id/include2"
+                    android:id="@+id/container_for_b_s_bar"
                     layout="@layout/bar_for_bottom_sheet"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
@@ -177,14 +174,14 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_playlists2"
+                    android:id="@+id/rv_track_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="13dp"
                     android:layout_marginTop="12dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/include2"
+                    app:layout_constraintTop_toBottomOf="@+id/container_for_b_s_bar"
                     tools:listitem="@layout/track_layout" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
