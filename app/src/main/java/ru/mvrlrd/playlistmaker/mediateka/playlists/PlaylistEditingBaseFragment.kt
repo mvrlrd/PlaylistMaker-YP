@@ -162,12 +162,12 @@ abstract class PlaylistEditingBaseFragment : Fragment() {
      open fun createPlaylist(playlistId: Long?): PlaylistForAdapter{
          val name = binding.ietPlaylistName.text.toString()
          val description = binding.ietDesctiption.text.toString()
-         log("last path segment   ${_uri!!.lastPathSegment?.formatUriToImageName()}")
+         log("last path segment   ${_uri?.lastPathSegment?.formatUriToImageName()}")
          return PlaylistForAdapter(
              playlistId = playlistId,
              name = name,
              description = description,
-             playlistImagePath = _uri!!.lastPathSegment?.formatUriToImageName() ?: "image".formatUriToImageName()
+             playlistImagePath = _uri?.lastPathSegment?.formatUriToImageName() ?: "image".formatUriToImageName()
          )
      }
 

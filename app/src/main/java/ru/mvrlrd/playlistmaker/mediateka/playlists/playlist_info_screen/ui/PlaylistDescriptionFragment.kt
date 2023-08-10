@@ -50,18 +50,17 @@ class PlaylistDescriptionFragment : Fragment() {
     ): View {
         _binding = FragmentPlaylistDescriptionBinding.inflate(layoutInflater, container, false)
         observeViewModel()
-
-        binding.btnBack.setOnClickListener {
-            findNavController().popBackStack()
+        with(binding) {
+            btnBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            ivSharePlaylist.setOnClickListener {
+                sharePlaylist()
+            }
+            ivPlaylistMenu.setOnClickListener {
+                additionMenuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
+            }
         }
-        binding.ivSharePlaylist.setOnClickListener {
-            sharePlaylist()
-        }
-
-        binding.ivPlaylistMenu.setOnClickListener {
-            additionMenuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
-        }
-
         initAdditionMenuBottomSheet()
         initRecycler()
         initBottomSheet()
@@ -76,14 +75,18 @@ class PlaylistDescriptionFragment : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, getTextForPlaylistSharing())
-                type = INTENT_TYPE_FOR_SENDING
-            }
-            val shareIntent = Intent.createChooser(sendIntent, null)
-            startActivity(shareIntent)
+            startSharing()
         }
+    }
+
+    private fun startSharing() {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, getTextForPlaylistSharing())
+            type = INTENT_TYPE_FOR_SENDING
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
     }
 
     private fun initRecycler() {
@@ -177,7 +180,6 @@ class PlaylistDescriptionFragment : Fragment() {
                peekHeight = resources.displayMetrics.heightPixels
             }
 
-
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -223,14 +225,16 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     private fun initAdditionBottomSheetButtons() {
-        binding.bottomSheetAdditionMenuContainer.tvSharePlaylist.setOnClickListener {
-            sharePlaylist()
-        }
-        binding.bottomSheetAdditionMenuContainer.tvDeletePlaylist.setOnClickListener {
-            initDialogDeletePlaylist().show()
-        }
-        binding.bottomSheetAdditionMenuContainer.tvEditInfo.setOnClickListener {
-            navigateToEditPlaylist()
+        with(binding.bottomSheetAdditionMenuContainer) {
+            tvSharePlaylist.setOnClickListener {
+                sharePlaylist()
+            }
+            tvDeletePlaylist.setOnClickListener {
+                initDialogDeletePlaylist().show()
+            }
+            tvEditInfo.setOnClickListener {
+                navigateToEditPlaylist()
+            }
         }
     }
 
@@ -243,21 +247,20 @@ class PlaylistDescriptionFragment : Fragment() {
     }
 
     private fun initAdditionMenuInformation() {
-        binding.bottomSheetAdditionMenuContainer.playlistItem.tvPlaylistName.text =
-            playlistInfo.playlist.name
-        binding.bottomSheetAdditionMenuContainer.playlistItem.tvQuantityOfTracks.ellipsize = TextUtils.TruncateAt.MARQUEE
-        binding.bottomSheetAdditionMenuContainer.playlistItem.tvQuantityOfTracks.text =
-            resources.getQuantityString(
-                R.plurals.plural_tracks,
-                playlistInfo.songs.size,
-                playlistInfo.songs.size
+        with(binding.bottomSheetAdditionMenuContainer.playlistItem){
+            tvPlaylistName.text = playlistInfo.playlist.name
+            tvQuantityOfTracks.ellipsize = TextUtils.TruncateAt.MARQUEE
+            tvQuantityOfTracks.text = resources.getQuantityString(
+                    R.plurals.plural_tracks,
+                    playlistInfo.songs.size,
+                    playlistInfo.songs.size
+                )
+            ivPlaylistImage.loadImage(
+                viewModel.getFile(playlistInfo.playlist.playlistImagePath,resources.getString(R.string.my_album_name)),
+                size = resources.getInteger(R.integer.picture_small_size),
+                radius = resources.getDimensionPixelSize(R.dimen.radius_small)
             )
-        val file = viewModel.getFile(playlistInfo.playlist.playlistImagePath,resources.getString(R.string.my_album_name))
-        binding.bottomSheetAdditionMenuContainer.playlistItem.ivPlaylistImage.loadImage(
-            file,
-            size = resources.getInteger(R.integer.picture_small_size),
-            radius = resources.getDimensionPixelSize(R.dimen.radius_small)
-        )
+        }
     }
 
     override fun onDestroyView() {
@@ -281,7 +284,6 @@ class PlaylistDescriptionFragment : Fragment() {
         for (track in playlistInfo.songs) {
             str.add("${playlistInfo.songs.indexOf(track) + 1}. $track")
         }
-
         return str.joinToString("\n")
     }
     private fun log(text: String){
