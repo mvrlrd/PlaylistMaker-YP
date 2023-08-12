@@ -67,7 +67,7 @@ class PlayerFragment : Fragment() {
 
     private fun setOnClickToNavigateAddingPlaylistFragment() {
         binding.bottomSheetContainer.btAddNewPlaylist.setOnClickListener {
-            viewModel.putItOnBackground()
+//            viewModel.putItOnBackground()
             findNavController().navigate(
                 PlayerFragmentDirections.actionPlayerFragmentToAddPlaylistFragment()
             )
@@ -88,9 +88,9 @@ class PlayerFragment : Fragment() {
         binding.fabPlay.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
-                    context.startForegroundService(MyForegroundService.newIntent(requireContext(), 33))
 
-                    viewModel.playbackControl()
+                    context.startForegroundService(MyForegroundService.newIntent(requireContext(), MyForegroundService.STARTFOREGROUND_ACTION))
+//                    viewModel.playbackControl()
                 }
             }
         }
@@ -149,15 +149,16 @@ class PlayerFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        viewModel.onStop()
+//        viewModel.onStop()
     }
     override fun onResume() {
         super.onResume()
+        viewModel.onResumed()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.onDestroy()
+//        viewModel.onDestroy()
     }
 
     private fun initRecycler() {

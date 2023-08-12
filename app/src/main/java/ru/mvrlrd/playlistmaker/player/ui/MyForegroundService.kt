@@ -3,6 +3,8 @@ package ru.mvrlrd.playlistmaker.player.ui
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_CANCEL_CURRENT
 import android.app.Service
 import android.content.Context
 import android.content.Intent
@@ -15,12 +17,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
+import ru.mvrlrd.playlistmaker.player.data.PlayerClient
+import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 
 
 class MyForegroundService : Service() {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
-
+//https://medium.com/@androidtechsolution/a-foreground-service-to-play-music-fcb1c5d1cf59
+    private  val mediaPlayer: PlayerInteractor by inject()
 
     override fun onCreate() {
         super.onCreate()
@@ -31,15 +38,15 @@ class MyForegroundService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         log("onStartCommand")
-
-        val track = intent?.getIntExtra(EXTRA, 0)?:0
-
+        val action = intent?.getStringExtra(EXTRA)?:""
+        log("onStartCommand $action")
         coroutineScope.launch {
-            for (i in track until 100){
-                delay(1000)
-                log("timer $i")
+            if (action == STARTFOREGROUND_ACTION){
+                mediaPlayer.handleStartAndPause()
             }
-            stopSelf()
+            if (action == STOPFOREGROUND_ACTION){
+                stopSelf()
+            }
         }
         return super.onStartCommand(intent, flags, startId)
     }
@@ -70,10 +77,15 @@ class MyForegroundService : Service() {
         }
     }
     private fun createNotification(): Notification {
+        val stopIntent = Intent(this, MyForegroundService::class.java)
+        stopIntent.action = STOPFOREGROUND_ACTION
+        val pendingStopIntent = PendingIntent.getService(this, 0, stopIntent, FLAG_CANCEL_CURRENT)
+
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("haha")
-            .setContentText("text")
-            .setSmallIcon(R.drawable.baseline_play_arrow_24)
+            .setContentTitle("PlaylistMaker")
+            .setContentText("playing music")
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .addAction(R.drawable.baseline_pause_24, "Pause", pendingStopIntent)
             .build()
     }
 
@@ -84,10 +96,12 @@ class MyForegroundService : Service() {
         private const val CHANNEL_NAME = "foregroundsss"
         private const val TAG = "SERVICE_TAG"
         private const val EXTRA = "track"
+        const val STARTFOREGROUND_ACTION = "start"
+        const val STOPFOREGROUND_ACTION = "stop"
 
-        fun newIntent(context: Context, track: Int): Intent {
+        fun newIntent(context: Context, action: String): Intent {
             val intent = Intent(context, MyForegroundService::class.java).apply {
-                putExtra(EXTRA, track)
+                putExtra(EXTRA, action)
             }
             return intent
         }

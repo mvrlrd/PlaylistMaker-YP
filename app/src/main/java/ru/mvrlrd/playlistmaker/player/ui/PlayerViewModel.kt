@@ -115,6 +115,12 @@ class PlayerViewModel(
         }
     }
 
+    fun onResumed(){
+        _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
+        _screenState.tryEmit(PlayerScreenState.LoadTrackInfo(track))
+        _screenState.tryEmit(PlayerScreenState.HandleLikeButton(track.isFavorite))
+    }
+
     fun playbackControl() {
         interactor.handleStartAndPause()
     }
