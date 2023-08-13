@@ -17,7 +17,7 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer) : PlayerClient {
     }
 
     override  fun preparePlayer(playerTrack: PlayerTrack) {
-        if (_playerState.value!=PlayerState.PLAYING) {
+        if ((_playerState.value!=PlayerState.PLAYING)&&(_playerState.value!=PlayerState.PAUSED)) {
             try {
                 mediaPlayer.setDataSource(playerTrack.previewUrl)
                 mediaPlayer.setOnPreparedListener {

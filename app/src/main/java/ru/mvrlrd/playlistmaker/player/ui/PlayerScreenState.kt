@@ -2,6 +2,7 @@ package ru.mvrlrd.playlistmaker.player.ui
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import ru.mvrlrd.playlistmaker.R
@@ -97,6 +98,7 @@ sealed class PlayerScreenState {
     object StartPlaying :
         PlayerScreenState() {
         override fun render(binding: FragmentPlayerBinding) {
+            Log.d("TAG", "render: StartPlaying")
             binding.fabPlay.setImageResource(R.drawable.baseline_pause_24)
         }
     }

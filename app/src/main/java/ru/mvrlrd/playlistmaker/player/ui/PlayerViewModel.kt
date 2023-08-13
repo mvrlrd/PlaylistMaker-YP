@@ -86,20 +86,25 @@ class PlayerViewModel(
 //                _screenState.value = PlayerScreenState.PlayerError
             }
             DEFAULT -> {
+                Log.d(TAG, "render: DEFAULT")
                 _screenState.tryEmit(PlayerScreenState.DisableFabs)
                 _screenState.tryEmit(PlayerScreenState.LoadTrackInfo(track))
             }
             PREPARED -> {
+                Log.d(TAG, "render: PREPARED")
                 _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
             }
             PLAYING -> {
+                Log.d(TAG, "render: PLAYING")
                 pl()
 
             }
             PAUSED -> {
+                Log.d(TAG, "render: PAUSED")
                 _screenState.tryEmit(PlayerScreenState.StopPlaying)
             }
             COMPLETED -> {
+                Log.d(TAG, "render: COMPLETED")
                 _screenState.tryEmit(PlayerScreenState.PlayCompleting)
             }
             STOPPED -> {
@@ -125,10 +130,11 @@ class PlayerViewModel(
             _screenState.tryEmit(PlayerScreenState.StartPlaying)
             timerJob = viewModelScope.launch {
                 while (true) {
-                    delay(TIMER_REFRESH_DELAY_TIME)
+
                     interactor.getCurrentTime().collect() {
                         _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it)))
                     }
+                    delay(TIMER_REFRESH_DELAY_TIME)
                 }
             }
         }
