@@ -24,4 +24,6 @@ interface PlayerRepository {
     fun handleStartAndPause()
 
     fun stopIt()
+
+    suspend fun prp(playerTrack: PlayerTrack)
 }

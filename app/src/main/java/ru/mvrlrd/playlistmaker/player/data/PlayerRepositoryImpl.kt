@@ -120,4 +120,8 @@ class PlayerRepositoryImpl(
     override fun stopIt() {
         playerClient.stopIt()
     }
+
+    override suspend fun prp(playerTrack: PlayerTrack) {
+        playerClient.prp(playerTrack)
+    }
 }

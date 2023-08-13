@@ -2,12 +2,14 @@ package ru.mvrlrd.playlistmaker.player.ui
 
 
 import android.util.Log
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -44,7 +46,8 @@ class PlayerViewModel(
     private val _mergedStates = _screenState.mergeWith(playlistsFlow, likesFlow)
     val mergedStates = _mergedStates
 
-    val prepared = interactor.getLivePlayerState()
+    val _preparedForService = interactor.getLivePlayerState()
+    val preparedForService = _preparedForService
 
     private var timerJob: Job? = null
 
@@ -114,6 +117,7 @@ class PlayerViewModel(
                 _screenState.tryEmit(PlayerScreenState.HandleLikeButton(track.isFavorite))
 
             }
+            else -> {}
         }
     }
 

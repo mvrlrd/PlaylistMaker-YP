@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,6 +41,7 @@ import org.koin.core.parameter.parametersOf
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.FragmentPlayerBinding
 import ru.mvrlrd.playlistmaker.main.MainActivity
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.search.data.model.mapTrackToTrackForPlayer
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
@@ -69,6 +71,7 @@ class PlayerFragment : Fragment() {
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as PlayerService.LocalBinder
             mService = binder.getService()
+            obserePreperingForService()
             mBound = true
         }
 
@@ -107,6 +110,7 @@ class PlayerFragment : Fragment() {
         handleAddToPlaylistButton()
         setOnClickToNavigateAddingPlaylistFragment()
 //        initRecycler()
+
     }
 
     private fun handleAddToPlaylistButton() {
@@ -141,6 +145,7 @@ class PlayerFragment : Fragment() {
                     Log.e(TAG, "handlePlayButton: $mBound ")
 
                     if (mBound) {
+
 //                        mService.handlePlaying()
                         requireActivity().startService(
                             PlayerService.newIntent(
@@ -165,15 +170,25 @@ class PlayerFragment : Fragment() {
         }
     }
 
-    fun wM() {
-        WorkManager.getInstance(requireContext().applicationContext).apply {
-            enqueueUniqueWork(
-                MyForegroundService.WORK_NAME,
-                ExistingWorkPolicy.APPEND,
-                MyForegroundService.makeRequest(page++)
-            )
+    fun obserePreperingForService(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.preparedForService.collect(){
+                if (it == MyMediaPlayer.PlayerState.PREPARED_FOR_SERVICE){
+                    mService.handlePlaying()
+                }
+            }
         }
     }
+
+//    fun wM() {
+//        WorkManager.getInstance(requireContext().applicationContext).apply {
+//            enqueueUniqueWork(
+//                MyForegroundService.WORK_NAME,
+//                ExistingWorkPolicy.APPEND,
+//                MyForegroundService.makeRequest(page++)
+//            )
+//        }
+//    }
 
 
 

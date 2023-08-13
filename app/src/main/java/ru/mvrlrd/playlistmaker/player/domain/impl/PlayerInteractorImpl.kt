@@ -72,4 +72,8 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
     override fun stopIt() {
         playerRepository.stopIt()
     }
+
+    override suspend fun prp(playerTrack: PlayerTrack) {
+        playerRepository.prp(playerTrack)
+    }
 }

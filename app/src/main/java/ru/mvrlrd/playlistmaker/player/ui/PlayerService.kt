@@ -10,11 +10,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import java.util.*
+
 
 
 class PlayerService : Service() {
@@ -25,6 +27,7 @@ class PlayerService : Service() {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val coroutineScope2 = CoroutineScope(Dispatchers.IO)
     private var job: Job? = null
+
 
     // Random number generator.
     private val mGenerator = Random()
@@ -45,14 +48,9 @@ class PlayerService : Service() {
             currentId = trackId
             interactor.onDestroy()
            job =  coroutineScope.launch {
-             val job2 =  async {
-                   interactor.preparePlayer(track)
-                 Log.e(TAG, "onStartCommand: 00000", )
-               }
-                job2.await()
-               Log.e(TAG, "onStartCommand: ____", )
-               handlePlaying()
-             
+
+                 interactor.prp(track)
+
             }
         }else{
             handlePlaying()

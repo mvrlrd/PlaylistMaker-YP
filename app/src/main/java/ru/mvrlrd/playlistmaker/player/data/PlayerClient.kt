@@ -16,4 +16,6 @@ interface PlayerClient {
     fun stopIt()
 
     fun handleStartAndPause()
+
+    suspend fun prp(playerTrack: PlayerTrack)
 }

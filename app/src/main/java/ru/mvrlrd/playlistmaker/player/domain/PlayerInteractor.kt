@@ -22,4 +22,6 @@ interface PlayerInteractor {
 
     fun handleStartAndPause()
     fun stopIt()
+
+    suspend fun prp(playerTrack: PlayerTrack)
 }
