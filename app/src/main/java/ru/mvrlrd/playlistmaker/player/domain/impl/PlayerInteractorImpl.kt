@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker.player.domain.impl
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
@@ -60,6 +61,11 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
     }
 
     override fun handleStartAndPause() {
+//        for (i in 0 .. 10){
+//            Thread.sleep(1000)
+//            Log.e("PlayerInteractorImpl", "$i ", )
+//        }
+
         playerRepository.handleStartAndPause()
     }
 
