@@ -44,6 +44,8 @@ class PlayerViewModel(
     private val _mergedStates = _screenState.mergeWith(playlistsFlow, likesFlow)
     val mergedStates = _mergedStates
 
+    val prepared = interactor.getLivePlayerState()
+
     private var timerJob: Job? = null
 
     init {

@@ -138,10 +138,18 @@ class PlayerFragment : Fragment() {
         binding.fabPlay.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
-                    Log.e(TAG, "handlePlayButton: $mBound ", )
+                    Log.e(TAG, "handlePlayButton: $mBound ")
 
                     if (mBound) {
-                        Log.e(TAG, "handlePlayButton: mBound", )
+//                        mService.handlePlaying()
+                        requireActivity().startService(
+                            PlayerService.newIntent(
+                                requireContext(),
+                                args.track.trackId,
+                                args.track.mapTrackToTrackForPlayer()
+                            )
+                        )
+                        Log.e(TAG, "handlePlayButton: mBound")
                         // Call a method from the LocalService.
                         // However, if this call is something that might hang, then put this request
                         // in a separate thread to avoid slowing down the activity performance.
