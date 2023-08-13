@@ -9,8 +9,10 @@ import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -57,7 +59,36 @@ class PlayerFragment : Fragment() {
         parametersOf(parseIntent(args.track))
     }
 
+    private lateinit var mService: PlayerService
+    private var mBound: Boolean = false
+
+    /** Defines callbacks for service binding, passed to bindService().  */
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance.
+            val binder = service as PlayerService.LocalBinder
+            mService = binder.getService()
+            mBound = true
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            mBound = false
+        }
+    }
+
+
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+
+    override fun onStart() {
+        super.onStart()
+        // Bind to LocalService.
+
+        Intent(requireActivity(), PlayerService::class.java).also { intent ->
+            requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -107,8 +138,17 @@ class PlayerFragment : Fragment() {
         binding.fabPlay.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
-                    Log.e(TAG, "handlePlayButton: ", )
-                    wM()
+                    Log.e(TAG, "handlePlayButton: $mBound ", )
+
+                    if (mBound) {
+                        Log.e(TAG, "handlePlayButton: mBound", )
+                        // Call a method from the LocalService.
+                        // However, if this call is something that might hang, then put this request
+                        // in a separate thread to avoid slowing down the activity performance.
+                        val num: Int = mService.randomNumber
+                        Toast.makeText(requireContext(), "number: $num", Toast.LENGTH_SHORT).show()
+                    }
+//                    wM()
 
 //                    context.startForegroundService(MyForegroundService.newIntent(requireContext(), MyForegroundService.STARTFOREGROUND_ACTION, args.track.mapTrackToTrackForPlayer()))
 //                    viewModel.playbackControl()
@@ -214,6 +254,8 @@ class PlayerFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         Log.e(TAG, "onStop: ")
+        requireActivity().unbindService(connection)
+        mBound = false
 //        requireContext().startForegroundService(MyForegroundService.newIntent(requireContext(), MyForegroundService.STOPFOREGROUND_ACTION))
 //        viewModel.onStop()
     }

@@ -4,15 +4,10 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_CANCEL_CURRENT
-import android.app.Service
-import android.app.job.JobParameters
-import android.app.job.JobService
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import android.os.IBinder
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -24,18 +19,11 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.main.MainActivity
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
-import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import kotlin.properties.Delegates
+import org.koin.java.KoinJavaComponent.inject
 
 
 class MyForegroundService(
@@ -44,9 +32,8 @@ class MyForegroundService(
 ) :
     Worker(context, workerParameters) {
 
+
     override fun doWork(): Result {
-
-
             with(NotificationManagerCompat.from(context)) {
                 if (ActivityCompat.checkSelfPermission(
                         context,
