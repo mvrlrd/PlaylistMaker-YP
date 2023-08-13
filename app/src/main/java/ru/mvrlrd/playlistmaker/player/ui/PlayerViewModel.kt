@@ -27,10 +27,11 @@ import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 
 
 class PlayerViewModel(
-    val track: PlayerTrack,
+    var track: PlayerTrack,
     private val interactor: PlayerInteractor,
     fileHandler: GetInternalFileUseCase
 ) : FileOperatingViewModel(fileHandler) {
+    var currentPlayingTrackId: Long = -1
 
     private val _screenState = MutableSharedFlow<PlayerScreenState>(10)
 
@@ -60,6 +61,7 @@ class PlayerViewModel(
         interactor.getLivePlayerState()
             .onEach {
                 render(it)
+                Log.e(TAG, "observePlayerState: ++++++++", )
             }
             .launchIn(viewModelScope)
     }
@@ -74,8 +76,10 @@ class PlayerViewModel(
         }
     }
 
+
     fun render(playerState: MyMediaPlayer.PlayerState) {
         timerJob?.cancel()
+
         Log.e(TAG, "$PLAYER_STATE_MESSAGE ${playerState.name}")
         when (playerState) {
             ERROR -> {
@@ -84,21 +88,13 @@ class PlayerViewModel(
             DEFAULT -> {
                 _screenState.tryEmit(PlayerScreenState.DisableFabs)
                 _screenState.tryEmit(PlayerScreenState.LoadTrackInfo(track))
-
             }
             PREPARED -> {
                 _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
             }
             PLAYING -> {
-                _screenState.tryEmit(PlayerScreenState.StartPlaying)
-                timerJob = viewModelScope.launch {
-                    while (true) {
-                        delay(TIMER_REFRESH_DELAY_TIME)
-                        interactor.getCurrentTime().collect() {
-                            _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it)))
-                        }
-                    }
-                }
+                pl()
+
             }
             PAUSED -> {
                 _screenState.tryEmit(PlayerScreenState.StopPlaying)
@@ -117,7 +113,24 @@ class PlayerViewModel(
                 _screenState.tryEmit(PlayerScreenState.HandleLikeButton(track.isFavorite))
 
             }
-            else -> {}
+            else -> {
+                _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
+            }
+        }
+    }
+
+     fun pl() {
+        if (currentPlayingTrackId == track.trackId) {
+            Log.e(TAG, "render: current $currentPlayingTrackId = this id")
+            _screenState.tryEmit(PlayerScreenState.StartPlaying)
+            timerJob = viewModelScope.launch {
+                while (true) {
+                    delay(TIMER_REFRESH_DELAY_TIME)
+                    interactor.getCurrentTime().collect() {
+                        _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it)))
+                    }
+                }
+            }
         }
     }
 

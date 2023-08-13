@@ -6,6 +6,8 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -23,11 +25,12 @@ class PlayerService : Service() {
     // Binder given to clients.
     private val binder = LocalBinder()
     private val interactor: PlayerInteractor by inject()
-    private var currentId = -1L
+     var currentId = -1L
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
-    private val coroutineScope2 = CoroutineScope(Dispatchers.IO)
     private var job: Job? = null
 
+   private val _curr = MutableLiveData<Long>()
+    val curr : LiveData<Long> get() = _curr
 
     // Random number generator.
     private val mGenerator = Random()
@@ -37,20 +40,18 @@ class PlayerService : Service() {
         get() = mGenerator.nextInt(100)
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.e(TAG, "onStartCommand: ", )
         val trackId = intent?.getLongExtra(TRACK_ID, -1)?:-1
         val track = intent?.getSerializableExtra(TRACK) as PlayerTrack
-        Log.e(TAG, "onStartCommand: ${track}", )
         if (currentId == -1L){
             handlePlaying()
+            _curr.value = trackId
             currentId = trackId
         }else if (currentId != trackId){
+            _curr.value = trackId
             currentId = trackId
             interactor.onDestroy()
            job =  coroutineScope.launch {
-
                  interactor.prp(track)
-
             }
         }else{
             handlePlaying()

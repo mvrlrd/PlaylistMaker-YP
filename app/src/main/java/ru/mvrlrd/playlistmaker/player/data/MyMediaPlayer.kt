@@ -11,7 +11,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 
 class MyMediaPlayer(private val mediaPlayer: MediaPlayer) : PlayerClient {
      private val _playerState = MutableStateFlow(PlayerState.DEFAULT)
-
+    private var trackId : Long = -1L
     override fun getLivePlayerState(): StateFlow<PlayerState> {
         return _playerState.asStateFlow()
     }
@@ -52,7 +52,7 @@ class MyMediaPlayer(private val mediaPlayer: MediaPlayer) : PlayerClient {
 
     override fun start() {
         mediaPlayer.start()
-        _playerState.value= PlayerState.PLAYING
+        _playerState.value = PlayerState.PLAYING
     }
 
     override fun handleStartAndPause() {

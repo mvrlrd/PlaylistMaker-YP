@@ -72,6 +72,7 @@ class PlayerFragment : Fragment() {
             val binder = service as PlayerService.LocalBinder
             mService = binder.getService()
             obserePreperingForService()
+            observeCurrentPlayingTrackId()
             mBound = true
         }
 
@@ -89,6 +90,14 @@ class PlayerFragment : Fragment() {
 
         Intent(requireActivity(), PlayerService::class.java).also { intent ->
             requireActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    private fun observeCurrentPlayingTrackId(){
+        mService.curr.observe(this){
+            Log.e(TAG, "observeCurrentPlayingTrackId: _____$it", )
+            viewModel.currentPlayingTrackId = it
+            viewModel.pl()
         }
     }
 
@@ -110,6 +119,7 @@ class PlayerFragment : Fragment() {
         handleAddToPlaylistButton()
         setOnClickToNavigateAddingPlaylistFragment()
 //        initRecycler()
+
 
     }
 
@@ -142,7 +152,6 @@ class PlayerFragment : Fragment() {
         binding.fabPlay.apply {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
-                    Log.e(TAG, "handlePlayButton: $mBound ")
 
                     if (mBound) {
 
@@ -154,7 +163,6 @@ class PlayerFragment : Fragment() {
                                 args.track.mapTrackToTrackForPlayer()
                             )
                         )
-                        Log.e(TAG, "handlePlayButton: mBound")
                         // Call a method from the LocalService.
                         // However, if this call is something that might hang, then put this request
                         // in a separate thread to avoid slowing down the activity performance.
@@ -285,6 +293,7 @@ class PlayerFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.onResumed()
+
     }
 
     override fun onDestroy() {
