@@ -13,6 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
@@ -25,12 +28,12 @@ class PlayerService : Service() {
     // Binder given to clients.
     private val binder = LocalBinder()
     private val interactor: PlayerInteractor by inject()
-     var currentId = -1L
+
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private var job: Job? = null
 
-   private val _curr = MutableLiveData<Long>()
-    val curr : LiveData<Long> get() = _curr
+   private val _curr = MutableStateFlow(-1L)
+    val curr get() = _curr.asStateFlow()
 
     // Random number generator.
     private val mGenerator = Random()
@@ -40,22 +43,17 @@ class PlayerService : Service() {
         get() = mGenerator.nextInt(100)
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val trackId = intent?.getLongExtra(TRACK_ID, -1)?:-1
+
         val track = intent?.getSerializableExtra(TRACK) as PlayerTrack
-        if (currentId == -1L){
-            handlePlaying()
-            _curr.value = trackId
-            currentId = trackId
-        }else if (currentId != trackId){
-            _curr.value = trackId
-            currentId = trackId
+        if (curr.value != track.trackId) {
             interactor.onDestroy()
-           job =  coroutineScope.launch {
-                 interactor.prp(track)
+            job = coroutineScope.launch {
+                interactor.prp(track)
             }
-        }else{
+        } else {
             handlePlaying()
         }
+        _curr.value = track.trackId
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -69,9 +67,8 @@ class PlayerService : Service() {
         const val TRACK_ID = "trackId"
         const val TRACK = "track"
 
-         fun newIntent(context: Context, id: Long, track: PlayerTrack): Intent{
+         fun newIntent(context: Context, track: PlayerTrack): Intent{
             return Intent(context, PlayerService::class.java).apply {
-                putExtra(TRACK_ID, id)
                 putExtra(TRACK, track)
             }
         }

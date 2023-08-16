@@ -55,6 +55,8 @@ class PlayerViewModel(
     val _preparedForService = interactor.getLivePlayerState()
     val preparedForService = _preparedForService
 
+    val playerState =  interactor.getLivePlayerState()
+
     private var timerJob: Job? = null
 
     init {
@@ -63,7 +65,7 @@ class PlayerViewModel(
     }
 
     private fun observePlayerState() {
-        interactor.getLivePlayerState()
+        playerState
             .onEach {
                 render(it)
             }
@@ -99,12 +101,10 @@ class PlayerViewModel(
             PLAYING -> {
                 _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
 //                renderWhilePlayingTrack()
-                if (currentPlayingTrackId == track.trackId) {
-                    renderTime()
-                }
-
+                  renderTime()
             }
             PAUSED -> {
+                Log.e(TAG, "render: PAUSE MODE", )
                 _screenState.tryEmit(PlayerScreenState.StopPlaying)
             }
             COMPLETED -> {
@@ -127,7 +127,7 @@ class PlayerViewModel(
         }
     }
 
-     fun renderWhilePlayingTrack() {
+     fun playingTrack() {
         if (currentPlayingTrackId == track.trackId) {
             Log.e(TAG, "render: current ${currentPlayingTrackId == track.trackId}")
             _screenState.tryEmit(PlayerScreenState.StartPlaying)
@@ -155,7 +155,13 @@ class PlayerViewModel(
     }
 
     fun onStop() {
-        interactor.pause()
+        if (playerState.value == PLAYING || playerState.value ==PAUSED){
+            Log.d(TAG, "onStop: player was not reset", )
+        }else{
+            interactor.onDestroy()
+            Log.d(TAG, "onStop: player was reset", )
+        }
+
     }
 
     fun putItOnBackground(){

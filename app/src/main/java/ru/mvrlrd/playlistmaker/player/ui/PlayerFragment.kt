@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -79,10 +80,12 @@ class PlayerFragment : Fragment() {
     }
 
     private fun observeCurrentPlayingTrackId(){
-        mService.curr.observe(this){
-            Log.e(TAG, "observeCurrentPlayingTrackId: _____$it", )
-            viewModel.currentPlayingTrackId = it
-            viewModel.renderWhilePlayingTrack()
+        viewLifecycleOwner.lifecycleScope.launch {
+            mService.curr.collect(){
+                Log.e(TAG, "observeCurrentPlayingTrackId: _____ $it", )
+                viewModel.currentPlayingTrackId = it
+                viewModel.playingTrack()
+            }
         }
     }
 
@@ -144,15 +147,12 @@ class PlayerFragment : Fragment() {
                         requireActivity().startService(
                             PlayerService.newIntent(
                                 requireContext(),
-                                args.track.trackId,
                                 args.track.mapTrackToTrackForPlayer()
                             )
                         )
                         // Call a method from the LocalService.
                         // However, if this call is something that might hang, then put this request
                         // in a separate thread to avoid slowing down the activity performance.
-                        val num: Int = mService.randomNumber
-                        Toast.makeText(requireContext(), "number: $num", Toast.LENGTH_SHORT).show()
                     }
 //                    wM()
 
@@ -272,8 +272,9 @@ class PlayerFragment : Fragment() {
         Log.e(TAG, "onStop: ")
         requireActivity().unbindService(connection)
         mBound = false
+
 //        requireContext().startForegroundService(MyForegroundService.newIntent(requireContext(), MyForegroundService.STOPFOREGROUND_ACTION))
-//        viewModel.onStop()
+        viewModel.onStop()
     }
     override fun onResume() {
         super.onResume()
