@@ -177,6 +177,7 @@ sealed class PlayerScreenState {
     }
     object DisableFabs: PlayerScreenState(){
         override fun render(binding: FragmentPlayerBinding) {
+            Log.e("TAG", "render: ____", )
             binding.fabPlay.isEnabled = false
             binding.fabPlay.alpha = INACTIVE_PLAY_BUTTON_ALPHA
         }

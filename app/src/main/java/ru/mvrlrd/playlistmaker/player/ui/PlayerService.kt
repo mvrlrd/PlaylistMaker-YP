@@ -56,9 +56,7 @@ class PlayerService : Service() {
         }else{
             handlePlaying()
         }
-
         return super.onStartCommand(intent, flags, startId)
-
     }
 
     fun handlePlaying(){

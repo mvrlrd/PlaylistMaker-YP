@@ -2,14 +2,12 @@ package ru.mvrlrd.playlistmaker.player.ui
 
 
 import android.util.Log
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -24,6 +22,7 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import ru.mvrlrd.playlistmaker.player.util.formatTime
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
+import kotlin.properties.Delegates
 
 
 class PlayerViewModel(
@@ -31,7 +30,16 @@ class PlayerViewModel(
     private val interactor: PlayerInteractor,
     fileHandler: GetInternalFileUseCase
 ) : FileOperatingViewModel(fileHandler) {
-    var currentPlayingTrackId: Long = -1
+    var currentPlayingTrackId: Long by Delegates.observable(-1){
+            prop, old, new ->
+
+        _screenState.tryEmit(PlayerScreenState.LoadTrackInfo(track))
+        _screenState.tryEmit(PlayerScreenState.HandleLikeButton(track.isFavorite))
+
+        println()
+        Log.e(TAG, "$old -> $new", )
+        println()
+    }
 
     private val _screenState = MutableSharedFlow<PlayerScreenState>(10)
 
@@ -95,8 +103,9 @@ class PlayerViewModel(
                 _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
             }
             PLAYING -> {
+                _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
                 Log.d(TAG, "render: PLAYING")
-                pl()
+                renderWhilePlayingTrack()
 
             }
             PAUSED -> {
@@ -124,13 +133,13 @@ class PlayerViewModel(
         }
     }
 
-     fun pl() {
+     fun renderWhilePlayingTrack() {
         if (currentPlayingTrackId == track.trackId) {
+
             Log.e(TAG, "render: current $currentPlayingTrackId = this id")
             _screenState.tryEmit(PlayerScreenState.StartPlaying)
             timerJob = viewModelScope.launch {
                 while (true) {
-
                     interactor.getCurrentTime().collect() {
                         _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it)))
                     }
@@ -141,9 +150,7 @@ class PlayerViewModel(
     }
 
     fun onResumed(){
-        _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
-        _screenState.tryEmit(PlayerScreenState.LoadTrackInfo(track))
-        _screenState.tryEmit(PlayerScreenState.HandleLikeButton(track.isFavorite))
+//        _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
     }
 
     fun playbackControl() {
