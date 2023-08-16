@@ -21,7 +21,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,11 +49,9 @@ class PlayerFragment : Fragment() {
     private lateinit var mService: PlayerService
     private var mBound: Boolean = false
 
-    /** Defines callbacks for service binding, passed to bindService().  */
     private val connection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as PlayerService.LocalBinder
             mService = binder.getService()
             obserePreperingForService()
@@ -82,9 +79,7 @@ class PlayerFragment : Fragment() {
     private fun observeCurrentPlayingTrackId(){
         viewLifecycleOwner.lifecycleScope.launch {
             mService.curr.collect(){
-                Log.e(TAG, "observeCurrentPlayingTrackId: _____ $it", )
                 viewModel.currentPlayingTrackId = it
-//                viewModel.playingTrack()
             }
         }
     }
@@ -276,19 +271,13 @@ class PlayerFragment : Fragment() {
         Log.e(TAG, "onStop: ")
         requireActivity().unbindService(connection)
         mBound = false
-
-//        requireContext().startForegroundService(MyForegroundService.newIntent(requireContext(), MyForegroundService.STOPFOREGROUND_ACTION))
         viewModel.onStop()
     }
-    override fun onResume() {
-        super.onResume()
-        viewModel.onResumed()
 
-    }
 
     override fun onDestroy() {
         super.onDestroy()
-//        viewModel.onDestroy()
+        viewModel.onDestroy()
     }
 
     private fun initRecycler() {

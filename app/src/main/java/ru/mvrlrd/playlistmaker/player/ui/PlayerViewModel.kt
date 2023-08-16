@@ -31,14 +31,10 @@ class PlayerViewModel(
     fileHandler: GetInternalFileUseCase
 ) : FileOperatingViewModel(fileHandler) {
     var currentPlayingTrackId: Long by Delegates.observable(-1){
-            prop, old, new ->
-        Log.e(TAG, "currentId  =  $new: ", )
+            _, _, _ ->
         render(playerState.value)
-
-
         _screenState.tryEmit(PlayerScreenState.LoadTrackInfo(track))
         _screenState.tryEmit(PlayerScreenState.HandleLikeButton(track.isFavorite))
-
     }
 
     private val _screenState = MutableSharedFlow<PlayerScreenState>(10)
@@ -152,13 +148,6 @@ class PlayerViewModel(
         }
     }
 
-    fun onResumed(){
-//        _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
-    }
-
-    fun playbackControl() {
-        interactor.handleStartAndPause()
-    }
 
     fun onStop() {
         if (playerState.value == PLAYING || playerState.value ==PAUSED){
@@ -170,13 +159,9 @@ class PlayerViewModel(
 
     }
 
-    fun putItOnBackground(){
-        interactor.stopIt()
-    }
-
     fun onDestroy() {
         timerJob?.cancel()
-        interactor.onDestroy()
+//        interactor.onDestroy()
     }
 
     private fun Flow<PlayerScreenState>.mergeWith(another: Flow<PlayerScreenState>, another2 : Flow<PlayerScreenState>): Flow<PlayerScreenState>{
@@ -192,7 +177,6 @@ class PlayerViewModel(
                 }
         }
     }
-
     companion object{
         private const val TIMER_REFRESH_DELAY_TIME = 300L
         private const val TAG = "PlayerViewModel"

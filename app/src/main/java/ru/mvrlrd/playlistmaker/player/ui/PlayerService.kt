@@ -5,17 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
@@ -25,7 +19,6 @@ import java.util.*
 
 
 class PlayerService : Service() {
-    // Binder given to clients.
     private val binder = LocalBinder()
     private val interactor: PlayerInteractor by inject()
 
@@ -35,12 +28,6 @@ class PlayerService : Service() {
    private val _curr = MutableStateFlow(-1L)
     val curr get() = _curr.asStateFlow()
 
-    // Random number generator.
-    private val mGenerator = Random()
-
-    /** Method for clients.  */
-    val randomNumber: Int
-        get() = mGenerator.nextInt(100)
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
@@ -64,7 +51,6 @@ class PlayerService : Service() {
 
     companion object{
         private const val TAG = "PlayerService"
-        const val TRACK_ID = "trackId"
         const val TRACK = "track"
 
          fun newIntent(context: Context, track: PlayerTrack): Intent{
@@ -75,14 +61,7 @@ class PlayerService : Service() {
     }
 
 
-    /**
-     * Class used for the client Binder. Because we know this service always
-     * runs in the same process as its clients, we don't need to deal with IPC.
-     */
-
-
     inner class LocalBinder : Binder() {
-        // Return this instance of LocalService so clients can call public methods.
         fun getService(): PlayerService = this@PlayerService
     }
 
