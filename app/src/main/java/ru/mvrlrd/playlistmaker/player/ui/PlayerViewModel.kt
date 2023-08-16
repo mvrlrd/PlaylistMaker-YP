@@ -98,7 +98,10 @@ class PlayerViewModel(
             }
             PLAYING -> {
                 _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
-                renderWhilePlayingTrack()
+//                renderWhilePlayingTrack()
+                if (currentPlayingTrackId == track.trackId) {
+                    renderTime()
+                }
 
             }
             PAUSED -> {
@@ -126,15 +129,19 @@ class PlayerViewModel(
 
      fun renderWhilePlayingTrack() {
         if (currentPlayingTrackId == track.trackId) {
-            Log.e(TAG, "render: current $currentPlayingTrackId = this id")
+            Log.e(TAG, "render: current ${currentPlayingTrackId == track.trackId}")
             _screenState.tryEmit(PlayerScreenState.StartPlaying)
-            timerJob = viewModelScope.launch {
-                while (true) {
-                    interactor.getCurrentTime().collect() {
-                        _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it)))
-                    }
-                    delay(TIMER_REFRESH_DELAY_TIME)
+            renderTime()
+        }
+    }
+
+    private fun renderTime() {
+        timerJob = viewModelScope.launch {
+            while (true) {
+                interactor.getCurrentTime().collect() {
+                    _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it)))
                 }
+                delay(TIMER_REFRESH_DELAY_TIME)
             }
         }
     }
