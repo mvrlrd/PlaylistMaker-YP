@@ -36,9 +36,6 @@ class PlayerViewModel(
         _screenState.tryEmit(PlayerScreenState.LoadTrackInfo(track))
         _screenState.tryEmit(PlayerScreenState.HandleLikeButton(track.isFavorite))
 
-        println()
-        Log.e(TAG, "$old -> $new", )
-        println()
     }
 
     private val _screenState = MutableSharedFlow<PlayerScreenState>(10)
@@ -69,7 +66,6 @@ class PlayerViewModel(
         interactor.getLivePlayerState()
             .onEach {
                 render(it)
-                Log.e(TAG, "observePlayerState: ++++++++", )
             }
             .launchIn(viewModelScope)
     }
@@ -94,26 +90,21 @@ class PlayerViewModel(
 //                _screenState.value = PlayerScreenState.PlayerError
             }
             DEFAULT -> {
-                Log.d(TAG, "render: DEFAULT")
                 _screenState.tryEmit(PlayerScreenState.DisableFabs)
                 _screenState.tryEmit(PlayerScreenState.LoadTrackInfo(track))
             }
             PREPARED -> {
-                Log.d(TAG, "render: PREPARED")
                 _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
             }
             PLAYING -> {
                 _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
-                Log.d(TAG, "render: PLAYING")
                 renderWhilePlayingTrack()
 
             }
             PAUSED -> {
-                Log.d(TAG, "render: PAUSED")
                 _screenState.tryEmit(PlayerScreenState.StopPlaying)
             }
             COMPLETED -> {
-                Log.d(TAG, "render: COMPLETED")
                 _screenState.tryEmit(PlayerScreenState.PlayCompleting)
             }
             STOPPED -> {
@@ -135,7 +126,6 @@ class PlayerViewModel(
 
      fun renderWhilePlayingTrack() {
         if (currentPlayingTrackId == track.trackId) {
-
             Log.e(TAG, "render: current $currentPlayingTrackId = this id")
             _screenState.tryEmit(PlayerScreenState.StartPlaying)
             timerJob = viewModelScope.launch {
