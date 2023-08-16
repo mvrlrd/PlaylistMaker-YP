@@ -84,7 +84,7 @@ class PlayerFragment : Fragment() {
             mService.curr.collect(){
                 Log.e(TAG, "observeCurrentPlayingTrackId: _____ $it", )
                 viewModel.currentPlayingTrackId = it
-                viewModel.playingTrack()
+//                viewModel.playingTrack()
             }
         }
     }
@@ -141,19 +141,11 @@ class PlayerFragment : Fragment() {
             setOnClickListener {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
 
-                    if (mBound) {
+                    startPlayerService(
+                        requireContext(),
+                        args.track.mapTrackToTrackForPlayer()
+                    )
 
-//                        mService.handlePlaying()
-                        requireActivity().startService(
-                            PlayerService.newIntent(
-                                requireContext(),
-                                args.track.mapTrackToTrackForPlayer()
-                            )
-                        )
-                        // Call a method from the LocalService.
-                        // However, if this call is something that might hang, then put this request
-                        // in a separate thread to avoid slowing down the activity performance.
-                    }
 //                    wM()
 
 //                    context.startForegroundService(MyForegroundService.newIntent(requireContext(), MyForegroundService.STARTFOREGROUND_ACTION, args.track.mapTrackToTrackForPlayer()))
@@ -250,10 +242,22 @@ class PlayerFragment : Fragment() {
                       }
                       else -> {
                           it.render(binding)
+
+
                       }
                   }
               }
           }
+        }
+    }
+
+    private fun startPlayerService(context: Context, track: PlayerTrack) {
+        if (mBound) {
+            requireActivity().startService(
+                PlayerService.newIntent(
+                   context, track
+                )
+            )
         }
     }
 

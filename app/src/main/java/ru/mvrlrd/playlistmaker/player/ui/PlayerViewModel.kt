@@ -32,6 +32,9 @@ class PlayerViewModel(
 ) : FileOperatingViewModel(fileHandler) {
     var currentPlayingTrackId: Long by Delegates.observable(-1){
             prop, old, new ->
+        Log.e(TAG, "currentId  =  $new: ", )
+        render(playerState.value)
+
 
         _screenState.tryEmit(PlayerScreenState.LoadTrackInfo(track))
         _screenState.tryEmit(PlayerScreenState.HandleLikeButton(track.isFavorite))
@@ -85,7 +88,6 @@ class PlayerViewModel(
 
     fun render(playerState: MyMediaPlayer.PlayerState) {
         timerJob?.cancel()
-
         Log.e(TAG, "$PLAYER_STATE_MESSAGE ${playerState.name}")
         when (playerState) {
             ERROR -> {
@@ -100,12 +102,22 @@ class PlayerViewModel(
             }
             PLAYING -> {
                 _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
-//                renderWhilePlayingTrack()
-                  renderTime()
+                if (currentPlayingTrackId == track.trackId) {
+                    _screenState.tryEmit(PlayerScreenState.StartPlaying)
+                    renderTime()
+                }
+
             }
             PAUSED -> {
-                Log.e(TAG, "render: PAUSE MODE", )
+                _screenState.tryEmit(PlayerScreenState.EnablePlayButton)
                 _screenState.tryEmit(PlayerScreenState.StopPlaying)
+                if (currentPlayingTrackId == track.trackId) {
+                    viewModelScope.launch(){
+                        interactor.getCurrentTime().collect() {
+                            _screenState.tryEmit(PlayerScreenState.RenderTrackTimer(formatTime(it)))
+                        }
+                    }
+                }
             }
             COMPLETED -> {
                 _screenState.tryEmit(PlayerScreenState.PlayCompleting)
@@ -127,13 +139,7 @@ class PlayerViewModel(
         }
     }
 
-     fun playingTrack() {
-        if (currentPlayingTrackId == track.trackId) {
-            Log.e(TAG, "render: current ${currentPlayingTrackId == track.trackId}")
-            _screenState.tryEmit(PlayerScreenState.StartPlaying)
-            renderTime()
-        }
-    }
+
 
     private fun renderTime() {
         timerJob = viewModelScope.launch {
