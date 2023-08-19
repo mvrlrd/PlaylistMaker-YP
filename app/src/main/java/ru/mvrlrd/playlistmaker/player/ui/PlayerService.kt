@@ -1,5 +1,6 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
+
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,10 +8,11 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,12 +21,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.main.MainActivity
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
-import ru.mvrlrd.playlistmaker.player.data.PlayerClient
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import kotlin.properties.Delegates
@@ -39,6 +42,7 @@ class PlayerService : Service() {
     private var notificationManager: NotificationManager? = null
 
     var ddd = interactor.getLivePlayerState()
+    var trackFlow = MutableStateFlow<PlayerTrack?>(null)
 
     private lateinit var track: PlayerTrack
 
@@ -49,15 +53,18 @@ class PlayerService : Service() {
     override fun onCreate() {
         super.onCreate()
         coroutineScope.launch {
-            ddd.filter { (it == MyMediaPlayer.PlayerState.PAUSED) || (it == MyMediaPlayer.PlayerState.PLAYING) }.collect(){
+            ddd.filter { (it == MyMediaPlayer.PlayerState.PAUSED) || (it == MyMediaPlayer.PlayerState.PLAYING) || (it == MyMediaPlayer.PlayerState.COMPLETED)}.collect(){
                val status = if (it == MyMediaPlayer.PlayerState.PAUSED){
                    PLAY
-                }else {
+                }else if ((it == MyMediaPlayer.PlayerState.PLAYING)) {
                     PAUSE
-                }
+                }else{
+                    PLAY
+               }
                 createNotificationChannel()
-                startForeground(NOTIFICATION_ID, createNotification(status = status))
+                startForeground(NOTIFICATION_ID, createNotification(status = status,trackFlow.value!!))
             }
+
         }
     }
 
@@ -65,8 +72,9 @@ class PlayerService : Service() {
         notificationManager?.cancel(NOTIFICATION_ID)
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        trackFlow.value = intent?.getSerializableExtra(TRACK) as PlayerTrack
         track = intent?.getSerializableExtra(TRACK) as PlayerTrack
         if (curr.value != track.trackId) {
             interactor.onDestroy()
@@ -87,8 +95,10 @@ class PlayerService : Service() {
     }
 
 
-
-
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelNotification()
+    }
 
     inner class LocalBinder : Binder() {
         fun getService(): PlayerService = this@PlayerService
@@ -114,8 +124,16 @@ class PlayerService : Service() {
                 }
         }
     }
-    private fun createNotification(status: String) : Notification {
+    private fun createNotification(status: String, track: PlayerTrack) : Notification {
         createNotificationChannel()
+
+
+
+
+
+
+
+
 
         var pendingIntentFlag by Delegates.notNull<Int>()
         pendingIntentFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -128,16 +146,45 @@ class PlayerService : Service() {
 
         createSnoozPendIntent()
 
+
+
+        //        // Get the layouts to use in the custom notification
+//        val notificationLayout = RemoteViews(packageName, ru.mvrlrd.playlistmaker.R.layout.notification)
+////        val notificationLayoutExpanded = RemoteViews(packageName, R.layout.notification_large)
+//
+      val icon =  if (status == PLAY){
+          R.drawable.baseline_play_arrow_24
+        }else{
+          R.drawable.baseline_pause_24
+        }
+
+
+
+        val remoteViews = RemoteViews(packageName, R.layout.notification_layout).apply {
+            setTextViewText(R.id.notification_tv_track_name, track.trackName)
+            setTextViewText(R.id.notification_tv_artist_name, track.artistName)
+            setImageViewResource(R.id.notification_album_image, icon)
+            setOnClickPendingIntent(R.id.root, createSnoozPendIntent())
+        }
+
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_agreement_icon)
-            .setContentTitle("${track.trackName}")
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText("${track.artistName}"))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(createPendingIntentForNotification())
-            .addAction(R.drawable.baseline_play_arrow_24, status,
-            createSnoozPendIntent())
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContent(remoteViews)
+//            .addAction(R.drawable.baseline_play_arrow_24, status,
+//            createSnoozPendIntent())
             .build()
+
+//
+//        return NotificationCompat.Builder(this, CHANNEL_ID)
+//            .setSmallIcon(R.drawable.ic_agreement_icon)
+//            .setContentTitle("${track.trackName}")
+//            .setStyle(NotificationCompat.BigTextStyle()
+//                .bigText("${track.artistName}"))
+//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//            .setContentIntent(createPendingIntentForNotification())
+//            .addAction(R.drawable.baseline_play_arrow_24, status,
+//            createSnoozPendIntent())
+//            .build()
 
 
 
