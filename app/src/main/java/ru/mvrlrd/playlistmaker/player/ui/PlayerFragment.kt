@@ -127,10 +127,6 @@ class PlayerFragment : Fragment() {
                 if (Debouncer().playClickDebounce(this, lifecycleScope)) {
                     viewModel.addOrRemoveFromFavorites()
                 }
-
-               Intent("rururu").apply {
-                    requireActivity().sendBroadcast(this)
-                }
             }
         }
     }

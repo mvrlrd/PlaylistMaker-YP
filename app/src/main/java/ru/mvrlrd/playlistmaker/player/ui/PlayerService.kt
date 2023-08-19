@@ -10,45 +10,64 @@ import android.content.Intent
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.widget.RemoteViews
+import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.main.MainActivity
+import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
+import ru.mvrlrd.playlistmaker.player.data.PlayerClient
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
-import java.util.*
 import kotlin.properties.Delegates
 
 
 class PlayerService : Service() {
     private val binder = LocalBinder()
     private val interactor: PlayerInteractor by inject()
-
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private var job: Job? = null
 
-   private val _curr = MutableStateFlow(-1L)
+    private var notificationManager: NotificationManager? = null
+
+    var ddd = interactor.getLivePlayerState()
+
+    private lateinit var track: PlayerTrack
+
+    private val _curr = MutableStateFlow(-1L)
     val curr get() = _curr.asStateFlow()
+
 
     override fun onCreate() {
         super.onCreate()
+        coroutineScope.launch {
+            ddd.filter { (it == MyMediaPlayer.PlayerState.PAUSED) || (it == MyMediaPlayer.PlayerState.PLAYING) }.collect(){
+               val status = if (it == MyMediaPlayer.PlayerState.PAUSED){
+                   PLAY
+                }else {
+                    PAUSE
+                }
+                createNotificationChannel()
+                startForeground(NOTIFICATION_ID, createNotification(status = status))
+            }
+        }
+    }
 
-        createNotificationChannel()
-        startForeground(NOTIFICATION_ID, createNotification())
-
+    private fun cancelNotification() {
+        notificationManager?.cancel(NOTIFICATION_ID)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        val track = intent?.getSerializableExtra(TRACK) as PlayerTrack
+        track = intent?.getSerializableExtra(TRACK) as PlayerTrack
         if (curr.value != track.trackId) {
             interactor.onDestroy()
             job = coroutineScope.launch {
@@ -58,6 +77,8 @@ class PlayerService : Service() {
             handlePlaying()
         }
         _curr.value = track.trackId
+
+
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -87,12 +108,13 @@ class PlayerService : Service() {
                 description = "test Channel"
             }
             // Register the channel with the system
-            val notificationManager: NotificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+            notificationManager =
+                (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).apply {
+                    createNotificationChannel(channel)
+                }
         }
     }
-    private fun createNotification() : Notification {
+    private fun createNotification(status: String) : Notification {
         createNotificationChannel()
 
         var pendingIntentFlag by Delegates.notNull<Int>()
@@ -102,22 +124,18 @@ class PlayerService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
 
-
         createPendingIntentForNotification()
-
 
         createSnoozPendIntent()
 
-
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_agreement_icon)
-            .setContentTitle("My notification")
-            .setContentText("Much longer text that cannot fit one line...")
+            .setContentTitle("${track.trackName}")
             .setStyle(NotificationCompat.BigTextStyle()
-                .bigText("Much longer text that cannot fit one line..."))
+                .bigText("${track.artistName}"))
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(createPendingIntentForNotification())
-            .addAction(R.drawable.baseline_play_arrow_24, "soso",
+            .addAction(R.drawable.baseline_play_arrow_24, status,
             createSnoozPendIntent())
             .build()
 
@@ -147,6 +165,8 @@ class PlayerService : Service() {
         private const val CHANNEL_NAME = "channel"
         private const val CHANNEL_ID = "1"
         private const val NOTIFICATION_ID = 1
+        private const val PLAY ="PLAY"
+        private const val PAUSE ="PAUSE"
 
         fun newIntent(context: Context, track: PlayerTrack): Intent{
             return Intent(context, PlayerService::class.java).apply {
