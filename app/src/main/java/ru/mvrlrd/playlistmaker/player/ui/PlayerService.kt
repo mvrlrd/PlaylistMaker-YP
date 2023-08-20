@@ -13,14 +13,12 @@ import android.content.pm.PackageManager
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,16 +26,10 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
-import ru.mvrlrd.playlistmaker.main.MainActivity
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import kotlin.properties.Delegates
-
-
-
-
-
 
 class PlayerService : Service() {
     private val binder = LocalBinder()
@@ -50,7 +42,7 @@ class PlayerService : Service() {
     var progressJob : Job? = null
     var currentTimeProgress: Int = 0
 
-    var ddd = interactor.getLivePlayerState()
+    var playerStateStateFlow = interactor.getLivePlayerState()
     var trackFlow = MutableStateFlow<PlayerTrack?>(null)
 
     private lateinit var track: PlayerTrack
@@ -62,16 +54,20 @@ class PlayerService : Service() {
     override fun onCreate() {
         super.onCreate()
         coroutineScope.launch {
-            ddd.filter { (it == MyMediaPlayer.PlayerState.PAUSED) || (it == MyMediaPlayer.PlayerState.PLAYING) || (it == MyMediaPlayer.PlayerState.COMPLETED)}.collect(){
-               val status = if (it == MyMediaPlayer.PlayerState.PAUSED){
-                   PLAY
-                }else if ((it == MyMediaPlayer.PlayerState.PLAYING)) {
-                    PAUSE
-                }else{
-                    PLAY
+            playerStateStateFlow.filter {
+                (it == MyMediaPlayer.PlayerState.PAUSED) ||
+                        (it == MyMediaPlayer.PlayerState.PLAYING) ||
+                        (it == MyMediaPlayer.PlayerState.COMPLETED)
+            }.collect() {
+                val status = if (it == MyMediaPlayer.PlayerState.PAUSED) {
+                    Action.PAUSE
+                } else if ((it == MyMediaPlayer.PlayerState.PLAYING)) {
+                    Action.PLAY
+                } else {
+                    Action.COMPLETED
                }
                 createNotificationChannel()
-                startForeground(NOTIFICATION_ID, createNotification(status = status,trackFlow.value!!))
+                startForeground(NOTIFICATION_ID, createNotification(status = status, trackFlow.value!!))
             }
 
         }
@@ -84,7 +80,7 @@ class PlayerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         trackFlow.value = intent?.getSerializableExtra(TRACK) as PlayerTrack
-        track = intent?.getSerializableExtra(TRACK) as PlayerTrack
+        track = intent.getSerializableExtra(TRACK) as PlayerTrack
         if (curr.value != track.trackId) {
             interactor.onDestroy()
             currentTimeProgress = 0
@@ -135,128 +131,25 @@ class PlayerService : Service() {
                 }
         }
     }
-    private fun createNotification(status: String, track: PlayerTrack) : Notification {
+    private fun createNotification(status: Action, track: PlayerTrack) : Notification {
         createNotificationChannel()
-
         var pendingIntentFlag by Delegates.notNull<Int>()
         pendingIntentFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.FLAG_IMMUTABLE
         } else {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
-
-        createPendingIntentForNotification()
-
-        createSnoozPendIntent()
-
-
-
-        //        // Get the layouts to use in the custom notification
-//        val notificationLayout = RemoteViews(packageName, ru.mvrlrd.playlistmaker.R.layout.notification)
-////        val notificationLayoutExpanded = RemoteViews(packageName, R.layout.notification_large)
-//
-//      val icon =  if (status == PLAY){
-//          R.drawable.baseline_play_arrow_24
-//        }else{
-//          R.drawable.baseline_pause_24
-//        }
-//
-//
-//        val remoteViews = RemoteViews(packageName, R.layout.notification_layout).apply {
-//            setTextViewText(R.id.notification_tv_track_name, track.trackName)
-//            setTextViewText(R.id.notification_tv_artist_name, track.artistName)
-//            setImageViewResource(R.id.notification_album_image, icon)
-//            setOnClickPendingIntent(R.id.root, createSnoozPendIntent())
-//        }
-//
-//        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.baseline_add_photo_alternate_24)
-//
-//        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-//            .setSmallIcon(R.mipmap.ic_launcher)
-//            .setContent(remoteViews)
-//            .setSilent(true)
-//            .setLargeIcon(bitmap)
-////            .setStyle(NotificationCompat.BigPictureStyle()
-////                .bigPicture(bitmap)
-////                .bigLargeIcon(bitmap))
-////            .addAction(R.drawable.baseline_play_arrow_24, status,
-////            createSnoozPendIntent())
-
-
-//        return builder.build()
-
-
         val builder = notificationWithMediaControl(status, track)
-//      val builder = createNotificationWithProgressBar(track)
-
         return builder.build()
-
-
-
-//
-//        return NotificationCompat.Builder(this, CHANNEL_ID)
-//            .setSmallIcon(R.drawable.ic_agreement_icon)
-//            .setContentTitle("${track.trackName}")
-//            .setStyle(NotificationCompat.BigTextStyle()
-//                .bigText("${track.artistName}"))
-//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//            .setContentIntent(createPendingIntentForNotification())
-//            .addAction(R.drawable.baseline_play_arrow_24, status,
-//            createSnoozPendIntent())
-//            .build()
-
-
-
 }
 
-    private fun createNotificationWithProgressBar(track: PlayerTrack): NotificationCompat.Builder {
-        val builder = NotificationCompat.Builder(this, CHANNEL_ID).apply {
-            setContentTitle("${track.artistName}")
-            setContentText("${track.trackName}")
-            setSmallIcon(R.drawable.ic_agreement_icon)
-            setPriority(NotificationCompat.PRIORITY_LOW)
-            setSilent(true)
-        }
-
-        val PROGRESS_MAX = 100
-        val PROGRESS_CURRENT = 0
-        NotificationManagerCompat.from(this).apply {
-            // Issue the initial notification with zero progress
-            builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false)
-            if (ActivityCompat.checkSelfPermission(
-                    applicationContext,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-
-            }
-            coroutineScope.launch {
-                var progress = 0
-                repeat(10) {
-                    progress += 10
-                    builder.setProgress(100, progress, false)
-                    notify(NOTIFICATION_ID, builder.build())
-                    delay(1000)
-                }
-                builder.setContentText("complete")
-                    .setProgress(100, 0, false)
-                notify(NOTIFICATION_ID, builder.build())
-
-            }
-        }
-        return builder
-    }
-
-    private fun notificationWithMediaControl(status: String, track: PlayerTrack): NotificationCompat.Builder {
+    private fun notificationWithMediaControl(status: Action, track: PlayerTrack): NotificationCompat.Builder {
         val stopPlayIntent = Intent().apply {
             action = ACTION
+        }
+        val playStopButtonText = when(status){
+            Action.PLAY,Action.NEXT_TRACK,Action.PREVIOUS_TRACK-> PAUSE_TEXT
+            Action.PAUSE, Action.COMPLETED -> PLAY_TEXT
         }
 
         val pausePendingIntent: PendingIntent = PendingIntent.getBroadcast(applicationContext, 0, stopPlayIntent, 0)
@@ -264,29 +157,22 @@ class PlayerService : Service() {
         val nextPendingIntent: PendingIntent = PendingIntent.getBroadcast(applicationContext, 0, stopPlayIntent, 0)
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            // Show controls on lock screen even when user hides sensitive content.
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setSmallIcon(R.drawable.ic_share_icon)
-            // Add media control buttons that invoke intents in your media service
             .addAction(R.drawable.ic_arrow_icon, "Previous", prevPendingIntent) // #0
-            .addAction(R.drawable.baseline_pause_24, status, pausePendingIntent) // #1
+            .addAction(R.drawable.baseline_pause_24, playStopButtonText, pausePendingIntent) // #1
             .addAction(R.drawable.baseline_favorite_full, "Next", nextPendingIntent) // #2
-            // Apply the media style template
-//            .setStyle(
-//                MediaNotificationCompat.MediaStyle()
-//                    .setShowActionsInCompactView(1 /* #1: pause button \*/)
-//                    .setMediaSession(mediaSession.getSessionToken())
-//            )
             .setSilent(true)
             .setContentTitle("${track.trackName}")
             .setContentText("${track.artistName}")
-//            .setLargeIcon(albumArtBitmap)
 
+        val trackTime = TRACK_TIME
+        val onePieceOfProgress = trackTime / 100L
 
-        val PROGRESS_MAX = 100
-        var PROGRESS_CURRENT = 0
+        val PROGRESS_MAX = onePieceOfProgress.times(100).toInt()
+
         NotificationManagerCompat.from(this).apply {
-            builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false)
+            builder.setProgress(PROGRESS_MAX, currentTimeProgress, false)
             if (ActivityCompat.checkSelfPermission(
                     applicationContext,
                     Manifest.permission.POST_NOTIFICATIONS
@@ -295,61 +181,55 @@ class PlayerService : Service() {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
             }
-            Log.e(TAG, "notificationWithMediaControl: $status", )
-            if (status == PAUSE) {
-                progressJob =   coroutineScope.launch {
-
-                    repeat(10) {
-                        currentTimeProgress += 10
+            if (status == Action.PLAY) {
+                progressJob =  coroutineScope.launch {
+                    repeat(COUNT_OF_PROGRESS_INCREASINGS) {
+                        currentTimeProgress += (PROGRESS_MAX/ COUNT_OF_PROGRESS_INCREASINGS)
                         builder.setProgress(PROGRESS_MAX, currentTimeProgress, false)
                         notify(NOTIFICATION_ID, builder.build())
-                        delay(1000L)
+                        delay((PROGRESS_MAX/ COUNT_OF_PROGRESS_INCREASINGS).toLong())
                     }
-                    currentTimeProgress = 0
-                    builder.setContentText("complete")
-                        .setProgress(PROGRESS_MAX, currentTimeProgress, false)
-                    notify(NOTIFICATION_ID, builder.build())
                 }
-            }else{
+            }else if (status == Action.COMPLETED){
+                currentTimeProgress = 0
+                builder
+                    .setProgress(PROGRESS_MAX, currentTimeProgress, false)
+                notify(NOTIFICATION_ID, builder.build())
+            }
+
+            else{
                 progressJob?.cancel()
                 builder.setProgress(PROGRESS_MAX, currentTimeProgress, false)
-//                coroutineScope.cancel()
             }
         }
-return builder
+        return builder
     }
 
-    private fun createSnoozPendIntent(): PendingIntent {
-        val snoozeIntent = Intent().apply {
-            action = ACTION
-        }
-        return PendingIntent.getBroadcast(applicationContext, 0, snoozeIntent, 0)
-    }
 
-    private fun createPendingIntentForNotification(): PendingIntent {
-        // Create an explicit intent for an Activity in your app
-        val intent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-       return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-    }
-
-    companion object{
+    companion object {
         private const val TAG = "PlayerService"
         const val TRACK = "track"
         const val ACTION = "rururu"
         private const val CHANNEL_NAME = "channel"
         private const val CHANNEL_ID = "1"
         private const val NOTIFICATION_ID = 1
-        private const val PLAY ="PLAY"
-        private const val PAUSE ="PAUSE"
+        private const val PLAY_TEXT = "PLAY"
+        private const val PAUSE_TEXT = "PAUSE"
+        private const val TRACK_TIME = 30000L //поменять если будут песни не по 30 сек
+        private const val COUNT_OF_PROGRESS_INCREASINGS = 50
 
-        fun newIntent(context: Context, track: PlayerTrack): Intent{
+        fun newIntent(context: Context, track: PlayerTrack): Intent {
             return Intent(context, PlayerService::class.java).apply {
                 putExtra(TRACK, track)
             }
         }
     }
 
-
+    enum class Action {
+        PLAY,
+        PAUSE,
+        COMPLETED,
+        NEXT_TRACK,
+        PREVIOUS_TRACK
+    }
 }
