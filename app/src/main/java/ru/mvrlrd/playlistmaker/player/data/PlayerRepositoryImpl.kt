@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.data
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import ru.mvrlrd.playlistmaker.mediateka.favorites.data.favs_db.FavoriteDb
@@ -13,6 +14,7 @@ import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.PlaylistDb
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.PlaylistTrackCrossRef
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.entities.TrackEntity
 import ru.mvrlrd.playlistmaker.mediateka.playlists.data.playlists_db.relations.PlaylistWithTracks
+import ru.mvrlrd.playlistmaker.player.domain.AddingTrackToPlaylistResult
 import ru.mvrlrd.playlistmaker.search.domain.TrackForAdapter
 import java.util.*
 
@@ -23,11 +25,11 @@ class PlayerRepositoryImpl(
     private val playlistConverter: PlaylistConverter,
     private val trackConverter: TrackConverter
 ) : PlayerRepository {
-    override fun preparePlayer(playerTrack: PlayerTrack) {
+    override  fun preparePlayer(playerTrack: PlayerTrack) {
         playerClient.preparePlayer(playerTrack)
     }
 
-    override fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState> {
+    override fun getLivePlayerState(): StateFlow<MyMediaPlayer.PlayerState> {
         return playerClient.getLivePlayerState()
     }
 
@@ -51,6 +53,8 @@ class PlayerRepositoryImpl(
         favoriteDb.getDao().deleteTrack(trackId)
     }
 
+
+
     override fun getAllPlaylists(): Flow<List<PlaylistForAdapter>> {
         return playlistDb.getDao().getAllPlaylists().map { list ->
             playlistConverter.convertEntityListToAdapterList(list)
@@ -59,15 +63,15 @@ class PlayerRepositoryImpl(
 
     override suspend fun addTrackToPlaylist(
         track: TrackForAdapter,
-        playlistId: Long
-    ): Flow<Pair<String, Boolean>> {
+        playlist: PlaylistForAdapter
+    ): Flow<AddingTrackToPlaylistResult> {
         playlistDb.getDao().insertTrack(mapTrackForAdapterToSong(track))
-        val playerSongCrossRef = PlaylistTrackCrossRef(trackId = track.trackId, playlistId = playlistId, date = Calendar.getInstance().timeInMillis)
-        val playlistName = playlistDb.getDao().getPlaylist(playlistId).name
+        val playerSongCrossRef = PlaylistTrackCrossRef(trackId = track.trackId, playlistId = playlist.playlistId!!, date = Calendar.getInstance().timeInMillis)
+
         return flow {
             emit(
-                playlistName to (playlistDb.getDao()
-                    .insertPlaylistTrackCrossRef(playerSongCrossRef) != -1L)
+                AddingTrackToPlaylistResult(playlistName = playlist.name, wasAdded = (playlistDb.getDao()
+                    .insertPlaylistTrackCrossRef(playerSongCrossRef) != -1L))
             )
         }
     }
@@ -115,5 +119,9 @@ class PlayerRepositoryImpl(
 
     override fun stopIt() {
         playerClient.stopIt()
+    }
+
+    override suspend fun prp(playerTrack: PlayerTrack) {
+        playerClient.prp(playerTrack)
     }
 }

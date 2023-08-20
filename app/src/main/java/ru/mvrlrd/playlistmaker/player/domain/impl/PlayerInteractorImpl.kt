@@ -1,8 +1,11 @@
 package ru.mvrlrd.playlistmaker.player.domain.impl
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import ru.mvrlrd.playlistmaker.mediateka.playlists.domain.PlaylistForAdapter
 import ru.mvrlrd.playlistmaker.player.data.MyMediaPlayer
+import ru.mvrlrd.playlistmaker.player.domain.AddingTrackToPlaylistResult
 import ru.mvrlrd.playlistmaker.player.domain.PlayerInteractor
 import ru.mvrlrd.playlistmaker.player.domain.PlayerRepository
 import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
@@ -18,7 +21,7 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
         playerRepository.onDestroy()
     }
 
-    override fun getLivePlayerState(): Flow<MyMediaPlayer.PlayerState> {
+    override fun getLivePlayerState(): StateFlow<MyMediaPlayer.PlayerState> {
         return playerRepository.getLivePlayerState()
     }
 
@@ -44,9 +47,9 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
 
     override suspend fun addTrackToPlaylist(
         trackId: TrackForAdapter,
-        playlistId: Long
-    ): Flow<Pair<String, Boolean>> {
-        return playerRepository.addTrackToPlaylist(trackId, playlistId)
+        playlist: PlaylistForAdapter
+    ): Flow<AddingTrackToPlaylistResult> {
+        return playerRepository.addTrackToPlaylist(trackId, playlist)
     }
 
     override fun getAllPlaylistsWithQuantities(): Flow<List<PlaylistForAdapter>> {
@@ -58,10 +61,19 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository) : Pla
     }
 
     override fun handleStartAndPause() {
+//        for (i in 0 .. 10){
+//            Thread.sleep(1000)
+//            Log.e("PlayerInteractorImpl", "$i ", )
+//        }
+
         playerRepository.handleStartAndPause()
     }
 
     override fun stopIt() {
         playerRepository.stopIt()
+    }
+
+    override suspend fun prp(playerTrack: PlayerTrack) {
+        playerRepository.prp(playerTrack)
     }
 }

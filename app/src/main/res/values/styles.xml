@@ -197,7 +197,6 @@
 
 
     <style name="FabStyle" parent="Widget.Design.FloatingActionButton">
-
         <item name="android:enabled">true</item>
         <item name="android:clickable">true</item>
         <item name="android:layout_width">@dimen/small_fab_size</item>

@@ -7,6 +7,6 @@ import ru.mvrlrd.playlistmaker.player.ui.PlayerViewModel
 
 val playerViewModelModule = module {
     viewModel { (playerTrack: PlayerTrack) ->
-        PlayerViewModel(playerTrack = playerTrack, playerInteractor = get(), fileUseCase = get())
+        PlayerViewModel(track = playerTrack, interactor = get(), fileHandler = get())
     }
 }
