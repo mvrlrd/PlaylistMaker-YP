@@ -213,7 +213,7 @@ class PlayerService : Service() {
     companion object {
         private const val TAG = "PlayerService"
         const val TRACK = "track"
-        const val ACTION = "rururu"
+        const val ACTION = "play/stop"
         private const val CHANNEL_NAME = "channel"
         private const val CHANNEL_ID = "1"
         private const val NOTIFICATION_ID = 1

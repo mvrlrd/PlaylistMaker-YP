@@ -12,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import ru.mvrlrd.playlistmaker.R
 import ru.mvrlrd.playlistmaker.databinding.ActivityMainBinding
 import ru.mvrlrd.playlistmaker.player.ui.MyBroadcastReceiver
+import ru.mvrlrd.playlistmaker.player.ui.PlayerService
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -32,13 +33,9 @@ class MainActivity : AppCompatActivity() {
                 else -> showBottomNav()
             }
         }
-//
-//        Intent().apply {
-//            action
-//        }
 
         val intentFilter = IntentFilter().apply {
-            addAction("rururu")
+            addAction(PlayerService.ACTION)
         }
         registerReceiver(receiver, intentFilter)
     }
