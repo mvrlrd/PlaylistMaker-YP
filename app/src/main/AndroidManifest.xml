@@ -22,10 +22,8 @@
         tools:targetApi="31">
 
 
-<service android:name=".player.ui.PlayerService"/>
-        <service android:name=".player.ui.MyForegroundService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            />
+        <service android:name=".player.ui.PlayerService"/>
+
         <activity
             android:name=".main.MainActivity"
             android:windowSoftInputMode="adjustNothing"
