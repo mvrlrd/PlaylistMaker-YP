@@ -13,12 +13,14 @@ import android.content.pm.PackageManager
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,6 +35,10 @@ import ru.mvrlrd.playlistmaker.player.domain.PlayerTrack
 import kotlin.properties.Delegates
 
 
+
+
+
+
 class PlayerService : Service() {
     private val binder = LocalBinder()
     private val interactor: PlayerInteractor by inject()
@@ -40,6 +46,9 @@ class PlayerService : Service() {
     private var job: Job? = null
 
     private var notificationManager: NotificationManager? = null
+
+    var progressJob : Job? = null
+    var currentTimeProgress: Int = 0
 
     var ddd = interactor.getLivePlayerState()
     var trackFlow = MutableStateFlow<PlayerTrack?>(null)
@@ -78,6 +87,8 @@ class PlayerService : Service() {
         track = intent?.getSerializableExtra(TRACK) as PlayerTrack
         if (curr.value != track.trackId) {
             interactor.onDestroy()
+            currentTimeProgress = 0
+            progressJob?.cancel()
             job = coroutineScope.launch {
                 interactor.prp(track)
             }
@@ -174,13 +185,39 @@ class PlayerService : Service() {
 
 //        return builder.build()
 
+
+        val builder = notificationWithMediaControl(status, track)
+//      val builder = createNotificationWithProgressBar(track)
+
+        return builder.build()
+
+
+
+//
+//        return NotificationCompat.Builder(this, CHANNEL_ID)
+//            .setSmallIcon(R.drawable.ic_agreement_icon)
+//            .setContentTitle("${track.trackName}")
+//            .setStyle(NotificationCompat.BigTextStyle()
+//                .bigText("${track.artistName}"))
+//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//            .setContentIntent(createPendingIntentForNotification())
+//            .addAction(R.drawable.baseline_play_arrow_24, status,
+//            createSnoozPendIntent())
+//            .build()
+
+
+
+}
+
+    private fun createNotificationWithProgressBar(track: PlayerTrack): NotificationCompat.Builder {
         val builder = NotificationCompat.Builder(this, CHANNEL_ID).apply {
-            setContentTitle("Picture Download")
-            setContentText("Download in progress")
+            setContentTitle("${track.artistName}")
+            setContentText("${track.trackName}")
             setSmallIcon(R.drawable.ic_agreement_icon)
             setPriority(NotificationCompat.PRIORITY_LOW)
             setSilent(true)
         }
+
         val PROGRESS_MAX = 100
         val PROGRESS_CURRENT = 0
         NotificationManagerCompat.from(this).apply {
@@ -202,40 +239,85 @@ class PlayerService : Service() {
             }
             coroutineScope.launch {
                 var progress = 0
-                repeat(10){
-                    progress+=10
+                repeat(10) {
+                    progress += 10
                     builder.setProgress(100, progress, false)
                     notify(NOTIFICATION_ID, builder.build())
                     delay(1000)
                 }
-                builder.setContentText("Download complete")
+                builder.setContentText("complete")
                     .setProgress(100, 0, false)
                 notify(NOTIFICATION_ID, builder.build())
 
             }
         }
+        return builder
+    }
+
+    private fun notificationWithMediaControl(status: String, track: PlayerTrack): NotificationCompat.Builder {
+        val stopPlayIntent = Intent().apply {
+            action = ACTION
+        }
+
+        val pausePendingIntent: PendingIntent = PendingIntent.getBroadcast(applicationContext, 0, stopPlayIntent, 0)
+        val prevPendingIntent: PendingIntent = PendingIntent.getBroadcast(applicationContext, 0, stopPlayIntent, 0)
+        val nextPendingIntent: PendingIntent = PendingIntent.getBroadcast(applicationContext, 0, stopPlayIntent, 0)
+
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+            // Show controls on lock screen even when user hides sensitive content.
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setSmallIcon(R.drawable.ic_share_icon)
+            // Add media control buttons that invoke intents in your media service
+            .addAction(R.drawable.ic_arrow_icon, "Previous", prevPendingIntent) // #0
+            .addAction(R.drawable.baseline_pause_24, status, pausePendingIntent) // #1
+            .addAction(R.drawable.baseline_favorite_full, "Next", nextPendingIntent) // #2
+            // Apply the media style template
+//            .setStyle(
+//                MediaNotificationCompat.MediaStyle()
+//                    .setShowActionsInCompactView(1 /* #1: pause button \*/)
+//                    .setMediaSession(mediaSession.getSessionToken())
+//            )
+            .setSilent(true)
+            .setContentTitle("${track.trackName}")
+            .setContentText("${track.artistName}")
+//            .setLargeIcon(albumArtBitmap)
 
 
+        val PROGRESS_MAX = 100
+        var PROGRESS_CURRENT = 0
+        NotificationManagerCompat.from(this).apply {
+            builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false)
+            if (ActivityCompat.checkSelfPermission(
+                    applicationContext,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+            }
+            Log.e(TAG, "notificationWithMediaControl: $status", )
+            if (status == PAUSE) {
+                progressJob =   coroutineScope.launch {
 
-return builder.build()
-
-
-
-//
-//        return NotificationCompat.Builder(this, CHANNEL_ID)
-//            .setSmallIcon(R.drawable.ic_agreement_icon)
-//            .setContentTitle("${track.trackName}")
-//            .setStyle(NotificationCompat.BigTextStyle()
-//                .bigText("${track.artistName}"))
-//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//            .setContentIntent(createPendingIntentForNotification())
-//            .addAction(R.drawable.baseline_play_arrow_24, status,
-//            createSnoozPendIntent())
-//            .build()
-
-
-
-}
+                    repeat(10) {
+                        currentTimeProgress += 10
+                        builder.setProgress(PROGRESS_MAX, currentTimeProgress, false)
+                        notify(NOTIFICATION_ID, builder.build())
+                        delay(1000L)
+                    }
+                    currentTimeProgress = 0
+                    builder.setContentText("complete")
+                        .setProgress(PROGRESS_MAX, currentTimeProgress, false)
+                    notify(NOTIFICATION_ID, builder.build())
+                }
+            }else{
+                progressJob?.cancel()
+                builder.setProgress(PROGRESS_MAX, currentTimeProgress, false)
+//                coroutineScope.cancel()
+            }
+        }
+return builder
+    }
 
     private fun createSnoozPendIntent(): PendingIntent {
         val snoozeIntent = Intent().apply {
