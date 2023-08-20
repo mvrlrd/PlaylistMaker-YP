@@ -45,8 +45,6 @@ class PlayerService : Service() {
     var playerStateStateFlow = interactor.getLivePlayerState()
     var trackFlow = MutableStateFlow<PlayerTrack?>(null)
 
-    private lateinit var track: PlayerTrack
-
     private val _curr = MutableStateFlow(-1L)
     val curr get() = _curr.asStateFlow()
 
@@ -80,18 +78,17 @@ class PlayerService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         trackFlow.value = intent?.getSerializableExtra(TRACK) as PlayerTrack
-        track = intent.getSerializableExtra(TRACK) as PlayerTrack
-        if (curr.value != track.trackId) {
+        if (curr.value != trackFlow.value!!.trackId) {
             interactor.onDestroy()
             currentTimeProgress = 0
             progressJob?.cancel()
             job = coroutineScope.launch {
-                interactor.prp(track)
+                interactor.prp(trackFlow.value!!)
             }
         } else {
             handlePlaying()
         }
-        _curr.value = track.trackId
+        _curr.value = trackFlow.value!!.trackId
 
 
         return super.onStartCommand(intent, flags, startId)
