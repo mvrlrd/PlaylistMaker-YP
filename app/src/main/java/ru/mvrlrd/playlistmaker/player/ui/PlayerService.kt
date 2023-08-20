@@ -1,6 +1,7 @@
 package ru.mvrlrd.playlistmaker.player.ui
 
 
+import android.Manifest
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,21 +9,20 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Icon
+import android.content.pm.PackageManager
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.widget.RemoteViews
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterNot
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.mvrlrd.playlistmaker.R
@@ -127,14 +127,6 @@ class PlayerService : Service() {
     private fun createNotification(status: String, track: PlayerTrack) : Notification {
         createNotificationChannel()
 
-
-
-
-
-
-
-
-
         var pendingIntentFlag by Delegates.notNull<Int>()
         pendingIntentFlag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PendingIntent.FLAG_IMMUTABLE
@@ -152,27 +144,82 @@ class PlayerService : Service() {
 //        val notificationLayout = RemoteViews(packageName, ru.mvrlrd.playlistmaker.R.layout.notification)
 ////        val notificationLayoutExpanded = RemoteViews(packageName, R.layout.notification_large)
 //
-      val icon =  if (status == PLAY){
-          R.drawable.baseline_play_arrow_24
-        }else{
-          R.drawable.baseline_pause_24
+//      val icon =  if (status == PLAY){
+//          R.drawable.baseline_play_arrow_24
+//        }else{
+//          R.drawable.baseline_pause_24
+//        }
+//
+//
+//        val remoteViews = RemoteViews(packageName, R.layout.notification_layout).apply {
+//            setTextViewText(R.id.notification_tv_track_name, track.trackName)
+//            setTextViewText(R.id.notification_tv_artist_name, track.artistName)
+//            setImageViewResource(R.id.notification_album_image, icon)
+//            setOnClickPendingIntent(R.id.root, createSnoozPendIntent())
+//        }
+//
+//        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.baseline_add_photo_alternate_24)
+//
+//        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
+//            .setSmallIcon(R.mipmap.ic_launcher)
+//            .setContent(remoteViews)
+//            .setSilent(true)
+//            .setLargeIcon(bitmap)
+////            .setStyle(NotificationCompat.BigPictureStyle()
+////                .bigPicture(bitmap)
+////                .bigLargeIcon(bitmap))
+////            .addAction(R.drawable.baseline_play_arrow_24, status,
+////            createSnoozPendIntent())
+
+
+//        return builder.build()
+
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID).apply {
+            setContentTitle("Picture Download")
+            setContentText("Download in progress")
+            setSmallIcon(R.drawable.ic_agreement_icon)
+            setPriority(NotificationCompat.PRIORITY_LOW)
+            setSilent(true)
+        }
+        val PROGRESS_MAX = 100
+        val PROGRESS_CURRENT = 0
+        NotificationManagerCompat.from(this).apply {
+            // Issue the initial notification with zero progress
+            builder.setProgress(PROGRESS_MAX, PROGRESS_CURRENT, false)
+            if (ActivityCompat.checkSelfPermission(
+                    applicationContext,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+
+            }
+            coroutineScope.launch {
+                var progress = 0
+                repeat(10){
+                    progress+=10
+                    builder.setProgress(100, progress, false)
+                    notify(NOTIFICATION_ID, builder.build())
+                    delay(1000)
+                }
+                builder.setContentText("Download complete")
+                    .setProgress(100, 0, false)
+                notify(NOTIFICATION_ID, builder.build())
+
+            }
         }
 
 
 
-        val remoteViews = RemoteViews(packageName, R.layout.notification_layout).apply {
-            setTextViewText(R.id.notification_tv_track_name, track.trackName)
-            setTextViewText(R.id.notification_tv_artist_name, track.artistName)
-            setImageViewResource(R.id.notification_album_image, icon)
-            setOnClickPendingIntent(R.id.root, createSnoozPendIntent())
-        }
+return builder.build()
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContent(remoteViews)
-//            .addAction(R.drawable.baseline_play_arrow_24, status,
-//            createSnoozPendIntent())
-            .build()
+
 
 //
 //        return NotificationCompat.Builder(this, CHANNEL_ID)
