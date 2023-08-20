@@ -163,6 +163,15 @@ class PlayerService : Service() {
             .setContentTitle("${track.trackName}")
             .setContentText("${track.artistName}")
 
+        handleProgressBar(builder, status)
+
+        return builder
+    }
+
+    private fun handleProgressBar(
+        builder: NotificationCompat.Builder,
+        status: Action
+    ) {
         val trackTime = TRACK_TIME
         val onePieceOfProgress = trackTime / 100L
 
@@ -179,27 +188,25 @@ class PlayerService : Service() {
                 //    ActivityCompat#requestPermissions
             }
             if (status == Action.PLAY) {
-                progressJob =  coroutineScope.launch {
+                progressJob = coroutineScope.launch {
                     repeat(COUNT_OF_PROGRESS_INCREASINGS) {
-                        currentTimeProgress += (PROGRESS_MAX/ COUNT_OF_PROGRESS_INCREASINGS)
+                        currentTimeProgress += (PROGRESS_MAX / COUNT_OF_PROGRESS_INCREASINGS)
                         builder.setProgress(PROGRESS_MAX, currentTimeProgress, false)
                         notify(NOTIFICATION_ID, builder.build())
-                        delay((PROGRESS_MAX/ COUNT_OF_PROGRESS_INCREASINGS).toLong())
+                        delay((PROGRESS_MAX / COUNT_OF_PROGRESS_INCREASINGS).toLong())
                     }
                 }
-            }else if (status == Action.COMPLETED){
+            } else if (status == Action.COMPLETED) {
+                progressJob?.cancel()
                 currentTimeProgress = 0
                 builder
                     .setProgress(PROGRESS_MAX, currentTimeProgress, false)
                 notify(NOTIFICATION_ID, builder.build())
-            }
-
-            else{
+            } else {
                 progressJob?.cancel()
                 builder.setProgress(PROGRESS_MAX, currentTimeProgress, false)
             }
         }
-        return builder
     }
 
 
